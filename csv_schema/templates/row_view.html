@@ -1,0 +1,107 @@
+{% extends "base_templates/base.html" %}
+{% load urls %}
+{% block contents %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-push-1">
+      <h1>Row View</h1>
+      <div class="row">
+        <div class="col-md-12">
+          <form method="GET">
+            <select name="database" value="database">
+              <option {% if not reqest.GET.database %}selected {% endif %} value>All</option>
+              {% for database_name in database_names %}
+                <option {% if database_name == request.GET.database %}selected {% endif %}>{{ database_name }}</option>
+              {% endfor %}
+              <input type="submit" value="Submit">
+            </select>
+            <input type="hidden" name="table" value="" />
+          </form>
+          {% if table_names %}
+            <form method="GET">
+              <select name="table" value="table">
+                <option {% if not reqest.GET.table %}selected {% endif %} value="">All</option>
+                {% for table_name in table_names %}
+                  <option {% if table_name == request.GET.table %}selected {% endif %}>{{ table_name }}</option>
+                {% endfor %}
+                <input type="submit" value="Submit">
+              </select>
+              <input type="hidden" name="database" value="{{ request.GET.database }}" />
+            </form>
+          {% endif %}
+        </div>
+      </div>
+      <article>
+        <table class="table table-condensed">
+          <thead>
+            <tr>
+              <th>
+                Database
+              </th>
+              <th>
+                Table
+              </th>
+              <th>
+                Column Name
+              </th>
+              <th>
+                Description
+              </th>
+              <th>
+                Data Type
+              </th>
+              <th>
+                Is Derived?
+              </th>
+              <th>
+                Derivation
+              </th>
+              <th>
+                Technical Check
+              </th>
+              <th>
+                Data Dictionary Link
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for row in object_list %}
+              <tr>
+                <td>{{ row.table.database.name }}</td>
+                <td>{{ row.table.name }}</td>
+                <td>{{ row.data_dictionary_name }}</td>
+                <td>{{ row.description }}</td>
+                <td>{{ row.data_type }}</td>
+                <td>{{ row.is_derived_item }}</td>
+                <td>{{ row.derivation }}</td>
+                <td>{{ row.technical_check }}</td>
+                <td><a href="{{ row.data_dictionary_link }}">link</td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </article>
+    </div>
+  </div>
+</div>
+{% if is_paginated %}
+<div class="col-md-12 text-center">
+  <ul class="pagination">
+    {% if page_obj.has_previous %}
+        <li>
+            <span><a href="{% add_params request.get_full_path page=page_obj.previous_page_number %}">Previous</a></span>
+        </li>
+    {% endif %}
+        <li class="">
+            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        </li>
+    {% if page_obj.has_next %}
+        <li>
+            <span><a href="{% add_params request.get_full_path page=page_obj.next_page_number %}">Next</a></span>
+        </li>
+    {% endif %}
+  </ul>
+</div>
+{% endif %}
+
+{% endblock %}
