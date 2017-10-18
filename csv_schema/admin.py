@@ -7,3 +7,4 @@ from . import models
 admin.site.register(models.Database)
 admin.site.register(models.Table)
 admin.site.register(models.Row)
+admin.site.register(models.SiteDescription)

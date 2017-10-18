@@ -89,3 +89,7 @@ class Row(AbstractTimeStamped):
             self.table.name,
             self.table.database.name
         )
+
+
+class SiteDescription(models.Model):
+    description = models.TextField()

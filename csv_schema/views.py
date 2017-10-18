@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.views.generic import ListView, TemplateView
+from django.views.generic import ListView
 from csv_schema import models
 
 
@@ -39,5 +39,6 @@ class RowView(ListView):
         return ctx
 
 
-class AboutView(TemplateView):
+class AboutView(ListView):
+    model = models.SiteDescription
     template_name = "about.html"
