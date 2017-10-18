@@ -70,7 +70,7 @@ class Row(AbstractTimeStamped):
 
     class Meta:
         unique_together = (('table', 'data_dictionary_name',),)
-        ordering = ['data_dictionary_name']
+        ordering = ['table', 'data_item']
 
     definition_id = models.IntegerField(null=True, blank=True)
     data_item = models.CharField(max_length=255)

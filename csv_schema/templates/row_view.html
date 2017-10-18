@@ -1,11 +1,26 @@
 {% extends "base_templates/base.html" %}
 {% load urls %}
 {% block contents %}
+{% regroup object_list by table as table_list %}
 <div class="container-fluid">
   <div class="row content-offset">
     <div class="col-md-10 col-md-push-1">
       <div class="row">
-        <div class="col-md-3">
+        <div class="pull-right text-right">
+          <form class="form-inline" method="GET">
+            <div class="form-group">
+              <label for="tableSelect">&nbsp Table:</label>
+              <select onchange="this.form.submit()" id="tableSelect" class="form-control" name="table" value="table">
+                <option {% if not reqest.GET.table %}selected {% endif %} value="">All</option>
+                {% for table_name in table_names %}
+                  <option {% if table_name == request.GET.table %}selected {% endif %}>{{ table_name }}</option>
+                {% endfor %}
+              </select>
+              <input type="hidden" name="database" value="{{ request.GET.database }}" />
+            </div>
+          </form>
+        </div>
+        <div class="pull-right text-right">
           <form class="form-inline" method="GET">
             <div class="form-group">
               <label for="databaseSelect">Database:</label>
@@ -19,33 +34,13 @@
             </div>
           </form>
         </div>
-        <div class="col-md-3">
-          {% if table_names %}
-            <form class="form-inline" method="GET">
-              <div class="form-group">
-                <label for="tableSelect">Table:</label>
-                <select onchange="this.form.submit()" id="tableSelect" class="form-control" name="table" value="table">
-                  <option {% if not reqest.GET.table %}selected {% endif %} value="">All</option>
-                  {% for table_name in table_names %}
-                    <option {% if table_name == request.GET.table %}selected {% endif %}>{{ table_name }}</option>
-                  {% endfor %}
-                </select>
-                <input type="hidden" name="database" value="{{ request.GET.database }}" />
-              </div>
-            </form>
-          {% endif %}
-        </div>
       </div>
       <article>
-        <table class="table table-condensed table-striped responsive-table">
+        {% for table in table_list %}
+        <h3>Database: {{ table.grouper.database.name }} &nbsp Table: {{ table.grouper.name }}</h3>
+        <table class="table table-condensed table-striped cut-off-table">
           <thead>
             <tr>
-              <th class="hidden-xs hidden-sm">
-                Database
-              </th>
-              <th class="hidden-xs hidden-sm">
-                Table
-              </th>
               <th>
                 Column Name
               </th>
@@ -65,16 +60,16 @@
                 Technical Check
               </th>
               <th class="hidden-xs hidden-sm">
-                Data Dictionary Link
+                Data Dictionary Name
               </th>
             </tr>
           </thead>
           <tbody>
-            {% for row in object_list %}
+            {% for row in table.list %}
               <tr>
-                <td class="hidden-xs hidden-sm">{{ row.table.database.name }}</td>
-                <td class="hidden-xs hidden-sm">{{ row.table.name }}</td>
-                <td>{{ row.data_dictionary_name }}</td>
+                <td>
+                    {{ row.data_item }}<br />
+                </td>
                 <td>{{ row.description }}</td>
                 <td>{{ row.data_type }}</td>
                 <td class="text-center hidden-xs hidden-sm">
@@ -88,13 +83,16 @@
                 <td class="hidden-xs hidden-sm">{{ row.technical_check }}</td>
                 <td class="hidden-xs hidden-sm">
                   {% if row.data_dictionary_link %}
-                    <a href="{{ row.data_dictionary_link }}">link
+                    <a href="{{ row.data_dictionary_link }}">
+                      {{ row.data_dictionary_name }}
+                    </a>
                   {% endif %}
                 </td>
               </tr>
-            {% endfor %}
+              {% endfor %}
           </tbody>
         </table>
+        {% endfor %}
       </article>
     </div>
   </div>

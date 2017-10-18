@@ -6,7 +6,8 @@ body {
   font-family: -apple-system, ".SFNSText-Regular", "San Francisco", Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
-  min-height: 100%; }
+  min-height: 100%;
+  overflow-x: hidden; }
 
 .content-offset {
   margin-top: 50px; }

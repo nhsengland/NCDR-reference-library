@@ -43,12 +43,14 @@
                 <nav>
                   <ul>
                     <li>
-                      <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
-                        Home
+                      <a {% ifequal request.path csv_page %}class="active" {% endifequal %} href="{{ csv_page }}">
+                        Reference Data
                       </a>
                     </li>
                     <li>
-                      <a {% ifequal request.path csv_page %}class="active" {% endifequal %} href="{{ csv_page }}">Reference Data</a>
+                      <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
+                        About
+                      </a>
                     </li>
                   </ul>
                 </nav>
