@@ -54,6 +54,18 @@ MIDDLEWARE = [
 
 ROOT_URLCONF = 'ncdr_reference.urls'
 
+STATIC_ROOT = 'static'
+
+# URL prefix for static files.
+# Example: "http://example.com/static/", "http://static.example.com/"
+STATIC_URL = '/static/'
+
+# Additional locations of static files
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'csv_schema', 'static'),
+)
+
+
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',

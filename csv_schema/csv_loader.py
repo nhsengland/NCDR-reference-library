@@ -5,6 +5,7 @@ from django.db import transaction
 import csv
 from csv_schema import models
 
+
 EXPECTED_ROW_NAMES = set([
     "Definition ID",
     "Database",
@@ -66,8 +67,11 @@ def load_file(file_name):
                                 value
                             )
                         )
+                    value = value.lower() == "yes"
 
-                    value = k.lower() == "yes"
+                if isinstance(value, str):
+                    # replace non asci characters with spaces
+                    value = ''.join(i if ord(i) < 128 else ' ' for i in value)
                 setattr(row, v, value)
 
             row.save()

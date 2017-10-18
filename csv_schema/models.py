@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from django.utils.encoding import python_2_unicode_compatible
 
 from django.db import models
 
@@ -12,13 +13,18 @@ class AbstractTimeStamped(models.Model):
         abstract = True
 
 
+@python_2_unicode_compatible
 class Database(AbstractTimeStamped):
     name = models.CharField(max_length=255, unique=True)
 
     class Meta:
         ordering = ['name']
 
+    def __str__(self):
+        return self.name
 
+
+@python_2_unicode_compatible
 class Table(AbstractTimeStamped):
     name = models.CharField(max_length=255)
     database = models.ForeignKey(Database)
@@ -27,7 +33,11 @@ class Table(AbstractTimeStamped):
         unique_together = (('name', 'database',),)
         ordering = ['name']
 
+    def __str__(self):
+        return self.name
 
+
+@python_2_unicode_compatible
 class Row(AbstractTimeStamped):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
@@ -72,3 +82,10 @@ class Row(AbstractTimeStamped):
     data_dictionary_link = models.URLField()
     table = models.ForeignKey(Table)
     technical_check = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return "{} ({}.{})".format(
+            self.data_dictionary_name,
+            self.table.name,
+            self.table.database.name
+        )

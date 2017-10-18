@@ -1,0 +1,97 @@
+body {
+  background: #fff;
+  margin-top: 0;
+  box-sizing: border-box;
+  color: #202a30;
+  font-family: -apple-system, ".SFNSText-Regular", "San Francisco", Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  min-height: 100%; }
+
+.content-offset {
+  margin-top: 50px; }
+
+header.masthead {
+  background-color: #005eb8;
+  padding: 47px 0 0 0; }
+  header.masthead .logo img {
+    display: inline-block;
+    height: 90px;
+    width: auto; }
+  header.masthead .subheader {
+    display: inline-block;
+    padding-left: 30px;
+    color: white; }
+  header.masthead .banner {
+    height: 140px; }
+  header.masthead .header-nav {
+    height: 35px; }
+  header.masthead ul {
+    padding-left: 0; }
+  header.masthead li {
+    display: inline-block; }
+    header.masthead li a {
+      padding: 15px 30px;
+      color: white; }
+      header.masthead li a:hover, header.masthead li a.active {
+        background-color: #0072ce;
+        text-decoration: none; }
+
+footer {
+  color: #425563;
+  padding: 1px 0; }
+  footer.site-footer {
+    background-color: #e8edee;
+    background-image: none;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    width: 100%;
+    z-index: 600;
+    bottom: 0;
+    position: absolute; }
+  footer .footer-logo {
+    height: 70px;
+    width: auto; }
+  footer .nav {
+    float: left; }
+    footer .nav a {
+      color: #425563;
+      padding: 1px 0; }
+    footer .nav > li {
+      position: relative;
+      display: block; }
+  footer .social-networks a {
+    padding-top: 30px;
+    padding-bottom: 30px; }
+    footer .social-networks a:hover {
+      text-decoration: none; }
+  footer .social-networks a:before {
+    content: '';
+    width: 38px;
+    height: 38px;
+    display: inline-block;
+    background-repeat: no-repeat;
+    background-size: 24px 24px;
+    background-position: center center;
+    z-index: 1000;
+    padding: 5px;
+    border: 2px solid #adbcc7; }
+  footer .social-networks a[href^="http://feeds.feedburner.com/"]:before {
+    background-image: url(../img/icons/rss.svg); }
+  footer .social-networks a[href^="http://flickr.com/"]:before, footer .social-networks a[href^="http://www.flickr.com/"]:before, footer .social-networks a[href^="https://flickr.com/"]:before, footer .social-networks a[href^="https://www.flickr.com/"]:before {
+    background-image: url(../img/icons/flickr.svg); }
+  footer .social-networks a[href^="http://youtube.com/"]:before, footer .social-networks a[href^="http://www.youtube.com/"]:before, footer .social-networks a[href^="https://youtube.com/"]:before, footer .social-networks a[href^="https://www.youtube.com/"]:before {
+    background-image: url(../img/icons/youtube.svg); }
+  footer .social-networks a[href^="http://linkedin.com/"]:before, footer .social-networks a[href^="http://www.linkedin.com/"]:before, footer .social-networks a[href^="https://linkedin.com/"]:before, footer .social-networks a[href^="https://www.linkedin.com/"]:before {
+    background-image: url(../img/icons/linkedin.svg); }
+  footer .social-networks a[href^="http://twitter.com/"]:before, footer .social-networks a[href^="http://www.twitter.com/"]:before, footer .social-networks a[href^="https://twitter.com/"]:before, footer .social-networks a[href^="https://www.twitter.com/"]:before {
+    background-image: url(../img/icons/twitter.svg); }
+
+.footer-cover {
+  margin-top: 300px;
+  position: relative; }
+
+.pagination a:hover {
+  text-decoration: none; }
+
+/*# sourceMappingURL=styles.css.map */

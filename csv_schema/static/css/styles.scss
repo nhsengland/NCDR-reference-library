@@ -1,0 +1,141 @@
+body {
+  background: #fff;
+  margin-top: 0;
+  box-sizing: border-box;
+  color: #202a30;
+  font-family: -apple-system, ".SFNSText-Regular", "San Francisco", Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  min-height: 100%;
+}
+
+.content-offset{
+  margin-top: 50px;
+}
+
+header.masthead{
+  background-color: #005eb8;
+  // height: 223px;
+  padding: 47px 0 0 0;
+
+  .logo img{
+    display: inline-block;
+    height: 90px;
+    width: auto;
+  }
+
+  .subheader{
+    display: inline-block;
+    padding-left: 30px;
+    color: white;
+  }
+
+  .banner{
+    height: 140px;
+  }
+
+  .header-nav{
+    height: 35px;
+  }
+  ul{
+    padding-left: 0;
+  }
+
+  li{
+    display: inline-block;
+    a{
+      padding: 15px 30px;
+      color: white;
+
+      &:hover, &.active{
+        background-color: #0072ce;
+        text-decoration: none;
+      }
+    }
+  }
+
+}
+
+footer{
+  &.site-footer{
+    background-color: #e8edee;
+    background-image: none;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    width: 100%;
+    z-index: 600;
+    bottom: 0;
+    position: absolute;
+  }
+
+  .footer-logo {
+      height: 70px;
+      width: auto;
+  }
+
+  .nav{
+    float: left;
+
+    a{
+      color: #425563;
+      padding: 1px 0;
+    }
+
+    & > li{
+      position: relative;
+      display: block;
+    }
+  }
+  color: #425563;
+  padding: 1px 0;
+
+  .social-networks a {
+      padding-top: 30px;
+      padding-bottom: 30px;
+      &:hover{
+        text-decoration: none;
+      }
+  }
+
+  .social-networks a:before {
+      content: '';
+      width: 38px;
+      height: 38px;
+      display: inline-block;
+      background-repeat: no-repeat;
+      background-size: 24px 24px;
+      background-position: center center;
+      z-index: 1000;
+      padding: 5px;
+      border: 2px solid #adbcc7;
+  }
+
+  .social-networks a[href^="http://feeds.feedburner.com/"]:before {
+      background-image: url(../img/icons/rss.svg);
+  }
+
+  .social-networks a[href^="http://flickr.com/"]:before, .social-networks a[href^="http://www.flickr.com/"]:before, .social-networks a[href^="https://flickr.com/"]:before, .social-networks a[href^="https://www.flickr.com/"]:before {
+      background-image: url(../img/icons/flickr.svg);
+  }
+
+  .social-networks a[href^="http://youtube.com/"]:before, .social-networks a[href^="http://www.youtube.com/"]:before, .social-networks a[href^="https://youtube.com/"]:before, .social-networks a[href^="https://www.youtube.com/"]:before {
+      background-image: url(../img/icons/youtube.svg);
+  }
+
+  .social-networks a[href^="http://linkedin.com/"]:before, .social-networks a[href^="http://www.linkedin.com/"]:before, .social-networks a[href^="https://linkedin.com/"]:before, .social-networks a[href^="https://www.linkedin.com/"]:before {
+      background-image: url(../img/icons/linkedin.svg);
+  }
+
+  .social-networks a[href^="http://twitter.com/"]:before, .social-networks a[href^="http://www.twitter.com/"]:before, .social-networks a[href^="https://twitter.com/"]:before, .social-networks a[href^="https://www.twitter.com/"]:before {
+      background-image: url(../img/icons/twitter.svg);
+  }
+}
+
+.footer-cover{
+  margin-top: 300px;
+  position: relative;
+}
+
+.pagination a:hover{
+  text-decoration: none;
+}

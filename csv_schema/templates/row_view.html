@@ -2,43 +2,48 @@
 {% load urls %}
 {% block contents %}
 <div class="container-fluid">
-  <div class="row">
+  <div class="row content-offset">
     <div class="col-md-10 col-md-push-1">
-      <h1>Row View</h1>
       <div class="row">
-        <div class="col-md-12">
-          <form method="GET">
-            <select name="database" value="database">
-              <option {% if not reqest.GET.database %}selected {% endif %} value>All</option>
-              {% for database_name in database_names %}
-                <option {% if database_name == request.GET.database %}selected {% endif %}>{{ database_name }}</option>
-              {% endfor %}
-              <input type="submit" value="Submit">
-            </select>
-            <input type="hidden" name="table" value="" />
-          </form>
-          {% if table_names %}
-            <form method="GET">
-              <select name="table" value="table">
-                <option {% if not reqest.GET.table %}selected {% endif %} value="">All</option>
-                {% for table_name in table_names %}
-                  <option {% if table_name == request.GET.table %}selected {% endif %}>{{ table_name }}</option>
+        <div class="col-md-3">
+          <form class="form-inline" method="GET">
+            <div class="form-group">
+              <label for="databaseSelect">Database:</label>
+              <select onchange="this.form.submit()" id="databaseSelect" class="form-control" name="database" value="database">
+                <option {% if not reqest.GET.database %}selected {% endif %} value>All</option>
+                {% for database_name in database_names %}
+                  <option {% if database_name == request.GET.database %}selected {% endif %}>{{ database_name }}</option>
                 {% endfor %}
-                <input type="submit" value="Submit">
               </select>
-              <input type="hidden" name="database" value="{{ request.GET.database }}" />
+              <input type="hidden" name="table" value="" />
+            </div>
+          </form>
+        </div>
+        <div class="col-md-3">
+          {% if table_names %}
+            <form class="form-inline" method="GET">
+              <div class="form-group">
+                <label for="tableSelect">Table:</label>
+                <select onchange="this.form.submit()" id="tableSelect" class="form-control" name="table" value="table">
+                  <option {% if not reqest.GET.table %}selected {% endif %} value="">All</option>
+                  {% for table_name in table_names %}
+                    <option {% if table_name == request.GET.table %}selected {% endif %}>{{ table_name }}</option>
+                  {% endfor %}
+                </select>
+                <input type="hidden" name="database" value="{{ request.GET.database }}" />
+              </div>
             </form>
           {% endif %}
         </div>
       </div>
       <article>
-        <table class="table table-condensed">
+        <table class="table table-condensed table-striped responsive-table">
           <thead>
             <tr>
-              <th>
+              <th class="hidden-xs hidden-sm">
                 Database
               </th>
-              <th>
+              <th class="hidden-xs hidden-sm">
                 Table
               </th>
               <th>
@@ -50,16 +55,16 @@
               <th>
                 Data Type
               </th>
-              <th>
-                Is Derived?
+              <th class="hidden-xs hidden-sm">
+                Derived?
               </th>
-              <th>
+              <th class="hidden-xs hidden-sm">
                 Derivation
               </th>
-              <th>
+              <th class="hidden-xs hidden-sm">
                 Technical Check
               </th>
-              <th>
+              <th class="hidden-xs hidden-sm">
                 Data Dictionary Link
               </th>
             </tr>
@@ -67,15 +72,25 @@
           <tbody>
             {% for row in object_list %}
               <tr>
-                <td>{{ row.table.database.name }}</td>
-                <td>{{ row.table.name }}</td>
+                <td class="hidden-xs hidden-sm">{{ row.table.database.name }}</td>
+                <td class="hidden-xs hidden-sm">{{ row.table.name }}</td>
                 <td>{{ row.data_dictionary_name }}</td>
                 <td>{{ row.description }}</td>
                 <td>{{ row.data_type }}</td>
-                <td>{{ row.is_derived_item }}</td>
-                <td>{{ row.derivation }}</td>
-                <td>{{ row.technical_check }}</td>
-                <td><a href="{{ row.data_dictionary_link }}">link</td>
+                <td class="text-center hidden-xs hidden-sm">
+                  {% if row.is_derived_item %}
+                    <i class="fa fa-check"></i>
+                  {% else %}
+                    <i class="fa fa-times"></i>
+                  {% endif %}
+                </td>
+                <td class="hidden-xs hidden-sm">{{ row.derivation }}</td>
+                <td class="hidden-xs hidden-sm">{{ row.technical_check }}</td>
+                <td class="hidden-xs hidden-sm">
+                  {% if row.data_dictionary_link %}
+                    <a href="{{ row.data_dictionary_link }}">link
+                  {% endif %}
+                </td>
               </tr>
             {% endfor %}
           </tbody>
@@ -83,25 +98,26 @@
       </article>
     </div>
   </div>
+  {% if is_paginated %}
+    <div class="row">
+      <div class="col-md-12 text-center">
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+              <li>
+                  <span><a href="{% add_params request.get_full_path page=page_obj.previous_page_number %}">Previous</a></span>
+              </li>
+          {% endif %}
+              <li class="">
+                  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+              </li>
+          {% if page_obj.has_next %}
+              <li>
+                  <span><a href="{% add_params request.get_full_path page=page_obj.next_page_number %}">Next</a></span>
+              </li>
+          {% endif %}
+        </ul>
+      </div>
+    </div>
+  {% endif %}
 </div>
-{% if is_paginated %}
-<div class="col-md-12 text-center">
-  <ul class="pagination">
-    {% if page_obj.has_previous %}
-        <li>
-            <span><a href="{% add_params request.get_full_path page=page_obj.previous_page_number %}">Previous</a></span>
-        </li>
-    {% endif %}
-        <li class="">
-            <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-        </li>
-    {% if page_obj.has_next %}
-        <li>
-            <span><a href="{% add_params request.get_full_path page=page_obj.next_page_number %}">Next</a></span>
-        </li>
-    {% endif %}
-  </ul>
-</div>
-{% endif %}
-
 {% endblock %}
