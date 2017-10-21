@@ -77,9 +77,10 @@ class Row(AbstractTimeStamped):
     description = models.TextField()
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     is_derived_item = models.BooleanField(default=False)
+
     derivation = models.TextField()
     data_dictionary_name = models.CharField(max_length=255)
-    data_dictionary_link = models.URLField()
+    data_dictionary_link = models.URLField(max_length=500)
     table = models.ForeignKey(Table)
     technical_check = models.CharField(max_length=255, null=True, blank=True)
 
