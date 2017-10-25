@@ -7,7 +7,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{% block title %}NCDR Reference{% endblock %}</title>
+    <title>{% block title %}NCDR Reference Library{% endblock %}</title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
@@ -33,7 +33,7 @@
                     <a class="logo" href="http://www.england.nhs.uk">
                       <img src="{% static "/img/logos/nhs-england-logo-rev.svg" %}" alt="NHS England Data Catalogue Logo" title="NHS England Data Catalogue Logo" data-intro="Clicking on this logo will always take you back to the homepage (just in case you get lost).">
                     </a>
-                    <h2 class="subheader">NCDR Reference</h2>
+                    <h2 class="subheader">NCDR Reference Library</h2>
             	    </hgroup>
                 </div>
               </div>
@@ -44,7 +44,7 @@
                   <ul>
                     <li>
                       <a {% ifequal request.path csv_page %}class="active" {% endifequal %} href="{{ csv_page }}">
-                        Reference Data
+                        Reference Library
                       </a>
                     </li>
                     <li>
