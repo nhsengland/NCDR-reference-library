@@ -69,10 +69,9 @@ class Row(AbstractTimeStamped):
     )
 
     class Meta:
-        unique_together = (('table', 'data_dictionary_name',),)
+        unique_together = (('table', 'data_item',),)
         ordering = ['table', 'data_item']
 
-    definition_id = models.IntegerField(null=True, blank=True)
     data_item = models.CharField(max_length=255)
     description = models.TextField()
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
@@ -85,6 +84,9 @@ class Row(AbstractTimeStamped):
     # after requirements are finalised we could consider removing them.
     technical_check = models.CharField(max_length=255, null=True, blank=True)
     is_derived_item = models.NullBooleanField(default=False)
+    definition_id = models.IntegerField(null=True, blank=True)
+    author = models.CharField(max_length=255, blank=True, null=True)
+    created_date_ext = models.DateField(blank=True, null=True)
 
     def __str__(self):
         return "{} ({}.{})".format(
