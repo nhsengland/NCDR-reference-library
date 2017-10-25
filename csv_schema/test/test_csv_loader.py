@@ -175,6 +175,7 @@ class CsvLoaderTestCase(TestCase):
         )
 
     def test_process_is_derived(self):
+        self.assertTrue(False)
         self.assertEqual(
             csv_loader.process_is_derived("yes"),
             True
