@@ -51,13 +51,7 @@
                 Data Type
               </th>
               <th class="hidden-xs hidden-sm">
-                Derived?
-              </th>
-              <th class="hidden-xs hidden-sm">
                 Derivation
-              </th>
-              <th class="hidden-xs hidden-sm">
-                Technical Check
               </th>
               <th class="hidden-xs hidden-sm">
                 Data Dictionary Name
@@ -72,15 +66,7 @@
                 </td>
                 <td>{{ row.description }}</td>
                 <td>{{ row.data_type }}</td>
-                <td class="text-center hidden-xs hidden-sm">
-                  {% if row.is_derived_item %}
-                    <i class="fa fa-check"></i>
-                  {% else %}
-                    <i class="fa fa-times"></i>
-                  {% endif %}
-                </td>
                 <td class="hidden-xs hidden-sm">{{ row.derivation }}</td>
-                <td class="hidden-xs hidden-sm">{{ row.technical_check }}</td>
                 <td class="hidden-xs hidden-sm">
                   {% if row.data_dictionary_link %}
                     <a href="{{ row.data_dictionary_link }}">
