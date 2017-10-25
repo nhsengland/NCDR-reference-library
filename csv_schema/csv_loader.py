@@ -73,5 +73,4 @@ def load_file(file_name):
                     # replace non asci characters with spaces
                     value = ''.join(i if ord(i) < 128 else ' ' for i in value)
                 setattr(row, v, value)
-
             row.save()
