@@ -12,3 +12,4 @@ coverage-js
 node_modules
 *.swp
 static/*
+deployment/ansible.cfg
