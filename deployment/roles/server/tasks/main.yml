@@ -1,0 +1,22 @@
+---
+# This playbook provides basic elements of a server we would like to maintain
+- name: update apt-cache
+  sudo: true
+  apt: update_cache=yes
+
+- name: install packages for sysadmin
+  apt: pkg={{ item }} state=installed
+  with_items:
+    - emacs
+    - git
+    - htop
+    - iotop
+    - tree
+    - ack-grep
+    - vim
+    - zip
+    - screen
+    - python-virtualenv
+    - virtualenvwrapper
+    - python-dev
+    - build-essential
