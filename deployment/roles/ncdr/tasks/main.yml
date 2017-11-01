@@ -1,0 +1,71 @@
+---
+# set up the NCDR project itself
+
+- name: Setup the Git repo
+  git: repo={{ git_repo }}
+       version={{ git_branch }}
+       dest={{ project_path }}
+       accept_hostkey=yes
+
+- name: Delete all .pyc files
+  command: find . -name '*.pyc' -delete
+  args:
+    chdir: "{{ project_path }}"
+  tags: git
+  changed_when: False
+
+- name: Install packages required by the Django app inside virtualenv
+  pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
+
+# - name: Run the Django syncdb command
+#   args:
+#     chdir: "{{ project_path}}"
+#   command: "{{ virtualenv_path }}/bin/python manage.py syncdb"
+
+- name: Run Django database migrations
+  args:
+    chdir: "{{ project_path}}"
+  command: "{{ virtualenv_path }}/bin/python manage.py migrate"
+
+- name: Run Django collectstatic
+  args:
+    chdir: "{{ project_path}}"
+  command: "{{ virtualenv_path }}/bin/python manage.py collectstatic --noinput"
+
+- name: Run Django collectstatic
+  args:
+    chdir: "{{ project_path}}"
+  command: "{{ virtualenv_path }}/bin/python manage.py loaddata data/fixtures/site_description.json"
+
+- name: Copy supervisord config
+  copy: src=config/supervisord.conf dest=/home/ubuntu/supervisord.conf
+
+- name: Create local settings
+  template:
+    src: config/local_settings.py
+    dest: "{{ project_path }}/ncdr_reference/local_settings.py"
+
+- name: Copy Nginx config
+  copy: src=config/nginx_site.conf dest=/etc/nginx/sites-available/default
+
+
+- name: Restart Nginx
+  sudo: yes
+  command: "service nginx restart"
+
+
+- name: Kill supervisord
+  sudo: yes
+  command: "pkill supervisor"
+  ignore_errors: True
+
+- name: Kill gunicorn
+  sudo: yes
+  command: "pkill gunicorn;"
+  ignore_errors: True
+
+- name: Start app
+  sudo: yes
+  args:
+    chdir: "{{ project_path }}"
+  command: supervisord -c deployment/config/production.conf  -e DEBUG

@@ -1,3 +1,4 @@
+*.retry
 *.sqlite
 *.sqlite3
 *.pyc
@@ -12,3 +13,4 @@ coverage-js
 node_modules
 *.swp
 static/*
+deployment/ansible.cfg
