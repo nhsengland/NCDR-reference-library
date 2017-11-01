@@ -10,7 +10,10 @@ git clone/mkvirtualenv/pip install -r requirements.txt
 
 When we've decided what the finished version of the description should be ./manage.py dumpdata csv_schema.SiteDescription > data/fixtures/site_description.json
 
-loading in csvs
+load in all existing csvs (stored in data/csvs)
+./manage.py initial_load
+
+for future, loading in csvs
 ./manage.py csv_loader {{ path to the csv }}
 
 #### TODO
