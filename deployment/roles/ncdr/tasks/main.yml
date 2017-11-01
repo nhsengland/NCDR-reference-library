@@ -43,7 +43,7 @@
 - name: Create local settings
   template:
     src: config/local_settings.py
-    dest: {{ project_path }}/ncdr_reference/local_settings.py
+    dest: "{{ project_path }}/ncdr_reference/local_settings.py"
 
 - name: Restart Nginx
   sudo: yes
