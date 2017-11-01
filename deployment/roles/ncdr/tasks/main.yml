@@ -48,3 +48,20 @@
 - name: Restart Nginx
   sudo: yes
   command: "service nginx restart"
+
+
+- name: Kill supervisord
+  sudo: yes
+  command: "pkill supervisor"
+  ignore_errors: True
+
+- name: Kill gunicorn
+  sudo: yes
+  command: "pkill gunicorn;"
+  ignore_errors: True
+
+- name: Start app
+  sudo: yes
+  args:
+    chdir: "{{ project_path }}"
+  command: supervisord -c deployment/config/production.conf  -e DEBUG
