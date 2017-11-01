@@ -45,6 +45,10 @@
     src: config/local_settings.py
     dest: "{{ project_path }}/ncdr_reference/local_settings.py"
 
+- name: Copy Nginx config
+  copy: src=config/nginx_site.conf dest=/etc/nginx/sites-available/default
+
+
 - name: Restart Nginx
   sudo: yes
   command: "service nginx restart"
