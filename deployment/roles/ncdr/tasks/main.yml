@@ -37,6 +37,11 @@
     chdir: "{{ project_path}}"
   command: "{{ virtualenv_path }}/bin/python manage.py loaddata data/fixtures/site_description.json"
 
+- name: Run Django initial_load
+  args:
+    chdir: "{{ project_path}}"
+  command: "{{ virtualenv_path }}/bin/python manage.py initial_load"
+
 - name: Copy supervisord config
   copy: src=config/supervisord.conf dest=/home/ubuntu/supervisord.conf
 
