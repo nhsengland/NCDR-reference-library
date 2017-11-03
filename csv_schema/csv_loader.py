@@ -12,6 +12,7 @@ CREATED_DATE = "Created_Date"
 
 # the name of the row as it comes in from the csv
 DATA_DICTIONARY_NAME = "Data Dictionary Name"
+DATA_DICTIONARY_LINKS = "Data Dictionary Links"
 IS_DERIVED_ITEM = "Is_Derived_Item"
 DATA_ITEM_NAME = "Data_Item_Name"
 
@@ -26,6 +27,7 @@ EXPECTED_ROW_NAMES = set([
     IS_DERIVED_ITEM,
     "Derivation_Methodology",
     DATA_DICTIONARY_NAME,
+    DATA_DICTIONARY_LINKS,
     "Data Dictionary Links",
 ])
 
@@ -36,8 +38,6 @@ CSV_FIELD_TO_ROW_FIELD = {
     "Data_Type": "data_type",
     IS_DERIVED_ITEM: "is_derived_item",
     "Derivation_Methodology": "derivation",
-    DATA_DICTIONARY_NAME: "data_dictionary_name",
-    "Data Dictionary Links": "data_dictionary_link",
     "Technical check": "technical_check",
     "Author": "author",
     "Created_Date": "created_date_ext"
@@ -65,6 +65,15 @@ def process_created_date(value):
         return None
     else:
         return datetime.datetime.strptime(value, "%d/%m/%Y").date()
+
+
+def process_data_dictionary_reference(db_row, csv_row):
+    names_str = getattr(csv_row, DATA_DICTIONARY_NAME)
+    links_str = getattr(csv_row, DATA_DICTIONARY_LINKS)
+    names = names_str.split("\n")
+    links = links_str.split("\n")
+    if len(names) !== len(links):
+        raise ValueError('for {}.{}.{} the number of links is different')
 
 
 def process_row(csv_row):
@@ -113,7 +122,8 @@ def process_row(csv_row):
             # replace non asci characters with spaces
             value = ''.join(i if ord(i) < 128 else ' ' for i in value)
         setattr(row, db_column_name, value)
-        row.save()
+    row.save()
+    process_data_dictionary_reference(row, csv_row)
 
 
 def validate_csv_structure(reader):

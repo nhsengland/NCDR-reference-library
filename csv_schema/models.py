@@ -96,5 +96,22 @@ class Row(AbstractTimeStamped):
         )
 
 
+@python_2_unicode_compatible
+class DataDictionaryReference(AbstractTimeStamped):
+    name = models.CharField(max_length=255)
+    link = models.URLField(max_length=500)
+    row = models.ForeignKey(Row)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return "{} ({}.{})".format(
+            self.name,
+            self.link.name,
+            self.row
+        )
+
+
 class SiteDescription(models.Model):
     description = models.TextField()
