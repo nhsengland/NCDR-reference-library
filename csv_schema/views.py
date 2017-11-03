@@ -38,7 +38,7 @@ class RowView(ListView):
         page_num = ctx["page_obj"].number
         paginator = ctx["paginator"]
         ctx["min_page_range"] = range(
-            max(1, page_num - 7),
+            max(1, page_num - 5),
             page_num
         )
 
@@ -46,7 +46,7 @@ class RowView(ListView):
         # the number of pages
         ctx["max_page_range"] = range(
             page_num + 1,
-            min(paginator.num_pages + 1, page_num + 8),
+            min(paginator.num_pages + 1, page_num + 6),
         )
 
         return ctx
