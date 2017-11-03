@@ -16,6 +16,9 @@ load in all existing csvs (stored in data/csvs)
 for future, loading in csvs
 ./manage.py csv_loader {{ path to the csv }}
 
+When running the server locally, we are using sass. So installl sass and run
+sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css
+
 #### TODO
 change the csv loader into a form.
 add in a search function, but lets find out which columns to query

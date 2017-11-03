@@ -35,6 +35,19 @@ class RowView(ListView):
         ctx["database_names"] = models.Database.objects.all().values_list(
             'name', flat=True
         )
+        page_num = ctx["page_obj"].number
+        paginator = ctx["paginator"]
+        ctx["min_page_range"] = range(
+            max(1, page_num - 7),
+            page_num
+        )
+
+        # paginator pages are not zero based, so we neeed to add one to
+        # the number of pages
+        ctx["max_page_range"] = range(
+            page_num + 1,
+            min(paginator.num_pages + 1, page_num + 8),
+        )
 
         return ctx
 

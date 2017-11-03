@@ -86,20 +86,27 @@
     <div class="row">
       <div class="col-md-12 text-center">
         <ul class="pagination">
-          {% if page_obj.has_previous %}
+          {% for i in min_page_range %}
               <li>
-                  <span><a href="{% add_params request.get_full_path page=page_obj.previous_page_number %}">Previous</a></span>
+                  <span><a href="{% add_params request.get_full_path page=i %}">{{ i }}</a></span>
               </li>
-          {% endif %}
-              <li class="">
-                  <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
-              </li>
-          {% if page_obj.has_next %}
+          {% endfor %}
+          <li class="active">
+              <span>{{ page_obj.number }}</span>
+          </li>
+          {% for i in max_page_range %}
               <li>
-                  <span><a href="{% add_params request.get_full_path page=page_obj.next_page_number %}">Next</a></span>
+                  <span><a href="{% add_params request.get_full_path page=i %}">{{ i }}</a></span>
               </li>
-          {% endif %}
+          {% endfor %}
         </ul>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12 text-center help-block">
+        <small>
+          {{ paginator.count }} results found
+        </small>
       </div>
     </div>
   {% endif %}
