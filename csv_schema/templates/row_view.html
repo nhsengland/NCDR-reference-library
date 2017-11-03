@@ -54,7 +54,7 @@
                 Derivation
               </th>
               <th class="hidden-xs hidden-sm">
-                Data Dictionary Name
+                Data Dictionary Reference
               </th>
             </tr>
           </thead>
@@ -68,11 +68,15 @@
                 <td>{{ row.data_type }}</td>
                 <td class="hidden-xs hidden-sm">{{ row.derivation }}</td>
                 <td class="hidden-xs hidden-sm">
-                  {% if row.data_dictionary_link %}
-                    <a href="{{ row.data_dictionary_link }}">
-                      {{ row.data_dictionary_name }}
-                    </a>
-                  {% endif %}
+                  {% for dictionary_reference in row.datadictionaryreference_set.all %}
+                    {% if dictionary_reference.link %}
+                      <a href="{{ dictionary_reference.link }}">
+                        {{ dictionary_reference.name }}
+                      </a>
+                    {% else %}
+                        {{ dictionary_reference.name }}
+                    {% endif %}
+                  {% endfor %}
                 </td>
               </tr>
               {% endfor %}

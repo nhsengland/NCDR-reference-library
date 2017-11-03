@@ -66,12 +66,14 @@ class CsvLoaderTestCase(TestCase):
             db_row.derivation, "Derived as part of a process"
         )
 
+        ref = db_row.datadictionaryreference_set.first()
+
         self.assertEqual(
-            db_row.data_dictionary_name, "ORGANISATION CODE (CODE OF PROVIDER)"
+            ref.name, "ORGANISATION CODE (CODE OF PROVIDER)"
         )
 
         self.assertEqual(
-            db_row.data_dictionary_link, "http://www.datadictionary.nhs.uk/"
+            ref.link, "http://www.datadictionary.nhs.uk/"
         )
 
         self.assertEqual(
@@ -208,4 +210,121 @@ Derivation_Methodology, Data Dictionary Links, Table_Name"
 
         self.assertEqual(
             str(v.exception), e
+        )
+
+    def test_process_data_dictionary_reference_multiple(self):
+        kwargs = {
+            "Data Dictionary Name": "name1 \n name2",
+            "Data Dictionary Links": "http://link1.com \n http://link2.com"
+        }
+        csv_row = self.get_row(**kwargs)
+        csv_loader.process_row(csv_row)
+        row = models.Row.objects.get()
+        self.assertEqual(
+            row.datadictionaryreference_set.count(), 2
+        )
+        ref_1 = row.datadictionaryreference_set.all()[0]
+        ref_2 = row.datadictionaryreference_set.all()[1]
+        self.assertEqual(
+            ref_1.name, "name1"
+        )
+        self.assertEqual(
+            ref_1.link, "http://link1.com"
+        )
+
+        self.assertEqual(
+            ref_2.name, "name2"
+        )
+        self.assertEqual(
+            ref_2.link, "http://link2.com"
+        )
+
+    def test_process_data_dictionary_reference_multiple_names_single_link(self):
+        kwargs = {
+            "Data Dictionary Name": "name1 \n name2",
+            "Data Dictionary Links": "http://link1.com \n"
+        }
+        csv_row = self.get_row(**kwargs)
+        csv_loader.process_row(csv_row)
+        row = models.Row.objects.get()
+        self.assertEqual(
+            row.datadictionaryreference_set.count(), 2
+        )
+        ref_1 = row.datadictionaryreference_set.all()[0]
+        ref_2 = row.datadictionaryreference_set.all()[1]
+        self.assertEqual(
+            ref_1.name, "name1"
+        )
+        self.assertEqual(
+            ref_1.link, "http://link1.com"
+        )
+
+        self.assertEqual(
+            ref_2.name, "name2"
+        )
+        self.assertEqual(
+            ref_2.link, "http://link1.com"
+        )
+
+    def test_process_data_dictionary_reference_multiple_names_no_link(self):
+        kwargs = {
+            "Data Dictionary Name": "name1 \n name2",
+            "Data Dictionary Links": ""
+        }
+        csv_row = self.get_row(**kwargs)
+        csv_loader.process_row(csv_row)
+        row = models.Row.objects.get()
+        self.assertEqual(
+            row.datadictionaryreference_set.count(), 2
+        )
+        ref_1 = row.datadictionaryreference_set.all()[0]
+        ref_2 = row.datadictionaryreference_set.all()[1]
+        self.assertEqual(
+            ref_1.name, "name1"
+        )
+        self.assertEqual(
+            ref_1.link, None
+        )
+
+        self.assertEqual(
+            ref_2.name, "name2"
+        )
+        self.assertEqual(
+            ref_2.link, None
+        )
+
+    def test_process_data_dictionary_flawed(self):
+        kwargs = {
+            "Data Dictionary Name": "name1 \n name2 \n name3",
+            "Data Dictionary Links": "http://link1.com \n http://link2.com"
+        }
+        csv_row = self.get_row(**kwargs)
+        with self.assertRaises(ValueError) as v:
+            csv_loader.process_row(csv_row)
+
+        self.assertEqual(
+            str(v.exception),
+            "for NHSE_IAPT.Appointment_v15.REFERRAL_ID the number of links is different"
+        )
+
+    def test_process_data_delete_existing(self):
+        first_kwargs = {
+            "Data Dictionary Name": "name1 \n name2",
+            "Data Dictionary Links": "http://link1.com \n http://link2.com"
+        }
+        csv_row = self.get_row(**first_kwargs)
+        csv_loader.process_row(csv_row)
+
+        second_kwargs = {
+            "Data Dictionary Name": "name3 ",
+            "Data Dictionary Links": "http://link3.com"
+        }
+        csv_row = self.get_row(**second_kwargs)
+        csv_loader.process_row(csv_row)
+        data_dictionary_reference = models.DataDictionaryReference.objects.get()
+        self.assertEqual(
+            data_dictionary_reference.name, "name3"
+        )
+        self.assertEqual(
+            data_dictionary_reference.link, "http://link3.com"
         )

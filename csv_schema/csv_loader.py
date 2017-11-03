@@ -68,18 +68,70 @@ def process_created_date(value):
 
 
 def process_data_dictionary_reference(db_row, csv_row):
-    names_str = getattr(csv_row, DATA_DICTIONARY_NAME)
-    links_str = getattr(csv_row, DATA_DICTIONARY_LINKS)
-    names = names_str.split("\n")
-    links = links_str.split("\n")
-    if len(names) !== len(links):
-        raise ValueError('for {}.{}.{} the number of links is different')
+    """ we store data dictionary links and names as a seperate foreign key table
+        we want there to be one link to one name after being split by new lines
+
+        this is not always the case.
+
+        work arounds.
+
+        (i) if there is only a single link and lots of names, apply that link
+            to all the names
+
+        (ii) if there are no links, just save a name
+    """
+    names_str = csv_row[DATA_DICTIONARY_NAME]
+    links_str = csv_row[DATA_DICTIONARY_LINKS]
+    names = [i.strip() for i in names_str.split("\n") if i.strip()]
+    links = [i.strip() for i in links_str.split("\n") if i.strip()]
+    if not len(names) == len(links):
+        if not names:
+            raise ValueError(
+                'found links but no names for {}.{}.{}'.format(
+                    db_row.table.database.name,
+                    db_row.table.name,
+                    db_row.data_item
+                )
+            )
+        elif len(links) == 1:
+            links = [links[0] for i in range(len(names))]
+        elif not links:
+            links = [None for i in range(len(names))]
+        else:
+            raise ValueError(
+                'for {}.{}.{} the number of links is different'.format(
+                    db_row.table.database.name,
+                    db_row.table.name,
+                    db_row.data_item
+                )
+            )
+
+    obj_args = [dict(name=i[0], link=i[1]) for i in zip(names, links)]
+
+    existing = []
+    new_db_refs = []
+    for obj_arg in obj_args:
+        existing_row = db_row.datadictionaryreference_set.filter(
+            **obj_arg
+        ).first()
+
+        if existing_row:
+            existing.append(existing_row)
+        else:
+            new_db_refs.append(obj_arg)
+
+    db_row.datadictionaryreference_set.exclude(
+        id__in=[i.id for i in existing]
+    ).delete()
+
+    for new_db_ref in new_db_refs:
+        db_row.datadictionaryreference_set.create(**new_db_ref)
 
 
 def process_row(csv_row):
     if not any(i for i in csv_row.values() if i.strip()):
         # if its an empty row, skip it
-            return
+        return
 
     db, _ = models.Database.objects.get_or_create(
         name=csv_row[DATABASE]
@@ -94,6 +146,7 @@ def process_row(csv_row):
     )
     field_names = csv_row.keys()
 
+    known_fields = EXPECTED_ROW_NAMES.union(CSV_FIELD_TO_ROW_FIELD.keys())
     for field_name in field_names:
         if field_name == TABLE_NAME or field_name == DATABASE:
             # these fields are the Foreign keys handled above.
@@ -103,12 +156,18 @@ def process_row(csv_row):
         if isinstance(value, str):
             value = value.strip()
 
-        if value and field_name not in CSV_FIELD_TO_ROW_FIELD:
+        if value and field_name not in known_fields:
+
             e = "We are not saving a value for {}, should we be?"
             raise ValueError(
                 e.format(field_name)
             )
         elif not value and field_name not in CSV_FIELD_TO_ROW_FIELD:
+            continue
+
+        # these are compounded into a foreign key, so we
+        # deal with these later
+        if field_name in [DATA_DICTIONARY_NAME, DATA_DICTIONARY_LINKS]:
             continue
 
         db_column_name = CSV_FIELD_TO_ROW_FIELD[field_name]
