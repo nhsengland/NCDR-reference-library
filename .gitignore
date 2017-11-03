@@ -14,4 +14,5 @@ node_modules
 *.swp
 static/*
 deployment/ansible.cfg
-.sass-cache
+.sass-cache/*
+
