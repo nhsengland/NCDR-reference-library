@@ -1,7 +1,7 @@
 {% extends "base_templates/new_base.html" %}
 {% load utils %}
 {% block contents %}
-  <div class="card-list container">
+  <div class="card-list container main-content">
     <article>
       <h1 class="title">
         Databases
@@ -10,7 +10,7 @@
         <div class="row">
           {% for database in databases %}
           <div class="col-md-4 card">
-            <a>
+            <a href="{{ database.get_absolute_url }}">
               {{ database.name }}
               <div class="arrow">
                 {% include 'partials/arrow.html' %}

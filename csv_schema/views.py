@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.views.generic import ListView
+from django.views.generic import ListView, RedirectView, DetailView
 from csv_schema import models
 
 
@@ -42,6 +42,23 @@ class RowView(ListView):
 class DatabaseList(ListView):
     model = models.Database
     template_name = "database_list.html"
+
+
+class DatabaseDetail(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        db = models.Database.objects.get(id=kwargs["pk"])
+        return db.table_set.first().get_absolute_url()
+
+
+class TableDetail(DetailView):
+    model = models.Table
+    template_name = "table_detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        # get the list of tables in this database
+        ctx = super(TableDetail, self).get_context_data(*args, **kwargs)
+        ctx["tables"] = self.object.database.table_set.all()
+        return ctx
 
 
 class AboutView(ListView):

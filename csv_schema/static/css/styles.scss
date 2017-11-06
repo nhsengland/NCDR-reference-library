@@ -1,5 +1,12 @@
 $primary-colour: #005eb8;
 $primary-color-light: #0072ce;
+$secondary-colour: #003893;
+
+// the grey used in the side bars
+$tertiary-colour: #e8edee;
+// the text colour used on that grey
+$tertiary-colour-text: #425563;
+
 $text-colour: #202a30;
 $text-color-on-dark: #FFF;
 $footer-height: 300px;
@@ -12,7 +19,7 @@ body {
   color: $text-colour;
   font-family: -apple-system, ".SFNSText-Regular", "San Francisco", Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-size: 16px;
+  font-size: 18px;
   min-height: 100%;
   overflow-x: hidden;
 }
@@ -148,7 +155,13 @@ footer{
   text-decoration: none;
 }
 
+$main-content-margin: 20px;
+
 .card-list{
+  &.main-content{
+    margin-top: $main-content-margin;
+  }
+
   article{
     min-height: calc(100vh - #{$footer-height + 242px});
   }
@@ -157,6 +170,7 @@ footer{
     font-size: 54px;
     color: $text-colour;
     margin-left: 0;
+    margin-top: 0;
   }
 
   .card{
@@ -186,5 +200,55 @@ footer{
       position: absolute;
       bottom: 10px;
       right: 10px;
+  }
+}
+
+.table-detail{
+  &.main-content{
+    margin-top: $main-content-margin;
+  }
+
+  hr {
+      border-top: 1px dotted $tertiary-colour;
+      margin-top: 10px;
+      margin-bottom: 10px;
+  }
+
+  .title{
+      color: $primary-colour;
+      line-height: 1.5;
+      font-size: 22px;
+      font-weight: 600;
+  }
+}
+
+.side-nav{
+  padding-right: 60px;
+  padding: 0;
+  ul{
+    padding: 0;
+    margin-right: 50px;
+  }
+
+  li{
+    list-style: none;
+  }
+
+  a{
+    display: block;
+    background-color: $tertiary-colour;
+    color: $tertiary-colour-text;
+    padding: 5px 10px;
+    margin-top: 5px;
+  }
+
+  a.active{
+    background-color: $secondary-colour;
+    color: $text-color-on-dark;
+  }
+
+  a:hover{
+    background-color: $primary-colour;
+    color: $text-color-on-dark;
   }
 }

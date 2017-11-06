@@ -5,7 +5,7 @@ body {
   color: #202a30;
   font-family: -apple-system, ".SFNSText-Regular", "San Francisco", Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
-  font-size: 16px;
+  font-size: 18px;
   min-height: 100%;
   overflow-x: hidden; }
 
@@ -95,13 +95,16 @@ footer {
 .pagination a:hover {
   text-decoration: none; }
 
+.card-list.main-content {
+  margin-top: 20px; }
 .card-list article {
   min-height: calc(100vh - 542px); }
 .card-list .title {
   line-height: 1.2;
   font-size: 54px;
   color: #202a30;
-  margin-left: 0; }
+  margin-left: 0;
+  margin-top: 0; }
 .card-list .card {
   padding-left: 10px;
   padding-right: 10px; }
@@ -123,5 +126,38 @@ footer {
   position: absolute;
   bottom: 10px;
   right: 10px; }
+
+.table-detail.main-content {
+  margin-top: 20px; }
+.table-detail hr {
+  border-top: 1px dotted #e8edee;
+  margin-top: 10px;
+  margin-bottom: 10px; }
+.table-detail .title {
+  color: #005eb8;
+  line-height: 1.5;
+  font-size: 22px;
+  font-weight: 600; }
+
+.side-nav {
+  padding-right: 60px;
+  padding: 0; }
+  .side-nav ul {
+    padding: 0;
+    margin-right: 50px; }
+  .side-nav li {
+    list-style: none; }
+  .side-nav a {
+    display: block;
+    background-color: #e8edee;
+    color: #425563;
+    padding: 5px 10px;
+    margin-top: 5px; }
+  .side-nav a.active {
+    background-color: #003893;
+    color: #FFF; }
+  .side-nav a:hover {
+    background-color: #005eb8;
+    color: #FFF; }
 
 /*# sourceMappingURL=styles.css.map */

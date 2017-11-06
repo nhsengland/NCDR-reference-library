@@ -1,0 +1,55 @@
+{% extends "base_templates/new_base.html" %}
+{% load utils %}
+{% block contents %}
+  <div class="main-content container table-detail">
+    <aside class="side-nav col-md-3">
+      <ul>
+        {% for table in tables %}
+          <li>
+            <a {% if object.id == table.id %}class="active" {% endif %}href="{{ table.get_absolute_url }}">
+              {{ table.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <article class="row-list col-md-9">
+      {% for row in object.row_set.all %}
+        <h3>
+          <span class="title">
+            {{ row.data_item }}
+          </span>
+          <small>
+            {{ row.data_type }}
+          </small>
+        </h3>
+        <div class="row">
+          <div class="col-md-12">
+            <p>
+              {{ row.description }}
+            </p>
+            {% if row.is_derived_item %}
+              {{ row.derivation }}
+            {% endif %}
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              {% for data_reference in row.datareference_set.all %}
+                {% if data_reference.link %}
+                  <a href="{{ data_reference.link }}">
+                    {{ data_reference.name }}
+                  </a>
+                {% else %}
+                  {{ data_reference.name }}
+                {% endif %}
+              {% endfor %}
+            </div>
+          </div>
+        </div>
+        {% if not forloop.last %}
+          <hr />
+        {% endif %}
+      {% endfor %}
+    </article>
+  </div>
+{% endblock contents %}

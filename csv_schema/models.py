@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
+from django.core.urlresolvers import reverse
 
 from django.db import models
 
@@ -23,6 +24,9 @@ class Database(AbstractTimeStamped):
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("database_detail", kwargs=dict(pk=self.id))
+
 
 @python_2_unicode_compatible
 class Table(AbstractTimeStamped):
@@ -35,6 +39,9 @@ class Table(AbstractTimeStamped):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse("table_detail", kwargs=dict(pk=self.id))
 
 
 @python_2_unicode_compatible
