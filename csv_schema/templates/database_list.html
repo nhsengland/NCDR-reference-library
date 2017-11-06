@@ -1,0 +1,25 @@
+{% extends "base_templates/new_base.html" %}
+{% load utils %}
+{% block contents %}
+  <div class="card-list container">
+    <article>
+      <h1 class="title">
+        Databases
+      </h1>
+      {% for databases in object_list|chunks:3 %}
+        <div class="row">
+          {% for database in databases %}
+          <div class="col-md-4 card">
+            <a>
+              {{ database.name }}
+              <div class="arrow">
+                {% include 'partials/arrow.html' %}
+              </div>
+            </a>
+          </div>
+          {% endfor %}
+        </div>
+      {% endfor %}
+    </article>
+  </div>
+{% endblock contents %}

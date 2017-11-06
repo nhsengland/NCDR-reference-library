@@ -39,6 +39,11 @@ class RowView(ListView):
         return ctx
 
 
+class DatabaseList(ListView):
+    model = models.Database
+    template_name = "database_list.html"
+
+
 class AboutView(ListView):
     model = models.SiteDescription
     template_name = "about.html"

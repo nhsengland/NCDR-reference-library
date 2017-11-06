@@ -1,8 +1,15 @@
+$primary-colour: #005eb8;
+$primary-color-light: #0072ce;
+$text-colour: #202a30;
+$text-color-on-dark: #FFF;
+$footer-height: 300px;
+
+
 body {
   background: #fff;
   margin-top: 0;
   box-sizing: border-box;
-  color: #202a30;
+  color: $text-colour;
   font-family: -apple-system, ".SFNSText-Regular", "San Francisco", Roboto, "Segoe UI", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   font-size: 16px;
@@ -15,7 +22,7 @@ body {
 }
 
 header.masthead{
-  background-color: #005eb8;
+  background-color: $primary-colour;
   // height: 223px;
   padding: 47px 0 0 0;
 
@@ -28,7 +35,7 @@ header.masthead{
   .subheader{
     display: inline-block;
     padding-left: 30px;
-    color: white;
+    color: $text-color-on-dark;
   }
 
   .banner{
@@ -133,10 +140,51 @@ footer{
 }
 
 .footer-cover{
-  margin-top: 300px;
+  margin-top: $footer-height;
   position: relative;
 }
 
 .pagination a:hover{
   text-decoration: none;
+}
+
+.card-list{
+  article{
+    min-height: calc(100vh - #{$footer-height + 242px});
+  }
+  .title{
+    line-height: 1.2;
+    font-size: 54px;
+    color: $text-colour;
+    margin-left: 0;
+  }
+
+  .card{
+    padding-left: 10px;
+    padding-right: 10px;
+
+    a{
+      transition: background-color 0.2s ease-in-out;
+      background: $primary-colour;
+      color: $text-color-on-dark;
+      height: 137px;
+      font-size: 22.5px;
+      cursor: pointer;
+      display: block;
+      position: relative;
+      padding: 10px;
+
+      &:hover{
+        background: $primary-color-light;
+      }
+    }
+  }
+
+  .arrow{
+      height: 32px;
+      width: 32px;
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+  }
 }
