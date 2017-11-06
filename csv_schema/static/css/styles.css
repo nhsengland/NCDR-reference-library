@@ -15,6 +15,8 @@ body {
 header.masthead {
   background-color: #005eb8;
   padding: 47px 0 0 0; }
+  header.masthead .container, header.masthead .container-fluid {
+    overflow-y: hidden; }
   header.masthead .logo img {
     display: inline-block;
     height: 90px;
@@ -95,16 +97,16 @@ footer {
 .pagination a:hover {
   text-decoration: none; }
 
+.card-list .title {
+  font-size: 32px;
+  line-height: 36px;
+  margin: 30px 0;
+  color: #202a30;
+  font-weight: 600; }
 .card-list.main-content {
   margin-top: 20px; }
 .card-list article {
   min-height: calc(100vh - 542px); }
-.card-list .title {
-  line-height: 1.2;
-  font-size: 54px;
-  color: #202a30;
-  margin-left: 0;
-  margin-top: 0; }
 .card-list .card {
   padding-left: 10px;
   padding-right: 10px; }
@@ -134,10 +136,23 @@ footer {
   margin-top: 10px;
   margin-bottom: 10px; }
 .table-detail .title {
+  font-size: 32px;
+  line-height: 36px;
+  margin: 30px 0;
+  color: #202a30;
+  font-weight: 600; }
+.table-detail .row-title {
   color: #005eb8;
   line-height: 1.5;
   font-size: 22px;
   font-weight: 600; }
+.table-detail .dictionary-references {
+  padding: 20px;
+  background-color: #e8edee;
+  margin-left: 15px;
+  font-size: 80%; }
+  .table-detail .dictionary-references a {
+    color: #425563; }
 
 .side-nav {
   padding-right: 60px;
@@ -146,16 +161,27 @@ footer {
     padding: 0;
     margin-right: 50px; }
   .side-nav li {
+    margin-top: 5px;
     list-style: none; }
   .side-nav a {
     display: block;
     background-color: #e8edee;
     color: #425563;
     padding: 5px 10px;
-    margin-top: 5px; }
-  .side-nav a.active {
+    word-wrap: break-word;
+    font-size: 16px; }
+  .side-nav a.internal-link {
+    padding-left: 20px; }
+  .side-nav .list-title {
+    display: block;
     background-color: #003893;
-    color: #FFF; }
+    color: #FFF;
+    padding: 5px 10px;
+    margin-top: 5px;
+    word-wrap: break-word; }
+  .side-nav a.active {
+    color: #005eb8;
+    font-weight: 600; }
   .side-nav a:hover {
     background-color: #005eb8;
     color: #FFF; }

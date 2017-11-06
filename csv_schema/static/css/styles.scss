@@ -33,6 +33,10 @@ header.masthead{
   // height: 223px;
   padding: 47px 0 0 0;
 
+  .container, .container-fluid{
+    overflow-y: hidden;
+  }
+
   .logo img{
     display: inline-block;
     height: 90px;
@@ -158,19 +162,20 @@ footer{
 $main-content-margin: 20px;
 
 .card-list{
+  .title{
+    font-size: 32px;
+    line-height: 36px;
+    margin: 30px 0;
+    color: $text-colour;
+    font-weight: 600;
+  }
+
   &.main-content{
     margin-top: $main-content-margin;
   }
 
   article{
     min-height: calc(100vh - #{$footer-height + 242px});
-  }
-  .title{
-    line-height: 1.2;
-    font-size: 54px;
-    color: $text-colour;
-    margin-left: 0;
-    margin-top: 0;
   }
 
   .card{
@@ -215,10 +220,29 @@ $main-content-margin: 20px;
   }
 
   .title{
+    font-size: 32px;
+    line-height: 36px;
+    margin: 30px 0;
+    color: $text-colour;
+    font-weight: 600;
+  }
+
+  .row-title{
       color: $primary-colour;
       line-height: 1.5;
       font-size: 22px;
       font-weight: 600;
+  }
+
+  .dictionary-references{
+      padding: 20px;
+      background-color: $tertiary-colour;
+      margin-left: 15px;
+      font-size: 80%;
+
+      a{
+        color: $tertiary-colour-text;
+      }
   }
 }
 
@@ -231,6 +255,7 @@ $main-content-margin: 20px;
   }
 
   li{
+    margin-top: 5px;
     list-style: none;
   }
 
@@ -239,12 +264,26 @@ $main-content-margin: 20px;
     background-color: $tertiary-colour;
     color: $tertiary-colour-text;
     padding: 5px 10px;
+    word-wrap: break-word;
+    font-size: 16px;
+  }
+
+  a.internal-link{
+    padding-left: 20px;
+  }
+
+  .list-title{
+    display: block;
+    background-color: $secondary-colour;
+    color: $text-color-on-dark;
+    padding: 5px 10px;
     margin-top: 5px;
+    word-wrap: break-word;
   }
 
   a.active{
-    background-color: $secondary-colour;
-    color: $text-color-on-dark;
+    color: $primary-colour;
+    font-weight: 600;
   }
 
   a:hover{

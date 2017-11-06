@@ -42,7 +42,7 @@
             <nav>
               <ul>
                 <li>
-                  <a {% ifequal request.path csv_page %}class="active" {% endifequal %} href="{{ csv_page }}">
+                  <a {% ifnotequal request.path about_page %}class="active" {% endifnotequal %} href="{{ csv_page }}">
                     Reference Library
                   </a>
                 </li>

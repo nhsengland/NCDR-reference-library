@@ -45,6 +45,9 @@ class Table(AbstractTimeStamped):
     def get_absolute_url(self):
         return reverse("table_detail", kwargs=dict(pk=self.id))
 
+    def get_display_name(self):
+        return "Database: {} - Table: {}".format(self.database.name, self.name)
+
 
 @python_2_unicode_compatible
 class Row(AbstractTimeStamped):
