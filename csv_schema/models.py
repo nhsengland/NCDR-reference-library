@@ -31,7 +31,9 @@ class Database(AbstractTimeStamped):
 @python_2_unicode_compatible
 class Table(AbstractTimeStamped):
     name = models.CharField(max_length=255)
-    database = models.ForeignKey(Database)
+    database = models.ForeignKey(
+        Database, on_delete=models.CASCADE
+    )
 
     class Meta:
         unique_together = (('name', 'database',),)
@@ -83,9 +85,9 @@ class Row(AbstractTimeStamped):
     description = models.TextField()
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField()
-    data_dictionary_name = models.CharField(max_length=255)
-    data_dictionary_link = models.URLField(max_length=500)
-    table = models.ForeignKey(Table)
+    table = models.ForeignKey(
+        Table, on_delete=models.CASCADE
+    )
 
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.
@@ -97,9 +99,27 @@ class Row(AbstractTimeStamped):
 
     def __str__(self):
         return "{} ({}.{})".format(
-            self.data_dictionary_name,
+            self.data_item,
             self.table.name,
             self.table.database.name
+        )
+
+
+@python_2_unicode_compatible
+class DataDictionaryReference(AbstractTimeStamped):
+    name = models.CharField(max_length=255)
+    link = models.URLField(max_length=500, blank=True, null=True)
+    row = models.ForeignKey(Row, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = (('row', 'name',),)
+        ordering = ['name']
+
+    def __str__(self):
+        return "{} ({}.{})".format(
+            self.name,
+            self.link,
+            self.row
         )
 
 
