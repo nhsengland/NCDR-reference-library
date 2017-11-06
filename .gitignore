@@ -13,5 +13,6 @@ coverage-js
 node_modules
 *.swp
 static/*
+etc/*
 deployment/ansible.cfg
 .sass-cache/*
