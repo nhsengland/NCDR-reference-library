@@ -12,10 +12,10 @@ class CsvLoaderTestCase(TestCase):
             "Database": "NHSE_IAPT",
             "Definition ID": 123,
             "Technical check": "something",
-            "Table_Name": "Appointment_v15",
-            "Data_Item_Name": "REFERRAL_ID",
-            "Data_Item_Description": "A sequential number allocated",
-            "Data_Type": "bigint",
+            "Table": "Appointment_v15",
+            "Data Item": "REFERRAL_ID",
+            "Description": "A sequential number allocated",
+            "Data type": "bigint",
             "Code_(TBC)": "",
             "Code_Description_(TBC)": "",
             "Is_Derived_Item": "Yes",
@@ -39,12 +39,14 @@ class CsvLoaderTestCase(TestCase):
 
         m.assert_called_once_with('some_file.csv')
         csv.DictReader.assert_called_once_with(m.return_value)
-        validate_csv_structure.assert_called_once_with(["something"])
-        process_row.assert_called_once_with("something")
+        validate_csv_structure.assert_called_once_with(
+            ["something"], "some_file.csv"
+        )
+        process_row.assert_called_once_with("something", "some_file.csv")
 
     def test_process_row(self):
         csv_row = self.get_row()
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, 'some_file.csv')
         self.assertEqual(models.Database.objects.get().name, "NHSE_IAPT")
         self.assertEqual(models.Table.objects.get().name, "Appointment_v15")
 
@@ -98,11 +100,11 @@ class CsvLoaderTestCase(TestCase):
 
     def test_process_row_update(self):
         csv_row = self.get_row()
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file_name.csv")
         updated_csv_row = self.get_row(
-            Data_Item_Description="something different"
+            Description="something different"
         )
-        csv_loader.process_row(updated_csv_row)
+        csv_loader.process_row(updated_csv_row, 'some_file.csv')
         db_row = models.Row.objects.get()
         self.assertEqual(
             db_row.description, "something different"
@@ -110,7 +112,7 @@ class CsvLoaderTestCase(TestCase):
 
     def test_ignore_unknown_empty_fields(self):
         csv_row = self.get_row(trees="")
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file_name.csv")
         self.assertEqual(
             models.Row.objects.first().data_item, "REFERRAL_ID"
         )
@@ -119,18 +121,18 @@ class CsvLoaderTestCase(TestCase):
         csv_row = self.get_row(trees="are green")
 
         with self.assertRaises(ValueError) as v:
-            csv_loader.process_row(csv_row)
+            csv_loader.process_row(csv_row, "some_file_name.csv")
 
         self.assertEqual(
             str(v.exception),
-            "We are not saving a value for trees, should we be?"
+            "We are not saving a value for trees in some_file_name.csv, should we be?"
         )
 
     def test_database_update_new_table(self):
         csv_row = self.get_row()
-        csv_loader.process_row(csv_row)
-        updated_csv_row = self.get_row(Table_Name="something different")
-        csv_loader.process_row(updated_csv_row)
+        csv_loader.process_row(csv_row, "some_file.csv")
+        updated_csv_row = self.get_row(Table="something different")
+        csv_loader.process_row(updated_csv_row, "some_file_name.csv")
         self.assertEqual(
             list(models.Table.objects.all().values_list("name", flat=True)),
             ["Appointment_v15", "something different"]
@@ -147,9 +149,9 @@ class CsvLoaderTestCase(TestCase):
 
     def test_new_database(self):
         csv_row = self.get_row()
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file.csv")
         updated_csv_row = self.get_row(Database="different database")
-        csv_loader.process_row(updated_csv_row)
+        csv_loader.process_row(updated_csv_row, "some_file_name.csv")
         self.assertEqual(
             list(models.Database.objects.all().values_list("name", flat=True)),
             ["NHSE_IAPT", "different database"]
@@ -202,11 +204,11 @@ class CsvLoaderTestCase(TestCase):
     def test_validate_csv_structure(self):
         mock_reader = mock.MagicMock()
         mock.field_names = ["trees"]
-        e = "missing fields Data Dictionary Name, Data_Type, Database, \
-Is_Derived_Item, Data_Item_Name, Data_Item_Description, \
-Derivation_Methodology, Data Dictionary Links, Table_Name"
+        e = "missing fields Data Dictionary Name, Description, Database, \
+Is_Derived_Item, Derivation_Methodology, Data Dictionary Links, Data Item, \
+Table, Data type in some_file.csv"
         with self.assertRaises(ValueError) as v:
-            csv_loader.validate_csv_structure(mock_reader)
+            csv_loader.validate_csv_structure(mock_reader, 'some_file.csv')
 
         self.assertEqual(
             str(v.exception), e
@@ -218,7 +220,7 @@ Derivation_Methodology, Data Dictionary Links, Table_Name"
             "Data Dictionary Links": "http://link1.com \n http://link2.com"
         }
         csv_row = self.get_row(**kwargs)
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file.csv")
         row = models.Row.objects.get()
         self.assertEqual(
             row.datadictionaryreference_set.count(), 2
@@ -245,7 +247,7 @@ Derivation_Methodology, Data Dictionary Links, Table_Name"
             "Data Dictionary Links": "http://link1.com \n"
         }
         csv_row = self.get_row(**kwargs)
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file.csv")
         row = models.Row.objects.get()
         self.assertEqual(
             row.datadictionaryreference_set.count(), 2
@@ -272,7 +274,7 @@ Derivation_Methodology, Data Dictionary Links, Table_Name"
             "Data Dictionary Links": ""
         }
         csv_row = self.get_row(**kwargs)
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file_name.csv")
         row = models.Row.objects.get()
         self.assertEqual(
             row.datadictionaryreference_set.count(), 2
@@ -300,7 +302,7 @@ Derivation_Methodology, Data Dictionary Links, Table_Name"
         }
         csv_row = self.get_row(**kwargs)
         with self.assertRaises(ValueError) as v:
-            csv_loader.process_row(csv_row)
+            csv_loader.process_row(csv_row, "some_file_name.csv")
 
         self.assertEqual(
             str(v.exception),
@@ -313,14 +315,14 @@ Derivation_Methodology, Data Dictionary Links, Table_Name"
             "Data Dictionary Links": "http://link1.com \n http://link2.com"
         }
         csv_row = self.get_row(**first_kwargs)
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file.csv")
 
         second_kwargs = {
             "Data Dictionary Name": "name3 ",
             "Data Dictionary Links": "http://link3.com"
         }
         csv_row = self.get_row(**second_kwargs)
-        csv_loader.process_row(csv_row)
+        csv_loader.process_row(csv_row, "some_file_name.csv")
         data_dictionary_reference = models.DataDictionaryReference.objects.get()
         self.assertEqual(
             data_dictionary_reference.name, "name3"

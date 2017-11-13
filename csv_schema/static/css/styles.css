@@ -133,26 +133,28 @@ footer {
   margin-top: 20px; }
 .table-detail hr {
   border-top: 1px dotted #e8edee;
-  margin-top: 10px;
-  margin-bottom: 10px; }
+  margin-top: 20px;
+  margin-bottom: 20px; }
 .table-detail .title {
   font-size: 32px;
   line-height: 36px;
   margin: 30px 0;
-  color: #202a30;
-  font-weight: 600; }
+  color: #202a30; }
 .table-detail .row-title {
   color: #005eb8;
-  line-height: 1.5;
   font-size: 22px;
   font-weight: 600; }
+.table-detail .sub-row-title {
+  line-height: 1.25;
+  font-size: 18px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  font-weight: 600;
+  color: #566f82; }
 .table-detail .dictionary-references {
-  padding: 20px;
-  background-color: #e8edee;
-  margin-left: 15px;
   font-size: 80%; }
   .table-detail .dictionary-references a {
-    color: #425563; }
+    color: #005eb8; }
 
 .side-nav {
   padding-right: 60px;
@@ -180,10 +182,9 @@ footer {
     margin-top: 5px;
     word-wrap: break-word; }
   .side-nav a.active {
-    color: #005eb8;
+    background-color: #005eb8;
+    color: #FFF;
     font-weight: 600; }
   .side-nav a:hover {
-    background-color: #005eb8;
+    background-color: #0072ce;
     color: #FFF; }
-
-/*# sourceMappingURL=styles.css.map */

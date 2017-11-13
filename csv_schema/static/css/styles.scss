@@ -11,7 +11,6 @@ $text-colour: #202a30;
 $text-color-on-dark: #FFF;
 $footer-height: 300px;
 
-
 body {
   background: #fff;
   margin-top: 0;
@@ -215,33 +214,42 @@ $main-content-margin: 20px;
 
   hr {
       border-top: 1px dotted $tertiary-colour;
-      margin-top: 10px;
-      margin-bottom: 10px;
+      margin-top: 20px;
+      margin-bottom: 20px;
   }
+
+  // h1, h2, h3, h4, h5{
+  //   font-weight: 600;
+  // }
 
   .title{
     font-size: 32px;
     line-height: 36px;
     margin: 30px 0;
     color: $text-colour;
-    font-weight: 600;
   }
 
   .row-title{
       color: $primary-colour;
-      line-height: 1.5;
       font-size: 22px;
       font-weight: 600;
   }
 
+  .sub-row-title{
+    line-height: 1.25;
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-weight: 600;
+    color: lighten($tertiary-colour-text, 10%);
+  }
+
+
   .dictionary-references{
-      padding: 20px;
-      background-color: $tertiary-colour;
-      margin-left: 15px;
       font-size: 80%;
 
       a{
-        color: $tertiary-colour-text;
+        color: $primary-colour;
       }
   }
 }
@@ -282,12 +290,13 @@ $main-content-margin: 20px;
   }
 
   a.active{
-    color: $primary-colour;
+    background-color: $primary-colour;
+    color: $text-color-on-dark;
     font-weight: 600;
   }
 
   a:hover{
-    background-color: $primary-colour;
+    background-color: $primary-color-light;
     color: $text-color-on-dark;
   }
 }

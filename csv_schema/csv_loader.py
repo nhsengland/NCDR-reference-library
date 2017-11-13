@@ -6,7 +6,7 @@ import datetime
 import csv
 from csv_schema import models
 
-TABLE_NAME = "Table_Name"
+TABLE_NAME = "Table"
 DATABASE = "Database"
 CREATED_DATE = "Created_Date"
 
@@ -14,7 +14,16 @@ CREATED_DATE = "Created_Date"
 DATA_DICTIONARY_NAME = "Data Dictionary Name"
 DATA_DICTIONARY_LINKS = "Data Dictionary Links"
 IS_DERIVED_ITEM = "Is_Derived_Item"
-DATA_ITEM_NAME = "Data_Item_Name"
+DATA_ITEM_NAME = "Data Item"
+DATA_DICTIONARY_DESCRIPTION = "Description"
+DERIVATION_METHODOLOGY = "Derivation_Methodology"
+DATA_TYPE = "Data type"
+DEFINITION_ID = "Definition ID"
+TECHNICAL_CHECK = "Technical check"
+BUSINESS_CHECK = "Business check"
+RK_2 = "RK 2"
+SCHEMA = "Schema"
+CHECKED = "Checked"
 
 
 # These are the minimum expected csv columns, if they're missing, blow up
@@ -22,26 +31,33 @@ EXPECTED_ROW_NAMES = set([
     DATABASE,
     TABLE_NAME,
     DATA_ITEM_NAME,
-    "Data_Item_Description",
-    "Data_Type",
+    DATA_DICTIONARY_DESCRIPTION,
+    DATA_TYPE,
     IS_DERIVED_ITEM,
-    "Derivation_Methodology",
+    DERIVATION_METHODOLOGY,
     DATA_DICTIONARY_NAME,
     DATA_DICTIONARY_LINKS,
     "Data Dictionary Links",
 ])
 
 CSV_FIELD_TO_ROW_FIELD = {
-    "Definition ID": "definition_id",
+    DEFINITION_ID: "definition_id",
     DATA_ITEM_NAME: "data_item",
-    "Data_Item_Description": "description",
-    "Data_Type": "data_type",
+    DATA_DICTIONARY_DESCRIPTION: "description",
+    DATA_TYPE: "data_type",
     IS_DERIVED_ITEM: "is_derived_item",
-    "Derivation_Methodology": "derivation",
-    "Technical check": "technical_check",
+    DERIVATION_METHODOLOGY: "derivation",
+    TECHNICAL_CHECK: "technical_check",
     "Author": "author",
     "Created_Date": "created_date_ext"
 }
+
+IGNORED_FIELDS = set([
+    BUSINESS_CHECK,
+    RK_2,
+    SCHEMA,
+    CHECKED
+])
 
 
 def process_is_derived(value):
@@ -81,6 +97,10 @@ def process_data_dictionary_reference(db_row, csv_row):
         (ii) if there are no links, just save a name
     """
     names_str = csv_row[DATA_DICTIONARY_NAME]
+    if names_str == "N//A" or names_str == "N/A":
+        db_row.datadictionaryreference_set.all().delete()
+        return
+
     links_str = csv_row[DATA_DICTIONARY_LINKS]
     names = [i.strip() for i in names_str.split("\n") if i.strip()]
     links = [i.strip() for i in links_str.split("\n") if i.strip()]
@@ -128,7 +148,7 @@ def process_data_dictionary_reference(db_row, csv_row):
         db_row.datadictionaryreference_set.create(**new_db_ref)
 
 
-def process_row(csv_row):
+def process_row(csv_row, file_name):
     if not any(i for i in csv_row.values() if i.strip()):
         # if its an empty row, skip it
         return
@@ -148,19 +168,23 @@ def process_row(csv_row):
 
     known_fields = EXPECTED_ROW_NAMES.union(CSV_FIELD_TO_ROW_FIELD.keys())
     for field_name in field_names:
+        value = csv_row[field_name]
+        field_name = field_name.strip()
+
         if field_name == TABLE_NAME or field_name == DATABASE:
             # these fields are the Foreign keys handled above.
             continue
-        value = csv_row[field_name]
 
         if isinstance(value, str):
             value = value.strip()
 
-        if value and field_name not in known_fields:
+        if field_name in IGNORED_FIELDS:
+            continue
 
-            e = "We are not saving a value for {}, should we be?"
+        if value and field_name not in known_fields:
+            e = "We are not saving a value for {} in {}, should we be?"
             raise ValueError(
-                e.format(field_name)
+                e.format(field_name, file_name)
             )
         elif not value and field_name not in CSV_FIELD_TO_ROW_FIELD:
             continue
@@ -177,21 +201,31 @@ def process_row(csv_row):
         if field_name == CREATED_DATE:
             value = process_created_date(value)
 
+        # don't accidentally put an empty space where a None should be
+        if field_name == DEFINITION_ID:
+            if value == '':
+                value = None
+
         if isinstance(value, str):
             # replace non asci characters with spaces
             value = ''.join(i if ord(i) < 128 else ' ' for i in value)
         setattr(row, db_column_name, value)
-    row.save()
+    try:
+        row.save()
+    except:
+        raise
     process_data_dictionary_reference(row, csv_row)
 
 
-def validate_csv_structure(reader):
+def validate_csv_structure(reader, file_name):
     field_names = reader.fieldnames
-    field_names = set([i for i in field_names if i.strip()])
+    field_names = set([i.strip() for i in field_names if i.strip()])
     missing = EXPECTED_ROW_NAMES - field_names
 
     if missing:
-        raise ValueError('missing fields %s' % ", ".join(missing))
+        raise ValueError(
+            'missing fields %s in %s' % (", ".join(missing), file_name)
+        )
 
 
 @transaction.atomic
@@ -207,7 +241,7 @@ def load_file(file_name):
     """
     with open(file_name) as csv_file:
         reader = csv.DictReader(csv_file)
-        validate_csv_structure(reader)
+        validate_csv_structure(reader, file_name)
 
         for csv_row in reader:
-            process_row(csv_row)
+            process_row(csv_row, file_name)

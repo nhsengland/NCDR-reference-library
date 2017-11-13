@@ -2,7 +2,7 @@
 {% load utils %}
 {% block contents %}
   <div class="main-content container table-detail">
-    <aside class="side-nav col-md-3">
+    <aside class="side-nav col-md-4">
       <ul>
         <li class="list-title">
           Tables in {{ object.database.name }}
@@ -12,26 +12,21 @@
             <a {% if object.id == table.id %}class="active" {% endif %}href="{{ table.get_absolute_url }}">
               {{ table.name }}
             </a>
-            {% if object.id == table.id %}
-              {% for row in object.row_set.all %}
-                <a class="internal-link" href="#{{ row.data_item }}">
-                    {{ row.data_item }}
-                </a>
-              {% endfor %}
-            {% endif %}
           </li>
         {% endfor %}
       </ul>
     </aside>
-    <article class="row-list col-md-9">
-      <a href="{% url 'database_list' %}">Home</a> / {{ object.get_display_name }}
+    <article class="row-list col-md-8">
+      <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"><i class="fa fa-database"></i> {{ object.database.name }}</a> / <i class="fa fa-table"></i> {{ object.name }}
       <h1 class="title">
-        {{ object.get_display_name }}
+        <i class="fa fa-database"></i> {{ object.database.name }} / <i class="fa fa-table"></i> {{ object.name }}
       </h1>
       {% for row in object.row_set.all %}
         <h3 id="{{ row.data_item }}">
           <span class="row-title">
-            {{ row.data_item }}
+            <a href="#{{ row.data_item }}">
+              {{ row.data_item }}
+            </a>
           </span>
           <small>
             {{ row.data_type }}
@@ -40,16 +35,23 @@
         <div class="row">
           <div class="col-md-12">
             <p>
-              {{ row.description }}
+              {{ row.description | urlize }}
             </p>
-            {% if row.is_derived_item %}
-              {{ row.derivation }}
-            {% endif %}
           </div>
         </div>
+        {% if row.is_derived_item %}
+          <div class="row">
+            <div class="col-md-12">
+              <h4 class="sub-row-title">Derivation</h4>
+              {{ row.derivation }}
+            </div>
+          </div>
+        {% endif %}
+
         <div class="row">
           {% if row.datadictionaryreference_set.exists %}
             <div class="col-md-12 dictionary-references">
+              <h4 class="sub-row-title">Data Dictionary Attribute{% if row.datadictionaryreference_set.count > 1 %}s{% endif %}</h4>
               {% for data_reference in row.datadictionaryreference_set.all %}
                 {% if data_reference.link %}
                   <a href="{{ data_reference.link }}">
