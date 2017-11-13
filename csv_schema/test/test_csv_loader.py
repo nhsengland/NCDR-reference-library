@@ -10,7 +10,7 @@ class CsvLoaderTestCase(TestCase):
     def get_row(self, **kwargs):
         basic_row = {
             "Database": "NHSE_IAPT",
-            "Definition ID": 123,
+            "Definition ID": "123",
             "Technical check": "something",
             "Table": "Appointment_v15",
             "Data Item": "REFERRAL_ID",

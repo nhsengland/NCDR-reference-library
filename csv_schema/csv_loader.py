@@ -64,14 +64,14 @@ def process_is_derived(value):
     if not value:
         # don't try and save an empty string
         value = None
-    elif value.lower() not in ["yes", "no"]:
+    elif value.lower() not in [u"yes", u"no"]:
         raise ValueError(
             "Unable to recognise is derived item {}".format(
                 value
             )
         )
     else:
-        value = value.lower() == "yes"
+        value = value.lower() == u"yes"
 
     return value
 
@@ -168,7 +168,7 @@ def process_row(csv_row, file_name):
 
     known_fields = EXPECTED_ROW_NAMES.union(CSV_FIELD_TO_ROW_FIELD.keys())
     for field_name in field_names:
-        value = csv_row[field_name]
+        value = unicode(csv_row[field_name], 'utf-8').strip()
         field_name = field_name.strip()
 
         if field_name == TABLE_NAME or field_name == DATABASE:

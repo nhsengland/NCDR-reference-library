@@ -26,8 +26,6 @@ class AbstractViewTestCase(TestCase):
             table=table,
             data_item="some_item",
             description="some description",
-            data_dictionary_name="so,me data dictionary name",
-            data_dictionary_link="http://data_dictionary_link.com",
             technical_check="some technical check",
             is_derived_item=True,
             definition_id=1,
