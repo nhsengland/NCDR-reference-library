@@ -206,9 +206,6 @@ def process_row(csv_row, file_name):
             if value == '':
                 value = None
 
-        if isinstance(value, str):
-            # replace non asci characters with spaces
-            value = ''.join(i if ord(i) < 128 else ' ' for i in value)
         setattr(row, db_column_name, value)
     try:
         row.save()
