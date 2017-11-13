@@ -97,6 +97,9 @@ footer {
 .pagination a:hover {
   text-decoration: none; }
 
+.pagination {
+  margin-bottom: 0; }
+
 .card-list .title {
   font-size: 32px;
   line-height: 36px;
