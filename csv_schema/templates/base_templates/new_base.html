@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% url 'about_page' as about_page %}
 {% url 'csv_page' as csv_page %}
+{% url 'database_list' as database_list %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,13 +43,18 @@
             <nav>
               <ul>
                 <li>
-                  <a {% ifnotequal request.path about_page %}class="active" {% endifnotequal %} href="{{ csv_page }}">
+                  <a {% ifequal request.path csv_page %}class="active" {% endifequal %} href="{{ csv_page }}">
                     Reference Library
                   </a>
                 </li>
                 <li>
                   <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
                     About
+                  </a>
+                </li>
+                <li>
+                  <a {% ifnotequal request.path csv_page %}{% ifnotequal request.path about_page %} class="active" {% endifnotequal %}{% endifnotequal %}href="{{ database_list }}">
+                    Databases
                   </a>
                 </li>
               </ul>

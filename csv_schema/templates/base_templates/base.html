@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% url 'about_page' as about_page %}
 {% url 'csv_page' as csv_page %}
+{% url 'database_list' as database_list %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -51,6 +52,11 @@
                     <li>
                       <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
                         About
+                      </a>
+                    </li>
+                    <li>
+                      <a {% ifequal request.path database_list %}class="active" {% endifequal %}href="{{ database_list }}">
+                        Databases
                       </a>
                     </li>
                   </ul>
