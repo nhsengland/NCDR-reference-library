@@ -64,9 +64,9 @@
                 <td>
                     {{ row.data_item }}<br />
                 </td>
-                <td>{{ row.description }}</td>
+                <td>{{ row.description|urlize }}</td>
                 <td>{{ row.data_type }}</td>
-                <td class="hidden-xs hidden-sm">{{ row.derivation }}</td>
+                <td class="hidden-xs hidden-sm">{{ row.derivation|urlize }}</td>
                 <td class="hidden-xs hidden-sm">
                   {% for dictionary_reference in row.datadictionaryreference_set.all %}
                     {% if dictionary_reference.link %}
