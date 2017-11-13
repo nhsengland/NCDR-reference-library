@@ -148,6 +148,10 @@ def process_data_dictionary_reference(db_row, csv_row):
         db_row.datadictionaryreference_set.create(**new_db_ref)
 
 
+def clean_value(some_field):
+    return unicode(some_field, 'utf-8').strip()
+
+
 def process_row(csv_row, file_name):
     if not any(i for i in csv_row.values() if i.strip()):
         # if its an empty row, skip it
@@ -168,7 +172,7 @@ def process_row(csv_row, file_name):
 
     known_fields = EXPECTED_ROW_NAMES.union(CSV_FIELD_TO_ROW_FIELD.keys())
     for field_name in field_names:
-        value = unicode(csv_row[field_name], 'utf-8').strip()
+        value = clean_value(csv_row[field_name])
         field_name = field_name.strip()
 
         if field_name == TABLE_NAME or field_name == DATABASE:
