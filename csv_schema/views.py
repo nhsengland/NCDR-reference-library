@@ -59,13 +59,19 @@ class DatabaseList(ListView):
 
 class DatabaseDetail(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        db = models.Database.objects.get(id=kwargs["pk"])
+        db = models.Database.objects.get(name=kwargs["db_name"])
         return db.table_set.first().get_absolute_url()
 
 
 class TableDetail(DetailView):
     model = models.Table
     template_name = "table_detail.html"
+
+    def get_object(self, *args, **kwargs):
+        return models.Table.objects.get(
+            name=self.kwargs["table_name"],
+            database__name=self.kwargs["db_name"]
+        )
 
     def get_context_data(self, *args, **kwargs):
         # get the list of tables in this database

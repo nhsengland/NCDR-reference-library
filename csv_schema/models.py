@@ -25,7 +25,7 @@ class Database(AbstractTimeStamped):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("database_detail", kwargs=dict(pk=self.id))
+        return reverse("database_detail", kwargs=dict(db_name=self.name))
 
 
 @python_2_unicode_compatible
@@ -43,7 +43,10 @@ class Table(AbstractTimeStamped):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("table_detail", kwargs=dict(pk=self.id))
+        return reverse("table_detail", kwargs=dict(
+            table_name=self.name,
+            db_name=self.database.name
+        ))
 
     def get_display_name(self):
         return "Database: {} - Table: {}".format(self.database.name, self.name)
