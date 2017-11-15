@@ -14,5 +14,5 @@ urlpatterns = [
         name="database_detail"
     ),
     url(r'^database$', views.DatabaseList.as_view(), name="database_list"),
-    url(r'^', views.RowView.as_view(), name="csv_page"),
+    url(r'^$', views.IndexView.as_view(), name="index_view"),
 ]

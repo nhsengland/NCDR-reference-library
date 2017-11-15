@@ -1,4 +1,4 @@
-{% extends "base_templates/new_base.html" %}
+{% extends "base_templates/base.html" %}
 {% load utils %}
 {% block contents %}
   <div class="main-content container table-detail">
@@ -17,9 +17,9 @@
       </ul>
     </aside>
     <article class="row-list col-md-8">
-      <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"><i class="fa fa-database"></i> {{ object.database.name }}</a> / <i class="fa fa-table"></i> {{ object.name }}
+      <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.name }}</a> / {{ object.name }}
       <h1 class="title">
-        <i class="fa fa-database"></i> {{ object.database.name }} / <i class="fa fa-table"></i> {{ object.name }}
+        {{ object.database.name }} / {{ object.name }}
       </h1>
       {% for row in object.row_set.all %}
         <h3 id="{{ row.data_item }}">
@@ -43,7 +43,7 @@
           <div class="row">
             <div class="col-md-12">
               <h4 class="sub-row-title">Derivation</h4>
-              {{ row.derivation }}
+              {{ row.derivation | urlize }}
             </div>
           </div>
         {% endif %}
