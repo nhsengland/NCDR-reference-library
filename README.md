@@ -12,7 +12,8 @@ load in all existing csvs (stored in data/csvs)
 ./manage.py initial_load
 
 for future, loading in csvs
-./manage.py csv_loader {{ path to the csv }}
+./manage.py row_loader {{ path to row csv }}
+./manage.py table_loader {{ path to the table csv }}
 
 When running the server locally, we are using sass. So installl sass and run
 sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css

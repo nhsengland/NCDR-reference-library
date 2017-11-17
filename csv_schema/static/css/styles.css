@@ -12,6 +12,14 @@ body {
 .content-offset {
   margin-top: 50px; }
 
+.content-offset-below-20 {
+  margin-bottom: 20px; }
+
+.nhs-england-well {
+  padding: 60px;
+  background-color: #e8edee;
+  margin: 0 0 30px; }
+
 header.masthead {
   background-color: #005eb8;
   padding: 47px 0 0 0; }
@@ -113,6 +121,8 @@ footer {
 .card-list .card {
   padding-left: 10px;
   padding-right: 10px; }
+  .card-list .card H3 {
+    margin-bottom: 15px; }
   .card-list .card a {
     transition: background-color 0.2s ease-in-out;
     background: #005eb8;
@@ -191,3 +201,6 @@ footer {
   .side-nav a:hover {
     background-color: #0072ce;
     color: #FFF; }
+
+.link:hover {
+  fill: #005eb8; }

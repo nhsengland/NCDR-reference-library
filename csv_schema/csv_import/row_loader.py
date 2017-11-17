@@ -27,7 +27,7 @@ CHECKED = "Checked"
 
 
 # These are the minimum expected csv columns, if they're missing, blow up
-EXPECTED_ROW_NAMES = set([
+EXPECTED_COLUMN_NAMES = set([
     DATABASE,
     TABLE_NAME,
     DATA_ITEM_NAME,
@@ -170,7 +170,7 @@ def process_row(csv_row, file_name):
     )
     field_names = csv_row.keys()
 
-    known_fields = EXPECTED_ROW_NAMES.union(CSV_FIELD_TO_ROW_FIELD.keys())
+    known_fields = EXPECTED_COLUMN_NAMES.union(CSV_FIELD_TO_ROW_FIELD.keys())
     for field_name in field_names:
         value = clean_value(csv_row[field_name])
         field_name = field_name.strip()
@@ -221,7 +221,7 @@ def process_row(csv_row, file_name):
 def validate_csv_structure(reader, file_name):
     field_names = reader.fieldnames
     field_names = set([i.strip() for i in field_names if i.strip()])
-    missing = EXPECTED_ROW_NAMES - field_names
+    missing = EXPECTED_COLUMN_NAMES - field_names
 
     if missing:
         raise ValueError(

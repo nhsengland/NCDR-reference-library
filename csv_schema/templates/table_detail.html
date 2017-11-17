@@ -1,5 +1,6 @@
 {% extends "base_templates/base.html" %}
 {% load utils %}
+{% load markdown_deux_tags %}
 {% block contents %}
   <div class="main-content container table-detail">
     <aside class="side-nav col-md-4">
@@ -19,8 +20,26 @@
     <article class="row-list col-md-8">
       <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.name }}</a> / {{ object.name }}
       <h1 class="title">
-        {{ object.database.name }} / {{ object.name }}
+        <div class="row">
+          <div class="col-sm-12">
+            {{ object.database.name }} / {{ object.name }}
+          </div>
+        </div>
+        {% if object.start %}
+          <div class="row">
+            <div class="col-sm-12">
+              <small>
+                {{ object.start }} - {% if object.end %}{{ object.end }}{% else %}Ongoing{% endif %}
+              </small>
+            </div>
+          </div>
+        {% endif %}
       </h1>
+      <div class="row nhs-england-well">
+        <div class="col-md-12">
+          {{ object.description | markdown }}
+        </div>
+      </div>
       {% for row in object.row_set.all %}
         <h3 id="{{ row.data_item }}">
           <span class="row-title">

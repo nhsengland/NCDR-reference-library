@@ -1,8 +1,9 @@
 """
-Load a csv into the ncdr
+Load a csv of database and table descriptions into the ncdr
 """
+import os
 from django.core.management.base import BaseCommand
-from csv_schema import csv_loader
+from csv_schema.csv_import import table_loader
 
 
 class Command(BaseCommand):
@@ -10,4 +11,4 @@ class Command(BaseCommand):
         parser.add_argument('file_name', type=str)
 
     def handle(self, file_name, *args, **options):
-        csv_loader.load_file(file_name)
+        row_loader.table_loader(file_name)

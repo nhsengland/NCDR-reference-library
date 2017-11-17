@@ -27,6 +27,16 @@ body {
   margin-top: 50px;
 }
 
+.content-offset-below-20{
+  margin-bottom: 20px;
+}
+
+.nhs-england-well{
+  padding: 60px;
+  background-color: $tertiary-colour;
+  margin: 0 0 30px;
+}
+
 header.masthead{
   background-color: $primary-colour;
   // height: 223px;
@@ -185,6 +195,10 @@ $main-content-margin: 20px;
     padding-left: 10px;
     padding-right: 10px;
 
+    H3{
+      margin-bottom: 15px;
+    }
+
     a{
       transition: background-color 0.2s ease-in-out;
       background: $primary-colour;
@@ -299,4 +313,8 @@ $main-content-margin: 20px;
     background-color: $primary-color-light;
     color: $text-color-on-dark;
   }
+}
+
+.link:hover{
+  fill: $primary-colour;
 }

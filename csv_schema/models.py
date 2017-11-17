@@ -4,6 +4,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
 
 from django.db import models
+DATE_FORMAT = "%b %y"
 
 
 class AbstractTimeStamped(models.Model):
@@ -17,6 +18,8 @@ class AbstractTimeStamped(models.Model):
 @python_2_unicode_compatible
 class Database(AbstractTimeStamped):
     name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(default="")
+    link = models.URLField(max_length=500, blank=True, null=True)
 
     class Meta:
         ordering = ['name']
@@ -31,9 +34,21 @@ class Database(AbstractTimeStamped):
 @python_2_unicode_compatible
 class Table(AbstractTimeStamped):
     name = models.CharField(max_length=255)
+    description = models.TextField(default="")
+    link = models.URLField(max_length=500, blank=True, null=True)
+    is_table = models.BooleanField(default=True)
     database = models.ForeignKey(
         Database, on_delete=models.CASCADE
     )
+
+    # brought in as Apr-2015 but we translate that to, for example 1 April 2015
+    # because when we want this actually entered, that's the kind of data we want
+    date_start = models.DateField(blank=True, null=True)
+
+
+    # brought in as Apr-2015 but we translate that to, for example 31 April 2015
+    # because when we want this actually entered, that's the kind of data we want
+    date_end = models.DateField(blank=True, null=True)
 
     class Meta:
         unique_together = (('name', 'database',),)
@@ -51,9 +66,24 @@ class Table(AbstractTimeStamped):
     def get_display_name(self):
         return "Database: {} - Table: {}".format(self.database.name, self.name)
 
+    @property
+    def start(self):
+        if self.date_start:
+            return self.date_start.strftime(DATE_FORMAT)
+
+    @property
+    def end(self):
+        if self.date_end:
+            return self.date_end.strftime(DATE_FORMAT)
+
+
+    @property
+    def historic(self):
+        return date_end and datetime.date.today() > date_end
+
 
 @python_2_unicode_compatible
-class Row(AbstractTimeStamped):
+class Row(AbstractTimeStamped, models.Model):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
         ("date", "date",),
