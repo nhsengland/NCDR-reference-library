@@ -88,15 +88,15 @@ footer {
     padding: 5px;
     border: 2px solid #adbcc7; }
   footer .social-networks a[href^="http://feeds.feedburner.com/"]:before {
-    background-image: url(../img/icons/rss.svg); }
+    background-image: url([object Object]); }
   footer .social-networks a[href^="http://flickr.com/"]:before, footer .social-networks a[href^="http://www.flickr.com/"]:before, footer .social-networks a[href^="https://flickr.com/"]:before, footer .social-networks a[href^="https://www.flickr.com/"]:before {
-    background-image: url(../img/icons/flickr.svg); }
+    background-image: url([object Object]); }
   footer .social-networks a[href^="http://youtube.com/"]:before, footer .social-networks a[href^="http://www.youtube.com/"]:before, footer .social-networks a[href^="https://youtube.com/"]:before, footer .social-networks a[href^="https://www.youtube.com/"]:before {
-    background-image: url(../img/icons/youtube.svg); }
+    background-image: url([object Object]); }
   footer .social-networks a[href^="http://linkedin.com/"]:before, footer .social-networks a[href^="http://www.linkedin.com/"]:before, footer .social-networks a[href^="https://linkedin.com/"]:before, footer .social-networks a[href^="https://www.linkedin.com/"]:before {
-    background-image: url(../img/icons/linkedin.svg); }
+    background-image: url([object Object]); }
   footer .social-networks a[href^="http://twitter.com/"]:before, footer .social-networks a[href^="http://www.twitter.com/"]:before, footer .social-networks a[href^="https://twitter.com/"]:before, footer .social-networks a[href^="https://www.twitter.com/"]:before {
-    background-image: url(../img/icons/twitter.svg); }
+    background-image: url([object Object]); }
 
 .footer-cover {
   margin-top: 300px;
@@ -114,10 +114,13 @@ footer {
   margin: 30px 0;
   color: #202a30;
   font-weight: 600; }
+
 .card-list.main-content {
   margin-top: 20px; }
+
 .card-list article {
   min-height: calc(100vh - 542px); }
+
 .card-list .card {
   padding-left: 10px;
   padding-right: 10px; }
@@ -135,6 +138,7 @@ footer {
     padding: 10px; }
     .card-list .card a:hover {
       background: #0072ce; }
+
 .card-list .arrow {
   height: 32px;
   width: 32px;
@@ -144,19 +148,23 @@ footer {
 
 .table-detail.main-content {
   margin-top: 20px; }
+
 .table-detail hr {
   border-top: 1px dotted #e8edee;
   margin-top: 20px;
   margin-bottom: 20px; }
+
 .table-detail .title {
   font-size: 32px;
   line-height: 36px;
   margin: 30px 0;
   color: #202a30; }
+
 .table-detail .row-title {
   color: #005eb8;
   font-size: 22px;
   font-weight: 600; }
+
 .table-detail .sub-row-title {
   line-height: 1.25;
   font-size: 18px;
@@ -164,6 +172,7 @@ footer {
   margin-top: 10px;
   font-weight: 600;
   color: #566f82; }
+
 .table-detail .dictionary-references {
   font-size: 80%; }
   .table-detail .dictionary-references a {
@@ -204,3 +213,6 @@ footer {
 
 .link:hover {
   fill: #005eb8; }
+
+.onions {
+  background-color: grey; }
