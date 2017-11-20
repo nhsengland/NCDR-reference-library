@@ -1,10 +1,32 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+from django.db.models import Q
 from django.contrib import admin
-from . import models
+from csv_schema import models
+
+class IsTechnicalCheckedFilter(admin.SimpleListFilter):
+
+    title = 'Has Been Technical Checked'
+
+    parameter_name = 'technical_check'
+
+    def lookups(self, request, model_admin):
+
+        return (
+            ('yes', 'Yes'),
+            ('no',  'No'),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == 'yes':
+            return queryset.filter(technical_check__isnull=False).exclude(technical_check='')
+
+        if self.value() == 'no':
+            return queryset.filter(Q(technical_check__isnull=True) | Q(technical_check__exact=''))
+
 
 class RowsAdmin(admin.ModelAdmin):
+    list_filter = [IsTechnicalCheckedFilter]
     list_display = [
         'data_item',
         'data_type',
