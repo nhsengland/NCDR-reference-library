@@ -4,6 +4,7 @@ from django.db.models import Q
 from django.contrib import admin
 from csv_schema import models
 
+
 class IsTechnicalCheckedFilter(admin.SimpleListFilter):
 
     title = 'Has Been Technical Checked'
@@ -48,7 +49,9 @@ class RowsAdmin(admin.ModelAdmin):
 
 
 class RowsInline(admin.StackedInline):
+    fields = ('data_item', 'description', 'data_type', 'derivation',)
     model = models.Row
+
 
 class TableAdmin(admin.ModelAdmin):
     inlines = [RowsInline,]

@@ -2,6 +2,9 @@
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 from django.db import models
 DATE_FORMAT = "%b %y"
@@ -31,6 +34,11 @@ class Database(AbstractTimeStamped):
         return reverse("database_detail", kwargs=dict(db_name=self.name))
 
 
+class TableQueryset(models.QuerySet):
+    def published(self):
+        return self.filter(published=True)
+
+
 @python_2_unicode_compatible
 class Table(AbstractTimeStamped):
     name = models.CharField(max_length=255)
@@ -40,6 +48,26 @@ class Table(AbstractTimeStamped):
     database = models.ForeignKey(
         Database, on_delete=models.CASCADE
     )
+    technical_check = models.CharField(default="", max_length=255)
+    business_check = models.CharField(default="", max_length=255)
+    version = models.IntegerField(default=1)
+    created_by = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        related_name="tables_created",
+        on_delete=models.SET_NULL
+    )
+    published_by = models.ForeignKey(
+        User,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="tables_updated"
+    )
+    published_date = models.DateField(blank=True, null=True)
+    published = models.BooleanField(default=False)
+
 
     # brought in as Apr-2015 but we translate that to, for example 1 April 2015
     # because when we want this actually entered, that's the kind of data we want
@@ -51,16 +79,39 @@ class Table(AbstractTimeStamped):
     date_end = models.DateField(blank=True, null=True)
 
     class Meta:
-        unique_together = (('name', 'database',),)
-        ordering = ['name']
+        unique_together = (('name', 'database', 'version'),)
+        ordering = ['name', 'published_date', 'created']
 
     def __str__(self):
         return self.name
+
+    objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
         return reverse("table_detail", kwargs=dict(
             table_name=self.name,
             db_name=self.database.name
+        ))
+
+    def get_edit_url(self):
+        return reverse("admin_tables_edit", kwargs=dict(
+            table_name=self.name,
+            db_name=self.database.name,
+            version=self.version
+        ))
+
+    def get_preview_url(self):
+        return reverse("admin_tables_preview", kwargs=dict(
+            table_name=self.name,
+            db_name=self.database.name,
+            version=self.version
+        ))
+
+    def get_versions_url(self):
+        return reverse("admin_versions", kwargs=dict(
+            table_name=self.name,
+            db_name=self.database.name,
+            version=self.version
         ))
 
     def get_display_name(self):
@@ -75,11 +126,6 @@ class Table(AbstractTimeStamped):
     def end(self):
         if self.date_end:
             return self.date_end.strftime(DATE_FORMAT)
-
-
-    @property
-    def historic(self):
-        return date_end and datetime.date.today() > date_end
 
 
 @python_2_unicode_compatible

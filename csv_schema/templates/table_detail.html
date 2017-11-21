@@ -1,6 +1,14 @@
 {% extends "base_templates/base.html" %}
 {% load utils %}
 {% load markdown_deux_tags %}
+{% block top_nav_actions %}
+  {{ block.super }}
+  <div class="col-md-1 pull-right">
+    <a href="{% url 'admin_redirect' table_name=object.name db_name=object.database.name %}">
+      Edit
+    </a>
+  </div>
+{% endblock %}
 {% block contents %}
   <div class="main-content container table-detail">
     <aside class="side-nav col-md-4">

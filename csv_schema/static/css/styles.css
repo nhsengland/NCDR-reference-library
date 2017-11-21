@@ -12,6 +12,9 @@ body {
 .content-offset {
   margin-top: 50px; }
 
+.content-offset-below {
+  margin-bottom: 50px; }
+
 .content-offset-below-20 {
   margin-bottom: 20px; }
 
@@ -19,6 +22,10 @@ body {
   padding: 60px;
   background-color: #e8edee;
   margin: 0 0 30px; }
+
+.admin-page header.masthead {
+  background-color: #425563;
+  color: #FFF; }
 
 header.masthead {
   background-color: #005eb8;
@@ -204,3 +211,41 @@ footer {
 
 .link:hover {
   fill: #005eb8; }
+
+.admin-page .user-bar {
+  background-color: #566f82; }
+
+.user-bar {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  width: 100%;
+  background-color: #0072ce;
+  color: #FFF;
+  padding-top: 7px;
+  padding-bottom: 7px; }
+  .user-bar a {
+    color: #FFF; }
+
+a.admin-btn {
+  text-align: center;
+  padding: 15px;
+  display: block;
+  background-color: #DAB24A;
+  color: #425563;
+  cursor: pointer;
+  transition: background-color 0.3s ease; }
+  a.admin-btn:hover {
+    text-decoration: none;
+    background-color: #DAB24A; }
+  a.admin-btn.disabled {
+    background-color: #b9a36b; }
+    a.admin-btn.disabled:hover {
+      background-color: #b9a36b; }
+  a.admin-btn.cancel {
+    background-color: #6d899e;
+    color: #FFF; }
+    a.admin-btn.cancel:hover {
+      background-color: #8ca2b2; }
+
+/*# sourceMappingURL=styles.css.map */

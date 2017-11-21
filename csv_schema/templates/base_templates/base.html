@@ -21,20 +21,38 @@
   	<link rel="stylesheet" href="{% static "css/nhsengland.css" %}">
   	<link rel="stylesheet" href="{% static "css/styles.css" %}">
   </head>
-  <body data-spy="scroll" data-target="#navbar-example">
+  <body {% block body_attribute %}{% endblock %} data-spy="scroll" data-target="#navbar-example">
     {% block header %}
     <header class="masthead">
+      <div class="user-bar">
+        <div class="row">
+          <div class="col-md-10 col-md-push-1">
+            <div class="row">
+              {% block top_nav_actions %}
+                <div class="col-md-1 pull-right">
+                  <a href="{% url "logout" %}">
+                    logout
+                  </a>
+                </div>
+              {% endblock %}
+            </div>
+          </div>
+        </div>
+      </div>
       <div style="overflow-y: hidden" class="container">
         <div class="row banner">
-          <div class="col-md-12">
+          <div class="col-md-8">
             <div class="top-logo">
               <hgroup class="header-strapline">
                 <a class="logo" href="http://www.england.nhs.uk">
                   <img src="{% static "/img/logos/nhs-england-logo-rev.svg" %}" alt="NHS England Data Catalogue Logo" title="NHS England Data Catalogue Logo" data-intro="Clicking on this logo will always take you back to the homepage (just in case you get lost).">
                 </a>
-                <h2 class="subheader">NCDR Reference Library</h2>
+                <h2 class="subheader">{% block subheader %}NCDR Reference Library{% endblock %}</h2>
         	    </hgroup>
             </div>
+          </div>
+          <div class="col-md-4">
+            {% block title_actions %}{% endblock %}
           </div>
         </div>
         <div class="row header-nav">

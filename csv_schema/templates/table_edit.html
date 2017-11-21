@@ -1,0 +1,40 @@
+{% extends "base_templates/admin_base.html" %}
+{% block contents %}
+{% load utils %}
+{% load markdown_deux_tags %}
+<div class="main-content container table-detail">
+    <article class="row-list col-md-8 col-md-push-2">
+      <div class="row">
+        <div class="col-md-12">
+          <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.name }}</a> / <a href="{{ object.get_versions_url }}">{{ object.name }} versions</a>
+        </div>
+      </div>
+      <h2 class="content-offset-below">
+        {{ object.database.name }} / {{ object.name }} version {{ object.version }}
+      </h2>
+      <form>
+        {% include 'forms/table_form.html' %}
+        <div class="row content-offset">
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <a href="{{ object.get_versions_url }}" class="admin-btn">
+              Save
+            </a>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <a href="{{ object.get_versions_url }}" class="admin-btn">
+              Delete
+            </a>
+          </div>
+          <div class="col-md-1"></div>
+          <div class="col-md-3">
+            <a href="{{ object.get_versions_url }}" class="admin-btn cancel">
+              Cancel
+            </a>
+          </div>
+        </div>
+      </form>
+    </article>
+  </div>
+{% endblock contents %}

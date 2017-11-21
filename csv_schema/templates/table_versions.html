@@ -1,0 +1,136 @@
+{% extends "base_templates/admin_base.html" %}
+{% block title_actions %}
+  <div class="row content-offset-below-20">
+    <div class="col-md-6">
+      <a class="admin-btn">
+        Technical Check
+      </a>
+    </div>
+    <div class="col-md-6">
+      <a class="admin-btn">
+        Business Check
+      </a>
+    </div>
+  </div>
+  <div class="row admin-actions">
+    <div class="col-md-6">
+      <a href="{{ object.get_edit_url }}" class="admin-btn">
+        {% if object.published %}
+          Clone
+        {% else %}
+          Edit
+        {% endif %}
+      </a>
+    </div>
+    <div class="col-md-6">
+      <a class="admin-btn {% if object.published %}disabled{% endif %}">
+        Publish
+      </a>
+    </div>
+  </div>
+{% endblock %}
+{% block contents %}
+{% load utils %}
+{% load markdown_deux_tags %}
+<div class="main-content container table-detail">
+    <aside class="side-nav col-md-4">
+        <ul>
+          <li class="list-title">
+              Previous versions of <br />{{ db_name }} / {{ name }}
+          <li>
+          {% for table in tables %}
+              <li>
+                  <a {% if object.id == table.id %}class="active" {% endif %}href="{{ table.get_versions_url }}">
+                      {{ table.version }} {% if table.published %} - currently live{% endif %}
+                  </a>
+              </li>
+          {% endfor %}
+          <li class="list-title">
+              Create
+          <li>
+          <li>
+            <a href="">
+              New Table
+            </a>
+          </li>
+          <li>
+            <a href="">
+              New Database
+            </a>
+          </li>
+        </ul>
+    </aside>
+    <article class="row-list col-md-8">
+        <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.name }}</a> / {{ object.name }}
+        <h1 class="title">
+        <div class="row">
+            <div class="col-sm-12">
+            {{ object.database.name }} / {{ object.name }}
+            </div>
+        </div>
+        {% if object.start %}
+            <div class="row">
+            <div class="col-sm-12">
+                <small>
+                {{ object.start }} - {% if object.end %}{{ object.end }}{% else %}Ongoing{% endif %}
+                </small>
+            </div>
+            </div>
+        {% endif %}
+        </h1>
+
+        <div class="row nhs-england-well">
+        <div class="col-md-12">
+            {{ object.description | markdown }}
+        </div>
+        </div>
+        {% for row in object.row_set.all %}
+        <h3 id="{{ row.data_item }}">
+            <span class="row-title">
+            <a href="#{{ row.data_item }}">
+                {{ row.data_item }}
+            </a>
+            </span>
+            <small>
+            {{ row.data_type }}
+            </small>
+        </h3>
+        <div class="row">
+            <div class="col-md-12">
+            <p>
+                {{ row.description | urlize }}
+            </p>
+            </div>
+        </div>
+        {% if row.is_derived_item %}
+            <div class="row">
+            <div class="col-md-12">
+                <h4 class="sub-row-title">Derivation</h4>
+                {{ row.derivation | urlize }}
+            </div>
+            </div>
+        {% endif %}
+
+        <div class="row">
+            {% if row.datadictionaryreference_set.exists %}
+            <div class="col-md-12 dictionary-references">
+                <h4 class="sub-row-title">Data Dictionary Attribute{% if row.datadictionaryreference_set.count > 1 %}s{% endif %}</h4>
+                {% for data_reference in row.datadictionaryreference_set.all %}
+                {% if data_reference.link %}
+                    <a href="{{ data_reference.link }}">
+                    {{ data_reference.name }}
+                    </a>
+                {% else %}
+                    {{ data_reference.name }}
+                {% endif %}
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        {% if not forloop.last %}
+            <hr />
+        {% endif %}
+        {% endfor %}
+    </article>
+    </div>
+{% endblock contents %}

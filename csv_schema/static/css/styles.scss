@@ -7,6 +7,8 @@ $tertiary-colour: #e8edee;
 // the text colour used on that grey
 $tertiary-colour-text: #425563;
 
+$purple: #a00054;
+
 $text-colour: #202a30;
 $text-color-on-dark: #FFF;
 $footer-height: 300px;
@@ -27,6 +29,10 @@ body {
   margin-top: 50px;
 }
 
+.content-offset-below{
+  margin-bottom: 50px;
+}
+
 .content-offset-below-20{
   margin-bottom: 20px;
 }
@@ -35,6 +41,13 @@ body {
   padding: 60px;
   background-color: $tertiary-colour;
   margin: 0 0 30px;
+}
+
+.admin-page{
+  header.masthead{
+    background-color: $tertiary-colour-text;
+    color: $text-color-on-dark;
+  }
 }
 
 header.masthead{
@@ -317,4 +330,57 @@ $main-content-margin: 20px;
 
 .link:hover{
   fill: $primary-colour;
+}
+
+.admin-page{
+  .user-bar{
+    background-color: lighten($tertiary-colour-text, 10%);
+  }
+}
+
+.user-bar{
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  width: 100%;
+  background-color: $primary-color-light;
+  color: $text-color-on-dark;
+  padding-top: 7px;
+  padding-bottom: 7px;
+
+  a{
+    color: $text-color-on-dark;
+  }
+}
+
+a.admin-btn{
+  text-align: center;
+  padding: 15px;
+  display: block;
+  background-color: #DAB24A;
+  color: $tertiary-colour-text;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover{
+    text-decoration: none;
+    background-color: #DAB24A;
+  }
+
+  &.disabled{
+    background-color: desaturate(#DAB24A, 30%);
+
+    &:hover{
+      background-color: desaturate(#DAB24A, 30%);
+    }
+  }
+
+  &.cancel{
+    background-color: lighten($tertiary-colour-text, 20%);
+    color: $text-color-on-dark;
+
+    &:hover{
+      background-color: lighten($tertiary-colour-text, 30%);
+    }
+  }
 }
