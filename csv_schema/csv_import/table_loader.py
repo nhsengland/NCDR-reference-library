@@ -26,27 +26,28 @@ PROVISIONAL_SCHEDULE = "Provisional Schedule"
 UPDATED_FREQUENCY = "Updated Frequency"
 
 EXPECTED_COLUMN_NAMES = set([
-   DATABASE,
-   SCHEMA,
-   TABLE,
-   TABLE_OR_VIEW,
-   DESCRIPTION,
-   DATE_START,
-   DATE_END,
-   LINK
+    DATABASE,
+    SCHEMA,
+    TABLE,
+    TABLE_OR_VIEW,
+    DESCRIPTION,
+    DATE_START,
+    DATE_END,
+    LINK
 ])
 
 
 NA = "N/A"
 
+
 def get_date_start(some_str):
     """
-        takes in a string e.g. Api-13 returns a date of
+        takes in a string e.g. Apr-13 returns a date of
         1 April 2013
     """
     if some_str.lower() == "ongoing":
         return
-    dt =  datetime.datetime.strptime(some_str, "%b-%y")
+    dt = datetime.datetime.strptime(some_str, "%b-%y")
     return dt.date()
 
 
@@ -58,14 +59,13 @@ def get_date_end(some_str):
     if some_str.lower().strip() == "ongoing":
         return
 
-    dt =  datetime.datetime.strptime(some_str, "%b-%y")
+    dt = datetime.datetime.strptime(some_str, "%b-%y")
 
     year = dt.year
     month = dt.month
     return datetime.date(
-        year, month, calendar.monthrange(year,month)[1]
+        year, month, calendar.monthrange(year, month)[1]
     )
-
 
 
 def process_row(csv_row):
@@ -119,6 +119,3 @@ def load_file(file_name):
 
         for csv_row in reader:
             process_row(csv_row)
-
-
-

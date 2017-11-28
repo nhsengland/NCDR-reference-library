@@ -1,6 +1,6 @@
 from django.test import TestCase
 import datetime
-from csv_schema import row_loader
+from csv_schema.csv_import import row_loader
 from csv_schema import models
 import mock
 
@@ -28,13 +28,13 @@ class RowLoaderTestCase(TestCase):
         basic_row.update(kwargs)
         return basic_row
 
-    @mock.patch('csv_schema.row_loader.csv')
-    @mock.patch('csv_schema.row_loader.validate_csv_structure')
-    @mock.patch('csv_schema.row_loader.process_row')
+    @mock.patch('csv_schema.csv_import.row_loader.csv')
+    @mock.patch('csv_schema.csv_import.row_loader.validate_csv_structure')
+    @mock.patch('csv_schema.csv_import.row_loader.process_row')
     def test_load_file(self, process_row, validate_csv_structure, csv):
         m = mock.mock_open()
         csv.DictReader.return_value = ["something"]
-        with mock.patch('csv_schema.row_loader.open', m, create=True):
+        with mock.patch('csv_schema.csv_import.row_loader.open', m, create=True):
             row_loader.load_file("some_file.csv")
 
         m.assert_called_once_with('some_file.csv')
