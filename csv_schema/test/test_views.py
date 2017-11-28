@@ -1,6 +1,5 @@
 import datetime
 
-from django.http.request import QueryDict
 from django.core.urlresolvers import reverse
 from django.test import Client
 from django.test import TestCase
@@ -16,12 +15,17 @@ class AbstractViewTestCase(TestCase):
     def create_data_item(self, idx):
         return "data_item_{}".format(idx)
 
-    def create_csv_row(self, row_args, database="example", table="example"):
+    def create_csv_row(
+        self, row_args=None, database="example_db", table="example_table"
+    ):
         db, _ = models.Database.objects.get_or_create(name=database)
         table, _ = models.Table.objects.get_or_create(
             name=table,
             database=db
         )
+        if not row_args:
+            row_args = {}
+
         default_args = dict(
             table=table,
             data_item="some_item",
@@ -50,16 +54,40 @@ class AbstractViewTestCase(TestCase):
             self.create_csv_row(**default_kwargs)
 
 
-class IntegrationTestCase(AbstractViewTestCase):
+class ViewsTestCase(AbstractViewTestCase):
     def test_about_page(self):
         response = self.client.get(self.about_url)
         self.assertEqual(response.status_code, 200)
 
-    def test_csv_page_empty(self):
+    def test_database_list_empty(self):
         response = self.client.get(self.database_list_url)
         self.assertEqual(response.status_code, 200)
 
-    def test_csv_page_full(self):
+    def test_database_list_full(self):
         self.create_csv_rows(200)
         response = self.client.get(self.database_list_url)
         self.assertEqual(response.status_code, 200)
+
+    def test_database_redirect(self):
+        self.create_csv_row()
+        url = reverse("database_detail", kwargs=dict(db_name='example_db'))
+        response = self.client.get(url, follow=True)
+        self.assertEqual(
+            response.redirect_chain,
+            [('/database/example_db/example_table', 302)]
+        )
+
+    def test_table_detail(self):
+        row_1 = self.create_csv_row()
+        row_2 = self.create_csv_row(table="example_table_2")
+        self.create_csv_row(database="example_db_2", table="example_table")
+        url = reverse("table_detail", kwargs=dict(
+            db_name='example_db',
+            table_name='example_table'
+        ))
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            list(response.context_data["tables"].values_list("id", flat=True)),
+            [row_1.id, row_2.id]
+        )
