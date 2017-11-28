@@ -77,11 +77,6 @@ class Table(AbstractTimeStamped):
             return self.date_end.strftime(DATE_FORMAT)
 
 
-    @property
-    def historic(self):
-        return date_end and datetime.date.today() > date_end
-
-
 @python_2_unicode_compatible
 class Row(AbstractTimeStamped, models.Model):
     DATA_TYPE_CHOICES = (
