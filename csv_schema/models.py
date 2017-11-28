@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.urlresolvers import reverse
+from django.db.models import Count
 
 from django.db import models
 DATE_FORMAT = "%b %y"
@@ -31,6 +32,17 @@ class Database(AbstractTimeStamped):
         return reverse("database_detail", kwargs=dict(db_name=self.name))
 
 
+class TableQueryset(models.QuerySet):
+    def all_populated(self):
+        """ returns all tables that have rows
+        """
+        return self.annotate(
+            row_count=Count('row')
+        ).filter(
+            row_count__gt=0
+        )
+
+
 @python_2_unicode_compatible
 class Table(AbstractTimeStamped):
     name = models.CharField(max_length=255)
@@ -56,6 +68,8 @@ class Table(AbstractTimeStamped):
 
     def __str__(self):
         return self.name
+
+    objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
         return reverse("table_detail", kwargs=dict(

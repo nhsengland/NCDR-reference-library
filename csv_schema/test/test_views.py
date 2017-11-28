@@ -78,8 +78,16 @@ class ViewsTestCase(AbstractViewTestCase):
         )
 
     def test_table_detail(self):
+        """ should provide a context of all tables under that
+            database that are not empty
+        """
         row_1 = self.create_csv_row()
         row_2 = self.create_csv_row(table="example_table_2")
+
+        # an empty table
+        models.Table.objects.create(
+            database=row_1.table.database, name="empty"
+        )
         self.create_csv_row(database="example_db_2", table="example_table")
         url = reverse("table_detail", kwargs=dict(
             db_name='example_db',
