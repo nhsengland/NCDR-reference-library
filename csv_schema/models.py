@@ -127,9 +127,9 @@ class Row(AbstractTimeStamped, models.Model):
         ordering = ['table', 'data_item']
 
     data_item = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
-    derivation = models.TextField()
+    derivation = models.TextField(blank=True, default="")
     table = models.ForeignKey(
         Table, on_delete=models.CASCADE
     )

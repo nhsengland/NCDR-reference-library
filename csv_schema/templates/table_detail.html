@@ -35,11 +35,13 @@
           </div>
         {% endif %}
       </h1>
-      <div class="row nhs-england-well">
-        <div class="col-md-12">
-          {{ object.description | markdown }}
+      {% if object.description %}
+        <div class="row nhs-england-well">
+          <div class="col-md-12">
+            {{ object.description | markdown }}
+          </div>
         </div>
-      </div>
+      {% endif %}
       {% for row in object.row_set.all %}
         <h3 id="{{ row.data_item }}">
           <span class="row-title">

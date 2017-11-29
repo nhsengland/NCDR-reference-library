@@ -18,6 +18,13 @@ for future, loading in csvs
 When running the server locally, we are using sass. So installl sass and run
 sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css
 
+deployment
+update hosts.dev (and use keys natch)
+set your branch in deployment/group_vars/all
+cd deployment
+ansible-playbook setup-server.yml -i hosts.dev
+
+
 #### TODO
 change the csv loader into a form.
 add in a search function, but lets find out which columns to query
