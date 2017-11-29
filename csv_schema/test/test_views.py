@@ -15,16 +15,16 @@ class AbstractViewTestCase(TestCase):
     def create_data_item(self, idx):
         return "data_item_{}".format(idx)
 
-    def create_csv_row(
-        self, row_args=None, database="example_db", table="example_table"
+    def create_csv_column(
+        self, column_args=None, database="example_db", table="example_table"
     ):
         db, _ = models.Database.objects.get_or_create(name=database)
         table, _ = models.Table.objects.get_or_create(
             name=table,
             database=db
         )
-        if not row_args:
-            row_args = {}
+        if not column_args:
+            column_args = {}
 
         default_args = dict(
             table=table,
@@ -37,11 +37,11 @@ class AbstractViewTestCase(TestCase):
             created_date_ext=datetime.date(2017, 1, 1)
         )
 
-        default_args.update(row_args)
-        return models.Row.objects.create(**default_args)
+        default_args.update(column_args)
+        return models.Column.objects.create(**default_args)
 
-    def create_csv_rows(self, number, database=None, table=None):
-        default_kwargs = dict(row_args={})
+    def create_csv_columns(self, number, database=None, table=None):
+        default_kwargs = dict(column_args={})
 
         if database:
             default_kwargs["database"] = database
@@ -50,8 +50,8 @@ class AbstractViewTestCase(TestCase):
             default_kwargs["table"] = table
 
         for i in range(number):
-            default_kwargs["row_args"]["data_item"] = self.create_data_item(i)
-            self.create_csv_row(**default_kwargs)
+            default_kwargs["column_args"]["data_item"] = self.create_data_item(i)
+            self.create_csv_column(**default_kwargs)
 
 
 class ViewsTestCase(AbstractViewTestCase):
@@ -64,12 +64,12 @@ class ViewsTestCase(AbstractViewTestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_database_list_full(self):
-        self.create_csv_rows(200)
+        self.create_csv_columns(200)
         response = self.client.get(self.database_list_url)
         self.assertEqual(response.status_code, 200)
 
     def test_database_redirect(self):
-        self.create_csv_row()
+        self.create_csv_column()
         url = reverse("database_detail", kwargs=dict(db_name='example_db'))
         response = self.client.get(url, follow=True)
         self.assertEqual(
@@ -81,14 +81,14 @@ class ViewsTestCase(AbstractViewTestCase):
         """ should provide a context of all tables under that
             database that are not empty
         """
-        row_1 = self.create_csv_row()
-        row_2 = self.create_csv_row(table="example_table_2")
+        row_1 = self.create_csv_column()
+        row_2 = self.create_csv_column(table="example_table_2")
 
         # an empty table
         models.Table.objects.create(
             database=row_1.table.database, name="empty"
         )
-        self.create_csv_row(database="example_db_2", table="example_table")
+        self.create_csv_column(database="example_db_2", table="example_table")
         url = reverse("table_detail", kwargs=dict(
             db_name='example_db',
             table_name='example_table'

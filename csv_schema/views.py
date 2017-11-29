@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from django.views.generic import ListView, RedirectView, DetailView
 from csv_schema import models
 from django.core.urlresolvers import reverse
-from django.db.models import Count
 
 
 class IndexView(RedirectView):

@@ -34,12 +34,12 @@ class Database(AbstractTimeStamped):
 
 class TableQueryset(models.QuerySet):
     def all_populated(self):
-        """ returns all tables that have rows
+        """ returns all tables that have columns
         """
         return self.annotate(
-            row_count=Count('row')
+            column_count=Count('column')
         ).filter(
-            row_count__gt=0
+            column_count__gt=0
         )
 
 
@@ -92,7 +92,7 @@ class Table(AbstractTimeStamped):
 
 
 @python_2_unicode_compatible
-class Row(AbstractTimeStamped, models.Model):
+class Column(AbstractTimeStamped, models.Model):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
         ("date", "date",),
@@ -154,17 +154,17 @@ class Row(AbstractTimeStamped, models.Model):
 class DataDictionaryReference(AbstractTimeStamped):
     name = models.CharField(max_length=255)
     link = models.URLField(max_length=500, blank=True, null=True)
-    row = models.ForeignKey(Row, on_delete=models.CASCADE)
+    column = models.ForeignKey(Column, on_delete=models.CASCADE)
 
     class Meta:
-        unique_together = (('row', 'name',),)
+        unique_together = (('column', 'name',),)
         ordering = ['name']
 
     def __str__(self):
         return "{} ({}.{})".format(
             self.name,
             self.link,
-            self.row
+            self.column
         )
 
 

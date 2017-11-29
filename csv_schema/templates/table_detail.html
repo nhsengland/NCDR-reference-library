@@ -17,7 +17,7 @@
         {% endfor %}
       </ul>
     </aside>
-    <article class="row-list col-md-8">
+    <article class="col-md-8">
       <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.name }}</a> / {{ object.name }}
       <h1 class="title">
         <div class="row">
@@ -42,37 +42,37 @@
           </div>
         </div>
       {% endif %}
-      {% for row in object.row_set.all %}
+      {% for column in object.column_set.all %}
         <h3 id="{{ row.data_item }}">
-          <span class="row-title">
-            <a href="#{{ row.data_item }}">
-              {{ row.data_item }}
+          <span class="column-title">
+            <a href="#{{ column.data_item }}">
+              {{ column.data_item }}
             </a>
           </span>
           <small>
-            {{ row.data_type }}
+            {{ column.data_type }}
           </small>
         </h3>
         <div class="row">
           <div class="col-md-12">
             <p>
-              {{ row.description | urlize }}
+              {{ column.description | urlize }}
             </p>
           </div>
         </div>
-        {% if row.is_derived_item %}
+        {% if column.is_derived_item %}
           <div class="row">
             <div class="col-md-12">
               <h4 class="sub-row-title">Derivation</h4>
-              {{ row.derivation | urlize }}
+              {{ column.derivation | urlize }}
             </div>
           </div>
         {% endif %}
 
         <div class="row">
-          {% if row.datadictionaryreference_set.exists %}
+          {% if column.datadictionaryreference_set.exists %}
             <div class="col-md-12 dictionary-references">
-              <h4 class="sub-row-title">Data Dictionary Attribute{% if row.datadictionaryreference_set.count > 1 %}s{% endif %}</h4>
+              <h4 class="sub-row-title">Data Dictionary Attribute{% if column.datadictionaryreference_set.count > 1 %}s{% endif %}</h4>
               {% for data_reference in row.datadictionaryreference_set.all %}
                 {% if data_reference.link %}
                   <a href="{{ data_reference.link }}">

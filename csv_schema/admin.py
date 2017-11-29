@@ -47,7 +47,7 @@ class DatabaseFilter(admin.SimpleListFilter):
         return queryset
 
 
-class RowsAdmin(admin.ModelAdmin):
+class ColumnAdmin(admin.ModelAdmin):
     list_filter = [IsTechnicalCheckedFilter]
     list_display = [
         'data_item',
@@ -69,15 +69,15 @@ class RowsAdmin(admin.ModelAdmin):
     get_database_name.short_description = "Database"
 
 
-class RowsInline(admin.StackedInline):
-    model = models.Row
+class ColumnsInline(admin.StackedInline):
+    model = models.Column
 
 
 class TableAdmin(admin.ModelAdmin):
-    inlines = [RowsInline,]
+    inlines = [ColumnsInline]
     list_filter = [DatabaseFilter]
 
 admin.site.register(models.Database)
 admin.site.register(models.Table, TableAdmin)
-admin.site.register(models.Row, RowsAdmin)
+admin.site.register(models.Column, ColumnAdmin)
 admin.site.register(models.SiteDescription)

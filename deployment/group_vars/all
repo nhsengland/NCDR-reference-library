@@ -3,7 +3,7 @@ db_user: ncdr
 db_name: ncdr
 db_password: ncdr1
 git_repo: "https://github.com/nhsengland/{{ application_name }}.git"
-git_branch: v0.1rc2
+git_branch: v0.1rc3
 project_path: "/home/ubuntu/{{ application_name }}"
 virtualenv_path: "/home/ubuntu/.virtualenvs/{{ application_name }}"
 requirements_file: "{{ project_path }}/requirements.txt"
