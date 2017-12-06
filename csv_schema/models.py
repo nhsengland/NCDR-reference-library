@@ -53,14 +53,7 @@ class Table(AbstractTimeStamped):
         Database, on_delete=models.CASCADE
     )
 
-    # brought in as Apr-2015 but we translate that to, for example 1 April 2015
-    # because when we want this actually entered, that's the kind of data we want
-    date_start = models.DateField(blank=True, null=True)
-
-
-    # brought in as Apr-2015 but we translate that to, for example 31 April 2015
-    # because when we want this actually entered, that's the kind of data we want
-    date_end = models.DateField(blank=True, null=True)
+    date_range = models.CharField(max_length=255, blank=True, default="")
 
     class Meta:
         unique_together = (('name', 'database',),)
@@ -123,16 +116,14 @@ class Column(AbstractTimeStamped, models.Model):
     )
 
     class Meta:
-        unique_together = (('table', 'data_item',),)
-        ordering = ['table', 'data_item']
+        ordering = ['name']
 
     data_item = models.CharField(max_length=255)
+    name = models.CharField(max_length=255)
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
-    table = models.ForeignKey(
-        Table, on_delete=models.CASCADE
-    )
+    table = models.ManyToManyField(Table)
 
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.
@@ -143,10 +134,9 @@ class Column(AbstractTimeStamped, models.Model):
     created_date_ext = models.DateField(blank=True, null=True)
 
     def __str__(self):
-        return "{} ({}.{})".format(
-            self.data_item,
-            self.table.name,
-            self.table.database.name
+        return "{} ({})".format(
+            self.name,
+            ", ".join(self.table_set.values_list(["name"], flat=True))
         )
 
 

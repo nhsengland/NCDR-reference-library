@@ -69,12 +69,7 @@ class ColumnAdmin(admin.ModelAdmin):
     get_database_name.short_description = "Database"
 
 
-class ColumnsInline(admin.StackedInline):
-    model = models.Column
-
-
 class TableAdmin(admin.ModelAdmin):
-    inlines = [ColumnsInline]
     list_filter = [DatabaseFilter]
 
 admin.site.register(models.Database)
