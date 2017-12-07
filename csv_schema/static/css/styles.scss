@@ -27,6 +27,14 @@ body {
   margin-top: 50px;
 }
 
+.content-offset-below{
+  margin-bottom: 50px;
+}
+
+.content-offset-below-10{
+  margin-bottom: 10px;
+}
+
 .content-offset-below-20{
   margin-bottom: 20px;
 }
@@ -317,4 +325,30 @@ $main-content-margin: 20px;
 
 .link:hover{
   fill: $primary-colour;
+}
+
+.letter-link{
+  width: 8.3333333333%;
+  font-size: 27px;
+  float: left;
+  padding: 10px 0;
+  background-color: $primary-colour;
+  color: $text-color-on-dark;
+  display: block;
+  border: 1px solid $text-color-on-dark;
+  text-align: center;
+  text-decoration: none;
+
+  &.active{
+    background-color: $tertiary-colour;
+    color: $text-colour;
+  }
+
+  &.active:hover{
+    color: $text-colour;
+  }
+
+  &:hover{
+    color: $text-color-on-dark;
+  }
 }

@@ -1,6 +1,7 @@
 {% load staticfiles %}
 {% url 'about_page' as about_page %}
 {% url 'database_list' as database_list %}
+{% url 'ncdr_reference_redirect' as ncdr_reference_redirect %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -42,13 +43,18 @@
             <nav>
               <ul>
                 <li>
-                  <a {% ifnotequal request.path csv_page %}{% ifnotequal request.path about_page %} class="active" {% endifnotequal %}{% endifnotequal %}href="{{ database_list }}">
+                  <a {% if 'database' in request.path %} class="active" {% endif %} href="{{ database_list }}">
                     Reference Library
                   </a>
                 </li>
                 <li>
                   <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
                     About
+                  </a>
+                </li>
+                <li>
+                  <a {% if ncdr_reference_redirect in request.path %}class="active" {% endif %}href="{{ ncdr_reference_redirect }}">
+                    NCDR References
                   </a>
                 </li>
               </ul>

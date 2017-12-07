@@ -16,7 +16,7 @@ for future, loading in csvs
 ./manage.py table_loader {{ path to the table csv }}
 
 When running the server locally, we are using sass. So installl sass and run
-sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css
+<!-- sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css -->
 
 deployment
 update hosts.dev (and use keys natch)

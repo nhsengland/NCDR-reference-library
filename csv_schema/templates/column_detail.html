@@ -1,0 +1,56 @@
+{% extends "base_templates/base.html" %}
+{% block contents %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <article>
+        <div class="row content-offset content-offset-below">
+          <div class="col-sm-12">
+            <h1 class="title">
+              {{ object.name }}
+            </h1>
+          </div>
+        </div>
+        <div class="row nhs-england-well">
+          <div class="col-md-12">
+            <p>
+              {{ object.description | urlize }}
+            </p>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6">
+            <h4 class="sub-row-title">Derivation</h4>
+            {{ column.derivation | urlize }}
+          </div>
+          <div class="col-md-6">
+            <h4 class="sub-row-title">External Links</h4>
+            <p>
+              <a href="{{ object.link }}">
+                {{ object.link_display_name }}
+              </a>
+            </p>
+          </div>
+        </div>
+        {% for table in object.tables.all %}
+          <div class="row">
+            <div class="col-md-12">
+              <h3>
+                <a href="{{ table.get_absolute_url }}">
+                {{ table.database.name }}.{{ table.name }}
+                </a>
+              </h3>
+              <p>
+                {{ table.description }}
+              </p>
+            </div>
+          </div>
+          {% if not forloop.last %}
+            <hr />
+          {% endif %}
+        {% endfor %}
+      </article>
+    </div>
+  </div>
+</div>
+{% endblock %}
