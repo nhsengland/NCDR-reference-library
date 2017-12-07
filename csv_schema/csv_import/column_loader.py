@@ -184,10 +184,6 @@ def process_data_dictionary_reference(db_column, csv_row):
         db_column.datadictionaryreference_set.create(**new_db_ref)
 
 
-def clean_value(some_field):
-    return unicode(some_field, 'utf-8').strip()
-
-
 def process_row(csv_row, file_name):
     if not any(i for i in csv_row.values() if i.strip()):
         # if its an empty row, skip it
@@ -202,7 +198,7 @@ def process_row(csv_row, file_name):
         CSV_FIELD_TO_COLUMN_FIELD.keys()
     )
     for field_name in field_names:
-        value = clean_value(csv_row[field_name])
+        value = csv_row[field_name].strip()
         field_name = field_name.strip()
 
         if field_name == TABLE_NAME or field_name == DATABASE:
@@ -233,10 +229,7 @@ def process_row(csv_row, file_name):
         if field_name in [DATA_DICTIONARY_NAME, DATA_DICTIONARY_LINKS]:
             continue
 
-        try:
-            db_column_name = CSV_FIELD_TO_COLUMN_FIELD[field_name]
-        except:
-            import ipdb; ipdb.set_trace()
+        db_column_name = CSV_FIELD_TO_COLUMN_FIELD[field_name]
         if field_name == IS_DERIVED_ITEM:
             value = process_is_derived(value)
 
@@ -249,10 +242,7 @@ def process_row(csv_row, file_name):
                 value = None
 
         setattr(column, db_column_name, value)
-    try:
-        column.save()
-    except:
-        raise
+    column.save()
 
     db_to_tables = get_database_to_table(csv_row)
     column.tables.set(i[1] for i in db_to_tables)

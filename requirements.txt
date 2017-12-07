@@ -1,7 +1,6 @@
 decorator==4.1.2
-Django==1.11.6
+Django==2.-.6
 django-markdown-deux==1.0.5
-django-url-tools==0.0.8
 enum34==1.1.6
 markdown2==2.3.4
 pathlib2==2.3.0

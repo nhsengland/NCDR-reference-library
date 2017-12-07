@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.utils.encoding import python_2_unicode_compatible
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.db.models import Count
-from autoslug.fields import AutoSlugField
+from django.utils.text import slugify
 
 from django.db import models
 DATE_FORMAT = "%b %y"
@@ -132,7 +132,7 @@ class Column(AbstractTimeStamped, models.Model):
 
     data_item = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
-    slug = AutoSlugField(populate_from='name', unique=True)
+    slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
@@ -164,15 +164,13 @@ class Column(AbstractTimeStamped, models.Model):
     def other_references(self):
         return self.link or self.tables.count() > 1
 
-    @property
-    def other_tables(self):
-        return self.tables.count() - 1
-
     def __str__(self):
-        return "{} ({})".format(
-            self.name,
-            ", ".join(self.table_set.values_list(["name"], flat=True))
-        )
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super(Column, self).save(*args, **kwargs)
 
 
 class SiteDescription(models.Model):

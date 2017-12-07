@@ -23,6 +23,9 @@
           </h1>
         </div>
       </div>
+      {% if not object_list %}
+        <h1 class="faded text-center">No references start with {{ view.kwargs.letter }}</h1>
+      {% endif %}
       {% for column in object_list %}
         {% include 'partials/column.html' %}
         {% if not forloop.last %}

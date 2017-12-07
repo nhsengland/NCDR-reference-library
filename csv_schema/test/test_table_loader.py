@@ -1,4 +1,4 @@
-import mock
+from unittest import mock
 from django.test import TestCase
 import datetime
 from csv_schema.csv_import import table_loader
@@ -24,28 +24,6 @@ class TableLoaderTestCase(TestCase):
         }
         basic_row.update(kwargs)
         return basic_row
-
-    def test_get_date_start(self):
-        self.assertEqual(
-            table_loader.get_date_start("Apr-13"),
-            datetime.date(2013, 4, 1)
-        )
-
-    def test_get_date_start_ongoing(self):
-        self.assertIsNone(
-            table_loader.get_date_start("Ongoing")
-        )
-
-    def test_get_date_end(self):
-        self.assertEqual(
-            table_loader.get_date_end("Apr-13"),
-            datetime.date(2013, 4, 30)
-        )
-
-    def test_get_date_end_ongoing(self):
-        self.assertIsNone(
-            table_loader.get_date_end("Ongoing")
-        )
 
     def test_process_row_database(self):
         row = self.get_row(**{

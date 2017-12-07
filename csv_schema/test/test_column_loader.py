@@ -2,7 +2,7 @@ from django.test import TestCase
 import datetime
 from csv_schema.csv_import import column_loader
 from csv_schema import models
-import mock
+from unittest import mock
 
 
 class ColumnLoaderTestCase(TestCase):
@@ -216,10 +216,6 @@ Table, Data type in some_file.csv"
 
     def test_clean_value_strip(self):
         self.assertEqual(column_loader.clean_value(" hello "), "hello")
-
-    def test_clean_value_unicode(self):
-        a = "\xe2\x80\x98O\xe2\x80\x99s"
-        self.assertEqual(column_loader.clean_value(a), u"\u2018O\u2019s")
 
     def test_process_data_dictionary_reference_multiple(self):
         kwargs = {

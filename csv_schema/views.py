@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 import operator
+import functools
 from string import ascii_uppercase
 from csv_schema import models
 from django.views.generic import ListView, RedirectView, DetailView
-from django.core.urlresolvers import reverse
+from django.urls  import reverse
 from django.db.models import Q
 
 
@@ -68,8 +69,8 @@ class NcdrReferenceList(ListView):
         if self.kwargs["letter"] == self.NUMERIC:
             """ startswith 0, or 1, or 2 etc
             """
-            startswith_args = [Q(name__startswith=str(i)) for i in xrange(10)]
-            return references.filter(reduce(operator.or_, startswith_args))
+            startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
+            return references.filter(functools.reduce(operator.or_, startswith_args))
 
         return references.filter(name__istartswith=self.kwargs["letter"][0])
 

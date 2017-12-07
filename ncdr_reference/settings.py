@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csv_schema',
-    'url_tools',
     'markdown_deux',
     'ncdr_reference',
 ]
