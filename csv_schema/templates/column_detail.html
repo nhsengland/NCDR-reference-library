@@ -58,9 +58,13 @@
                 {{ table.database.name }}.{{ table.name }}
                 </a>
               </h3>
-              <p>
-                {{ table.description }}
-              </p>
+              <div class="row">
+                <div class="col-md-8">
+                  <p>
+                    {{ table.description }}
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
           {% if not forloop.last %}
