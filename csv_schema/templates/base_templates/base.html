@@ -48,13 +48,13 @@
                   </a>
                 </li>
                 <li>
-                  <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
-                    About
+                  <a {% if ncdr_reference_redirect in request.path %}class="active" {% endif %}href="{{ ncdr_reference_redirect }}">
+                    NCDR References
                   </a>
                 </li>
                 <li>
-                  <a {% if ncdr_reference_redirect in request.path %}class="active" {% endif %}href="{{ ncdr_reference_redirect }}">
-                    NCDR References
+                  <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
+                    About
                   </a>
                 </li>
               </ul>
