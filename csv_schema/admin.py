@@ -50,7 +50,7 @@ class DatabaseFilter(admin.SimpleListFilter):
 class ColumnAdmin(admin.ModelAdmin):
     list_filter = [IsTechnicalCheckedFilter]
     list_display = [
-        'data_item',
+        'name',
         'data_type',
         'get_table_name',
         'get_database_name',

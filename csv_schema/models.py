@@ -130,7 +130,6 @@ class Column(AbstractTimeStamped, models.Model):
     class Meta:
         ordering = ['name']
 
-    data_item = models.CharField(max_length=255)
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
     description = models.TextField(blank=True, default="")

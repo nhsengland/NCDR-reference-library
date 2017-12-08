@@ -46,7 +46,6 @@ EXPECTED_COLUMN_NAMES = set([
 
 CSV_FIELD_TO_COLUMN_FIELD = {
     DEFINITION_ID: "definition_id",
-    COLUMN_NAME: "data_item",
     DATA_DICTIONARY_DESCRIPTION: "description",
     DATA_TYPE: "data_type",
     IS_DERIVED_ITEM: "is_derived_item",
@@ -65,7 +64,8 @@ IGNORED_FIELDS = set([
     CHECKED,
     GROUPING,
     LAST_UPDATE_DATE,
-    LAST_UPDATE_BY
+    LAST_UPDATE_BY,
+    COLUMN_NAME
 ])
 
 
@@ -117,71 +117,6 @@ def get_database_to_table(csv_row):
         result.append((db, table,),)
 
     return result
-
-
-def process_data_dictionary_reference(db_column, csv_row):
-    """ we store data dictionary links and names as a seperate foreign key table
-        we want there to be one link to one name after being split by new lines
-
-        this is not always the case.
-
-        work arounds.
-
-        (i) if there is only a single link and lots of names, apply that link
-            to all the names
-
-        (ii) if there are no links, just save a name
-    """
-    names_str = csv_row[DATA_DICTIONARY_NAME]
-    if names_str == "N//A" or names_str == "N/A":
-        db_column.datadictionaryreference_set.all().delete()
-        return
-
-    links_str = csv_row[DATA_DICTIONARY_LINKS]
-    names = [i.strip() for i in names_str.split("\n") if i.strip()]
-    links = [i.strip() for i in links_str.split("\n") if i.strip()]
-    if not len(names) == len(links):
-        if not names:
-            raise ValueError(
-                'found links but no names for {}.{}.{}'.format(
-                    db_column.table.database.name,
-                    db_column.table.name,
-                    db_column.data_item
-                )
-            )
-        elif len(links) == 1:
-            links = [links[0] for i in range(len(names))]
-        elif not links:
-            links = [None for i in range(len(names))]
-        else:
-            raise ValueError(
-                'for {}.{}.{} the number of links is different'.format(
-                    db_column.table.database.name,
-                    db_column.table.name,
-                    db_column.data_item
-                )
-            )
-
-    obj_args = [dict(name=i[0], link=i[1]) for i in zip(names, links)]
-
-    existing = []
-    new_db_refs = []
-    for obj_arg in obj_args:
-        existing_column = db_column.datadictionaryreference_set.filter(
-            **obj_arg
-        ).first()
-
-        if existing_column:
-            existing.append(existing_column)
-        else:
-            new_db_refs.append(obj_arg)
-
-    db_column.datadictionaryreference_set.exclude(
-        id__in=[i.id for i in existing]
-    ).delete()
-
-    for new_db_ref in new_db_refs:
-        db_column.datadictionaryreference_set.create(**new_db_ref)
 
 
 def process_row(csv_row, file_name):

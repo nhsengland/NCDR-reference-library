@@ -58,10 +58,6 @@ class TableLoaderTestCase(TestCase):
             table.database.name, 'NHSE_IAPT'
         )
         self.assertEqual(
-            table.date_start, datetime.date(2015, 4, 1)
-        )
-        self.assertIsNone(table.date_end)
-        self.assertEqual(
             table.description,
             'An appointment is an interaction with a patient by a health care \
 professional with the objective of making a contribution to the health care of \
