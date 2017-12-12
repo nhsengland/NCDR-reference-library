@@ -1,23 +1,23 @@
 ---
 # This playbook sets up a server for the NCDR reference library project
 
-# - name: Things you want on servers generally
-#   sudo: yes
-#   user: ubuntu
-#   hosts: webserver
-#   gather_facts: no
-#   pre_tasks:
-#     - name: 'install python2'
-#       raw: sudo apt-get -y install python-simplejson
-#   roles:
-#     - server
+- name: Things you want on servers generally
+  sudo: yes
+  user: ubuntu
+  hosts: webserver
+  gather_facts: no
+  pre_tasks:
+    - name: 'install python3'
+      raw: sudo apt-get -y install python-simplejson
+  roles:
+    - server
 
-# - name: Make the server capable of running a standard Django deployment
-#   sudo: yes
-#   user: ubuntu
-#   hosts: webserver
-#   roles:
-#     - django
+- name: Make the server capable of running a standard Django deployment
+  sudo: yes
+  user: ubuntu
+  hosts: webserver
+  roles:
+    - django
 
 - name: Set up our project
   sudo: yes

@@ -16,6 +16,7 @@
 
 - name: Install packages required by the Django app inside virtualenv
   pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
+  executable: pip3
 
 # - name: Run the Django syncdb command
 #   args:
@@ -57,4 +58,4 @@
 - name: Start app
   args:
     chdir: "{{ project_path }}"
-  command: circusd --daemon deployment/config/circus.ini  -e DEBUG
+  command: circusd --daemon deployment/config/circus.ini

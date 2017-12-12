@@ -40,5 +40,6 @@
     path: "{{ virtualenv_path }}/"
 
 - name: Create the virtualenv
-  command: virtualenv {{ virtualenv_path }} -p /usr/bin/python3
-           creates={{ virtualenv_path }}/bin/activate
+  shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv -p /usr/bin/python3 {{ application_name }}
+  args:
+    executable: /bin/bash
