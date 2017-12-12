@@ -43,3 +43,9 @@
   shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv -p /usr/bin/python3 {{ application_name }}
   args:
     executable: /bin/bash
+
+- name: Create the virtualenv
+  shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && setvirtualenvproject
+  chdir: "{{ project_path}}"
+  args:
+    executable: /bin/bash
