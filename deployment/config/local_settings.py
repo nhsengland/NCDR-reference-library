@@ -1,4 +1,6 @@
 ALLOWED_HOSTS = [
     'localhost',
-    "{{ hostvars['webserver'] }}"
+{% for key in hostvars.keys() %}
+    '{{ key}}',
+{% endfor %}
 ]

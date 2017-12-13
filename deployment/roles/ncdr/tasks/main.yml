@@ -23,21 +23,21 @@
 #     chdir: "{{ project_path}}"
 #   command: "{{ virtualenv_path }}/bin/python manage.py syncdb"
 
-- name: Run Django database migrations
-  args:
-    chdir: "{{ project_path}}"
-  command: "{{ virtualenv_path }}/bin/python manage.py migrate"
-
-- name: Run Django collectstatic
-  args:
-    chdir: "{{ project_path}}"
-  command: "{{ virtualenv_path }}/bin/python manage.py collectstatic --noinput"
-
-- name: Run Django initial_load
-  args:
-    chdir: "{{ project_path}}"
-  command: "{{ virtualenv_path }}/bin/python manage.py initial_load"
-
+# - name: Run Django database migrations
+#   args:
+#     chdir: "{{ project_path}}"
+#   command: "{{ virtualenv_path }}/bin/python manage.py migrate"
+#
+# - name: Run Django collectstatic
+#   args:
+#     chdir: "{{ project_path}}"
+#   command: "{{ virtualenv_path }}/bin/python manage.py collectstatic --noinput"
+#
+# - name: Run Django initial_load
+#   args:
+#     chdir: "{{ project_path}}"
+#   command: "{{ virtualenv_path }}/bin/python manage.py initial_load"
+#
 - name: Create local settings
   template:
     src: config/local_settings.py
