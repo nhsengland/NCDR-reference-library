@@ -1,0 +1,47 @@
+<h3>
+  <span class="column-title">
+    <a href="{{ column.get_absolute_url }}">
+      {{ column.name }}
+    </a>
+  </span>
+  <small>
+    {{ column.data_type }}
+  </small>
+</h3>
+<div class="row">
+  <div class="col-md-12">
+    <p>
+      {{ column.description | urlize }}
+    </p>
+  </div>
+</div>
+<div class="row content-offset-top-25 content-offset-below-10">
+  <div class="col-md-6">
+    {% if column.tables.count > 1 %}
+      <a href="{{ column.get_absolute_url }}">
+        Used in {{ column.tables.count }} places
+      </a>
+    {% endif %}
+  </div>
+  <div class="col-md-6 text-right">
+    {% if column.link %}
+      <a href="{{ column.link }}">
+        {{ column.link_display_name }}
+      </a>
+    {% endif %}
+  </div>
+</div>
+{% if column.is_derived_item %}
+  <div class="row">
+    <div class="col-md-12">
+      <h4 class="sub-row-title">Derivation</h4>
+      <p>
+        {% if column.derivation == 'N/A' %}
+          External
+        {% else %}
+          {{ column.derivation | urlize }}
+        {% endif %}
+      </p>
+    </div>
+  </div>
+{% endif %}

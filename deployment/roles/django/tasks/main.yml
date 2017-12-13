@@ -11,7 +11,6 @@
     - postgresql
     - libpq-dev
     - python-psycopg2
-    - supervisor
 
 - name: Ensure locale is available
   locale_gen: name=en_US.UTF-8
@@ -41,5 +40,12 @@
     path: "{{ virtualenv_path }}/"
 
 - name: Create the virtualenv
-  command: virtualenv {{ virtualenv_path }}
-           creates={{ virtualenv_path }}/bin/activate
+  shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv -p /usr/bin/python3 {{ application_name }}
+  args:
+    executable: /bin/bash
+
+- name: Create the virtualenv
+  shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && setvirtualenvproject
+  chdir: "{{ project_path}}"
+  args:
+    executable: /bin/bash

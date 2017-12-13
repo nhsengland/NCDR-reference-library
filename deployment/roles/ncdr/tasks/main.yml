@@ -16,6 +16,7 @@
 
 - name: Install packages required by the Django app inside virtualenv
   pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
+  executable: pip3
 
 # - name: Run the Django syncdb command
 #   args:
@@ -37,9 +38,6 @@
     chdir: "{{ project_path}}"
   command: "{{ virtualenv_path }}/bin/python manage.py initial_load"
 
-- name: Copy supervisord config
-  copy: src=config/supervisord.conf dest=/home/ubuntu/supervisord.conf
-
 - name: Create local settings
   template:
     src: config/local_settings.py
@@ -48,16 +46,9 @@
 - name: Copy Nginx config
   copy: src=config/nginx_site.conf dest=/etc/nginx/sites-available/default
 
-
 - name: Restart Nginx
   sudo: yes
   command: "service nginx restart"
-
-
-- name: Kill supervisord
-  sudo: yes
-  command: "pkill supervisor"
-  ignore_errors: True
 
 - name: Kill gunicorn
   sudo: yes
@@ -65,7 +56,6 @@
   ignore_errors: True
 
 - name: Start app
-  sudo: yes
   args:
     chdir: "{{ project_path }}"
-  command: supervisord -c deployment/config/production.conf  -e DEBUG
+  command: circusd --daemon deployment/config/circus.ini

@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csv_schema',
-    'url_tools',
     'markdown_deux',
     'ncdr_reference',
 ]
@@ -137,6 +136,6 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 STATIC_URL = '/static/'
 if 'test' not in sys.argv:
     try:
-        from local_settings import *
+        from ncdr_reference.local_settings import *
     except ImportError:
         pass

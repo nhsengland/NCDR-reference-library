@@ -1,0 +1,78 @@
+{% extends "base_templates/base.html" %}
+{% block contents %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <article>
+        <div class="row content-offset content-offset-below">
+          <div class="col-sm-12">
+            <h1 class="title">
+              {{ object.name }}
+            </h1>
+          </div>
+        </div>
+        <div class="row nhs-england-well">
+          <div class="col-md-12">
+            <p>
+              {{ object.description | urlize }}
+            </p>
+          </div>
+        </div>
+        {% if object.is_derived_item or object.link %}
+        <div class="row">
+          <div class="col-md-6">
+            {% if object.is_derived_item %}
+              <h4 class="sub-row-title">Derivation</h4>
+              {% if object.derivation == 'N/A' %}
+                External
+              {% else %}
+                {{ object.derivation | urlize }}
+              {% endif %}
+            {% endif %}
+          </div>
+          <div class="col-md-6">
+            {% if object.link %}
+              <h4 class="sub-row-title">External Links</h4>
+              <p>
+                <a href="{{ object.link }}">
+                  {{ object.link_display_name }}
+                </a>
+              </p>
+            {% endif %}
+          </div>
+        </div>
+        {% endif %}
+        {% if object.tables.count %}
+        <div class="row content-offset">
+          <div class="col-md-6">
+            <h4 class="sub-row-title">Places</h4>
+          </div>
+        </div>
+        {% endif %}
+
+        {% for table in object.tables.all %}
+          <div class="row">
+            <div class="col-md-12">
+              <h3>
+                <a href="{{ table.get_absolute_url }}">
+                {{ table.database.name }}.{{ table.name }}
+                </a>
+              </h3>
+              <div class="row">
+                <div class="col-md-8">
+                  <p>
+                    {{ table.description }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% if not forloop.last %}
+            <hr />
+          {% endif %}
+        {% endfor %}
+      </article>
+    </div>
+  </div>
+</div>
+{% endblock %}

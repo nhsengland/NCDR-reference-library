@@ -6,7 +6,7 @@
     <aside class="side-nav col-md-4">
       <ul>
         <li class="list-title">
-          Tables in {{ object.database.name }}
+          Places in {{ object.database.name }}
         <li>
         {% for table in tables %}
           <li>
@@ -43,48 +43,7 @@
         </div>
       {% endif %}
       {% for column in object.column_set.all %}
-        <h3 id="{{ row.data_item }}">
-          <span class="column-title">
-            <a href="#{{ column.data_item }}">
-              {{ column.data_item }}
-            </a>
-          </span>
-          <small>
-            {{ column.data_type }}
-          </small>
-        </h3>
-        <div class="row">
-          <div class="col-md-12">
-            <p>
-              {{ column.description | urlize }}
-            </p>
-          </div>
-        </div>
-        {% if column.is_derived_item %}
-          <div class="row">
-            <div class="col-md-12">
-              <h4 class="sub-row-title">Derivation</h4>
-              {{ column.derivation | urlize }}
-            </div>
-          </div>
-        {% endif %}
-
-        <div class="row">
-          {% if column.datadictionaryreference_set.exists %}
-            <div class="col-md-12 dictionary-references">
-              <h4 class="sub-row-title">Data Dictionary Attribute{% if column.datadictionaryreference_set.count > 1 %}s{% endif %}</h4>
-              {% for data_reference in row.datadictionaryreference_set.all %}
-                {% if data_reference.link %}
-                  <a href="{{ data_reference.link }}">
-                    {{ data_reference.name }}
-                  </a>
-                {% else %}
-                  {{ data_reference.name }}
-                {% endif %}
-              {% endfor %}
-            </div>
-          {% endif %}
-        </div>
+        {% include 'partials/column.html' %}
         {% if not forloop.last %}
           <hr />
         {% endif %}

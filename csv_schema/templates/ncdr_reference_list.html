@@ -1,0 +1,41 @@
+{% extends "base_templates/base.html" %}
+{% load markdown_deux_tags %}
+{% load utils %}
+{% block contents %}
+  <div class="card-list container main-content">
+    <article>
+      <a href="{% url 'database_list' %}">Home</a> / <a href="{% url 'ncdr_reference_redirect' %}">NCDR Reference</a> / {{ view.kwargs.letter }}
+      <nav class="content-offset">
+        <div class="row">
+          <div class="col-md-12">
+            {% for letter, other_page in other_pages %}
+              <a class="letter-link {% if view.kwargs.letter == letter %}active {% endif %}" href="{{ other_page }}">
+                {{ letter }}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </nav>
+      <div class="row content-offset">
+        <div class="col-md-12">
+          <h1 class="title">
+            NCDR References: {{ view.kwargs.letter }}
+          </h1>
+        </div>
+      </div>
+      {% if not object_list %}
+        <h1 class="faded text-center">No references start with {{ view.kwargs.letter }}</h1>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-10">
+          {% for column in object_list %}
+            {% include 'partials/column.html' %}
+            {% if not forloop.last %}
+              <hr />
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+    </article>
+  </div>
+{% endblock contents %}

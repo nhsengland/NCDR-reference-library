@@ -14,49 +14,58 @@ CREATED_DATE = "Created_Date"
 DATA_DICTIONARY_NAME = "Data Dictionary Name"
 DATA_DICTIONARY_LINKS = "Data Dictionary Links"
 IS_DERIVED_ITEM = "Is_Derived_Item"
-DATA_ITEM_NAME = "Data Item"
+COLUMN_NAME = "Item_Name"
 DATA_DICTIONARY_DESCRIPTION = "Description"
-DERIVATION_METHODOLOGY = "Derivation_Methodology"
-DATA_TYPE = "Data type"
+DERIVATION_METHODOLOGY = "NCDR_Derivation_Methodology"
+DATA_TYPE = "Data_Type"
 DEFINITION_ID = "Definition ID"
 TECHNICAL_CHECK = "Technical check"
 BUSINESS_CHECK = "Business check"
 RK_2 = "RK 2"
 SCHEMA = "Schema"
 CHECKED = "Checked"
+PRESENT_IN_TABLES = "Present_In_Tables"
+LINK = "Link"
+
+# unused
+GROUPING = "Grouping"
+LAST_UPDATE_DATE = "Last_Update_Date"
+LAST_UPDATE_BY = "Last_Update_By"
 
 
 # These are the minimum expected csv columns, if they're missing, blow up
 EXPECTED_COLUMN_NAMES = set([
-    DATABASE,
-    TABLE_NAME,
-    DATA_ITEM_NAME,
+    COLUMN_NAME,
     DATA_DICTIONARY_DESCRIPTION,
     DATA_TYPE,
     IS_DERIVED_ITEM,
     DERIVATION_METHODOLOGY,
-    DATA_DICTIONARY_NAME,
-    DATA_DICTIONARY_LINKS,
-    "Data Dictionary Links",
+    PRESENT_IN_TABLES,
+    LINK
 ])
 
 CSV_FIELD_TO_COLUMN_FIELD = {
     DEFINITION_ID: "definition_id",
-    DATA_ITEM_NAME: "data_item",
     DATA_DICTIONARY_DESCRIPTION: "description",
     DATA_TYPE: "data_type",
     IS_DERIVED_ITEM: "is_derived_item",
     DERIVATION_METHODOLOGY: "derivation",
+    LINK: "link",
     TECHNICAL_CHECK: "technical_check",
     "Author": "author",
     "Created_Date": "created_date_ext"
 }
 
 IGNORED_FIELDS = set([
+    PRESENT_IN_TABLES,
     BUSINESS_CHECK,
     RK_2,
     SCHEMA,
-    CHECKED
+    CHECKED,
+    GROUPING,
+    LAST_UPDATE_DATE,
+    LAST_UPDATE_BY,
+    COLUMN_NAME
 ])
 
 
@@ -64,14 +73,14 @@ def process_is_derived(value):
     if not value:
         # don't try and save an empty string
         value = None
-    elif value.lower() not in [u"yes", u"no"]:
+    elif value.lower() not in ["yes - external", "yes - ncdr", "no"]:
         raise ValueError(
             "Unable to recognise is derived item {}".format(
                 value
             )
         )
     else:
-        value = value.lower() == u"yes"
+        value = not value.lower() == "no"
 
     return value
 
@@ -80,76 +89,34 @@ def process_created_date(value):
     if not value:
         return None
     else:
-        return datetime.datetime.strptime(value, "%d/%m/%Y").date()
+        return datetime.datetime.strptime(value, "%m/%d/%y").date()
 
 
-def process_data_dictionary_reference(db_column, csv_row):
-    """ we store data dictionary links and names as a seperate foreign key table
-        we want there to be one link to one name after being split by new lines
-
-        this is not always the case.
-
-        work arounds.
-
-        (i) if there is only a single link and lots of names, apply that link
-            to all the names
-
-        (ii) if there are no links, just save a name
-    """
-    names_str = csv_row[DATA_DICTIONARY_NAME]
-    if names_str == "N//A" or names_str == "N/A":
-        db_column.datadictionaryreference_set.all().delete()
-        return
-
-    links_str = csv_row[DATA_DICTIONARY_LINKS]
-    names = [i.strip() for i in names_str.split("\n") if i.strip()]
-    links = [i.strip() for i in links_str.split("\n") if i.strip()]
-    if not len(names) == len(links):
-        if not names:
-            raise ValueError(
-                'found links but no names for {}.{}.{}'.format(
-                    db_column.table.database.name,
-                    db_column.table.name,
-                    db_column.data_item
-                )
-            )
-        elif len(links) == 1:
-            links = [links[0] for i in range(len(names))]
-        elif not links:
-            links = [None for i in range(len(names))]
+def get_database_to_table(csv_row):
+    # table names are split with ; and there are a lot of empty rows
+    full_table_names = [i for i in csv_row[PRESENT_IN_TABLES].split(";") if i]
+    result = []
+    for full_table_name in full_table_names:
+        splitted = full_table_name.split(".dbo.")
+        if len(splitted) == 3:
+            if splitted[0].strip() == splitted[1].strip():
+                # sometimes the database name is put in twice...
+                db_name = splitted[0].strip()
+                table_name = splitted[2].strip()
+            else:
+                err = "unable to process db_name and table name for {}"
+                raise ValueError(err.format(full_table_name))
         else:
-            raise ValueError(
-                'for {}.{}.{} the number of links is different'.format(
-                    db_column.table.database.name,
-                    db_column.table.name,
-                    db_column.data_item
-                )
-            )
+            db_name, table_name = full_table_name.split(".dbo.")
+        db, _ = models.Database.objects.get_or_create(
+            name=db_name.strip()
+        )
+        table, _ = models.Table.objects.get_or_create(
+            name=table_name.strip(), database=db
+        )
+        result.append((db, table,),)
 
-    obj_args = [dict(name=i[0], link=i[1]) for i in zip(names, links)]
-
-    existing = []
-    new_db_refs = []
-    for obj_arg in obj_args:
-        existing_column = db_column.datadictionaryreference_set.filter(
-            **obj_arg
-        ).first()
-
-        if existing_column:
-            existing.append(existing_column)
-        else:
-            new_db_refs.append(obj_arg)
-
-    db_column.datadictionaryreference_set.exclude(
-        id__in=[i.id for i in existing]
-    ).delete()
-
-    for new_db_ref in new_db_refs:
-        db_column.datadictionaryreference_set.create(**new_db_ref)
-
-
-def clean_value(some_field):
-    return unicode(some_field, 'utf-8').strip()
+    return result
 
 
 def process_row(csv_row, file_name):
@@ -157,16 +124,8 @@ def process_row(csv_row, file_name):
         # if its an empty row, skip it
         return
 
-    db, _ = models.Database.objects.get_or_create(
-        name=csv_row[DATABASE]
-    )
-    table, _ = models.Table.objects.get_or_create(
-        name=csv_row[TABLE_NAME],
-        database=db
-    )
     column, _ = models.Column.objects.get_or_create(
-        table=table,
-        data_item=csv_row[DATA_ITEM_NAME]
+        name=csv_row[COLUMN_NAME]
     )
     field_names = csv_row.keys()
 
@@ -174,7 +133,7 @@ def process_row(csv_row, file_name):
         CSV_FIELD_TO_COLUMN_FIELD.keys()
     )
     for field_name in field_names:
-        value = clean_value(csv_row[field_name])
+        value = csv_row[field_name].strip()
         field_name = field_name.strip()
 
         if field_name == TABLE_NAME or field_name == DATABASE:
@@ -184,7 +143,12 @@ def process_row(csv_row, file_name):
         if isinstance(value, str):
             value = value.strip()
 
-        if field_name in IGNORED_FIELDS:
+        if field_name in IGNORED_FIELDS or not field_name.strip():
+            continue
+
+        if field_name.startswith("Table "):
+            # csv schemas have titles Table n, skip this, its all in present in
+            # tables
             continue
 
         if value and field_name not in known_fields:
@@ -213,11 +177,10 @@ def process_row(csv_row, file_name):
                 value = None
 
         setattr(column, db_column_name, value)
-    try:
-        column.save()
-    except:
-        raise
-    process_data_dictionary_reference(column, csv_row)
+    column.save()
+
+    db_to_tables = get_database_to_table(csv_row)
+    column.tables.set(i[1] for i in db_to_tables)
 
 
 def validate_csv_structure(reader, file_name):

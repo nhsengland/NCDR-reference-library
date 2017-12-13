@@ -50,7 +50,7 @@ class DatabaseFilter(admin.SimpleListFilter):
 class ColumnAdmin(admin.ModelAdmin):
     list_filter = [IsTechnicalCheckedFilter]
     list_display = [
-        'data_item',
+        'name',
         'data_type',
         'get_table_name',
         'get_database_name',
@@ -69,12 +69,7 @@ class ColumnAdmin(admin.ModelAdmin):
     get_database_name.short_description = "Database"
 
 
-class ColumnsInline(admin.StackedInline):
-    model = models.Column
-
-
 class TableAdmin(admin.ModelAdmin):
-    inlines = [ColumnsInline]
     list_filter = [DatabaseFilter]
 
 admin.site.register(models.Database)

@@ -1,4 +1,6 @@
 ALLOWED_HOSTS = [
     'localhost',
-    '{{ inventory_hostname }}'
+{% for key in hostvars.keys() %}
+    '{{ key}}',
+{% endfor %}
 ]

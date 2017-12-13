@@ -12,6 +12,12 @@ body {
 .content-offset {
   margin-top: 50px; }
 
+.content-offset-below {
+  margin-bottom: 50px; }
+
+.content-offset-below-10 {
+  margin-bottom: 10px; }
+
 .content-offset-below-20 {
   margin-bottom: 20px; }
 
@@ -153,11 +159,11 @@ footer {
   line-height: 36px;
   margin: 30px 0;
   color: #202a30; }
-.table-detail .row-title {
+.table-detail .column-title {
   color: #005eb8;
   font-size: 22px;
   font-weight: 600; }
-.table-detail .sub-row-title {
+.table-detail .sub-column-title {
   line-height: 1.25;
   font-size: 18px;
   margin-bottom: 10px;
@@ -204,5 +210,27 @@ footer {
 
 .link:hover {
   fill: #005eb8; }
+
+.letter-link {
+  width: 8.3333333333%;
+  font-size: 27px;
+  float: left;
+  padding: 10px 0;
+  background-color: #005eb8;
+  color: #FFF;
+  display: block;
+  border: 1px solid #FFF;
+  text-align: center;
+  text-decoration: none; }
+  .letter-link.active {
+    background-color: #e8edee;
+    color: #202a30; }
+  .letter-link.active:hover {
+    color: #202a30; }
+  .letter-link:hover {
+    color: #FFF; }
+
+.faded {
+  color: #425563; }
 
 /*# sourceMappingURL=styles.css.map */
