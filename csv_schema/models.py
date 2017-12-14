@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.utils.encoding import python_2_unicode_compatible
 from django.urls import reverse
 from django.db.models import Count
 from django.utils.text import slugify
@@ -32,7 +31,6 @@ class DatabaseQueryset(models.QuerySet):
         return self.filter(table__in=Table.objects.all_populated()).distinct()
 
 
-@python_2_unicode_compatible
 class Database(AbstractTimeStamped):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
@@ -68,7 +66,6 @@ class TableQueryset(models.QuerySet):
         )
 
 
-@python_2_unicode_compatible
 class Table(AbstractTimeStamped):
     name = models.CharField(max_length=255)
     description = models.TextField(default="")
@@ -99,7 +96,10 @@ class Table(AbstractTimeStamped):
         return "Database: {} - Table: {}".format(self.database.name, self.name)
 
 
-@python_2_unicode_compatible
+class Mapping(AbstractTimeStamped, models.Model):
+    name = models.CharField(max_length=255, unique=True)
+
+
 class Column(AbstractTimeStamped, models.Model):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
@@ -139,6 +139,9 @@ class Column(AbstractTimeStamped, models.Model):
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
     tables = models.ManyToManyField(Table)
+    mapping = models.ForeignKey(
+        Mapping, on_delete=models.SET_NULL, null=True, blank=True
+    )
 
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.

@@ -3,10 +3,11 @@ Load a csv into the ncdr
 """
 import os
 from django.core.management.base import BaseCommand
-from csv_schema.csv_import import column_loader, table_loader
+from csv_schema.csv_import import column_loader, table_loader, mapping_loader
 
 COLUMN_FILE_DIR = "data/csvs/columns"
 TABLE_FILE_DIR = "data/csvs/database_and_tables"
+MAPPING_DIR = "data/csvs/mappings"
 
 
 class Command(BaseCommand):
@@ -25,3 +26,9 @@ class Command(BaseCommand):
         ]
         for f in all_column_files:
             column_loader.load_file(os.path.join(COLUMN_FILE_DIR, f))
+
+        all_column_files = [
+            i for i in os.listdir(MAPPING_DIR) if i.endswith(".csv")
+        ]
+        for f in all_column_files:
+            mapping_loader.load_file(os.path.join(MAPPING_DIR, f))
