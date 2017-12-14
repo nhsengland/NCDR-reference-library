@@ -8,6 +8,14 @@ from django.utils.text import slugify
 from django.db import models
 DATE_FORMAT = "%b %y"
 
+DATABASE_NAME_TO_DISPLAY_NAME = dict(
+    NHSE_111="NHS 111 Minimum Data Set",
+    NHSE_IAPT="Improving Access to Psychological Therapies Data Set",
+    NHSE_IAPT_PILOT="Improving Access to Psychological Therapies Data Set Pilot",
+    NHSE_Mental_Health="Mental Health Services Data Set",
+    NHSE_SUSPlus_Live="Secondary Uses Service Plus (SUS+)"
+)
+
 
 class AbstractTimeStamped(models.Model):
     created = models.DateTimeField(auto_now_add=True)
@@ -40,6 +48,13 @@ class Database(AbstractTimeStamped):
 
     def get_absolute_url(self):
         return reverse("database_detail", kwargs=dict(db_name=self.name))
+
+    def get_display_name(self):
+        display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(self.name)
+        if display_name:
+            return display_name
+        else:
+            return display_name.replace("_", "")
 
 
 class TableQueryset(models.QuerySet):
@@ -82,18 +97,6 @@ class Table(AbstractTimeStamped):
 
     def get_display_name(self):
         return "Database: {} - Table: {}".format(self.database.name, self.name)
-
-
-class ColumnQueryset(models.QuerySet):
-    def ncdr_references(self):
-        """ An NCDR Reference is when a column appears in more
-            than one table
-        """
-        return self.annotate(
-            table_count=Count('tables')
-        ).filter(
-            table_count__gt=1
-        )
 
 
 @python_2_unicode_compatible
@@ -146,8 +149,6 @@ class Column(AbstractTimeStamped, models.Model):
     created_date_ext = models.DateField(blank=True, null=True)
     link = models.URLField(max_length=500, blank=True, null=True)
 
-    objects = ColumnQueryset.as_manager()
-
     @property
     def link_display_name(self):
         if self.link:
@@ -158,6 +159,22 @@ class Column(AbstractTimeStamped, models.Model):
         return reverse("column_detail", kwargs=dict(
             slug=self.slug,
         ))
+
+    def get_bread_crumb_link(self):
+        if self.name[0] in range(10):
+            from csv_schema import views
+            return reverse("ncdr_reference_list", kwargs=dict(
+                letter=views.NcdrReferenceList.NUMERIC
+            ))
+        return reverse("ncdr_reference_list", kwargs=dict(
+            letter=self.name[0].upper()
+        ))
+
+    def get_bread_crumb_name(self):
+        if self.name[0] in range(10):
+            from csv_schema import views
+            return views.NcdrReferenceList.NUMERIC
+        return self.name[0].upper()
 
     @property
     def other_references(self):

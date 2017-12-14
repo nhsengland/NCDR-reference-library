@@ -1,10 +1,16 @@
 {% extends "base_templates/base.html" %}
 {% block contents %}
-<div class="container">
+<div class="container main-content">
   <div class="row">
     <div class="col-md-12">
       <article>
-        <div class="row content-offset content-offset-below">
+        <div class="row">
+          <div class="col-md-12">
+            <a href="{% url 'database_list' %}">Home</a> / <a href="{% url 'ncdr_reference_redirect' %}">NCDR Reference</a> / <a href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a> / {{ object.name }}
+          </div>
+        </div>
+
+        <div class="row content-offset-below-20">
           <div class="col-sm-12">
             <h1 class="title">
               {{ object.name }}
@@ -55,7 +61,7 @@
             <div class="col-md-12">
               <h3>
                 <a href="{{ table.get_absolute_url }}">
-                {{ table.database.name }}.{{ table.name }}
+                {{ table.database.get_display_name }}.{{ table.name }}
                 </a>
               </h3>
               <div class="row">

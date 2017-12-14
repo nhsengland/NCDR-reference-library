@@ -1,6 +1,5 @@
 Database,Schema,Table/View,Table or View,Description,Date_Range,Data Start,Data End,Link,Author,Created_Date,Last_Update_By,Last_Update_Date,Release schedule,Provisional Schedule,Updated Frequency,Only Historic
 NHSE_111,,,N/A,The 111 data from NECS RAIDR. This database has a restricted access and is only available to specific individuals,Apr 2015 - Ongoing,Apr 2015, Ongoing,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
-NHSE_111,dbo,,N/A,The default schema for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_111,dbo,111_Provider_Data,Table,"The latest 111 data available. The tables with dates at the end of them are previous sets of data, for comparison purposes.",Apr 2015 - Ongoing,Apr 2015, Ongoing,,Nathan Abbotts,11/7/17,,,Ad-Hoc,Ad-Hoc,Ad-Hoc,
 NHSE_111,dbo,111_Provider_Data_2017_04_20,Table,"A previous set of 111 data, retained for comparison purposes.",Apr 2015 - Mar 2017,Apr 2015, Mar 2017,,Nathan Abbotts,11/7/17,,,None-Historic,Final,None-Historic,Yes
 NHSE_111,dbo,111_Provider_Data_2017_05_05,Table,"A previous set of 111 data, retained for comparison purposes.",Apr 2015 - Mar 2017,Apr 2015, Mar 2017,,Nathan Abbotts,11/7/17,,,None-Historic,Final,None-Historic,Yes
@@ -11,7 +10,6 @@ NHSE_111,dbo,111_Provider_Data_2017_10_10,Table,"A previous set of 111 data, ret
 NHSE_111,dbo,111_Provider_Data_2017_10_27,Table,"A previous set of 111 data, retained for comparison purposes.",Apr 2015 - Aug 2017,Apr 2015, Aug 2017,,Nathan Abbotts,11/7/17,,,None-Historic,Final,None-Historic,Yes
 NHSE_111,dbo,111_Provider_Data_2017_11_08,Table,"A previous set of 111 data, retained for comparison purposes.",Apr 2015 - Sep 2017,Apr 2015,Sep 2017,,Nathan Abbotts,12/5/17,,,None-Historic,Final,None-Historic,Yes
 NHSE_IAPT,,,N/A,The (adult) Improving Access to Psychological Therapies (IAPT) data.,Apr 2013- Ongoing,Apr 2013, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
-NHSE_IAPT,dbo,,N/A,The default schema for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_IAPT,internal,,N/A,The default schema for the meta data in the database.,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_IAPT,dbo,Appointment_v15,Table,An appointment is an interaction with a patient by a health care professional with the objective of making a contribution to the health care of the patient. This table holds details of each appointment. A patient may have multiple appointments which require recording.,Apr 2015 - Ongoing,Apr 2015, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_IAPT,dbo,Assessments_v15,Table,This table should contain details of each IAPT Assessment Patient Experience Questionnaire administered for a patient by a healthcare professional.,Apr 2015 - Ongoing,Apr 2015, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
@@ -35,14 +33,12 @@ NHSE_IAPT,internal,DataDictionary,Table,Meta data about the database,N/A,N/A,N/A
 NHSE_IAPT_Pilot,,,N/A,"Pilot data for the impact of 'Integrated IAPT' services co-located in and integrated with physical health services, focused on people with anxiety/depression in the context of Long Term Conditions (LTCs) and/or Medically Unexplained Symptoms (MUS).
 
 This pilot exercise is linked to the existing IAPT data set standard through the collection of LTC and/or MUS data from participating IAPT providers and services. More details at: https://www.england.nhs.uk/mentalhealth/adults/iapt/mus/sites/",Jan 2017 - Ongoing,Jan 2017, Ongoing,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
-NHSE_IAPT_Pilot,dbo,,N/A,The default schema for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_IAPT_Pilot,dbo,LTCAPPOINTMENT,Table,An appointment is an interaction with a patient by a health care professional with the objective of making a contribution to the health care of the patient. This table holds details of LT Condition pilot information gathered at each appointment. A patient may have multiple appointments which require recording.,Jan 2017 - Ongoing,Jan 2017, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_IAPT_Pilot,dbo,LTCCSRI3MONTHS,Table,This table should contain details of the Client Service Receipt Inventory (CSRI) in the last 3 months.,Jan 2017 - Ongoing,Jan 2017, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_IAPT_Pilot,dbo,LTCHEADER,Table,Contains the metadata relating to the submission file.,Jan 2017 - Ongoing,Jan 2017, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_IAPT_Pilot,dbo,LTCLONGTERMCONDITION,Table,This table should contain details of each long term condition the patient has.,Jan 2017 - Ongoing,Jan 2017, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_IAPT_Pilot,dbo,LTCMUS,Table,This table should contain details of each medical unexplained symptom. This should have one record per patient/referral combination.,Jan 2017 - Ongoing,Jan 2017, Ongoing,http://content.digital.nhs.uk/iapt,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_Mental_Health,,,N/A,"The mental health data. This includes several datasets, including the Mental Health Services Data Set (MHSDS), Mental Health Learning Disabilities Data set (MHLDDS) and Mental Health Minimum Data Set (MHMDS).",Apr 2013 - Ongoing,Apr 2013, Ongoing,http://content.digital.nhs.uk/mhsds,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
-NHSE_Mental_Health,dbo,,N/A,The default schema for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_Mental_Health,internal,,N/A,The default schema for the meta data in the database.,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_Mental_Health,dbo,Master_MHS000_Header,Table,Contains the metadata relating to the submission file.,Jan 2016 - Ongoing,Jan 2016, Ongoing,http://content.digital.nhs.uk/mhsds,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
 NHSE_Mental_Health,dbo,Master_MHS001_MPI,Table,The personal details of the person.,Jan 2016 - Ongoing,Jan 2016, Ongoing,http://content.digital.nhs.uk/mhsds,Nathan Abbotts,11/7/17,,,Monthly,Monthly,Monthly,No
@@ -106,7 +102,6 @@ NHSE_Mental_Health,dbo,MHMDS_Records,Table,"This table has been derived prior to
 NHSE_Mental_Health,Internal,DataDictionary,Table,Meta data about the database,N/A,N/A,N/A,,Nathan Abbotts,11/7/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Aggregate,,,N/A,An aggregated copy of the SUS+ data. This database is also used to create and store various extracts from the NCDR.,N/A,N/A,N/A,http://content.digital.nhs.uk/sus/susguidance,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Aggregate,CCGIAF,,N/A,The schema used to store data for the CCG Improvement and Assessment Framework,N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
-NHSE_SUSPlus_Aggregate,dbo,,N/A,The default schema for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Aggregate,Data,,N/A,The schema used for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Aggregate,ETL,,N/A,"The schema used to transform data, it is expected that this logic will be moved further upstream in the future",N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Aggregate,Mapping,,N/A,The schema for various mapping/reference/look up tables.,N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
@@ -217,7 +212,6 @@ NHSE_SUSPlus_Aggregate,THF,APCE,View,The Health Foundation APC (episodes) extrac
 NHSE_SUSPlus_Aggregate,THF,APCS,View,The Health Foundation APC (spells) extract. Sourced from the SUSPlus_Live data,Last 6 months,Last 6 months,Last 6 months,,Nathan Abbotts,12/5/17,,,Monthly,Monthly,Monthly,No
 NHSE_SUSPlus_Aggregate,THF,OP,View,The Health Foundation OP extract. Sourced from the SUSPlus_Live data,Last 6 months,Last 6 months,Last 6 months,,Nathan Abbotts,12/5/17,,,Monthly,Monthly,Monthly,No
 NHSE_SUSPlus_Live,,,N/A,"The SUS+ data. This includes data for admitted patient care, accident & emergency and outpatients",N/A,N/A,N/A,http://content.digital.nhs.uk/sus/susguidance,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
-NHSE_SUSPlus_Live,dbo,,N/A,The default schema for the data in the database.,N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Live,QA,,N/A,The schema used for quality assurance and testing of the data.,N/A,N/A,N/A,,Nathan Abbotts,12/5/17,,,N/A,N/A,N/A,N/A
 NHSE_SUSPlus_Live,dbo,tbl_Data_PbR_CC,Table,The PbR critical care data,Apr 2015 - Ongoing,Apr 2015, Ongoing,,Nathan Abbotts,12/5/17,,,Monthly,Monthly,Monthly,No
 NHSE_SUSPlus_Live,dbo,tbl_Data_SEM_AEA,Table,"The A&E data, taken from SUS SEM from 2008/09 until 2014/15 and from SUS+ for 2015/16 onwards",Apr 2008 - Ongoing,Apr 2008, Ongoing,http://content.digital.nhs.uk/sus/susguidance,Nathan Abbotts,12/5/17,,,Monthly,Monthly,Monthly,No

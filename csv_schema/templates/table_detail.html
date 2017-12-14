@@ -6,7 +6,7 @@
     <aside class="side-nav col-md-4">
       <ul>
         <li class="list-title">
-          Places in {{ object.database.name }}
+          {{ object.database.get_display_name }}
         <li>
         {% for table in tables %}
           <li>
@@ -18,18 +18,18 @@
       </ul>
     </aside>
     <article class="col-md-8">
-      <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.name }}</a> / {{ object.name }}
+      <a href="{% url 'database_list' %}">Home</a> / <a href="{{ object.database.get_absolute_url }}"> {{ object.database.get_display_name }}</a> / {{ object.name }}
       <h1 class="title">
         <div class="row">
           <div class="col-sm-12">
-            {{ object.database.name }} / {{ object.name }}
+            {{ object.database.get_display_name }} / {{ object.name }}
           </div>
         </div>
-        {% if object.start %}
+        {% if object.date_range %}
           <div class="row">
             <div class="col-sm-12">
               <small>
-                {{ object.start }} - {% if object.end %}{{ object.end }}{% else %}Ongoing{% endif %}
+                {{ object.date_range }}
               </small>
             </div>
           </div>

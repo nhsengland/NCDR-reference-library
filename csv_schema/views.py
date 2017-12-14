@@ -65,7 +65,8 @@ class NcdrReferenceList(ListView):
     def get_queryset(self, *args, **kwargs):
         references = super(
             NcdrReferenceList, self
-        ).get_queryset().ncdr_references()
+        ).get_queryset()
+
         if self.kwargs["letter"] == self.NUMERIC:
             """ startswith 0, or 1, or 2 etc
             """
