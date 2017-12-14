@@ -99,6 +99,36 @@ class Table(AbstractTimeStamped):
 class Mapping(AbstractTimeStamped, models.Model):
     name = models.CharField(max_length=255, unique=True)
 
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class Grouping(AbstractTimeStamped, models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    slug = models.SlugField(unique=True)
+
+    def __str__(self):
+        return self.name
+
+    @property
+    def mappings(self):
+        return Mapping.objects.filter(
+            column__in=self.column_set.all()
+        ).distinct().order_by('name')
+
+    def get_absolute_url(self):
+        return reverse("grouping_detail", kwargs=dict(
+            slug=self.slug,
+        ))
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        return super(Grouping, self).save(*args, **kwargs)
+
 
 class Column(AbstractTimeStamped, models.Model):
     DATA_TYPE_CHOICES = (
@@ -141,6 +171,10 @@ class Column(AbstractTimeStamped, models.Model):
     tables = models.ManyToManyField(Table)
     mapping = models.ForeignKey(
         Mapping, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    grouping = models.ForeignKey(
+        Grouping, on_delete=models.SET_NULL, null=True, blank=True
     )
 
     # currently the below are not being shown in the template

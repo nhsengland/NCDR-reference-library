@@ -84,6 +84,24 @@ class NcdrReferenceList(ListView):
         return ctx
 
 
+class GroupingRedirect(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        return reverse('grouping_detail', kwargs=dict(
+            slug=models.Grouping.objects.first().slug)
+        )
+
+
+class GroupingDetail(DetailView):
+    model = models.Grouping
+    template_name = "grouping_detail.html"
+
+    def get_context_data(self, *args, **kwargs):
+        # get the list of tables in this database
+        ctx = super(GroupingDetail, self).get_context_data(*args, **kwargs)
+        ctx["groupings"] = models.Grouping.objects.all().order_by('name')
+        return ctx
+
+
 class AboutView(ListView):
     model = models.SiteDescription
     template_name = "about.html"

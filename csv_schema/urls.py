@@ -22,4 +22,11 @@ urlpatterns = [
     path('ncdr_references', views.NcdrReferenceRedirect.as_view(), name="ncdr_reference_redirect"),
     path('ncdr_references/<str:letter>', views.NcdrReferenceList.as_view(), name="ncdr_reference_list"),
     path('', views.IndexView.as_view(), name="index_view"),
+
+    path('grouping', views.GroupingRedirect.as_view(), name="grouping_redirect"),
+    path(
+        'grouping/<slug:slug>',
+        views.GroupingDetail.as_view(),
+        name="grouping_detail"
+    ),
 ]

@@ -1,0 +1,44 @@
+{% extends "base_templates/base.html" %}
+{% load utils %}
+{% load markdown_deux_tags %}
+{% block contents %}
+  <div class="main-content container table-detail">
+    <aside class="side-nav col-md-4">
+      <ul>
+        <li class="list-title">
+          Groupings
+        <li>
+        {% for grouping in groupings %}
+          <li>
+            <a {% if object.id == grouping.id %}class="active" {% endif %}href="{{ grouping.get_absolute_url }}">
+              {{ grouping.name }}
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <article class="col-md-8">
+      <a href="{% url 'database_list' %}">Home</a> / <a href="{% url 'grouping_redirect' %}">Groupings</a> / {{ object.name }}
+      <h1 class="title">
+        <div class="row">
+          <div class="col-sm-12">
+            {{ object.name }}
+          </div>
+        </div>
+      </h1>
+      {% for mapping in object.mappings %}
+        <div class="row content-offset">
+          <div class="col-md-6">
+            <h4 class="sub-row-title">{{ mapping.name }}</h4>
+          </div>
+        </div>
+        {% for column in mapping.column_set.all %}
+          {% include 'partials/column.html' with hide_groupings=True %}
+            {% if not forloop.last %}
+              <hr />
+            {% endif %}
+        {% endfor %}
+      {% endfor %}
+    </article>
+  </div>
+{% endblock contents %}

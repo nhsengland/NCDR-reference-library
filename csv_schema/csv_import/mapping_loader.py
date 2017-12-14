@@ -8,7 +8,7 @@ from csv_schema import models
 def validate_csv_structure(reader, file_name):
     field_names = reader.fieldnames
     field_names = set([i.strip() for i in field_names if i.strip()])
-    EXPECTED_COLUMN_NAMES = set(["Mapping", "Item_Name"])
+    EXPECTED_COLUMN_NAMES = set(["Mapping", "Item_Name", "Group"])
     missing = EXPECTED_COLUMN_NAMES - field_names
 
     if missing:
@@ -24,6 +24,9 @@ def process_row(csv_row):
     column = models.Column.objects.get(name=item_name)
     mapping, _ = models.Mapping.objects.get_or_create(name=csv_row["Mapping"])
     mapping.column_set.add(column)
+
+    grouping, _ = models.Grouping.objects.get_or_create(name=csv_row["Group"])
+    grouping.column_set.add(column)
 
 
 @transaction.atomic

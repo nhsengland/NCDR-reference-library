@@ -2,6 +2,7 @@
 {% url 'about_page' as about_page %}
 {% url 'database_list' as database_list %}
 {% url 'ncdr_reference_redirect' as ncdr_reference_redirect %}
+{% url 'grouping_redirect' as grouping_redirect %}
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -50,6 +51,11 @@
                 <li>
                   <a {% if ncdr_reference_redirect in request.path %}class="active" {% endif %}href="{{ ncdr_reference_redirect }}">
                     NCDR References
+                  </a>
+                </li>
+                <li>
+                  <a {% if grouping_redirect in request.path %}class="active" {% endif %}href="{{ grouping_redirect }}">
+                    Grouping
                   </a>
                 </li>
                 <li>
