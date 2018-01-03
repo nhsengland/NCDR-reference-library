@@ -15,18 +15,15 @@
               <div class="col-md-12">
                 <h3>
                   <a href="{{ database.get_absolute_url }}">
-                    {{ database.get_display_name }}
+                    <p>{{ database.name }}</p>
+                    <p class="sub">
+                      {{ database.get_display_name }}
+                    </p>
                     <div class="arrow">
                       {% include 'partials/arrow.html' %}
                     </div>
                   </a>
-
                 </h3>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                {{ database.description | markdown }}
               </div>
             </div>
           </div>

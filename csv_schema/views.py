@@ -4,8 +4,10 @@ import operator
 import functools
 from string import ascii_uppercase
 from csv_schema import models
-from django.views.generic import ListView, RedirectView, DetailView
-from django.urls  import reverse
+from django.views.generic import (
+    ListView, RedirectView, DetailView, TemplateView
+)
+from django.urls import reverse
 from django.db.models import Q
 
 
@@ -102,6 +104,5 @@ class GroupingDetail(DetailView):
         return ctx
 
 
-class AboutView(ListView):
-    model = models.SiteDescription
+class AboutView(TemplateView):
     template_name = "about.html"

@@ -75,4 +75,3 @@ class TableAdmin(admin.ModelAdmin):
 admin.site.register(models.Database)
 admin.site.register(models.Table, TableAdmin)
 admin.site.register(models.Column, ColumnAdmin)
-admin.site.register(models.SiteDescription)

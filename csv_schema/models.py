@@ -224,7 +224,3 @@ class Column(AbstractTimeStamped, models.Model):
         if not self.slug:
             self.slug = slugify(self.name)
         return super(Column, self).save(*args, **kwargs)
-
-
-class SiteDescription(models.Model):
-    description = models.TextField()

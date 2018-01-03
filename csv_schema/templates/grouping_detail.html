@@ -18,7 +18,7 @@
       </ul>
     </aside>
     <article class="col-md-8">
-      <a href="{% url 'database_list' %}">Home</a> / <a href="{% url 'grouping_redirect' %}">Groupings</a> / {{ object.name }}
+      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{% url 'grouping_redirect' %}">Groupings</a>{{ object.name }}
       <h1 class="title">
         <div class="row">
           <div class="col-sm-12">

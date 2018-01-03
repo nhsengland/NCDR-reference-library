@@ -1,15 +1,18 @@
 $primary-colour: #005eb8;
-$primary-color-light: #0072ce;
+$primary-colour-light: #0072ce;
 $secondary-colour: #003893;
 
 // the grey used in the side bars
 $tertiary-colour: #e8edee;
 // the text colour used on that grey
 $tertiary-colour-text: #425563;
+// the blue text used for sub headers
+$subheader-text-colour: #003087;
 
 $text-colour: #202a30;
-$text-color-on-dark: #FFF;
+$text-colour-on-dark: #FFF;
 $footer-height: 300px;
+$main-content-margin: 20px;
 
 body {
   background: #fff;
@@ -21,6 +24,19 @@ body {
   font-size: 18px;
   min-height: 100%;
   overflow-x: hidden;
+}
+
+.header-img{
+  max-width: 100%;
+  border: 5px solid #e8edee;
+}
+
+.ncdr-breadcrumbs{
+  display: inline-block;
+  padding-right: 16px;
+  margin-right: 8px;
+  background: url(../img/icons/chevron.svg) no-repeat 100% 50%;
+  background-size: 9px 12px;
 }
 
 .content-offset{
@@ -37,6 +53,17 @@ body {
 
 .content-offset-below-20{
   margin-bottom: 20px;
+}
+
+h3.subheader{
+  color: $subheader-text-colour;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+h4.subheader{
+  margin-top: 20px;
+  margin-bottom: 10px;
 }
 
 .nhs-england-well{
@@ -60,10 +87,10 @@ header.masthead{
     width: auto;
   }
 
-  .subheader{
+  .subtitle{
     display: inline-block;
     padding-left: 30px;
-    color: $text-color-on-dark;
+    color: $text-colour-on-dark;
   }
 
   .banner{
@@ -180,10 +207,14 @@ footer{
   margin-bottom: 0;
 }
 
-$main-content-margin: 20px;
 
 .main-content{
   margin-top: $main-content-margin;
+
+  h1{
+    margin-top: 30px;
+    margin-bottom: 30px;
+  }
 }
 
 
@@ -204,14 +235,18 @@ $main-content-margin: 20px;
     padding-left: 10px;
     padding-right: 10px;
 
-    H3{
+    h3{
       margin-bottom: 15px;
+
+      .sub{
+        font-size: 20px;
+      }
     }
 
     a{
       transition: background-color 0.2s ease-in-out;
       background: $primary-colour;
-      color: $text-color-on-dark;
+      color: $text-colour-on-dark;
       height: 137px;
       font-size: 22.5px;
       cursor: pointer;
@@ -220,7 +255,7 @@ $main-content-margin: 20px;
       padding: 10px;
 
       &:hover{
-        background: $primary-color-light;
+        background: $primary-colour-light;
       }
     }
   }
@@ -306,7 +341,7 @@ $main-content-margin: 20px;
   .list-title{
     display: block;
     background-color: $secondary-colour;
-    color: $text-color-on-dark;
+    color: $text-colour-on-dark;
     padding: 5px 10px;
     margin-top: 5px;
     word-wrap: break-word;
@@ -314,13 +349,13 @@ $main-content-margin: 20px;
 
   a.active{
     background-color: $primary-colour;
-    color: $text-color-on-dark;
+    color: $text-colour-on-dark;
     font-weight: 600;
   }
 
   a:hover{
-    background-color: $primary-color-light;
-    color: $text-color-on-dark;
+    background-color: $primary-colour-light;
+    color: $text-colour-on-dark;
   }
 }
 
@@ -334,9 +369,9 @@ $main-content-margin: 20px;
   float: left;
   padding: 10px 0;
   background-color: $primary-colour;
-  color: $text-color-on-dark;
+  color: $text-colour-on-dark;
   display: block;
-  border: 1px solid $text-color-on-dark;
+  border: 1px solid $text-colour-on-dark;
   text-align: center;
   text-decoration: none;
 
@@ -350,7 +385,7 @@ $main-content-margin: 20px;
   }
 
   &:hover{
-    color: $text-color-on-dark;
+    color: $text-colour-on-dark;
   }
 }
 .faded{
