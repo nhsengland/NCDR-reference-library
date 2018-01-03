@@ -273,9 +273,11 @@ h1{
       display: block;
       position: relative;
       padding: 10px;
+      text-decoration: none;
 
       &:hover{
         background: $primary-colour-light;
+        text-decoration: none;
       }
     }
   }

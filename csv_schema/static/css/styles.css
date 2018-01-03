@@ -181,9 +181,11 @@ h1 {
     cursor: pointer;
     display: block;
     position: relative;
-    padding: 10px; }
+    padding: 10px;
+    text-decoration: none; }
     .card-list .card a:hover {
-      background: #0072ce; }
+      background: #0072ce;
+      text-decoration: none; }
 .card-list .arrow {
   height: 32px;
   width: 32px;
