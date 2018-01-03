@@ -3,117 +3,116 @@
 <div class="container main-content">
   <div class="row">
     <div class="col-md-8">
-      <article>
-        <div class="row">
-          <div class="col-md-12">
-            <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{% url 'ncdr_reference_redirect' %}">NCDR Reference</a><a class="ncdr-breadcrumbs" href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a>{{ object.name }}
-          </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{% url 'ncdr_reference_redirect' %}">References</a><a class="ncdr-breadcrumbs" href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a>{{ object.name }}
         </div>
+      </div>
 
-        <div class="row content-offset-below-20">
-          <div class="col-sm-8">
-            <h1 class="title">
-              {{ object.name }}
-            </h1>
-          </div>
-          <div class="col-sm-4 text-right">
-            <div style="margin-top: 25px">
-              {% if object.grouping %}
-                <a href="{{ object.grouping.get_absolute_url }}" class="label label-default">{{ object.grouping }}</a>
-              {% endif %}
-            </div>
-          </div>
+      <div class="row content-offset-below-20">
+        <div class="col-sm-10">
+          <h1>
+            {{ object.name }}
+          </h1>
         </div>
-        <div class="row nhs-england-well">
-          <div class="col-md-12">
-            <p>
-              {{ object.description | urlize }}
-            </p>
-          </div>
-        </div>
-        {% if object.is_derived_item or object.link %}
-        <div class="row">
-          <div class="col-md-6">
-            {% if object.is_derived_item %}
-              <h4 class="sub-row-title">Derivation</h4>
-              {% if object.derivation == 'N/A' %}
-                External
-              {% else %}
-                {{ object.derivation | urlize }}
-              {% endif %}
+        <div class="col-sm-2 text-right">
+          <div style="margin-top: 25px">
+            {% if object.grouping %}
+              <a href="{{ object.grouping.get_absolute_url }}" class="label label-default">{{ object.grouping }}</a>
             {% endif %}
           </div>
-          <div class="col-md-6">
-            {% if object.link %}
-              <h4 class="sub-row-title">External Links</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row nhs-england-well">
+    <div class="col-md-7">
+      <p>
+        {{ object.description | urlize }}
+      </p>
+    </div>
+    <div class="col-md-4 col-md-push-1">
+      <div class="row">
+        {% if object.link %}
+          <div class="col-md-12">
+              <h4 class="sub-row-title coloured-header">External Links</h4>
               <p>
                 <a href="{{ object.link }}">
                   {{ object.link_display_name }}
                 </a>
               </p>
+          </div>
+        {% endif %}
+      </div>
+      {% if object.link and object.is_derived_item %}
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+          </div>
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-12">
+          {% if object.is_derived_item %}
+            <h4 class="sub-row-title coloured-header">Derivation</h4>
+            {% if object.derivation == 'N/A' %}
+              External
+            {% else %}
+              {{ object.derivation | urlize }}
             {% endif %}
-          </div>
+          {% endif %}
         </div>
-        {% endif %}
-        {% if object.tables.count %}
-        <div class="row content-offset">
-          <div class="col-md-6">
-            <h4 class="sub-row-title">Places</h4>
-          </div>
-        </div>
-        {% endif %}
-
-        {% for table in object.tables.all %}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      {% for table, columns in object.related %}
+        {% ifchanged table.database.name %}
           <div class="row">
             <div class="col-md-12">
-              <h3>
-                <a href="{{ table.get_absolute_url }}">
-                {{ table.database.get_display_name }}.{{ table.name }}
-                </a>
-              </h3>
+              <h3 class="sub-row-title">Used in the database {{ table.database.name }}:</h3>
+            </div>
+          </div>
+        {% endifchanged %}
+        <div class="row">
+          <div class="col-md-12">
+            <h4>
+              <a href="{{ table.get_absolute_url }}">
+                {{ table.name }}
+              </a>
+            </h4>
+            <div class="row">
+              <div class="col-md-12">
+                <p>
+                  {{ table.description }}
+                </p>
+              </div>
+            </div>
+            {% if columns|length > 1 or object not in columns %}
               <div class="row">
                 <div class="col-md-12">
                   <p>
-                    {{ table.description }}
+                    Under the names:
+                    <ul>
+                      {% for column in columns %}
+                        <li>{{ column }}</li>
+                      {% endfor %}
+                    </ul>
                   </p>
                 </div>
               </div>
-            </div>
-          </div>
-          {% if not forloop.last %}
-            <hr />
-          {% endif %}
-        {% endfor %}
-        {% if object.mapping %}
-          {% for column in object.mapping.column_set.all %}
-            {% if not column.name == object.name %}
-              <div class="row content-offset">
-                <div class="col-md-6">
-                  <h4 class="sub-row-title">Places As {{ column.name }}</h4>
-                </div>
-              </div>
-              {% for table in object.tables.all %}
-                <div class="row">
-                  <div class="col-md-12">
-                    <h3>
-                      <a href="{{ table.get_absolute_url }}">
-                      {{ table.database.get_display_name }}.{{ table.name }}
-                      </a>
-                    </h3>
-                    <div class="row">
-                      <div class="col-md-12">
-                        <p>
-                          {{ table.description }}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              {% endfor %}
             {% endif %}
-          {% endfor %}
+          </div>
+        </div>
+        {% if not forloop.last %}
+          <hr />
         {% endif %}
-      </article>
+      {% endfor %}
     </div>
   </div>
 </div>

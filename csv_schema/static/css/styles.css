@@ -23,6 +23,9 @@ body {
 .content-offset {
   margin-top: 50px; }
 
+.content-offset-30 {
+  margin-top: 30px; }
+
 .content-offset-below {
   margin-bottom: 50px; }
 
@@ -45,6 +48,13 @@ h4.subheader {
   padding: 60px;
   background-color: #e8edee;
   margin: 0 0 30px; }
+
+.coloured-stripe {
+  background-color: #e8edee;
+  padding-top: 50px;
+  padding-bottom: 50px; }
+  .coloured-stripe hr {
+    border-top: 1px solid #adbcc7; }
 
 header.masthead {
   background-color: #005eb8;
@@ -134,16 +144,23 @@ footer {
 .pagination {
   margin-bottom: 0; }
 
+.large {
+  font-size: 22.5px; }
+
+.coloured-header {
+  color: #003087; }
+
 .main-content {
   margin-top: 20px; }
-  .main-content h1 {
-    margin-top: 30px;
-    margin-bottom: 30px; }
+
+h1 {
+  margin-top: 30px;
+  margin-bottom: 20px; }
 
 .card-list .title {
+  margin-bottom: 20px;
   font-size: 32px;
   line-height: 36px;
-  margin: 30px 0;
   color: #202a30;
   font-weight: 600; }
 .card-list article {
@@ -174,16 +191,16 @@ footer {
   bottom: 10px;
   right: 10px; }
 
-.table-detail.main-content {
-  margin-top: 20px; }
-.table-detail hr {
+hr {
   border-top: 1px dotted #e8edee;
   margin-top: 20px;
   margin-bottom: 20px; }
+
+.table-detail.main-content {
+  margin-top: 20px; }
 .table-detail .title {
   font-size: 32px;
   line-height: 36px;
-  margin: 30px 0;
   color: #202a30; }
 .table-detail .column-title {
   color: #005eb8;

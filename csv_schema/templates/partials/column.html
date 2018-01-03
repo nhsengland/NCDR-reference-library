@@ -6,7 +6,6 @@
   </span>
   <small>
     {{ column.data_type }}
-
   </small>
   {% if not hide_groupings %}
     <small class="pull-right">
@@ -25,16 +24,9 @@
 </div>
 <div class="row content-offset-top-25 content-offset-below-10">
   <div class="col-md-6">
-    {% if column.tables.count > 1 %}
+    {% if column.useage_count > 1 %}
       <a href="{{ column.get_absolute_url }}">
-        Used in {{ column.tables.count }} places
-      </a>
-    {% endif %}
-  </div>
-  <div class="col-md-6 text-right">
-    {% if column.link %}
-      <a href="{{ column.link }}">
-        {{ column.link_display_name }}
+        Used in {{ column.useage_count }} places
       </a>
     {% endif %}
   </div>

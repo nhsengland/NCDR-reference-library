@@ -43,6 +43,10 @@ body {
   margin-top: 50px;
 }
 
+.content-offset-30{
+  margin-top: 30px;
+}
+
 .content-offset-below{
   margin-bottom: 50px;
 }
@@ -70,6 +74,16 @@ h4.subheader{
   padding: 60px;
   background-color: $tertiary-colour;
   margin: 0 0 30px;
+}
+
+.coloured-stripe{
+  background-color: $tertiary-colour;
+  padding-top: 50px;
+  padding-bottom: 50px;
+
+  hr{
+    border-top: 1px solid #adbcc7;
+  }
 }
 
 header.masthead{
@@ -207,22 +221,28 @@ footer{
   margin-bottom: 0;
 }
 
+.large{
+  font-size: 22.5px;
+}
+
+.coloured-header{
+  color: $subheader-text-colour;
+}
 
 .main-content{
   margin-top: $main-content-margin;
-
-  h1{
-    margin-top: 30px;
-    margin-bottom: 30px;
-  }
 }
 
+h1{
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
 
 .card-list{
   .title{
+    margin-bottom: 20px;
     font-size: 32px;
     line-height: 36px;
-    margin: 30px 0;
     color: $text-colour;
     font-weight: 600;
   }
@@ -269,21 +289,21 @@ footer{
   }
 }
 
+hr {
+    border-top: 1px dotted $tertiary-colour;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
 .table-detail{
   &.main-content{
     margin-top: $main-content-margin;
   }
 
-  hr {
-      border-top: 1px dotted $tertiary-colour;
-      margin-top: 20px;
-      margin-bottom: 20px;
-  }
 
   .title{
     font-size: 32px;
     line-height: 36px;
-    margin: 30px 0;
     color: $text-colour;
   }
 

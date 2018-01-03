@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+from collections import defaultdict
 from django.urls import reverse
 from django.db.models import Count
 from django.utils.text import slugify
+from django.utils.functional import cached_property
 
 from django.db import models
 DATE_FORMAT = "%b %y"
@@ -93,7 +95,7 @@ class Table(AbstractTimeStamped):
         ))
 
     def get_display_name(self):
-        return "Database: {} - Table: {}".format(self.database.name, self.name)
+        return "{} / {}".format(self.database.name, self.name)
 
 
 class Mapping(AbstractTimeStamped, models.Model):
@@ -213,9 +215,36 @@ class Column(AbstractTimeStamped, models.Model):
             return views.NcdrReferenceList.NUMERIC
         return self.name[0].upper()
 
-    @property
-    def other_references(self):
-        return self.link or self.tables.count() > 1
+    def useage_count(self):
+        return self.tables.count() + self.mapping.column_set.count()
+
+    @cached_property
+    def related(self):
+        """ returns a tuple of (table, columns_and_mappings_within_the_table)
+            the column names are sorted alphabetically
+
+            the tables are sorted by database name then name
+        """
+        result = []
+        result.extend(Column.objects.filter(tables__in=self.tables.all()))
+        table_to_columns = defaultdict(list)
+        for table in self.tables.all():
+            table_to_columns[table].append(self)
+
+        if self.mapping:
+            column_set = self.mapping.column_set.exclude(id=self.id)
+            for column in column_set:
+                for table in column.tables.all():
+                    table_to_columns[table].append(column)
+            for i, v in table_to_columns.items():
+                table_to_columns[i] = sorted(
+                    table_to_columns[i], key=lambda x: x.name
+                )
+
+        result = [(i, v,) for i, v in table_to_columns.items()]
+        result = sorted(result, key=lambda x: x[0].name)
+        result = sorted(result, key=lambda x: x[0].database.name)
+        return result
 
     def __str__(self):
         return self.name
