@@ -26,6 +26,7 @@ SCHEMA = "Schema"
 CHECKED = "Checked"
 PRESENT_IN_TABLES = "Present_In_Tables"
 LINK = "Link"
+LINK_TYPE = "Link Type"
 
 # unused
 GROUPING = "Grouping"
@@ -41,7 +42,7 @@ EXPECTED_COLUMN_NAMES = set([
     IS_DERIVED_ITEM,
     DERIVATION_METHODOLOGY,
     PRESENT_IN_TABLES,
-    LINK
+    LINK,
 ])
 
 CSV_FIELD_TO_COLUMN_FIELD = {
@@ -65,7 +66,8 @@ IGNORED_FIELDS = set([
     GROUPING,
     LAST_UPDATE_DATE,
     LAST_UPDATE_BY,
-    COLUMN_NAME
+    COLUMN_NAME,
+    LINK_TYPE
 ])
 
 

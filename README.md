@@ -18,11 +18,26 @@ for future, loading in csvs
 When running the server locally, we are using sass. So installl sass and run
 <!-- sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css -->
 
-deployment
+#### deployment
 update hosts.dev (and use keys natch)
 set your branch in deployment/group_vars/all
 cd deployment
 ansible-playbook setup-server.yml -i hosts.dev
+
+#### loading in new files.
+We currently accept 3 csv files.
+
+1. Columns
+A file that contains all the information about NCDR references. These are columns
+that exist in multiple tables and carry the same information.
+
+2. Database and Tables
+These contain information about the details and tables. For example descriptions
+and display names.
+
+3. Mappings
+These contain information about the Mappings and Groupings of different columns.
+
 
 
 #### TODO
