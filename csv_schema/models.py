@@ -99,7 +99,7 @@ class Table(AbstractTimeStamped):
 
 
 class Mapping(AbstractTimeStamped, models.Model):
-    name = models.CharField(max_length=255, default="", blank=True)
+    name = models.CharField(max_length=255, unique=True)
 
     class Meta:
         ordering = ['name']
