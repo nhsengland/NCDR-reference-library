@@ -25,7 +25,7 @@
             {{ object.database.get_display_name }} / {{ object.name }}
           </div>
         </div>
-        {% if object.date_range %}
+        {% if object.date_range and not object.date_range == 'N/A' %}
           <div class="row">
             <div class="col-sm-12">
               <small>

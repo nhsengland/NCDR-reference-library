@@ -37,6 +37,8 @@ NA = "N/A"
 
 def process_row(csv_row):
     if not csv_row[TABLE] or csv_row[TABLE] == NA:
+        if csv_row[SCHEMA].strip():
+            return
         obj, _ = models.Database.objects.get_or_create(
             name=csv_row[DATABASE]
         )

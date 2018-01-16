@@ -18,10 +18,11 @@
   pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
   executable: pip3
 
-# - name: Run the Django syncdb command
-#   args:
-#     chdir: "{{ project_path}}"
-#   command: "{{ virtualenv_path }}/bin/python manage.py syncdb"
+- file: path={{ item }} state=absent
+  with_fileglob: /opt/app/jboss/configuration/*.web
+
+- file: path="{{ project_path}}" state=absent
+  with_fileglob: "*.sqlite3"
 
 - name: Run Django database migrations
   args:
