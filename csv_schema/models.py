@@ -13,9 +13,19 @@ DATABASE_NAME_TO_DISPLAY_NAME = dict(
     NHSE_111="NHS 111 Minimum Data Set",
     NHSE_IAPT="Improving Access to Psychological Therapies Data Set",
     NHSE_IAPT_PILOT="Improving Access to Psychological Therapies Data Set Pilot",
+    NHSE_IAPT_AnnualRefresh="Improving Access to Psychological Therapies Annual Refresh",
     NHSE_Mental_Health="Mental Health Services Data Set",
-    NHSE_SUSPlus_Live="Secondary Uses Service Plus (SUS+)"
+    NHSE_SUSPlus_Live="Secondary Uses Service Plus (SUS+)",
+    NHSE_Reference="NHSE Reference"
 )
+
+
+def unique_slug(some_cls, name):
+    slug = slugify(name)
+    if some_cls.objects.filter(slug=slug).exists():
+        return "{}{}".format(slug, some_cls.objects.last().id)
+    else:
+        return slug
 
 
 class AbstractTimeStamped(models.Model):
@@ -54,7 +64,7 @@ class Database(AbstractTimeStamped):
         if display_name:
             return display_name
         else:
-            return display_name.replace("_", "")
+            return self.name.replace("_", "").title()
 
 
 class TableQueryset(models.QuerySet):
@@ -128,7 +138,7 @@ class Grouping(AbstractTimeStamped, models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = unique_slug(self.__class__, self.name)
         return super(Grouping, self).save(*args, **kwargs)
 
 
@@ -216,7 +226,10 @@ class Column(AbstractTimeStamped, models.Model):
         return self.name[0].upper()
 
     def useage_count(self):
-        return self.tables.count() + self.mapping.column_set.count()
+        count = self.tables.count()
+        if self.mapping:
+            count += self.mapping.column_set.count()
+        return count
 
     @cached_property
     def related(self):
@@ -251,5 +264,5 @@ class Column(AbstractTimeStamped, models.Model):
 
     def save(self, *args, **kwargs):
         if not self.slug:
-            self.slug = slugify(self.name)
+            self.slug = unique_slug(self.__class__, self.name)
         return super(Column, self).save(*args, **kwargs)

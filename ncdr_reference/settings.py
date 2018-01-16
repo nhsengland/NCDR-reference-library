@@ -77,10 +77,13 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'ncdr_reference.context_processors.settings',
             ],
         },
     },
 ]
+
+USE_GROUPINGS = False
 
 WSGI_APPLICATION = 'ncdr_reference.wsgi.application'
 

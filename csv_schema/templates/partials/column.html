@@ -9,7 +9,7 @@
   </small>
   {% if not hide_groupings %}
     <small class="pull-right">
-      {% if column.grouping %}
+      {% if column.grouping and settings.USE_GROUPINGS %}
         <a href="{{ column.grouping.get_absolute_url }}" class="label label-default">{{ column.grouping }}</a>
       {% endif %}
     </small>

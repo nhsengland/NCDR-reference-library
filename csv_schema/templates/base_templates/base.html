@@ -53,11 +53,13 @@
                     References
                   </a>
                 </li>
+                {% if settings.USE_GROUPINGS %}
                 <li>
                   <a {% if grouping_redirect in request.path %}class="active" {% endif %}href="{{ grouping_redirect }}">
                     Grouping
                   </a>
                 </li>
+                {% endif %}
                 <li>
                   <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ about_page }}">
                     About
