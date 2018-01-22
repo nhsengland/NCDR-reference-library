@@ -31,10 +31,11 @@ class DatabaseList(ListView):
         return qs.all_populated()
 
 
-class DatabaseDetail(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        db = models.Database.objects.get(name=kwargs["db_name"])
-        return db.table_set.all_populated().first().get_absolute_url()
+class DatabaseDetail(DetailView):
+    model = models.Database
+    slug_url_kwarg = 'db_name'
+    slug_field = 'name'
+    template_name = "database_detail.html"
 
 
 class TableDetail(DetailView):
@@ -63,6 +64,7 @@ class NcdrReferenceList(ListView):
     model = models.Column
     template_name = "ncdr_reference_list.html"
     NUMERIC = "0-9"
+    paginate_by = 50
 
     def get_queryset(self, *args, **kwargs):
         references = super(
@@ -73,7 +75,9 @@ class NcdrReferenceList(ListView):
             """ startswith 0, or 1, or 2 etc
             """
             startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
-            return references.filter(functools.reduce(operator.or_, startswith_args))
+            return references.filter(
+                functools.reduce(operator.or_, startswith_args)
+            )
 
         return references.filter(name__istartswith=self.kwargs["letter"][0])
 

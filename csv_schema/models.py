@@ -9,6 +9,9 @@ from django.utils.functional import cached_property
 from django.db import models
 DATE_FORMAT = "%b %y"
 
+NHS_DIGITAL = "NHS Digital"
+VARIOUS = "Various"
+
 DATABASE_NAME_TO_DISPLAY_NAME = dict(
     NHSE_111="NHS 111 Minimum Data Set",
     NHSE_IAPT="Improving Access to Psychological Therapies Data Set",
@@ -17,6 +20,16 @@ DATABASE_NAME_TO_DISPLAY_NAME = dict(
     NHSE_Mental_Health="Mental Health Services Data Set",
     NHSE_SUSPlus_Live="Secondary Uses Service Plus (SUS+)",
     NHSE_Reference="NHSE Reference"
+)
+
+DATABASE_NAME_TO_OWNER = dict(
+    NHSE_111=NHS_DIGITAL,
+    NHSE_IAPT=NHS_DIGITAL,
+    NHSE_IAPT_PILOT=NHS_DIGITAL,
+    NHSE_IAPT_AnnualRefresh=NHS_DIGITAL,
+    NHSE_Mental_Health=NHS_DIGITAL,
+    NHSE_SUSPlus_Live=NHS_DIGITAL,
+    NHSE_Reference=VARIOUS
 )
 
 
@@ -44,6 +57,7 @@ class DatabaseQueryset(models.QuerySet):
 
 
 class Database(AbstractTimeStamped):
+
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
@@ -65,6 +79,11 @@ class Database(AbstractTimeStamped):
             return display_name
         else:
             return self.name.replace("_", "").title()
+
+    def get_owner(self):
+        owner = DATABASE_NAME_TO_OWNER.get(self.name)
+        if owner:
+            return owner
 
 
 class TableQueryset(models.QuerySet):
@@ -225,6 +244,7 @@ class Column(AbstractTimeStamped, models.Model):
             return views.NcdrReferenceList.NUMERIC
         return self.name[0].upper()
 
+    @cached_property
     def useage_count(self):
         count = self.tables.count()
         if self.mapping:

@@ -6,11 +6,13 @@
     <aside class="side-nav col-md-4">
       <ul>
         <li class="list-title">
-          {{ object.database.get_display_name }}
+          <a href="{{ object.database.get_absolute_url }}">
+            {{ object.database.get_display_name }}
+          </a>
         <li>
         {% for table in tables %}
           <li>
-            <a {% if object.id == table.id %}class="active" {% endif %}href="{{ table.get_absolute_url }}">
+            <a class="table-link{% if object.id == table.id %} active{% endif %}" href="{{ table.get_absolute_url }}">
               {{ table.name }}
             </a>
           </li>

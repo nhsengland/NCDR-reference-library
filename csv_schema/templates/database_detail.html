@@ -1,0 +1,68 @@
+{% extends "base_templates/base.html" %}
+{% load markdown_deux_tags %}
+
+{% block contents %}
+
+<div class="container main-content table-detail">
+  <aside class="side-nav col-md-4">
+    <ul>
+      <li class="list-title active">
+        <a href="">
+          {{ object.get_display_name }}
+        </a>
+      <li>
+      {% for table in object.table_set.all_populated %}
+        <li>
+          <a class="table-link" href="{{ table.get_absolute_url }}">
+            {{ table.name }}
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </aside>
+  <article class="col-md-8">
+    <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>{{ object.get_display_name }}
+    <h1 class="title">
+      <div class="row">
+        <div class="col-sm-12">
+          {{ object.get_display_name }}
+        </div>
+      </div>
+      {% if object.date_range and not object.date_range == 'N/A' %}
+        <div class="row">
+          <div class="col-sm-12">
+            <small>
+              {{ object.date_range }}
+            </small>
+          </div>
+        </div>
+      {% endif %}
+    </h1>
+    {% if object.description %}
+      <div class="row nhs-england-well">
+        <div class="col-md-12">
+          {{ object.description | urlize }}
+        </div>
+      </div>
+    {% endif %}
+    <div class="row content-offset-below-10">
+      <div class="col-md-6">
+        Raw Name: <strong class="coloured-header">{{ object.name }}</strong>
+      </div>
+      <div class="col-md-6">
+        Owned by: <strong class="coloured-header">{{ object.get_owner }}</strong>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <p>
+          {% if object.link %} More Information
+          about this dataset can be found at
+          <a target="_blank" href="{{ object.link }}">{{ object.link }}</a>
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </article>
+</div>
+{% endblock %}

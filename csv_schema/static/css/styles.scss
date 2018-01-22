@@ -347,7 +347,7 @@ hr {
     list-style: none;
   }
 
-  a{
+  .table-link{
     display: block;
     background-color: $tertiary-colour;
     color: $tertiary-colour-text;
@@ -361,12 +361,15 @@ hr {
   }
 
   .list-title{
-    display: block;
-    background-color: $secondary-colour;
-    color: $text-colour-on-dark;
-    padding: 5px 10px;
     margin-top: 5px;
-    word-wrap: break-word;
+
+    a{
+      color: $text-colour-on-dark;
+      background-color: $secondary-colour;
+      display: block;
+      padding: 5px 10px;
+      word-wrap: break-word;
+    }
   }
 
   a.active{
@@ -406,10 +409,17 @@ hr {
     color: $text-colour;
   }
 
-  &:hover{
+  &.active:visited{
+    color: $text-colour;
+  }
+
+  &:hover, &:active, &:visited{
     color: $text-colour-on-dark;
   }
 }
 .faded{
   color: $tertiary-colour-text;
+}
+.normal-text{
+  font-weight: 400;
 }
