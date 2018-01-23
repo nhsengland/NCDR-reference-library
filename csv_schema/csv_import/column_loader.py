@@ -33,6 +33,9 @@ GROUPING = "Grouping"
 LAST_UPDATE_DATE = "Last_Update_Date"
 LAST_UPDATE_BY = "Last_Update_By"
 
+# we skip these columns as requested
+TO_SKIP = ["DB_Col_Group", "DB_Col_Name"]
+
 
 # These are the minimum expected csv columns, if they're missing, blow up
 EXPECTED_COLUMN_NAMES = set([
@@ -137,6 +140,9 @@ def process_row(csv_row, file_name):
     for field_name in field_names:
         value = csv_row[field_name].strip()
         field_name = field_name.strip()
+
+        if field_name in TO_SKIP:
+            continue
 
         if field_name == TABLE_NAME or field_name == DATABASE:
             # these fields are the Foreign keys handled above.

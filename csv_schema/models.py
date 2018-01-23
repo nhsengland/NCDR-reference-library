@@ -5,6 +5,7 @@ from django.urls import reverse
 from django.db.models import Count
 from django.utils.text import slugify
 from django.utils.functional import cached_property
+from django.db.models.functions import Lower
 
 from django.db import models
 DATE_FORMAT = "%b %y"
@@ -13,13 +14,13 @@ NHS_DIGITAL = "NHS Digital"
 VARIOUS = "Various"
 
 DATABASE_NAME_TO_DISPLAY_NAME = dict(
-    NHSE_111="NHS 111 Minimum Data Set",
-    NHSE_IAPT="Improving Access to Psychological Therapies Data Set",
-    NHSE_IAPT_PILOT="Improving Access to Psychological Therapies Data Set Pilot",
-    NHSE_IAPT_AnnualRefresh="Improving Access to Psychological Therapies Annual Refresh",
-    NHSE_Mental_Health="Mental Health Services Data Set",
-    NHSE_SUSPlus_Live="Secondary Uses Service Plus (SUS+)",
-    NHSE_Reference="NHSE Reference"
+    NHSE_111="NHS 111 Data Set",
+    NHSE_IAPT="Improving Access to Psychological Therapies (IAPT) Data Set",
+    NHSE_IAPT_PILOT="Improving Access to Psychological Therapies (IAPT) Data Set - pilot",
+    NHSE_IAPT_AnnualRefresh="Improving Access to Psychological Therapies (IAPT) Data Set - annual refresh",
+    NHSE_Mental_Health="Mental Health Data",
+    NHSE_SUSPlus_Live="Secondary Uses Service + (SUS+)",
+    NHSE_Reference="NHS England Reference Data"
 )
 
 DATABASE_NAME_TO_OWNER = dict(
@@ -161,6 +162,14 @@ class Grouping(AbstractTimeStamped, models.Model):
         return super(Grouping, self).save(*args, **kwargs)
 
 
+class ColumnManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(ColumnManager, self).get_queryset(*args, **kwargs)
+        return queryset.annotate(
+            name_lower=Lower('name'),
+        ).order_by('name_lower')
+
+
 class Column(AbstractTimeStamped, models.Model):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
@@ -193,6 +202,8 @@ class Column(AbstractTimeStamped, models.Model):
 
     class Meta:
         ordering = ['name']
+
+    objects = ColumnManager()
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)

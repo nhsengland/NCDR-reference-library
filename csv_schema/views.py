@@ -77,7 +77,7 @@ class NcdrReferenceList(ListView):
             startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
             return references.filter(
                 functools.reduce(operator.or_, startswith_args)
-            )
+        )
 
         return references.filter(name__istartswith=self.kwargs["letter"][0])
 
