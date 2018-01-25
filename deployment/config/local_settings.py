@@ -4,3 +4,5 @@ ALLOWED_HOSTS = [
     '{{ key}}',
 {% endfor %}
 ]
+
+SITE_PREFIX = "/ncdr"
