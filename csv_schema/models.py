@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from collections import defaultdict
-from django.urls import reverse
+from django.urls import reverse_lazy as reverse
 from django.db.models import Count
 from django.utils.text import slugify
 from django.utils.functional import cached_property
