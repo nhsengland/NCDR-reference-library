@@ -69,14 +69,11 @@ class ViewsTestCase(AbstractViewTestCase):
         response = self.client.get(self.database_list_url)
         self.assertEqual(response.status_code, 200)
 
-    def test_database_redirect(self):
+    def test_database_detail(self):
         self.create_csv_column()
         url = reverse("database_detail", kwargs=dict(db_name='example_db'))
-        response = self.client.get(url, follow=True)
-        self.assertEqual(
-            response.redirect_chain,
-            [('/database/example_db/example_table', 302)]
-        )
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
 
     def test_table_detail(self):
         """ should provide a context of all tables under that

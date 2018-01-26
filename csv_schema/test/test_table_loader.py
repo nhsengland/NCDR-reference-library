@@ -30,7 +30,8 @@ class TableLoaderTestCase(TestCase):
             "Table/View": table_loader.NA,
             "Description": "some database",
             "Database": "some name",
-            "Link": "http://some_link.com"
+            "Link": "http://some_link.com",
+            "Schema": ""
         })
         table_loader.process_row(row)
         self.assertFalse(models.Table.objects.exists())
