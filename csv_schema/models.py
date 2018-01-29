@@ -10,8 +10,10 @@ from django.conf import settings
 from django.db import models
 
 
-if getattr(settings, "SITE_PREFIX", ""):
-    SITE_PREFIX = "{}/".format(settings.SITE_PREFIX.strip("/"))
+if hasattr(settings, "SITE_PREFIX"):
+    SITE_PREFIX = "/{}/".format(settings.SITE_PREFIX.strip("/"))
+else:
+    SITE_PREFIX = ""
 
 DATE_FORMAT = "%b %y"
 

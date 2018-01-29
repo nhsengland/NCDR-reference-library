@@ -9,12 +9,18 @@ from django.views.generic import (
 )
 from django.urls import reverse
 from django.db.models import Q
+from django.conf import settings
+
+if hasattr(settings, "SITE_PREFIX"):
+    SITE_PREFIX = "/{}/".format(settings.SITE_PREFIX.strip("/"))
+else:
+    SITE_PREFIX = ""
 
 
 class IndexView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
-        return reverse('database_list')
+        return SITE_PREFIX + reverse('database_list')
 
 
 class ColumnDetail(DetailView):
@@ -57,7 +63,7 @@ class TableDetail(DetailView):
 
 class NcdrReferenceRedirect(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        return reverse('ncdr_reference_list', kwargs=dict(letter="A"))
+        return SITE_PREFIX + reverse('ncdr_reference_list', kwargs=dict(letter="A"))
 
 
 class NcdrReferenceList(ListView):
