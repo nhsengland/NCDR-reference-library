@@ -4,7 +4,7 @@
 {% block contents %}
   <div class="card-list container main-content">
     <article>
-      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{% url 'ncdr_reference_redirect' %}">Elements</a>{{ view.kwargs.letter }}
+      <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'ncdr_reference_redirect' %}">Elements</a>{{ view.kwargs.letter }}
       <nav class="content-offset">
         <div class="row">
           <div class="col-md-12">

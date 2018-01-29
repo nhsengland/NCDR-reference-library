@@ -21,7 +21,7 @@
     </ul>
   </aside>
   <article class="col-md-8">
-    <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>{{ object.get_display_name }}
+    <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a>{{ object.get_display_name }}
     <h1 class="title">
       <div class="row">
         <div class="col-sm-12">

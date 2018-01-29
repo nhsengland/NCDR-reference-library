@@ -15,14 +15,9 @@ Including another URLconf
 """
 from django.urls import path, include
 from django.contrib import admin
-from django.conf import settings
 
-site_prefix = getattr(settings, "SITE_PREFIX", "").strip("/")
-
-if site_prefix:
-    site_prefix = "{}/".format(site_prefix)
 
 urlpatterns = [
-    path(site_prefix + 'admin/', admin.site.urls),
-    path(site_prefix, include("csv_schema.urls")),
+    path('admin/', admin.site.urls),
+    path(include("csv_schema.urls")),
 ]

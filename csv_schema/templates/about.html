@@ -7,14 +7,14 @@
         <article>
           <div class="row">
             <div class="col-md-12">
-              <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a> About
+              <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a> About
             </div>
           </div>
 
           <h1>About</h1>
           <div class="row">
             <div class="col-md-12">
-              <img class="header-img" src="{% static "/img/stetho-computer.jpg" %}" />
+              <img class="header-img" src="{{ settings.SITE_PREFIX }}{% static "/img/stetho-computer.jpg" %}" />
             </div>
           </div>
           <p class="content-offset-30">

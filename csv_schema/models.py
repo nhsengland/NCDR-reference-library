@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from collections import defaultdict
-from django.urls import reverse_lazy as reverse
+from django.urls import reverse
 from django.db.models import Count
 from django.utils.text import slugify
 from django.utils.functional import cached_property
 from django.db.models.functions import Lower
-
+from django.conf import settings
 from django.db import models
+
+
+if getattr(settings, "SITE_PREFIX", ""):
+    SITE_PREFIX = "{}/".format(settings.SITE_PREFIX.strip("/"))
+
 DATE_FORMAT = "%b %y"
 
 NHS_DIGITAL = "NHS Digital"
@@ -72,7 +77,9 @@ class Database(AbstractTimeStamped):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("database_detail", kwargs=dict(db_name=self.name))
+        return SITE_PREFIX + reverse(
+            "database_detail", kwargs=dict(db_name=self.name)
+        )
 
     def get_display_name(self):
         display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(self.name)
@@ -119,7 +126,7 @@ class Table(AbstractTimeStamped):
     objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
-        return reverse("table_detail", kwargs=dict(
+        return SITE_PREFIX + reverse("table_detail", kwargs=dict(
             table_name=self.name,
             db_name=self.database.name
         ))
@@ -152,7 +159,7 @@ class Grouping(AbstractTimeStamped, models.Model):
         ).distinct().order_by('name')
 
     def get_absolute_url(self):
-        return reverse("grouping_detail", kwargs=dict(
+        return SITE_PREFIX + reverse("grouping_detail", kwargs=dict(
             slug=self.slug,
         ))
 
@@ -235,17 +242,17 @@ class Column(AbstractTimeStamped, models.Model):
             return stripped.lstrip("www.").split("/")[0]
 
     def get_absolute_url(self):
-        return reverse("column_detail", kwargs=dict(
+        return SITE_PREFIX + reverse("column_detail", kwargs=dict(
             slug=self.slug,
         ))
 
     def get_bread_crumb_link(self):
         if self.name[0] in range(10):
             from csv_schema import views
-            return reverse("ncdr_reference_list", kwargs=dict(
+            return SITE_PREFIX + reverse("ncdr_reference_list", kwargs=dict(
                 letter=views.NcdrReferenceList.NUMERIC
             ))
-        return reverse("ncdr_reference_list", kwargs=dict(
+        return SITE_PREFIX + reverse("ncdr_reference_list", kwargs=dict(
             letter=self.name[0].upper()
         ))
 
