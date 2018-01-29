@@ -92,7 +92,7 @@ class NcdrReferenceList(ListView):
         symbols = [i for i in ascii_uppercase]
         symbols.append(self.NUMERIC)
         url = lambda x: reverse('ncdr_reference_list', kwargs=dict(letter=x))
-        ctx['other_pages'] = ((symbol, url(symbol),) for symbol in symbols)
+        ctx['other_pages'] = ((symbol, SITE_PREFIX + url(symbol),) for symbol in symbols)
         return ctx
 
 
