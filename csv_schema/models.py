@@ -11,7 +11,7 @@ from django.db import models
 
 
 if hasattr(settings, "SITE_PREFIX"):
-    SITE_PREFIX = "/{}/".format(settings.SITE_PREFIX.strip("/"))
+    SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
     SITE_PREFIX = ""
 

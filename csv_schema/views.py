@@ -12,7 +12,7 @@ from django.db.models import Q
 from django.conf import settings
 
 if hasattr(settings, "SITE_PREFIX"):
-    SITE_PREFIX = "/{}/".format(settings.SITE_PREFIX.strip("/"))
+    SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
     SITE_PREFIX = ""
 
