@@ -5,5 +5,5 @@ ALLOWED_HOSTS = [
 {% endfor %}
 ]
 
-DEBUG = False
-SITE_PREFIX = "/ncdr"
+# DEBUG = False
+# SITE_PREFIX = "/ncdr"
