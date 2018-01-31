@@ -32,8 +32,8 @@ class Command(BaseCommand):
             column_loader.load_file(os.path.join(COLUMN_FILE_DIR, f))
 
         # we are currently ignoring mappings and groupings
-        all_column_files = [
-            i for i in os.listdir(MAPPING_DIR) if i.endswith(".csv")
-        ]
-        for f in all_column_files:
-            mapping_loader.load_file(os.path.join(MAPPING_DIR, f))
+        # all_column_files = [
+        #     i for i in os.listdir(MAPPING_DIR) if i.endswith(".csv")
+        # ]
+        # for f in all_column_files:
+        #     mapping_loader.load_file(os.path.join(MAPPING_DIR, f))
