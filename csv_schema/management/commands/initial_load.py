@@ -4,10 +4,14 @@ Load a csv into the ncdr
 import os
 from django.core.management.base import BaseCommand
 from csv_schema.csv_import import column_loader, table_loader, mapping_loader
+from django.conf import settings
 
-COLUMN_FILE_DIR = "data/csvs/columns"
-TABLE_FILE_DIR = "data/csvs/database_and_tables"
-MAPPING_DIR = "data/csvs/mappings"
+
+COLUMN_FILE_DIR = os.path.join(settings.BASE_DIR, "data/csvs/columns")
+TABLE_FILE_DIR = os.path.join(
+    settings.BASE_DIR, "data/csvs/database_and_tables"
+)
+MAPPING_DIR = os.path.join(settings.BASE_DIR, "data/csvs/mappings")
 
 
 class Command(BaseCommand):
