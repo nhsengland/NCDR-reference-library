@@ -10,7 +10,7 @@ from django.conf import settings
 from django.db import models
 
 
-if hasattr(settings, "SITE_PREFIX"):
+if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
     SITE_PREFIX = ""

@@ -137,6 +137,8 @@ USE_TZ = True
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
+USE_GROUPINGS = True
+
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
