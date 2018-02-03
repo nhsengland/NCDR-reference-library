@@ -9,6 +9,10 @@ body {
   min-height: 100%;
   overflow-x: hidden; }
 
+.form-nav {
+  display: inline-block;
+  width: 110px; }
+
 .header-img {
   max-width: 100%;
   border: 5px solid #e8edee; }

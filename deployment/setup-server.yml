@@ -6,9 +6,6 @@
   user: ubuntu
   hosts: webserver
   gather_facts: no
-  pre_tasks:
-    - name: 'install python3'
-      raw: sudo apt-get -y install python-simplejson
   roles:
     - server
 

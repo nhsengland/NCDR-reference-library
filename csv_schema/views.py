@@ -10,11 +10,36 @@ from django.views.generic import (
 from django.urls import reverse
 from django.db.models import Q
 from django.conf import settings
+from django.apps import apps
+
 
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
     SITE_PREFIX = ""
+
+
+class EditView(ListView):
+    paginate_by = 100
+    template_name = "forms/edit_form.html"
+
+    def get_queryset(self):
+        m = apps.get_model("csv_schema", self.kwargs["model_name"])
+        return m.objects.all()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(EditView, self).get_context_data(*args, **kwargs)
+        ctx["model"] = apps.get_model("csv_schema", self.kwargs["model_name"])
+        return ctx
+
+
+class AddView(TemplateView):
+    template_name = "forms/add_form.html"
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(AddView, self).get_context_data(*args, **kwargs)
+        ctx["model"] = apps.get_model("csv_schema", self.kwargs["model_name"])
+        return ctx
 
 
 class IndexView(RedirectView):

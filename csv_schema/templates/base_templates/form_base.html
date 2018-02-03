@@ -1,0 +1,28 @@
+{% extends "base_templates/base.html" %}
+{% block contents %}
+  <div class="container main-content">
+    {% block form_navigation %}
+      <div class="row">
+        <div class="col-md-12">
+          <nav class="row">
+            <a href="{{ model.get_edit_url }}" class="col-md-2">
+              Edit {{ model.get_model_display_name_plural }}
+            </a>
+            <a href="{{ model.get_add_url }}" class="col-md-2">
+              Add {{ model.get_model_display_name_plural }}
+            </a>
+            <div class="col-md-8">
+              {% include 'partials/form_navigation.html' %}
+            </div>
+          </nav>
+        </div>
+      </div>
+    {% endblock %}
+
+    {% block form_contents %}
+    {{ action }} {{ model.get_model_display_name_plural }}
+
+
+    {% endblock %}
+  </div>
+{% endblock %}

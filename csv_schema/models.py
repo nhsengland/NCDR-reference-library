@@ -49,7 +49,52 @@ def unique_slug(some_cls, name):
         return slug
 
 
-class AbstractTimeStamped(models.Model):
+class NcdrModel(models.Model):
+
+    @classmethod
+    def get_form_display_template(cls):
+        return "forms/display_templates/{}.html".format(
+            cls.get_model_api_name()
+        )
+
+    @classmethod
+    def get_form_description_template(cls):
+        return "forms/descriptions/{}.html".format(
+            cls.get_model_api_name()
+        )
+
+    @classmethod
+    def get_form_template(cls):
+        return "forms/{}.html".format(
+            cls.get_model_api_name()
+        )
+
+    @classmethod
+    def get_model_api_name(cls):
+        return cls.__name__.lower()
+
+    @classmethod
+    def get_model_display_name(cls):
+        return cls._meta.verbose_name.title()
+
+    @classmethod
+    def get_model_display_name_plural(cls):
+        return cls._meta.verbose_name_plural.title()
+
+    @classmethod
+    def get_edit_url(cls):
+        return reverse(
+            "edit",
+            kwargs=dict(model_name=cls.get_model_api_name())
+        )
+
+    @classmethod
+    def get_add_url(cls):
+        return reverse(
+            "add",
+            kwargs=dict(model_name=cls.get_model_api_name())
+        )
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -64,7 +109,7 @@ class DatabaseQueryset(models.QuerySet):
         return self.filter(table__in=Table.objects.all_populated()).distinct()
 
 
-class Database(AbstractTimeStamped):
+class Database(NcdrModel):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
@@ -107,7 +152,7 @@ class TableQueryset(models.QuerySet):
         )
 
 
-class Table(AbstractTimeStamped):
+class Table(NcdrModel):
     name = models.CharField(max_length=255)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
@@ -137,7 +182,7 @@ class Table(AbstractTimeStamped):
         return "{} / {}".format(self.database.name, self.name)
 
 
-class Mapping(AbstractTimeStamped, models.Model):
+class Mapping(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
 
     class Meta:
@@ -147,7 +192,7 @@ class Mapping(AbstractTimeStamped, models.Model):
         return self.name
 
 
-class Grouping(AbstractTimeStamped, models.Model):
+class Grouping(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True)
 
@@ -179,7 +224,7 @@ class ColumnManager(models.Manager):
         ).order_by('name_lower')
 
 
-class Column(AbstractTimeStamped, models.Model):
+class Column(NcdrModel, models.Model):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
         ("date", "date",),
@@ -211,6 +256,7 @@ class Column(AbstractTimeStamped, models.Model):
 
     class Meta:
         ordering = ['name']
+        verbose_name = "Element"
 
     objects = ColumnManager()
 
