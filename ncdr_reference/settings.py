@@ -25,14 +25,11 @@ SECRET_KEY = 'TOBEOVERRIDDEN'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.193', '127.0.0.1']
+ALLOWED_HOSTS = []
 
-# e.g.
-# SITE_PREFIX = "/hello"
-# ie without trailing /
-SITE_PREFIX = ""
 
 # Application definition
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -41,9 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'rest_framework',
     'csv_schema',
+    'url_tools',
     'markdown_deux',
+    'webpack_loader',
     'ncdr_reference',
 ]
 
@@ -82,14 +80,10 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-                'ncdr_reference.context_processors.settings',
-                'ncdr_reference.context_processors.models',
             ],
         },
     },
 ]
-
-USE_GROUPINGS = False
 
 WSGI_APPLICATION = 'ncdr_reference.wsgi.application'
 
@@ -137,7 +131,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
@@ -145,6 +138,6 @@ DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 STATIC_URL = '/static/'
 if 'test' not in sys.argv:
     try:
-        from ncdr_reference.local_settings import *
+        from local_settings import *
     except ImportError:
         pass
