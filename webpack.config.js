@@ -21,15 +21,31 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(), // don't reload if there is an error
     new BundleTracker({filename: './webpack-stats.json'}),
+    new ExtractTextPlugin({ // define where to save the file
+      filename: 'css/styles.css',
+    }),
   ],
 
   module: {
-    loaders: [
-      // we pass the output from babel loader
-      { test: /\.jsx?$/, exclude: /node_modules/, loaders: ['babel'], },
-    ],
+    rules: [
+      /*
+      your other rules for JavaScript transpiling go in here
+      */
+      {
+        test: /\.svg$/, use: "ignore-loader"
+      },
+      { // regular css files
+        test: /\.css$/,
+        use: ExtractTextPlugin.extract({
+          use: 'css-loader?importLoaders=1'
+        })
+      },
+      { // sass / scss loader for webpack
+        test: /\.(sass|scss)$/,
+        use: ExtractTextPlugin.extract(['css-loader', 'sass-loader'])
+      }
+    ]
   },
-
   resolve: {
     modulesDirectories: ['node_modules', 'bower_components'],
     extensions: ['', '.js', '.jsx']
