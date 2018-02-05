@@ -1,5 +1,12 @@
 import 'whatwg-fetch'
+import Cookies from 'js-cookie';
 const url = "/api/databases/";
+const csrftoken = Cookies.get('csrftoken');
+const fetchHeaders = new Headers({
+    "X-CSRFToken": csrftoken,
+    "Accept": "application/json",
+    "Content-Type": "application/json"
+})
 
 class EditingVars{
   constructor(editingFields, parent){
@@ -28,9 +35,8 @@ class EditingVars{
     fetch(editUrl, {
       method: 'PUT',
       body: JSON.stringify(postData),
-      headers: new Headers({
-        'Content-Type': 'application/json'
-      })
+      credentials: 'include',
+      headers: fetchHeaders
     }).then((response) => {
       response.json().then(function(update){
         self.parent.update(update);
@@ -64,7 +70,7 @@ class Database {
   }
   static load(){
     let result = new Promise((resolve, reject) => {
-      fetch(url).then(function(data){
+      fetch(url, {headers: fetchHeaders, credentials: 'include'}).then(function(data){
         if(data.status < 400){
           data.json().then(function(rawDatabases){
             let databases = rawDatabases.map(function(rawDatabase){

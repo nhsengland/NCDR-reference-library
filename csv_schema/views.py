@@ -7,6 +7,7 @@ from csv_schema import models
 from django.views.generic import (
     ListView, RedirectView, DetailView, TemplateView
 )
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.db.models import Q
 from django.conf import settings
@@ -19,7 +20,7 @@ else:
     SITE_PREFIX = ""
 
 
-class EditView(ListView):
+class EditView(LoginRequiredMixin, ListView):
     paginate_by = 100
     template_name = "forms/edit_form.html"
 
@@ -33,7 +34,7 @@ class EditView(ListView):
         return ctx
 
 
-class AddView(TemplateView):
+class AddView(LoginRequiredMixin, TemplateView):
     template_name = "forms/add_form.html"
 
     def get_context_data(self, *args, **kwargs):

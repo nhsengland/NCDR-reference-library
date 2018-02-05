@@ -1,0 +1,36 @@
+{% extends 'base_templates/base.html' %}
+
+{% block contents %}
+  <div class="container">
+    <div class="col-md-4 col-md-pysh-4">
+      <h2>Login</h2>
+      <form method="post" action="{% url 'login' %}" class="form-horizontal">
+        {% csrf_token %}
+        <div class="form-group">
+          <div class="col-sm-12">
+                <input type="text" id="username" name="username"  placeholder="Username"
+                       autocomplete="off"
+                       class="form-control"
+                       autofocus="autofocus"
+                       />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+              <input type="password" name="password" id="password" placeholder="Password" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <div class="col-sm-12">
+          <button type="submit" class="btn btn-lg btn-primary pull-right" id="login"><i class="fa fa-key"></i> Sign in</button>
+          </div>
+        </div>
+        {% if next %}
+          <input type="hidden" name="next" value="{{ next }}" />
+        {% endif %}
+      </form>
+    </div>
+  </div>
+{% endblock %}
