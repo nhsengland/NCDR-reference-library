@@ -1,0 +1,14 @@
+<form>
+  {% block form_fields %}
+  {% endblock %}
+  <div class="row">
+    <div class="col-md-12 text-right">
+      <a class="btn btn-primary" v-on:click="item.editing.save()">
+        Save
+      </a>
+      <a class="btn btn-default" v-on:click="item.editing.cancel()">
+        Cancel
+      </a>
+    </div>
+  </div>
+</form>

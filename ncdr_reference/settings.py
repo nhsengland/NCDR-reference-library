@@ -39,8 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'csv_schema',
-    'url_tools',
     'markdown_deux',
+    'rest_framework',
     'webpack_loader',
     'ncdr_reference',
 ]
@@ -54,6 +54,13 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': 'bundles/',
+        'STATS_FILE': os.path.join(BASE_DIR, 'webpack-stats.json'),
+    }
+}
 
 ROOT_URLCONF = 'ncdr_reference.urls'
 

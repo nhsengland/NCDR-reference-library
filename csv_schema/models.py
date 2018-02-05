@@ -58,6 +58,18 @@ class NcdrModel(models.Model):
         )
 
     @classmethod
+    def get_vue_display_template(cls):
+        return "forms/vue_display_templates/{}.html".format(
+            cls.get_model_api_name()
+        )
+
+    @classmethod
+    def get_vue_form_template(cls):
+        return "forms/vue_form_templates/{}.html".format(
+            cls.get_model_api_name()
+        )
+
+    @classmethod
     def get_form_description_template(cls):
         return "forms/descriptions/{}.html".format(
             cls.get_model_api_name()

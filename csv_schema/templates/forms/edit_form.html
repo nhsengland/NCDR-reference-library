@@ -1,5 +1,6 @@
 {% extends "base_templates/form_base.html" %}
 {% block form_contents %}
+<div id="ncdr-container">
   <div class="row">
     <div class="col-md-12">
       <h3>Edit {{ model.get_model_display_name_plural }}</h3>
@@ -8,14 +9,19 @@
           {% include model.get_form_description_template %}
         </div>
       {% endif %}
-      {% for m in object_list %}
-        <div class="content-offset-below-20">
-          {% include m.get_form_display_template %}
-          {% if not forloop.last %}
-            <hr />
-          {% endif %}
-        </div>
-      {% endfor %}
+      <object-list>
+      </object-list>
+
+      {% comment %}
+        {% for m in object_list %}
+          <div class="content-offset-below-20">
+            {% include m.get_form_display_template %}
+            {% if not forloop.last %}
+              <hr />
+            {% endif %}
+          </div>
+        {% endfor %}
+      {% endcomment %}
     </div>
   </div>
   <div class="row">
@@ -43,4 +49,21 @@
       {% endif %}
     </div>
   </div>
+</div>
+
+<script type="text/x-template" id="object-list">
+  <div>
+    <div v-for="item in databases" class="content-offset-below-20">
+      <div v-if="!item.editing.editMode">
+        <a v-on:click="item.edit()">
+          {% include model.get_vue_display_template %}
+        </a>
+      </div>
+      <div v-if="item.editing.editMode">
+        {% include model.get_vue_form_template %}
+      </div>
+    </div>
+  </div>
+</script>
+
 {% endblock %}

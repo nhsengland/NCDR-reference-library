@@ -1,0 +1,29 @@
+{% extends "base_templates/vue_form_base.html" %}
+{% block form_fields %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="form-group">
+      <label for="databaseSelect">Database</label>
+      <select class="form-control" id="databaseSelect">
+        <option value="volvo">Volvo</option>
+        <option value="saab">Saab</option>
+        <option value="mercedes">Mercedes</option>
+        <option value="audi">Audi</option>
+      </select>
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group">
+      <label for="nameInput">Name</label>
+      <input v-model="item.editing.name" id="nameInput" />
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="form-group">
+      <label for="descriptionText">Description</label>
+      <textarea v-model="item.editing.description" class="form-control" id="descriptionText">
+      </textarea>
+    </div>
+  </div>
+</div>
+{% endblock %}
