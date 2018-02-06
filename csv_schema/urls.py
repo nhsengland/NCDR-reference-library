@@ -35,5 +35,4 @@ urlpatterns = [
         views.GroupingDetail.as_view(),
         name="grouping_detail"
     ),
-    path('api/', include(api.router.urls)),
 ]
