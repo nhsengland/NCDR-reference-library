@@ -1,28 +1,67 @@
-<form>
-  <div class="row">
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="databaseSelect">Database</label>
-        <select class="form-control" id="databaseSelect">
-          <option value="volvo">Volvo</option>
-          <option value="saab">Saab</option>
-          <option value="mercedes">Mercedes</option>
-          <option value="audi">Audi</option>
-        </select>
+<div class="row">
+  <div class="col-md-10">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="nameInput">Name</label>
+          <input required v-model="item.editing.name" id="nameInput" class="form-control" />
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="dataTypeSelect">Data Type</label>
+          <select v-model="item.editing.data_type" class="form-control" id="dataTypeSelect">
+            {% for m in models.csv_schema.column.DATA_TYPE_CHOICES %}
+              <option>{{ m.0 }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="form-group">
+          <label for="descriptionText">Description</label>
+          <textarea v-model="item.editing.description" class="form-control" id="descriptionText">
+          </textarea>
+        </div>
+      </div>
+      <div class="col-md-12">
+        <div class="form-group">
+          <label for="tableMultiSelect">Tables</label>
+          <textarea class="form-control" id="tableMultiSelect">
+          </textarea>
+        </div>
       </div>
     </div>
-    <div class="col-md-3">
-      <div class="form-group">
-        <label for="nameInput">Name</label>
-        <input id="nameInput" />
+    <div class="row">
+      <div class="col-md-3">
+        <div class="checkbox">
+          <label>
+            <input type="checkbox" v-model="item.editing.is_derived_item">
+            Is it derived?
+          </label>
+        </div>
       </div>
-    </div>
-    <div class="col-md-6">
-      <div class="form-group">
-        <label for="descriptionText">Description</label>
-        <textarea class="form-control" id="descriptionText">
+      <div class="col-md-9">
+        <label for="derivationDescription">Derivation</label>
+        <textarea class="form-control" id="derivationDescription">
         </textarea>
       </div>
     </div>
+    <div class="row">
+      <div class="col-md-3">
+        <div class="form-group">
+          <label type="url" for="linkInput">Link</label>
+          <input id="linkInput" />
+        </div>
+      </div>
+      <div class="col-md-9">
+        <label for="groupingSelect">Groupings</label>
+        <select v-model="item.editing.grouping" class="form-control" id="groupingSelect">
+          {% for m in model_objects.csv_schema.grouping.all %}
+            <option value="{{ m.id }}">{{ m.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
   </div>
-</form>
+</div>

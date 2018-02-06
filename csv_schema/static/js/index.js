@@ -1,30 +1,53 @@
-import {Database} from './models';
+import "babel-polyfill"
+import {getModel} from './models';
 import Vue from 'vue'
 import _ from 'lodash'
 
+Vue.component('add-many', {
+  props: ['objectType'],
+  template: "#add-many",
+  delimiters: ['[[', ']]'],
+  data: function(){
+    let m = getModel(this.objectType);
+    return {
+      records: [new m()],
+      model: m
+    }
+  },
+  methods: {
+    addAnother: function(){
+      this.records.push(new this.model());
+    },
+    saveAll: function(){
+      this.records.forEach((x) => {
+        x.save();
+      });
+    },
+  }
+})
 
-let ol = Vue.component('object-list', {
-  props: [],
+Vue.component('object-list', {
+  props: ['objectType'],
   template: "#object-list",
   delimiters: ['[[', ']]'],
-  methods: {
-    // appendToRequest: function(apiName, field, value){
-    //   var currentHref = window.location.href;
-    //   if(currentHref.indexOf("?") === -1){
-    //     return currentHref + "?" + apiName + "__" + field + "=" + value;
-    //   }
-    //   else{
-    //     return currentHref + "&" + apiName + "__" + field + "=" + value;
-    //   }
-    // }
-  },
   data: function(){
-    return {databases: []};
-
+    return {records: []};
+  },
+  methods: {
+    remove: function(record){
+      record.editing.delete().then((response) => {
+        this.records = _.filter(this.records, (r) => {
+          return r.id !== record.id;
+        });
+      });
+      this.records.push(new this.model());
+    },
   },
   mounted: function(){
-    return Database.load().then((databases) => {
-      this.databases = databases;
+    let promise = getModel(this.objectType).load();
+
+    return promise.then((records) => {
+      this.records = records;
     }).catch((error) => {
       alert(error);
     });
@@ -35,4 +58,11 @@ let ol = Vue.component('object-list', {
 new Vue({
   el: '#ncdr-container',
   delimiters: ['[[', ']]'],
+  data: {
+    selected: 2,
+    options: [
+      { id: 1, text: 'Hello' },
+      { id: 2, text: 'World' }
+    ]
+  }
 });

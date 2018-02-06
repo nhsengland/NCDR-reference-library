@@ -9,10 +9,21 @@ class ModelContextProcessor(object):
             setattr(self, i, v)
 
 
+class ModelObjectContextProcessor(object):
+    def __init__(self):
+        for i, v in apps.all_models.items():
+            result = {}
+            for model_name, model in v.items():
+                result[model_name] = model.objects
+            setattr(self, i, result)
+
+
 def models(request):
-    return {
-        "models": SimpleLazyObject(ModelContextProcessor)
+    result = {
+        "models": SimpleLazyObject(ModelContextProcessor),
+        "model_objects": SimpleLazyObject(ModelObjectContextProcessor)
     }
+    return result
 
 
 def settings(request):

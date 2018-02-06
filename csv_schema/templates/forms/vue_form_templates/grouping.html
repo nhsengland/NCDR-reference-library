@@ -1,1 +1,10 @@
-{% include "partials/default_form_template.html" %}
+<form>
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="nameInput">Name</label>
+        <input required v-model="item.editing.name" id="nameInput" class="form-control" />
+      </div>
+    </div>
+  </div>
+</form>

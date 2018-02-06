@@ -1,36 +1,43 @@
 {% extends "base_templates/form_base.html" %}
 {% block form_contents %}
-<div class="row">
-  <div class="col-md-12">
-    <h3>Add {{ model.get_model_display_name_plural }}</h3>
-    {% if model.get_form_description_template %}
-      <div class="row nhs-england-well">
-        {% include model.get_form_description_template %}
+  <div id="ncdr-container">
+    <add-many object-type="{{ model.get_model_api_name }}">
+    </add-many>
+  </div>
+
+  <script type="text/x-template" id="add-many">
+  <div>
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Add {{ model.get_model_display_name_plural }}</h3>
+        {% if model.get_form_description_template %}
+          <div class="row nhs-england-well">
+            {% include model.get_form_description_template %}
+          </div>
+        {% endif %}
       </div>
-    {% endif %}
+    </div>
+    <form v-on:submit="saveAll()" v-on:submit.prevent>
+      <div v-for="item in records" class="row content-offset-below-20">
+        <div class="col-md-12">
+          {% include model.get_vue_form_template %}
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <a v-on:click="addAnother()" class="pull-right btn btn-primary">
+            Add Another
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-3"></div>
+        <button button type="submit" class="btn btn-primary">
+          save all
+        </button>
+      </div>
+    </form>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    {% include model.get_form_template %}
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-12">
-    <button class="pull-right btn btn-primary">
-      Add Another
-    </button>
-  </div>
-</div>
-<div class="row">
-  <div class="col-md-3"></div>
-  <button class="btn btn-primary col-md-2">
-    save
-  </button>
-  <div class="col-md-2"></div>
-  <button class="btn btn-primary col-md-2">
-    cancel
-  </button>
-</div>
+</script>
 
 {% endblock %}

@@ -1,0 +1,30 @@
+{
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": [
+          "Chrome >= 52",
+          "FireFox >= 44",
+          "Safari >= 7",
+          "Explorer 11",
+          "last 4 Edge versions"
+        ]
+      },
+      "useBuiltIns": true
+    }],
+    "es2015",
+    "stage-1"
+  ],
+
+  "ignore": [
+    "node_modules"
+  ],
+  "plugins": [
+    "syntax-flow",
+    "transform-decorators-legacy",
+    "transform-class-properties",
+    "transform-object-rest-spread",
+    "transform-flow-strip-types",
+    "syntax-class-properties"
+  ]
+}

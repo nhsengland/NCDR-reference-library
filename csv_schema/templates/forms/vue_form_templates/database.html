@@ -1,1 +1,21 @@
-{% include "partials/default_form_template.html" %}
+  <div class="row">
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="nameInput">Name</label>
+        <input required v-model="item.editing.name" id="nameInput" class="form-control" />
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="form-group">
+        <label for="descriptionText">Description</label>
+        <textarea v-model="item.editing.description" class="form-control" id="descriptionText">
+        </textarea>
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="form-group">
+        <label for="linkInput">Link</label>
+        <input type="url" v-model="item.editing.link" id="linkInput" class="form-control" />
+      </div>
+    </div>
+  </div>

@@ -1,70 +1,16 @@
-{% extends "base_templates/form_base.html" %}
-{% block form_contents %}
-<h1>{{ request.user.username }}</h1>
-<div id="ncdr-container">
+<form v-on:submit="item.save()" v-on:submit.prevent>
+  {% include model.get_vue_form_template %}
   <div class="row">
-    <div class="col-md-12">
-      <h3>Edit {{ model.get_model_display_name_plural }}</h3>
-      {% if model.get_form_description_template %}
-        <div class="row nhs-england-well">
-          {% include model.get_form_description_template %}
-        </div>
-      {% endif %}
-      <object-list>
-      </object-list>
-
-      {% comment %}
-        {% for m in object_list %}
-          <div class="content-offset-below-20">
-            {% include m.get_form_display_template %}
-            {% if not forloop.last %}
-              <hr />
-            {% endif %}
-          </div>
-        {% endfor %}
-      {% endcomment %}
+    <div class="col-md-12 text-right">
+      <button type="submit" class="btn btn-primary">
+        Submit
+      </button>
+      <a class="btn btn-default" v-on:click="item.editing.cancel()">
+        Cancel
+      </a>
+      <a class="btn btn-danger" v-on:click="remove(item)">
+        Delete
+      </a>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12">
-      {% if is_paginated %}
-        <ul class="pagination">
-          {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-          {% else %}
-            <li class="disabled"><span>&laquo;</span></li>
-          {% endif %}
-          {% for i in paginator.page_range %}
-            {% if page_obj.number == i %}
-              <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-            {% else %}
-              <li><a href="?page={{ i }}">{{ i }}</a></li>
-            {% endif %}
-          {% endfor %}
-          {% if page_obj.has_next %}
-            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-          {% else %}
-            <li class="disabled"><span>&raquo;</span></li>
-          {% endif %}
-        </ul>
-      {% endif %}
-    </div>
-  </div>
-</div>
-
-<script type="text/x-template" id="object-list">
-  <div>
-    <div v-for="item in databases" class="content-offset-below-20">
-      <div v-if="!item.editing.editMode">
-        <a v-on:click="item.edit()">
-          {% include model.get_vue_display_template %}
-        </a>
-      </div>
-      <div v-if="item.editing.editMode">
-        {% include model.get_vue_form_template %}
-      </div>
-    </div>
-  </div>
-</script>
-
-{% endblock %}
+</form>

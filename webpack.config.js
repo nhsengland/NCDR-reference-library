@@ -7,6 +7,7 @@ module.exports = {
   context: __dirname,
   entry: [
       'webpack-dev-server/client?http://localhost:3000',
+      // 'webpack-dev-server/client?http://192.168.1.193:3000',
       'webpack/hot/only-dev-server',
       'es6-promise',
       'whatwg-fetch',
@@ -17,6 +18,7 @@ module.exports = {
       path: path.resolve('./csv_schema/static/bundles/'),
       filename: '[name]-[hash].js',
       publicPath: 'http://localhost:3000/static/bundles/', // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
+      // publicPath: 'http://192.168.1.193:3000/static/bundles/', // Tell django to use this URL to load packages and not use STATIC_URL + bundle_name
   },
 
   plugins: [
@@ -76,6 +78,7 @@ module.exports = {
   resolve: {
     alias: {
       'vue$': 'vue/dist/vue.common.js'
-    }
-  }
+    },
+    extensions: ['.vue', '.js'],
+  },
 }

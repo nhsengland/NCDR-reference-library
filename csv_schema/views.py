@@ -22,7 +22,7 @@ else:
 
 class EditView(LoginRequiredMixin, ListView):
     paginate_by = 100
-    template_name = "forms/edit_form.html"
+    template_name = "forms/edit_form_page.html"
 
     def get_queryset(self):
         m = apps.get_model("csv_schema", self.kwargs["model_name"])

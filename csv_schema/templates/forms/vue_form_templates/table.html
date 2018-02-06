@@ -1,21 +1,18 @@
-{% extends "base_templates/vue_form_base.html" %}
-{% block form_fields %}
 <div class="row">
   <div class="col-md-3">
     <div class="form-group">
       <label for="databaseSelect">Database</label>
-      <select class="form-control" id="databaseSelect">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="mercedes">Mercedes</option>
-        <option value="audi">Audi</option>
+      <select v-model="item.editing.database" class="form-control" id="databaseSelect">
+        {% for m in model_objects.csv_schema.database.all %}
+          <option value="{{ m.id }}">{{ m.name }}</option>
+        {% endfor %}
       </select>
     </div>
   </div>
   <div class="col-md-3">
     <div class="form-group">
       <label for="nameInput">Name</label>
-      <input v-model="item.editing.name" id="nameInput" />
+      <input required v-model="item.editing.name" id="nameInput" class="form-control" />
     </div>
   </div>
   <div class="col-md-6">
@@ -26,4 +23,17 @@
     </div>
   </div>
 </div>
-{% endblock %}
+<div class="row">
+  <div class="col-md-3">
+    <div class="form-group">
+      <label for="dateInput">Date Range</label>
+      <input required v-model="item.editing.date_range" id="dateInput" class="form-control" />
+    </div>
+  </div>
+  <div class="col-md-3">
+    <div class="form-group">
+      <label for="linkInput">Link</label>
+      <input type="url" v-model="item.editing.link" id="linkInput" class="form-control" />
+    </div>
+  </div>
+</div>
