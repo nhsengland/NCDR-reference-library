@@ -1,16 +1,20 @@
 {% extends "base_templates/form_base.html" %}
+{% block form_title %}
+  <h3>Edit {{ view.model.get_model_display_name_plural }}</h3>
+  {% if view.model.get_form_description_template %}
+    <div class="row nhs-england-well">
+      {% include view.model.get_form_description_template %}
+    </div>
+  {% endif %}
+{% endblock %}
 {% block form_contents %}
   <div class="row">
     <div class="col-md-12">
-      <h3>Edit {{ model.get_model_display_name_plural }}</h3>
-      {% if model.get_form_description_template %}
-        <div class="row nhs-england-well">
-          {% include model.get_form_description_template %}
-        </div>
-      {% endif %}
       {% for m in object_list %}
         <div class="content-offset-below-20">
-          {% include m.get_form_display_template %}
+          <a href="{{ m.get_edit_url }}">
+            {% include m.get_form_display_template %}
+          </a>
           {% if not forloop.last %}
             <hr />
           {% endif %}

@@ -9,7 +9,6 @@ from django.db.models.functions import Lower
 from django.conf import settings
 from django.db import models
 
-
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
@@ -50,7 +49,6 @@ def unique_slug(some_cls, name):
 
 
 class NcdrModel(models.Model):
-
     @classmethod
     def get_form_display_template(cls):
         return "forms/display_templates/{}.html".format(
@@ -65,13 +63,35 @@ class NcdrModel(models.Model):
 
     @classmethod
     def get_form_template(cls):
-        return "forms/{}.html".format(
+        return "forms/model_forms/{}.html".format(
             cls.get_model_api_name()
         )
 
     @classmethod
     def get_model_api_name(cls):
         return cls.__name__.lower()
+
+    @classmethod
+    def get_add_url(cls):
+        return SITE_PREFIX + reverse(
+            "add_many", kwargs=dict(model_name=cls.__name__.lower())
+        )
+
+    def get_edit_url(self):
+        return SITE_PREFIX + reverse(
+            "edit", kwargs=dict(
+                pk=self.id,
+                model_name=self.__class__.__name__.lower()
+            )
+        )
+
+    def get_delete_url(self):
+        return SITE_PREFIX + reverse(
+            "delete", kwargs=dict(
+                pk=self.id,
+                model_name=self.__class__.__name__.lower()
+            )
+        )
 
     @classmethod
     def get_model_display_name(cls):
@@ -82,16 +102,9 @@ class NcdrModel(models.Model):
         return cls._meta.verbose_name_plural.title()
 
     @classmethod
-    def get_edit_url(cls):
+    def get_edit_list_url(cls):
         return reverse(
-            "edit",
-            kwargs=dict(model_name=cls.get_model_api_name())
-        )
-
-    @classmethod
-    def get_add_url(cls):
-        return reverse(
-            "add",
+            "edit_list",
             kwargs=dict(model_name=cls.get_model_api_name())
         )
 

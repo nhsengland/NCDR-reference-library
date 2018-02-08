@@ -1,0 +1,34 @@
+{% load bootstrap %}
+<div class="row">
+  <div class="col-md-3">
+    <div>
+      {{ form.name|bootstrap }}
+    </div>
+    <div>
+      {{ form.name.errors }}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div>
+      {{ form.date_range|bootstrap }}
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div>
+      {{ form.link|bootstrap }}
+    </div>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    {{ form.description|bootstrap }}
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-6">
+    {{ form.is_table|bootstrap }}
+  </div>
+  <div class="col-md-6">
+    {{ form.database|bootstrap }}
+  </div>
+</div>

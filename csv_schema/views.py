@@ -2,15 +2,25 @@
 from __future__ import unicode_literals
 import operator
 import functools
+from django.db import transaction
 from string import ascii_uppercase
 from csv_schema import models
+from django.http import HttpResponseRedirect
+from django.forms import formset_factory
 from django.views.generic import (
-    ListView, RedirectView, DetailView, TemplateView
+    ListView,
+    RedirectView,
+    DetailView,
+    TemplateView,
+    UpdateView,
+    CreateView
 )
 from django.urls import reverse
 from django.db.models import Q
 from django.conf import settings
 from django.apps import apps
+from csv_schema import forms
+from csv_schema import models as c_models
 
 
 if getattr(settings, "SITE_PREFIX", ""):
@@ -19,27 +29,79 @@ else:
     SITE_PREFIX = ""
 
 
-class EditView(ListView):
+class NCDRView(object):
+    pertinant = [
+        c_models.Table,
+        c_models.Database,
+        c_models.Column,
+        c_models.Grouping
+    ]
+
+    @property
+    def form_class(self):
+        return getattr(forms, "{}Form".format(self.model.__name__))
+
+    @property
+    def model(self):
+        return apps.get_model("csv_schema", self.kwargs["model_name"])
+
+
+class NCDRAddManyView(NCDRView, CreateView):
+    template_name = "forms/create.html"
+
+    def get_form(self, *args, **kwargs):
+        formset_cls = formset_factory(self.form_class, extra=50)
+        if self.request.POST:
+            return formset_cls(self.request.POST)
+        else:
+            return formset_cls()
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super(NCDRAddManyView, self).get_context_data(*args, **kwargs)
+        formset_cls = formset_factory(self.form_class, extra=50)
+        if self.request.POST:
+            ctx["formset"] = formset_cls(self.request.POST)
+        else:
+            ctx["formset"] = self.get_form()
+        ctx["model"] = self.model
+        return ctx
+
+    @transaction.atomic
+    def form_valid(self, form):
+        formset = form
+        if formset.is_valid():
+            for form in formset:
+                if form.is_valid():
+                    form.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def form_invalid(self, form):
+        return self.render_to_response(self.get_context_data(formset=form))
+
+    def get_success_url(self, *args, **kwargs):
+        return self.model.get_edit_list_url()
+
+
+class NCDREditView(NCDRView, UpdateView):
+    template_name = "forms/update.html"
+
+    def get_success_url(self, *args, **kwargs):
+        return self.model.get_edit_list_url()
+
+
+class NCDRDeleteView(NCDRView, UpdateView):
+    template_name = "forms/delete.html"
+
+    def get_success_url(self, *args, **kwargs):
+        return models.Table.get_edit_list_url()
+
+
+class NCDREditListView(NCDRView, ListView):
     paginate_by = 100
-    template_name = "forms/edit_form.html"
+    template_name = "forms/edit_list.html"
 
     def get_queryset(self):
-        m = apps.get_model("csv_schema", self.kwargs["model_name"])
-        return m.objects.all()
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(EditView, self).get_context_data(*args, **kwargs)
-        ctx["model"] = apps.get_model("csv_schema", self.kwargs["model_name"])
-        return ctx
-
-
-class AddView(TemplateView):
-    template_name = "forms/add_form.html"
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(AddView, self).get_context_data(*args, **kwargs)
-        ctx["model"] = apps.get_model("csv_schema", self.kwargs["model_name"])
-        return ctx
+        return self.model.objects.all()
 
 
 class IndexView(RedirectView):

@@ -1,11 +1,27 @@
-from django.urls import path, include
-from csv_schema import views, api
+from django.urls import path
+from csv_schema import views
 
 urlpatterns = [
     path(
-        'form/<slug:model_name>/edit', views.EditView.as_view(), name="edit"
+        'form/<slug:model_name>/add/',
+        views.NCDRAddManyView.as_view(),
+        name="add_many"
     ),
-    path('form/<slug:model_name>/add', views.AddView.as_view(), name="add"),
+    path(
+        'form/<slug:model_name>/edit/<int:pk>/',
+        views.NCDREditView.as_view(),
+        name="edit"
+    ),
+    path(
+        'form/<slug:model_name>/delete/<int:pk>/',
+        views.NCDRDeleteView.as_view(),
+        name="delete"
+    ),
+    path(
+        'form/<slug:model_name>/',
+        views.NCDREditListView.as_view(),
+        name="edit_list"
+    ),
     path('about', views.AboutView.as_view(), name="about_page"),
     path(
         'database/<str:db_name>/<str:table_name>',
