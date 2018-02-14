@@ -205,12 +205,6 @@ class Grouping(NcdrModel, models.Model):
     def __str__(self):
         return self.name
 
-    # @property
-    # def mappings(self):
-    #     return Mapping.objects.filter(
-    #         column__in=self.column_set.all()
-    #     ).distinct().order_by('name')
-
     def get_absolute_url(self):
         return SITE_PREFIX + reverse("grouping_detail", kwargs=dict(
             slug=self.slug,

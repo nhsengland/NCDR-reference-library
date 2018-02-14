@@ -30,12 +30,13 @@ else:
 
 
 class NCDRView(object):
-    pertinant = [
+    pertinant = {
         c_models.Table,
         c_models.Database,
         c_models.Column,
-        c_models.Grouping
-    ]
+        c_models.Grouping,
+        c_models.Mapping
+    }
 
     @property
     def form_class(self):
@@ -43,7 +44,14 @@ class NCDRView(object):
 
     @property
     def model(self):
-        return apps.get_model("csv_schema", self.kwargs["model_name"])
+        model = apps.get_model("csv_schema", self.kwargs["model_name"])
+        if model not in self.pertinant:
+            raise ValueError(
+                'We only allow editing of a subset of models {}'.format(
+                    self.pertinant
+                )
+            )
+        return model
 
 
 class NCDRAddManyView(NCDRView, CreateView):
