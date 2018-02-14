@@ -51,13 +51,11 @@
                     Data Elements
                   </a>
                 </li>
-                {% if settings.USE_GROUPINGS %}
                 <li>
                   <a {% if grouping_redirect in request.path %}class="active" {% endif %}href="{{ settings.SITE_PREFIX }}{{ grouping_redirect }}">
                     Grouping
                   </a>
                 </li>
-                {% endif %}
                 <li>
                   <a {% ifequal request.path about_page %}class="active" {% endifequal %}href="{{ settings.SITE_PREFIX }}{{ about_page }}">
                     About

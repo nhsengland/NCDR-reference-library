@@ -6,11 +6,11 @@
     <aside class="side-nav col-md-4">
       <ul>
         <li class="list-title">
-          Groupings
+          <div>Groupings</div>
         <li>
         {% for grouping in groupings %}
           <li>
-            <a {% if object.id == grouping.id %}class="active" {% endif %}href="{{ grouping.get_absolute_url }}">
+            <a class="table-link {% if object.id == grouping.id %} active{% endif %}" href="{{ grouping.get_absolute_url }}">
               {{ grouping.name }}
             </a>
           </li>
@@ -26,14 +26,14 @@
           </div>
         </div>
       </h1>
-      {% for mapping in object.mappings %}
-        <div class="row">
-          <div class="col-md-6">
-            <h4 class="sub-row-title">{{ mapping.name }}</h4>
+      {% for mapping in object.mapping_set.all %}
+        <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
+          <div class="col-md-12">
+            <h3 class="sub-row-title">{{ mapping.name }}</h3>
           </div>
         </div>
         {% for column in mapping.column_set.all %}
-          {% include 'partials/column.html' with hide_groupings=True %}
+          {% include 'partials/column.html' %}
             {% if not forloop.last %}
               <hr />
             {% endif %}

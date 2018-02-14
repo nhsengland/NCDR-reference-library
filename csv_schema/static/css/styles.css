@@ -244,7 +244,7 @@ hr {
     padding-left: 20px; }
   .side-nav .list-title {
     margin-top: 5px; }
-    .side-nav .list-title a {
+    .side-nav .list-title div, .side-nav .list-title a {
       color: #FFF;
       background-color: #003893;
       display: block;

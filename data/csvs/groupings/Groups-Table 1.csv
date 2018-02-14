@@ -1,0 +1,10 @@
+Group name,Group description,Mapping 1,Mapping 2,Mapping 3,Mapping 4,Mapping 5,Mapping 6,Mapping 7,Mapping 8,Mapping 9,Mapping 10
+Demographics,Contains demographic information about the person.,Derived Pseudo NHS Number,GP Practice Code,Age at activity date,Ethnic Category,Person Gender,LSOA,CCG of Residence,,,
+Geography,"Contains geographical information about the record, whether it is details of the location of the healthcare provider or the place of residence of the patient.",LSOA,CCG of Residence,,,,,,,,
+Diagnosis,Contains all mappings relating to the diagnoses of the patient.,A&E Diagnosis Code,OPA Diagnosis,Diagnosis Scheme in use,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,
+,,,,,,,,,,,

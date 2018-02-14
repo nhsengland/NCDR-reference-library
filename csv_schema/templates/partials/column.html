@@ -1,5 +1,5 @@
-<h3>
-  <span class="column-title">
+<h4>
+  <span>
     <a href="{{ column.get_absolute_url }}">
       {{ column.name }}
     </a>
@@ -7,14 +7,12 @@
   <small>
     {{ column.data_type }}
   </small>
-  {% if not hide_groupings %}
-    <small class="pull-right">
-      {% if column.grouping and settings.USE_GROUPINGS %}
-        <a href="{{ column.grouping.get_absolute_url }}" class="label label-default">{{ column.grouping }}</a>
-      {% endif %}
-    </small>
-  {% endif %}
-</h3>
+  <small class="pull-right">
+    {% if column.grouping and settings.USE_GROUPINGS %}
+      <a href="{{ column.grouping.get_absolute_url }}" class="label label-default">{{ column.grouping }}</a>
+    {% endif %}
+  </small>
+</h4>
 <div class="row">
   <div class="col-md-12">
     <p>

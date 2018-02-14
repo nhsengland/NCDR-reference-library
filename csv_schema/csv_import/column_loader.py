@@ -27,6 +27,7 @@ CHECKED = "Checked"
 PRESENT_IN_TABLES = "Present_In_Tables"
 LINK = "Link"
 LINK_TYPE = "Link Type"
+MAPPING = "Mapping"
 
 # unused
 GROUPING = "Grouping"
@@ -34,7 +35,9 @@ LAST_UPDATE_DATE = "Last_Update_Date"
 LAST_UPDATE_BY = "Last_Update_By"
 
 # we skip these columns as requested
-TO_SKIP = ["DB_Col_Group", "DB_Col_Name"]
+TO_SKIP = [
+    "DB_Col_Group", "DB_Col_Name", MAPPING, CREATED_DATE
+]
 
 
 # These are the minimum expected csv columns, if they're missing, blow up
@@ -46,6 +49,7 @@ EXPECTED_COLUMN_NAMES = set([
     DERIVATION_METHODOLOGY,
     PRESENT_IN_TABLES,
     LINK,
+    MAPPING
 ])
 
 CSV_FIELD_TO_COLUMN_FIELD = {
@@ -128,6 +132,9 @@ def process_row(csv_row, file_name):
     if not any(i for i in csv_row.values() if i.strip()):
         # if its an empty row, skip it
         return
+    mapping, _ = models.Mapping.objects.get_or_create(
+        name=csv_row[MAPPING]
+    )
 
     column, _ = models.Column.objects.get_or_create(
         name=csv_row[COLUMN_NAME]
@@ -186,6 +193,7 @@ def process_row(csv_row, file_name):
 
         setattr(column, db_column_name, value)
     column.save()
+    mapping.column_set.add(column)
 
     db_to_tables = get_database_to_table(csv_row)
     column.tables.set(i[1] for i in db_to_tables)

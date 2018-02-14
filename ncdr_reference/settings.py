@@ -90,8 +90,6 @@ TEMPLATES = [
     },
 ]
 
-USE_GROUPINGS = False
-
 WSGI_APPLICATION = 'ncdr_reference.wsgi.application'
 
 

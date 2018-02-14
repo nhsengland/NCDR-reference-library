@@ -16,7 +16,7 @@
             {{ object.name }}
           </h1>
         </div>
-        {% if object.grouping and settings.USE_GROUPINGS %}
+        {% if object.grouping %}
         <div class="col-sm-2 text-right">
           <div style="margin-top: 25px">
               <a href="{{ object.grouping.get_absolute_url }}" class="label label-default">{{ object.grouping }}</a>

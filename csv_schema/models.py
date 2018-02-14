@@ -195,28 +195,21 @@ class Table(NcdrModel):
         return "{} / {}".format(self.database.name, self.name)
 
 
-class Mapping(NcdrModel, models.Model):
-    name = models.CharField(max_length=255, unique=True)
-
-    class Meta:
-        ordering = ['name']
-
-    def __str__(self):
-        return self.name
-
-
 class Grouping(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(unique=True)
+    description = models.CharField(
+        max_length=255, null=True, blank=True
+    )
 
     def __str__(self):
         return self.name
 
-    @property
-    def mappings(self):
-        return Mapping.objects.filter(
-            column__in=self.column_set.all()
-        ).distinct().order_by('name')
+    # @property
+    # def mappings(self):
+    #     return Mapping.objects.filter(
+    #         column__in=self.column_set.all()
+    #     ).distinct().order_by('name')
 
     def get_absolute_url(self):
         return SITE_PREFIX + reverse("grouping_detail", kwargs=dict(
@@ -224,9 +217,22 @@ class Grouping(NcdrModel, models.Model):
         ))
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = unique_slug(self.__class__, self.name)
+        if self.name and not self.slug:
+            self.slug = slugify(self.name)
         return super(Grouping, self).save(*args, **kwargs)
+
+
+class Mapping(NcdrModel, models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    grouping = models.ForeignKey(
+        Grouping, on_delete=models.SET_NULL, null=True, blank=True
+    )
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
 
 
 class ColumnManager(models.Manager):
@@ -283,9 +289,7 @@ class Column(NcdrModel, models.Model):
         Mapping, on_delete=models.SET_NULL, null=True, blank=True
     )
 
-    grouping = models.ForeignKey(
-        Grouping, on_delete=models.SET_NULL, null=True, blank=True
-    )
+
 
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.

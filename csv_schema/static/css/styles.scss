@@ -368,7 +368,7 @@ hr {
   .list-title{
     margin-top: 5px;
 
-    a{
+    div, a{
       color: $text-colour-on-dark;
       background-color: $secondary-colour;
       display: block;

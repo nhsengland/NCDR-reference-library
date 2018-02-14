@@ -3,7 +3,9 @@ Load a csv into the ncdr
 """
 import os
 from django.core.management.base import BaseCommand
-from csv_schema.csv_import import column_loader, table_loader, mapping_loader
+from csv_schema.csv_import import (
+    column_loader, table_loader, grouping_loader
+)
 from django.conf import settings
 
 
@@ -12,6 +14,7 @@ TABLE_FILE_DIR = os.path.join(
     settings.BASE_DIR, "data/csvs/database_and_tables"
 )
 MAPPING_DIR = os.path.join(settings.BASE_DIR, "data/csvs/mappings")
+GROUPING_DIR = os.path.join(settings.BASE_DIR, "data/csvs/groupings")
 
 
 class Command(BaseCommand):
@@ -31,9 +34,8 @@ class Command(BaseCommand):
         for f in all_column_files:
             column_loader.load_file(os.path.join(COLUMN_FILE_DIR, f))
 
-        # we are currently ignoring mappings and groupings
-        # all_column_files = [
-        #     i for i in os.listdir(MAPPING_DIR) if i.endswith(".csv")
-        # ]
-        # for f in all_column_files:
-        #     mapping_loader.load_file(os.path.join(MAPPING_DIR, f))
+        all_grouping_files = [
+            i for i in os.listdir(GROUPING_DIR) if i.endswith(".csv")
+        ]
+        for f in all_grouping_files:
+            grouping_loader.load_file(os.path.join(GROUPING_DIR, f))
