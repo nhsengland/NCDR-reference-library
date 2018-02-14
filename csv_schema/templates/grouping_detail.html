@@ -26,6 +26,13 @@
           </div>
         </div>
       </h1>
+      {% if object.description %}
+        <div class="row nhs-england-well">
+          <div class="col-md-12">
+            {{ object.description | markdown }}
+          </div>
+        </div>
+      {% endif %}
       {% for mapping in object.mapping_set.all %}
         <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
           <div class="col-md-12">

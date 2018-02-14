@@ -132,9 +132,6 @@ def process_row(csv_row, file_name):
     if not any(i for i in csv_row.values() if i.strip()):
         # if its an empty row, skip it
         return
-    mapping, _ = models.Mapping.objects.get_or_create(
-        name=csv_row[MAPPING]
-    )
 
     column, _ = models.Column.objects.get_or_create(
         name=csv_row[COLUMN_NAME]
@@ -193,7 +190,12 @@ def process_row(csv_row, file_name):
 
         setattr(column, db_column_name, value)
     column.save()
-    mapping.column_set.add(column)
+
+    if csv_row[MAPPING].strip():
+        mapping, _ = models.Mapping.objects.get_or_create(
+            name=csv_row[MAPPING]
+        )
+        mapping.column_set.add(column)
 
     db_to_tables = get_database_to_table(csv_row)
     column.tables.set(i[1] for i in db_to_tables)

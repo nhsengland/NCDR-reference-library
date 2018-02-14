@@ -30,13 +30,13 @@ else:
 
 
 class NCDRView(object):
-    pertinant = {
+    pertinant = [
+        c_models.Column,
         c_models.Table,
         c_models.Database,
-        c_models.Column,
+        c_models.Mapping,
         c_models.Grouping,
-        c_models.Mapping
-    }
+    ]
 
     @property
     def form_class(self):

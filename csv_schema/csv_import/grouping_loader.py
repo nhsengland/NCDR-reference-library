@@ -24,10 +24,12 @@ def process_row(row):
         # now just add the mappings
         if not field.startswith("Mapping "):
             continue
-        mapping, _ = models.Mapping.objects.get_or_create(
-            name=row[field]
-        )
-        grouping.mapping_set.add(mapping)
+        if row[field]:
+            mapping, _ = models.Mapping.objects.get_or_create(
+                name=row[field]
+            )
+            grouping.mapping_set.add(mapping)
+    grouping.save()
 
 
 def validate_csv_structure(reader, file_name):
