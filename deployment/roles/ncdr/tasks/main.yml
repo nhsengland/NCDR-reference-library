@@ -20,6 +20,11 @@
     path: "{{ log_dir }}"
     state: directory
 
+- name: Creates config dir
+  file:
+    path: "{{ config_dir }}"
+    state: directory
+
 # otherwise it complains silently and
 # blows up the world
 - name: Creates gunicorn log
