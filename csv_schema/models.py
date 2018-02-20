@@ -93,6 +93,9 @@ class NcdrModel(models.Model):
             )
         )
 
+    def get_display_name(self):
+        return self.name
+
     @classmethod
     def get_model_display_name(cls):
         return cls._meta.verbose_name.title()

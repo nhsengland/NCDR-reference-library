@@ -106,4 +106,4 @@
 - name: Start app
   args:
     chdir: "{{ project_path }}"
-  command: "circusd --daemon deployment/config/circus.ini"
+  command: "workon {{ application_name }} && circusd --daemon deployment/config/circus.ini"

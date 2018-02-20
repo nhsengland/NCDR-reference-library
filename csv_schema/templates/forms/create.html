@@ -14,8 +14,10 @@
     {% if formset.total_error_count %}
       <ul class="errorList">
         {% for dict in formset.errors %}
-            {% for k, error in dict.items %}
-            <li>{{ k }} {{ error }}</li>
+            {% for error in dict.values %}
+              {% for i in error %}
+                <li>{{ i }}</li>
+              {% endfor %}
             {% endfor %}
         {% endfor %}
         </ul>

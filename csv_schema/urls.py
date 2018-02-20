@@ -17,6 +17,7 @@ urlpatterns = [
         views.NCDREditView.as_view(),
         name="edit"
     ),
+
     path(
         'form/<slug:model_name>/delete/<int:pk>/',
         views.NCDRDeleteView.as_view(),

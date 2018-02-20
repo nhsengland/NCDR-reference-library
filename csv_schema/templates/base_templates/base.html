@@ -26,7 +26,7 @@
     <header class="masthead">
       <div style="overflow-y: hidden" class="container">
         <div class="row banner">
-          <div class="col-md-12">
+          <div class="col-md-6">
             <div class="top-logo">
               <hgroup class="header-strapline">
                 <a class="logo" href="http://www.england.nhs.uk">
@@ -35,6 +35,17 @@
                 <h2 class="subtitle">NCDR Reference Library</h2>
         	    </hgroup>
             </div>
+          </div>
+          <div class="col-md-5 col-md-push-1 text-right">
+            {% block messages %}
+              {% if messages %}
+                {% for message in messages %}
+                  <div class="alert alert-success ncdr-alert" role="alert">
+                    {{ message }}
+                  </div>
+                {% endfor %}
+              {% endif %}
+            {% endblock %}
           </div>
         </div>
         <div class="row header-nav">

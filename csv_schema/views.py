@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import operator
 import functools
 from django.db import transaction
+from django.contrib import messages
 from string import ascii_uppercase
 from csv_schema import models
 from django.http import HttpResponseRedirect
@@ -91,6 +92,18 @@ class NCDRAddManyView(NCDRView, CreateView):
             for form in formset:
                 if form.is_valid():
                     form.save()
+            count = len(formset)
+
+            if count == 1:
+                display_name = self.model.get_model_display_name()
+            else:
+                display_name = self.model.get_model_display_name_plural()
+            messages.success(
+                self.request, '{} {} created.'.format(
+                    count,
+                    display_name
+                )
+            )
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
@@ -102,6 +115,15 @@ class NCDRAddManyView(NCDRView, CreateView):
 
 class NCDREditView(NCDRView, UpdateView):
     template_name = "forms/update.html"
+
+    def form_valid(self, form):
+        result = super(NCDREditView, self).form_valid(form)
+        messages.success(
+            self.request, '{} updated.'.format(
+                self.object.get_display_name()
+            )
+        )
+        return result
 
     def get_success_url(self, *args, **kwargs):
         return self.model.get_edit_list_url()
