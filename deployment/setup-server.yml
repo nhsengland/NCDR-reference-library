@@ -1,6 +1,4 @@
 ---
-# This playbook sets up a server for the NCDR reference library project
-
 - name: Things you want on servers generally
   sudo: yes
   user: ubuntu
@@ -10,17 +8,20 @@
     - server
 
 - name: Make the server capable of running a standard Django deployment
-  sudo: yes
   user: ubuntu
   hosts: webserver
   roles:
     - django
 
-- name: Set up our project
+- name: Make the server capable of running a standard Django deployment
   sudo: yes
   user: ubuntu
   hosts: webserver
   roles:
-    - ncdr
+    - db
 
-# Backups
+- name: Set up our project
+  user: ubuntu
+  hosts: webserver
+  roles:
+    - ncdr

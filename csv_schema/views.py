@@ -54,6 +54,16 @@ class NCDRView(object):
         return model
 
 
+class NCDRFormRedirect(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        result = SITE_PREFIX + reverse(
+            'edit_list', kwargs=dict(
+                model_name=NCDRView.pertinant[0].__name__.lower()
+            )
+        )
+        return result
+
+
 class NCDRAddManyView(NCDRView, CreateView):
     template_name = "forms/create.html"
 

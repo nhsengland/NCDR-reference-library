@@ -136,6 +136,8 @@ def process_row(csv_row, file_name):
     column, _ = models.Column.objects.get_or_create(
         name=csv_row[COLUMN_NAME]
     )
+    # auto publish anything coming in via the csv api
+    column.published = True
     field_names = csv_row.keys()
 
     known_fields = EXPECTED_COLUMN_NAMES.union(

@@ -6,7 +6,7 @@ log_format timed_combined '$remote_addr - $remote_user [$time_local] '
 server {
     listen 80;
     server_name "";
-    access_log /tmp/nginx.log timed_combined;
+    access_log {{ log_dir }}/nginx.log timed_combined;
 
    location /static {
         alias /home/ubuntu/NCDR-reference/static;

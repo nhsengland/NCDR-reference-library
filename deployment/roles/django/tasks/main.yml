@@ -1,16 +1,5 @@
 ---
 # This playbook provides basic elements of a server we would like to maintain
-- name: update apt-cache
-  sudo: true
-  apt: update_cache=yes
-
-- name: install packages for sysadmin
-  apt: pkg={{ item }} state=installed
-  with_items:
-    - nginx
-    - postgresql
-    - libpq-dev
-    - python-psycopg2
 
 - name: Ensure locale is available
   locale_gen: name=en_US.UTF-8
@@ -44,7 +33,7 @@
   args:
     executable: /bin/bash
 
-- name: Create the virtualenv
+- name: Create the virtualenv project
   shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && setvirtualenvproject
   chdir: "{{ project_path}}"
   args:

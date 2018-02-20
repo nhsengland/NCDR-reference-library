@@ -218,6 +218,7 @@ class Grouping(NcdrModel, models.Model):
 
 class Mapping(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(default="")
     grouping = models.ForeignKey(
         Grouping, on_delete=models.SET_NULL, null=True, blank=True
     )
@@ -283,8 +284,6 @@ class Column(NcdrModel, models.Model):
         Mapping, on_delete=models.SET_NULL, null=True, blank=True
     )
 
-
-
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.
     technical_check = models.CharField(max_length=255, null=True, blank=True)
@@ -293,6 +292,7 @@ class Column(NcdrModel, models.Model):
     author = models.CharField(max_length=255, blank=True, null=True)
     created_date_ext = models.DateField(blank=True, null=True)
     link = models.URLField(max_length=500, blank=True, null=True)
+    published = models.BooleanField(default=False)
 
     @property
     def link_display_name(self):

@@ -3,6 +3,11 @@ from csv_schema import views
 
 urlpatterns = [
     path(
+        'form/',
+        views.NCDRFormRedirect.as_view(),
+        name="redirect"
+    ),
+    path(
         'form/<slug:model_name>/add/',
         views.NCDRAddManyView.as_view(),
         name="add_many"

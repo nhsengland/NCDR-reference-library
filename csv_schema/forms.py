@@ -22,7 +22,7 @@ class ColumnForm(ModelForm):
 
 class MappingForm(ModelForm):
     class Meta:
-        model = models.Database
+        model = models.Mapping
         fields = '__all__'
 
 

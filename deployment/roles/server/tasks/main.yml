@@ -21,6 +21,4 @@
     - python3-dev
     - build-essential
     - circus
-
-- name: Creates directory
-  file: path=/tmp/logs/ state=directory
+    - nginx
