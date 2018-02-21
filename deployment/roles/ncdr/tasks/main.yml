@@ -39,7 +39,6 @@
     mode: 0744
     owner: ubuntu
   with_items:
-    - circus.ini
     - gunicorn.conf
     - gunicorn_conf.py
     - nginx_site.conf
@@ -97,13 +96,13 @@
   command: "pkill gunicorn"
   ignore_errors: True
 
-# change this to restart the controller
-- name: Kill circus
-  sudo: yes
-  command: "pkill circus"
-  ignore_errors: True
+- name: Create circus config
+  become: yes
+  template:
+    src: "templates/circus.ini.jinja2"
+    dest: "/etc/circus/circusd.ini"
 
-- name: Start app
-  args:
-    chdir: "{{ project_path }}"
-  command: "circusd --daemon deployment/config/circus.ini"
+- name: Restart circus
+  become: yes
+  command: "circusctl restart"
+  ignore_errors: True

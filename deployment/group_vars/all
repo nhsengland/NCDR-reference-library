@@ -1,7 +1,7 @@
 application_name: NCDR-reference
-db_user: ncdr
-db_name: ncdr
-db_password: ncdr1234233
+db_user: yourDBUser
+db_name: yourDBUName
+db_password: yourDBUPassword
 git_repo: "https://github.com/nhsengland/{{ application_name }}.git"
 git_branch: mapping-central
 project_path: "/home/ubuntu/{{ application_name }}"
