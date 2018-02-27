@@ -5,6 +5,7 @@ from django.db import transaction
 import datetime
 import csv
 from csv_schema import models
+from django.utils.text import slugify
 
 TABLE_NAME = "Table"
 DATABASE = "Database"
@@ -101,7 +102,7 @@ def process_created_date(value):
         return datetime.datetime.strptime(value, "%m/%d/%y").date()
 
 
-def get_database_to_table(csv_row):
+def get_tables(csv_row):
     # table names are split with ; and there are a lot of empty rows
     full_table_names = [i for i in csv_row[PRESENT_IN_TABLES].split(";") if i]
     result = []
@@ -123,8 +124,7 @@ def get_database_to_table(csv_row):
         table, _ = models.Table.objects.get_or_create(
             name=table_name.strip(), database=db
         )
-        result.append((db, table,),)
-
+        result.append(table)
     return result
 
 
@@ -133,74 +133,78 @@ def process_row(csv_row, file_name):
         # if its an empty row, skip it
         return
 
-    column, _ = models.Column.objects.get_or_create(
-        name=csv_row[COLUMN_NAME]
+    tables = get_tables(csv_row)
+    if not csv_row[MAPPING].strip():
+        raise ValueError("{} expected".format(MAPPING))
+    mapping, _ = models.Mapping.objects.get_or_create(
+        name=csv_row[MAPPING].strip()
     )
-    # auto publish anything coming in via the csv api
-    column.published = True
-    field_names = csv_row.keys()
 
-    known_fields = EXPECTED_COLUMN_NAMES.union(
-        CSV_FIELD_TO_COLUMN_FIELD.keys()
-    )
-    for field_name in field_names:
-        value = csv_row[field_name].strip()
-        field_name = field_name.strip()
-
-        if field_name in TO_SKIP:
-            continue
-
-        if field_name == TABLE_NAME or field_name == DATABASE:
-            # these fields are the Foreign keys handled above.
-            continue
-
-        if isinstance(value, str):
-            value = value.strip()
-
-        if field_name in IGNORED_FIELDS or not field_name.strip():
-            continue
-
-        if field_name.startswith("Table "):
-            # csv schemas have titles Table n, skip this, its all in present in
-            # tables
-            continue
-
-        if value and field_name not in known_fields:
-            e = "We are not saving a value for {} in {}, should we be?"
-            raise ValueError(
-                e.format(field_name, file_name)
+    for idx, table in enumerate(tables):
+        column = models.Column(
+            name=csv_row[COLUMN_NAME],
+            table=table,
+            slug="{}{}".format(
+                slugify(csv_row[COLUMN_NAME]), idx
             )
-        elif not value and field_name not in CSV_FIELD_TO_COLUMN_FIELD:
-            continue
-
-        # these are compounded into a foreign key, so we
-        # deal with these later
-        if field_name in [DATA_DICTIONARY_NAME, DATA_DICTIONARY_LINKS]:
-            continue
-
-        db_column_name = CSV_FIELD_TO_COLUMN_FIELD[field_name]
-        if field_name == IS_DERIVED_ITEM:
-            value = process_is_derived(value)
-
-        if field_name == CREATED_DATE:
-            value = process_created_date(value)
-
-        # don't accidentally put an empty space where a None should be
-        if field_name == DEFINITION_ID:
-            if value == '':
-                value = None
-
-        setattr(column, db_column_name, value)
-    column.save()
-
-    if csv_row[MAPPING].strip():
-        mapping, _ = models.Mapping.objects.get_or_create(
-            name=csv_row[MAPPING]
         )
-        mapping.column_set.add(column)
+        # auto publish anything coming in via the csv api
+        column.published = True
+        field_names = csv_row.keys()
 
-    db_to_tables = get_database_to_table(csv_row)
-    column.tables.set(i[1] for i in db_to_tables)
+        known_fields = EXPECTED_COLUMN_NAMES.union(
+            CSV_FIELD_TO_COLUMN_FIELD.keys()
+        )
+        for field_name in field_names:
+            value = csv_row[field_name].strip()
+            field_name = field_name.strip()
+
+            if field_name in TO_SKIP:
+                continue
+
+            if field_name == TABLE_NAME or field_name == DATABASE or field_name == MAPPING:
+                # these fields are the Foreign keys handled above.
+                continue
+
+            if isinstance(value, str):
+                value = value.strip()
+
+            if field_name in IGNORED_FIELDS or not field_name.strip():
+                continue
+
+            if field_name.startswith("Table "):
+                # csv schemas have titles Table n, skip this, its all in present in
+                # tables
+                continue
+
+            if value and field_name not in known_fields:
+                e = "We are not saving a value for {} in {}, should we be?"
+                raise ValueError(
+                    e.format(field_name, file_name)
+                )
+            elif not value and field_name not in CSV_FIELD_TO_COLUMN_FIELD:
+                continue
+
+            # these are compounded into a foreign key, so we
+            # deal with these later
+            if field_name in [DATA_DICTIONARY_NAME, DATA_DICTIONARY_LINKS]:
+                continue
+
+            db_column_name = CSV_FIELD_TO_COLUMN_FIELD[field_name]
+            if field_name == IS_DERIVED_ITEM:
+                value = process_is_derived(value)
+
+            if field_name == CREATED_DATE:
+                value = process_created_date(value)
+
+            # don't accidentally put an empty space where a None should be
+            if field_name == DEFINITION_ID:
+                if value == '':
+                    value = None
+
+            setattr(column, db_column_name, value)
+        column.save()
+        mapping.column_set.add(column)
 
 
 def validate_csv_structure(reader, file_name):

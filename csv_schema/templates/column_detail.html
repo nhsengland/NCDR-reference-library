@@ -2,10 +2,10 @@
 {% block contents %}
 <div class="container main-content">
   <div class="row">
-    <div class="col-md-8">
+    <div class="col-md-12">
       <div class="row">
         <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'ncdr_reference_redirect' %}">Elements</a><a class="ncdr-breadcrumbs" href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a>{{ object.name }}
+          <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'column_redirect' %}">Columns</a><a class="ncdr-breadcrumbs" href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a>{{ object.name }}
         </div>
       </div>
 
@@ -13,7 +13,18 @@
         {# this needs to be changed to 10 when moving to settings.USE_GROUPINGS = False #}
         <div class="col-sm-12">
           <h1>
-            {{ object.name }}
+            <div class="row">
+              <div class="col-md-12">
+                {{ object.name }}
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <small>
+                  {{ object.table.database.get_display_name }} / {{ object.table.name }}
+                </small>
+              </div>
+            </div>
           </h1>
         </div>
         {% if object.grouping %}
@@ -99,14 +110,7 @@
             {% if columns|length > 1 or object not in columns %}
               <div class="row">
                 <div class="col-md-12">
-                  <p>
-                    Under the names:
-                    <ul>
-                      {% for column in columns %}
-                        <li>{{ column }}</li>
-                      {% endfor %}
-                    </ul>
-                  </p>
+                  As {% for column in columns %}{% if not forloop.first %}{% if forloop.last %} & {% else %}, {% endif %}{% endif %}{{ column }}{% endfor %}
                 </div>
               </div>
             {% endif %}

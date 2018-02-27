@@ -1,7 +1,7 @@
 {% load staticfiles %}
 {% url 'about_page' as about_page %}
 {% url 'database_list' as database_list %}
-{% url 'ncdr_reference_redirect' as ncdr_reference_redirect %}
+{% url 'column_redirect' as column_redirect %}
 {% url 'grouping_redirect' as grouping_redirect %}
 <!DOCTYPE html>
 <html lang="en">
@@ -75,18 +75,18 @@
             <nav>
               <ul>
                 <li>
-                  <a {% if 'database' in request.path %} class="active" {% endif %} href="{{ models.csv_schema.database.get_list_url }}{{ settings.SITE_PREFIX }}">
-                    Databases
+                  <a {% if 'database' in request.path %} class="active" {% endif %} href="{{ models.csv_schema.database.get_list_url }}">
+                    {{ models.csv_schema.database.get_model_display_name_plural }}
                   </a>
                 </li>
                 <li>
-                  <a {% if ncdr_reference_redirect in request.path %}class="active" {% endif %}href="{{ settings.SITE_PREFIX }}{{ ncdr_reference_redirect }}">
-                    Data Elements
+                  <a {% if column_redirect in request.path %}class="active" {% endif %}href="{{ settings.SITE_PREFIX }}{{ column_redirect }}">
+                    {{ models.csv_schema.column.get_model_display_name_plural }}
                   </a>
                 </li>
                 <li>
                   <a {% if grouping_redirect in request.path %}class="active" {% endif %}href="{{ settings.SITE_PREFIX }}{{ grouping_redirect }}">
-                    Grouping
+                    {{ models.csv_schema.grouping.get_model_display_name_plural }}
                   </a>
                 </li>
                 <li>

@@ -111,7 +111,7 @@ class ViewsTestCase(AbstractViewTestCase):
         )
         column.tables.add(table)
         url = reverse(
-            "ncdr_reference_redirect"
+            "column_redirect"
         )
         response = self.client.get(url, follow=True)
         self.assertEqual(
@@ -126,7 +126,7 @@ class ViewsTestCase(AbstractViewTestCase):
             database=db, name="some_other_table"
         )
         column.tables.add(table)
-        url = reverse('ncdr_reference_list', kwargs=dict(letter="B"))
+        url = reverse('column_list', kwargs=dict(letter="B"))
         response = self.client.get(url)
         expected_column = response.context_data["object_list"].get()
         self.assertEqual(

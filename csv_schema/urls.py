@@ -56,8 +56,8 @@ urlpatterns = [
         views.ColumnDetail.as_view(),
         name="column_detail"
     ),
-    path('ncdr_references', views.NcdrReferenceRedirect.as_view(), name="ncdr_reference_redirect"),
-    path('ncdr_references/<str:letter>', views.NcdrReferenceList.as_view(), name="ncdr_reference_list"),
+    path('columns', views.NcdrReferenceRedirect.as_view(), name="column_redirect"),
+    path('columns/<str:letter>', views.NcdrReferenceList.as_view(), name="column_list"),
     path('', views.IndexView.as_view(), name="index_view"),
 
     path('grouping', views.GroupingRedirect.as_view(), name="grouping_redirect"),

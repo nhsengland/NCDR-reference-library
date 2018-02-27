@@ -52,6 +52,10 @@ body {
 .ncdr-alert {
   display: inline-block; }
 
+.faded {
+  color: #777;
+  font-weight: 400; }
+
 .content-offset-below {
   margin-bottom: 50px; }
 
@@ -317,9 +321,6 @@ hr {
     color: #202a30; }
   .letter-link:hover, .letter-link:active, .letter-link:visited {
     color: #FFF; }
-
-.faded {
-  color: #425563; }
 
 .normal-text {
   font-weight: 400; }

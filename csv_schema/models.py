@@ -207,6 +207,7 @@ class Table(NcdrModel):
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
     is_table = models.BooleanField(default=True)
+
     database = models.ForeignKey(
         Database, on_delete=models.CASCADE
     )
@@ -307,7 +308,8 @@ class Column(NcdrModel, models.Model):
 
     class Meta:
         ordering = ['name']
-        verbose_name = "Element"
+        verbose_name = "Column"
+        unique_together = (("name", "table"),)
 
     objects = ColumnManager()
 
@@ -316,9 +318,11 @@ class Column(NcdrModel, models.Model):
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
-    tables = models.ManyToManyField(Table)
     mapping = models.ForeignKey(
         Mapping, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    table = models.ForeignKey(
+        Table, on_delete=models.CASCADE, null=True, blank=True
     )
 
     # currently the below are not being shown in the template
@@ -345,10 +349,10 @@ class Column(NcdrModel, models.Model):
     def get_bread_crumb_link(self):
         if self.name[0] in range(10):
             from csv_schema import views
-            return SITE_PREFIX + reverse("ncdr_reference_list", kwargs=dict(
+            return SITE_PREFIX + reverse("column_list", kwargs=dict(
                 letter=views.NcdrReferenceList.NUMERIC
             ))
-        return SITE_PREFIX + reverse("ncdr_reference_list", kwargs=dict(
+        return SITE_PREFIX + reverse("column_list", kwargs=dict(
             letter=self.name[0].upper()
         ))
 
@@ -367,26 +371,24 @@ class Column(NcdrModel, models.Model):
 
     @cached_property
     def related(self):
-        """ returns a tuple of (table, columns_and_mappings_within_the_table)
+        """
+            returns a tuple of (table, columns_and_mappings_within_the_table)
             the column names are sorted alphabetically
 
             the tables are sorted by database name then name
         """
         result = []
-        result.extend(Column.objects.filter(tables__in=self.tables.all()))
-        table_to_columns = defaultdict(list)
-        for table in self.tables.all():
-            table_to_columns[table].append(self)
+        other_columns = self.mapping.column_set.exclude(id=self.id)
+        other_columns = other_columns.order_by(
+            "table__name"
+        ).order_by(
+            "table__database__name"
+        )
 
-        if self.mapping:
-            column_set = self.mapping.column_set.exclude(id=self.id)
-            for column in column_set:
-                for table in column.tables.all():
-                    table_to_columns[table].append(column)
-            for i, v in table_to_columns.items():
-                table_to_columns[i] = sorted(
-                    table_to_columns[i], key=lambda x: x.name
-                )
+        table_to_columns = defaultdict(list)
+
+        for other_column in other_columns:
+            table_to_columns[other_column.table].append(other_column)
 
         result = [(i, v,) for i, v in table_to_columns.items()]
         result = sorted(result, key=lambda x: x[0].name)

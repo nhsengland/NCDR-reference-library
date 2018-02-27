@@ -186,12 +186,12 @@ class TableDetail(DetailView):
 
 class NcdrReferenceRedirect(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        return SITE_PREFIX + reverse('ncdr_reference_list', kwargs=dict(letter="A"))
+        return SITE_PREFIX + reverse('column_list', kwargs=dict(letter="A"))
 
 
 class NcdrReferenceList(ListView):
     model = models.Column
-    template_name = "ncdr_reference_list.html"
+    template_name = "column_list.html"
     NUMERIC = "0-9"
     paginate_by = 50
 
@@ -214,7 +214,7 @@ class NcdrReferenceList(ListView):
         ctx = super(NcdrReferenceList, self).get_context_data(*args, **kwargs)
         symbols = [i for i in ascii_uppercase]
         symbols.append(self.NUMERIC)
-        url = lambda x: reverse('ncdr_reference_list', kwargs=dict(letter=x))
+        url = lambda x: reverse('column_list', kwargs=dict(letter=x))
         ctx['other_pages'] = ((symbol, SITE_PREFIX + url(symbol),) for symbol in symbols)
         return ctx
 
