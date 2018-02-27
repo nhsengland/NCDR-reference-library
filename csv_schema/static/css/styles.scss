@@ -14,6 +14,46 @@ $text-colour-on-dark: #FFF;
 $footer-height: 300px;
 $main-content-margin: 20px;
 
+
+// preview mode colours
+$preview-primary-colour: #455C7B;
+$preview-primary-colour-light: #AC6C82;
+$preview-link-colour: #FFBC67;
+
+
+@mixin primary-background-colour{
+  background-color: $primary-colour;
+  color: $text-colour-on-dark;
+
+  .preview-mode &{
+    background-color: $preview-primary-colour;
+
+  }
+}
+
+@mixin primary-background-colour-light{
+  background-color: $primary-colour-light;
+  color: $text-colour-on-dark;
+
+  a.btn {
+    color: $text-colour-on-dark;
+  }
+  a:hover.btn {
+    color: darken($text-colour-on-dark, 20%);
+  }
+
+  .preview-mode &{
+    background-color: $preview-primary-colour-light;
+    a.btn {
+      color: $preview-link-colour;
+    }
+    a:hover.btn {
+      color: lighten($preview-link-colour, 20%);
+    }
+  }
+}
+
+
 body {
   background: #fff;
   margin-top: 0;
@@ -24,6 +64,12 @@ body {
   font-size: 18px;
   min-height: 100%;
   overflow-x: hidden;
+}
+
+.banner-head{
+  @include primary-background-colour-light;
+  position: absolute;
+  width: 100%;
 }
 
 .form-nav{
@@ -100,7 +146,7 @@ h4.subheader{
 }
 
 header.masthead{
-  background-color: $primary-colour;
+  @include primary-background-colour;
   // height: 223px;
   padding: 47px 0 0 0;
 
@@ -138,7 +184,7 @@ header.masthead{
       color: white;
 
       &:hover, &.active{
-        background-color: #0072ce;
+        @include primary-background-colour-light;
         text-decoration: none;
       }
     }

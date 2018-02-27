@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from collections import defaultdict
+from django.contrib.auth.signals import user_logged_out
 from django.urls import reverse
 from django.db.models import Count
 from django.utils.text import slugify
@@ -8,6 +9,9 @@ from django.utils.functional import cached_property
 from django.db.models.functions import Lower
 from django.conf import settings
 from django.db import models
+from django.contrib.auth.models import User
+
+from django_auto_one_to_one import AutoOneToOneModel
 
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
@@ -46,6 +50,30 @@ def unique_slug(some_cls, name):
         return "{}{}".format(slug, some_cls.objects.last().id)
     else:
         return slug
+
+
+class UserProfile(AutoOneToOneModel(User)):
+    preview_mode = models.BooleanField(default=False)
+
+    @classmethod
+    def get_url_preview_mode_on(cls):
+        return SITE_PREFIX + reverse(
+            "preview_mode", kwargs=dict(preview_mode=1)
+        )
+
+    @classmethod
+    def get_url_preview_mode_off(cls):
+        return SITE_PREFIX + reverse(
+            "preview_mode", kwargs=dict(preview_mode=0)
+        )
+
+
+def turn_preview_mode_off(sender, user, request, **kwargs):
+    profile = user.userprofile
+    profile.preview_mode = False
+    profile.save()
+
+user_logged_out.connect(turn_preview_mode_off)
 
 
 class NcdrModel(models.Model):
@@ -142,6 +170,12 @@ class Database(NcdrModel):
     def get_absolute_url(self):
         return SITE_PREFIX + reverse(
             "database_detail", kwargs=dict(db_name=self.name)
+        )
+
+    @classmethod
+    def get_list_url(self):
+        return SITE_PREFIX + reverse(
+            "database_list"
         )
 
     def get_display_name(self):

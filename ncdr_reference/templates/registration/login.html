@@ -1,0 +1,29 @@
+{% extends 'base_templates/base.html' %}
+{% load bootstrap %}
+
+{% block title %}Login{% endblock %}
+
+{% block contents %}
+<div class="container main-content">
+  <div class="row">
+    <div class="col-md-4 col-md-push-4">
+      <h2>Login</h2>
+      <form method="post">
+        {% csrf_token %}
+        {% for error in form.non_field_errors %}
+          <div class="content-offset-below-20">
+            {{ error }}
+          </div>
+        {% endfor %}
+        <div>
+          {{ form.username|bootstrap }}
+        </div>
+        <div>
+          {{ form.password|bootstrap }}
+        </div>
+        <button type="submit">Login</button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

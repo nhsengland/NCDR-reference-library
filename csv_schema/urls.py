@@ -3,6 +3,16 @@ from csv_schema import views
 
 urlpatterns = [
     path(
+        'form/preview_mode/<int:preview_mode>',
+        views.PreviewModeSwitch.as_view(),
+        name="preview_mode"
+    ),
+    path(
+        'form/preview/unpublished',
+        views.PreviewList.as_view(),
+        name="preview_list"
+    ),
+    path(
         'form/',
         views.NCDRFormRedirect.as_view(),
         name="redirect"
@@ -46,7 +56,6 @@ urlpatterns = [
         views.ColumnDetail.as_view(),
         name="column_detail"
     ),
-
     path('ncdr_references', views.NcdrReferenceRedirect.as_view(), name="ncdr_reference_redirect"),
     path('ncdr_references/<str:letter>', views.NcdrReferenceList.as_view(), name="ncdr_reference_list"),
     path('', views.IndexView.as_view(), name="index_view"),

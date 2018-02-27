@@ -21,7 +21,29 @@
   	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/nhsengland.css" %}">
   	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/styles.css" %}">
   </head>
-  <body data-spy="scroll" data-target="#navbar-example">
+  <body {% if request.user.userprofile.preview_mode %}class="preview-mode"{% endif %}>
+    {% if request.user.is_authenticated %}
+    <div class="banner-head">
+      {% if request.user.userprofile.preview_mode %}
+        <div class="container content-offset-10">
+          <div class="row">
+            <div class="col-md-8 col-md-push-2 text-center">
+              You are currently viewing a preview version of the site
+            </div>
+            <a class="btn pull-right" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">log out</a>
+            <a class="btn pull-right" href="{{ models.csv_schema.userprofile.get_url_preview_mode_off }}">View normal site</a>
+          </div>
+        </div>
+      {% else %}
+      <div class="container content-offset-10">
+        <div class="row">
+          <a class="btn pull-right" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">log out</a>
+          <a class="btn pull-right" href="{{ models.csv_schema.userprofile.get_url_preview_mode_on }}">Preview site</a>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+    {% endif %}
     {% block header %}
     <header class="masthead">
       <div style="overflow-y: hidden" class="container">
@@ -53,7 +75,7 @@
             <nav>
               <ul>
                 <li>
-                  <a {% if 'database' in request.path %} class="active" {% endif %} href="{{ settings.SITE_PREFIX }}{{ database_list }}">
+                  <a {% if 'database' in request.path %} class="active" {% endif %} href="{{ models.csv_schema.database.get_list_url }}{{ settings.SITE_PREFIX }}">
                     Databases
                   </a>
                 </li>
@@ -105,6 +127,15 @@
                   	<li>
                   	  <a target="_blank" href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v0.3.0</a>
                   	</li>
+                    {% if request.user.is_authenticated %}
+                      <li>
+                        <a href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log out</a>
+                    	</li>
+                    {% else %}
+                      <li>
+                    	  <a href="{{ models.csv_schema.column.get_edit_list_url }}">Log In</a>
+                    	</li>
+                    {% endif %}
                   </ul>
                   <div class="pull-right social-networks">
                         <a target="_blank" href="http://www.twitter.com/NHSEngland" title="Follow us on Twitter" target="_blank" class="external-link">

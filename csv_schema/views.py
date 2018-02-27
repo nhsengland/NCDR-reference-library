@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import operator
 import functools
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.contrib import messages
 from string import ascii_uppercase
@@ -30,7 +31,7 @@ else:
     SITE_PREFIX = ""
 
 
-class NCDRView(object):
+class NCDRView(LoginRequiredMixin):
     pertinant = [
         c_models.Column,
         c_models.Table,
@@ -57,12 +58,7 @@ class NCDRView(object):
 
 class NCDRFormRedirect(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        result = SITE_PREFIX + reverse(
-            'edit_list', kwargs=dict(
-                model_name=NCDRView.pertinant[0].__name__.lower()
-            )
-        )
-        return result
+        return NCDRView.pertinant[0].get_edit_list_url()
 
 
 class NCDRAddManyView(NCDRView, CreateView):
@@ -147,7 +143,7 @@ class NCDREditListView(NCDRView, ListView):
 class IndexView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
-        return SITE_PREFIX + reverse('database_list')
+        return c_models.Database.get_list_url()
 
 
 class ColumnDetail(DetailView):
@@ -239,6 +235,27 @@ class GroupingDetail(DetailView):
         ctx = super(GroupingDetail, self).get_context_data(*args, **kwargs)
         ctx["groupings"] = models.Grouping.objects.all().order_by('name')
         return ctx
+
+
+class PreviewModeSwitch(RedirectView):
+    """ Switch the preview mode on or off for a user
+        gets passed in an integer that we boolerise™
+    """
+    def get_redirect_url(self, *args, **kwargs):
+        if self.kwargs["preview_mode"]:
+            return reverse('database_list')
+        return self.request.GET["next"]
+
+    def get(self, request, *args, **kwargs):
+        user_profile = self.request.user.userprofile
+        user_profile.preview_mode = bool(self.kwargs["preview_mode"])
+        user_profile.save()
+        return super(PreviewModeSwitch, self).get(request, *args, **kwargs)
+
+
+class PreviewList(ListView):
+    def get(self, *args, **kwargs):
+        return super().get(*args, **kwargs)
 
 
 class AboutView(TemplateView):
