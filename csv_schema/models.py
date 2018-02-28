@@ -235,7 +235,7 @@ class Table(NcdrModel):
 
 class Grouping(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.CharField(
         max_length=255, null=True, blank=True
     )
@@ -314,7 +314,7 @@ class Column(NcdrModel, models.Model):
     objects = ColumnManager()
 
     name = models.CharField(max_length=255)
-    slug = models.SlugField(unique=True)
+    slug = models.SlugField(max_length=255, unique=True)
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
