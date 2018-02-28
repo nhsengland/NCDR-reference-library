@@ -2,3 +2,6 @@
 {% block form_title %}
   <h3>Unpublished {{ view.model.get_model_display_name_plural }}</h3>
 {% endblock %}
+{% block empty_list %}
+  <h1 class="faded text-center">There are currently no unpublished {{ view.model.get_model_display_name_plural.lower }}</h1>
+{% endblock %}

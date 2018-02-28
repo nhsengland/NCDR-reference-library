@@ -24,7 +24,7 @@
         </div>
       </div>
       {% if not object_list %}
-        <h1 class="faded text-center">No elements start with {{ view.kwargs.letter }}</h1>
+        <h1 class="faded text-center">No {{ models.csv_schema.column.get_model_display_name_plural }} start with {{ view.kwargs.letter }}</h1>
       {% endif %}
       <div class="row">
         <div class="col-md-10">

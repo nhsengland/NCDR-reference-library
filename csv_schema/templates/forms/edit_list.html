@@ -20,6 +20,11 @@
           {% endif %}
         </div>
       {% endfor %}
+      {% if not object_list %}
+        {% block empty_list %}
+          <h1 class="faded text-center">There are currently no {{ view.model.get_model_display_name_plural }}</h1>
+        {% endblock %}
+      {% endif %}
     </div>
   </div>
   <div class="row">
