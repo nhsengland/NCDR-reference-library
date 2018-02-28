@@ -2,12 +2,15 @@
 {% load bootstrap %}
 {% block form_title %}
   <h3>Add {{ view.model.get_model_display_name_plural }}</h3>
+{% endblock %}
+{% block form_description %}
   {% if view.model.get_form_description_template %}
     <div class="row nhs-england-well">
       {% include view.model.get_form_description_template %}
     </div>
   {% endif %}
 {% endblock %}
+
 {% block form_contents %}
 <div class="row content-offset">
   <div class="col-md-12">

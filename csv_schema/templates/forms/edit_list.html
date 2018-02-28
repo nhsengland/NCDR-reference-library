@@ -1,6 +1,8 @@
 {% extends "base_templates/form_base.html" %}
 {% block form_title %}
   <h3>Edit {{ view.model.get_model_display_name_plural }}</h3>
+{% endblock %}
+{% block form_description %}
   {% if view.model.get_form_description_template %}
     <div class="row nhs-england-well">
       {% include view.model.get_form_description_template %}

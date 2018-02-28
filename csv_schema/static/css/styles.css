@@ -13,6 +13,9 @@ body {
   min-height: 100%;
   overflow-x: hidden; }
 
+.form-action-nav {
+  padding-top: 22px; }
+
 .alert-success {
   background-color: #e8edee;
   color: #425563; }
