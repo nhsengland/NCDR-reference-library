@@ -28,7 +28,7 @@ CHECKED = "Checked"
 PRESENT_IN_TABLES = "Present_In_Tables"
 LINK = "Link"
 LINK_TYPE = "Link Type"
-MAPPING = "Mapping"
+DATA_ELEMENT = "Mapping"
 
 # unused
 GROUPING = "Grouping"
@@ -37,7 +37,7 @@ LAST_UPDATE_BY = "Last_Update_By"
 
 # we skip these columns as requested
 TO_SKIP = [
-    "DB_Col_Group", "DB_Col_Name", MAPPING, CREATED_DATE
+    "DB_Col_Group", "DB_Col_Name", DATA_ELEMENT, CREATED_DATE
 ]
 
 
@@ -50,7 +50,7 @@ EXPECTED_COLUMN_NAMES = set([
     DERIVATION_METHODOLOGY,
     PRESENT_IN_TABLES,
     LINK,
-    MAPPING
+DATA_ELEMENT
 ])
 
 CSV_FIELD_TO_COLUMN_FIELD = {
@@ -134,10 +134,10 @@ def process_row(csv_row, file_name):
         return
 
     tables = get_tables(csv_row)
-    if not csv_row[MAPPING].strip():
-        raise ValueError("{} expected".format(MAPPING))
-    mapping, _ = models.Mapping.objects.get_or_create(
-        name=csv_row[MAPPING].strip()
+    if not csv_row[DATA_ELEMENT].strip():
+        raise ValueError("{} expected".format(DATA_ELEMENT))
+    mapping, _ = models.DataElement.objects.get_or_create(
+        name=csv_row[DATA_ELEMENT].strip()
     )
 
     for idx, table in enumerate(tables):
@@ -162,7 +162,7 @@ def process_row(csv_row, file_name):
             if field_name in TO_SKIP:
                 continue
 
-            if field_name == TABLE_NAME or field_name == DATABASE or field_name == MAPPING:
+            if field_name == TABLE_NAME or field_name == DATABASE or field_name == DATA_ELEMENT:
                 # these fields are the Foreign keys handled above.
                 continue
 

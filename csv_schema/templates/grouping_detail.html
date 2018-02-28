@@ -33,18 +33,33 @@
           </div>
         </div>
       {% endif %}
-      {% for mapping in object.mapping_set.all %}
+      {% for data_element in object.dataelement_set.all %}
         <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
           <div class="col-md-12">
-            <h3 class="sub-row-title">{{ mapping.name }}</h3>
+            <h3 class="sub-row-title">{{ data_element.name }}</h3>
           </div>
         </div>
-        {% for column in mapping.column_set.all %}
+        <p>
+          {{ data_element.description }}
+        </p>
+        {% for column in data_element.column_set.all %}
+          <div class="row">
+            <div class="col-md-12">
+              <a href="{{ column.get_absolute_url }}">
+                {{ column.table.database.name }}/{{ column.table.name }}/{{ column.name }}
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+
+        {% comment %}
+        {% for column in data_element.column_set.all %}
           {% include 'partials/column.html' %}
             {% if not forloop.last %}
               <hr />
             {% endif %}
         {% endfor %}
+        {% endcomment %}
       {% endfor %}
     </article>
   </div>

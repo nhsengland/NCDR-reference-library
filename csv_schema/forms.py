@@ -20,9 +20,9 @@ class ColumnForm(ModelForm):
         fields = '__all__'
 
 
-class MappingForm(ModelForm):
+class DataElementForm(ModelForm):
     class Meta:
-        model = models.Mapping
+        model = models.DataElement
         fields = '__all__'
 
 

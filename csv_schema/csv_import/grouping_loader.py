@@ -25,10 +25,10 @@ def process_row(row):
         if not field.startswith("Mapping "):
             continue
         if row[field]:
-            mapping, _ = models.Mapping.objects.get_or_create(
+            data_element, _ = models.DataElement.objects.get_or_create(
                 name=row[field]
             )
-            grouping.mapping_set.add(mapping)
+            grouping.dataelement_set.add(data_element)
     grouping.save()
 
 

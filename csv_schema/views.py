@@ -36,7 +36,7 @@ class NCDRView(LoginRequiredMixin):
         c_models.Column,
         c_models.Table,
         c_models.Database,
-        c_models.Mapping,
+        c_models.DataElement,
         c_models.Grouping,
     ]
 

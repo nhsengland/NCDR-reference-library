@@ -254,7 +254,7 @@ class Grouping(NcdrModel, models.Model):
         return super(Grouping, self).save(*args, **kwargs)
 
 
-class Mapping(NcdrModel, models.Model):
+class DataElement(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
     grouping = models.ForeignKey(
@@ -318,8 +318,8 @@ class Column(NcdrModel, models.Model):
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
-    mapping = models.ForeignKey(
-        Mapping, on_delete=models.SET_NULL, null=True, blank=True
+    data_element = models.ForeignKey(
+        DataElement, on_delete=models.SET_NULL, null=True, blank=True
     )
     table = models.ForeignKey(
         Table, on_delete=models.CASCADE, null=True, blank=True
@@ -365,20 +365,20 @@ class Column(NcdrModel, models.Model):
     @cached_property
     def useage_count(self):
         count = self.tables.count()
-        if self.mapping:
-            count += self.mapping.column_set.count()
+        if self.data_element:
+            count += self.data_element.column_set.count()
         return count
 
     @cached_property
     def related(self):
         """
-            returns a tuple of (table, columns_and_mappings_within_the_table)
+            returns a tuple of (table, columns within the table)
             the column names are sorted alphabetically
 
             the tables are sorted by database name then name
         """
         result = []
-        other_columns = self.mapping.column_set.exclude(id=self.id)
+        other_columns = self.data_element.column_set.exclude(id=self.id)
         other_columns = other_columns.order_by(
             "table__name"
         ).order_by(
