@@ -11,28 +11,20 @@
 {% block form_contents %}
 <div class="row content-offset">
   <div class="col-md-12">
-    {% if formset.total_error_count %}
-      <ul class="errorList">
-        {% for dict in formset.errors %}
-            {% for error in dict.values %}
-              {% for i in error %}
-                <li>{{ i }}</li>
-              {% endfor %}
-            {% endfor %}
-        {% endfor %}
-        </ul>
-    {% endif %}
     <form action="" method="post">
       {% csrf_token %}
       {{ formset.management_form }}
       <div id="items-form-container">
+        {% for form in formset.forms %}
+          {% include view.model.get_form_template %}
+        {% endfor %}
       </div>
       <div class="row">
         <div class="col-md-12 text-right">
           <a href="" id="add-another" class="btn btn-primary">
             Add Another
           </a>
-          <a href="{{ model.get_edit_list_url }}" class="btn btn-default">
+          <a href="{{ view.model.get_edit_list_url }}" class="btn btn-default">
             Cancel
           </a>
           <input class="btn btn-primary" type="submit" value="Submit" />
@@ -64,7 +56,6 @@
       e.preventDefault();
       addAnother();
     });
-    addAnother();
   </script>
 </div>
 {% endblock %}

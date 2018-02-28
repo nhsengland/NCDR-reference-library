@@ -15,7 +15,7 @@
           <a href="{{ m.get_edit_url }}">
             {% include m.get_form_display_template %}
           </a>
-          {% if not forloop.last %}
+          {% if not forloop.last and not forloop.first %}
             <hr />
           {% endif %}
         </div>

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 from collections import defaultdict
 from django.contrib.auth.signals import user_logged_out
 from django.urls import reverse
-from django.db.models import Count
 from django.utils.text import slugify
 from django.utils.functional import cached_property
 from django.db.models.functions import Lower
@@ -147,18 +146,22 @@ class NcdrModel(models.Model):
 
 
 class DatabaseQueryset(models.QuerySet):
-    def all_populated(self):
+    def all_populated(self, user):
         """ returns all tables that have columns
         """
-        return self.filter(table__in=Table.objects.all_populated()).distinct()
+        return self.filter(
+            table__in=Table.objects.all_populated(user)
+        ).distinct()
 
 
 class Database(NcdrModel):
-
     name = models.CharField(max_length=255, unique=True)
+    display_name = models.CharField(
+        max_length=255, unique=True, blank=True, null=True
+    )
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
-
+    owner = models.CharField(max_length=255, blank=True, null=True)
     objects = DatabaseQueryset.as_manager()
 
     class Meta:
@@ -179,26 +182,29 @@ class Database(NcdrModel):
         )
 
     def get_display_name(self):
-        display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(self.name)
-        if display_name:
-            return display_name
+        if self.display_name:
+            return self.display_name
+        elif self.name in DATABASE_NAME_TO_DISPLAY_NAME:
+            return DATABASE_NAME_TO_DISPLAY_NAME[self.name]
         else:
             return self.name.replace("_", "").title()
 
-    def get_owner(self):
-        owner = DATABASE_NAME_TO_OWNER.get(self.name)
-        if owner:
-            return owner
+    def save(self, *args, **kwargs):
+        if not self.owner:
+            self.owner = DATABASE_NAME_TO_OWNER.get(self.name)
+        return super().save(*args, **kwargs)
 
 
 class TableQueryset(models.QuerySet):
-    def all_populated(self):
+    def all_populated(self, user):
         """ returns all tables that have columns
         """
-        return self.annotate(
-            column_count=Count('column')
-        ).filter(
-            column_count__gt=0
+        populated_columns = Column.objects.to_show(user)
+        populated_tables = populated_columns.values_list(
+            "table_id", flat=True
+        ).distinct()
+        return Table.objects.filter(
+            id__in=populated_tables
         )
 
 
@@ -206,7 +212,11 @@ class Table(NcdrModel):
     name = models.CharField(max_length=255)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
-    is_table = models.BooleanField(default=True)
+    is_table = models.BooleanField(
+        verbose_name="Table or View",
+        choices=((True, 'Table'), (False, 'View'),),
+        default=True,
+    )
 
     database = models.ForeignKey(
         Database, on_delete=models.CASCADE
@@ -257,8 +267,8 @@ class Grouping(NcdrModel, models.Model):
 class DataElement(NcdrModel, models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
-    grouping = models.ForeignKey(
-        Grouping, on_delete=models.SET_NULL, null=True, blank=True
+    grouping = models.ManyToManyField(
+        Grouping, null=True, blank=True
     )
 
     class Meta:
@@ -268,12 +278,17 @@ class DataElement(NcdrModel, models.Model):
         return self.name
 
 
-class ColumnManager(models.Manager):
-    def get_queryset(self, *args, **kwargs):
-        queryset = super(ColumnManager, self).get_queryset(*args, **kwargs)
-        return queryset.annotate(
-            name_lower=Lower('name'),
-        ).order_by('name_lower')
+class ColumnQueryset(models.QuerySet):
+    def to_show(self, user):
+        if user.is_authenticated and user.userprofile.preview_mode:
+            return self.order_by(Lower('name'))
+        else:
+            return self.filter(
+                published=True
+            ).order_by(Lower('name'))
+
+    def unpublished(self):
+        return self.filter(published=False)
 
 
 class Column(NcdrModel, models.Model):
@@ -311,7 +326,7 @@ class Column(NcdrModel, models.Model):
         verbose_name = "Column"
         unique_together = (("name", "table"),)
 
-    objects = ColumnManager()
+    objects = ColumnQueryset.as_manager()
 
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, unique=True)
@@ -346,11 +361,31 @@ class Column(NcdrModel, models.Model):
             slug=self.slug,
         ))
 
+    @classmethod
+    def get_unpublished_list_url(cls):
+        return SITE_PREFIX + reverse("unpublished_list", kwargs=dict(
+            model_name=cls.get_model_api_name()
+        ))
+
+    @classmethod
+    def get_publish_all_url(cls):
+        return SITE_PREFIX + reverse("publish_all")
+
+    def get_publish_url(self):
+        return SITE_PREFIX + reverse("publish", kwargs=dict(
+            pk=self.id, publish=1
+        ))
+
+    def get_unpublish_url(self):
+        return SITE_PREFIX + reverse("publish", kwargs=dict(
+            pk=self.id, publish=0
+        ))
+
     def get_bread_crumb_link(self):
         if self.name[0] in range(10):
             from csv_schema import views
             return SITE_PREFIX + reverse("column_list", kwargs=dict(
-                letter=views.NcdrReferenceList.NUMERIC
+                letter=views.ColumnList.NUMERIC
             ))
         return SITE_PREFIX + reverse("column_list", kwargs=dict(
             letter=self.name[0].upper()
@@ -359,7 +394,7 @@ class Column(NcdrModel, models.Model):
     def get_bread_crumb_name(self):
         if self.name[0] in range(10):
             from csv_schema import views
-            return views.NcdrReferenceList.NUMERIC
+            return views.ColumnList.NUMERIC
         return self.name[0].upper()
 
     @cached_property

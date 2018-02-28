@@ -56,6 +56,10 @@ $preview-link-colour: #FFBC67;
   }
 }
 
+.relative{
+  position: relative;
+  z-index: 1000;
+}
 
 body {
   background: #fff;
@@ -67,6 +71,11 @@ body {
   font-size: 18px;
   min-height: 100%;
   overflow-x: hidden;
+}
+
+.alert-success{
+  background-color: $tertiary-colour;
+  color: $tertiary-colour-text;
 }
 
 .banner-head{

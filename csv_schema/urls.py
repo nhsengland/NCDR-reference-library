@@ -8,9 +8,19 @@ urlpatterns = [
         name="preview_mode"
     ),
     path(
-        'form/preview/unpublished',
-        views.PreviewList.as_view(),
-        name="preview_list"
+        'form/publish_all/',
+        views.PublishAll.as_view(),
+        name="publish_all"
+    ),
+    path(
+        'form/publish/<int:pk>/<int:publish>/',
+        views.Publish.as_view(),
+        name="publish"
+    ),
+    path(
+        'form/<slug:model_name>/unpublished/',
+        views.UnPublishedList.as_view(),
+        name="unpublished_list"
     ),
     path(
         'form/',
@@ -57,7 +67,7 @@ urlpatterns = [
         name="column_detail"
     ),
     path('columns', views.NcdrReferenceRedirect.as_view(), name="column_redirect"),
-    path('columns/<str:letter>', views.NcdrReferenceList.as_view(), name="column_list"),
+    path('columns/<str:letter>', views.ColumnList.as_view(), name="column_list"),
     path('', views.IndexView.as_view(), name="index_view"),
 
     path('grouping', views.GroupingRedirect.as_view(), name="grouping_redirect"),

@@ -5,10 +5,11 @@
     </h4>
   </div>
 </div>
-{% if m.grouping %}
+{% if m.grouping.exists %}
   <div class="row">
     <div class="col-md-12">
-      grouping: {{ m.grouping }}
+      grouping{{ m.grouping.all|pluralize }}:
+      {{ m.grouping.all|join:", " }}
     </div>
   </div>
 {% endif %}

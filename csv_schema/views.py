@@ -9,13 +9,16 @@ from string import ascii_uppercase
 from csv_schema import models
 from django.http import HttpResponseRedirect
 from django.forms import formset_factory
+from django.views.generic.detail import SingleObjectMixin
 from django.views.generic import (
     ListView,
     RedirectView,
     DetailView,
     TemplateView,
     UpdateView,
-    CreateView
+    CreateView,
+    DeleteView,
+    View
 )
 from django.urls import reverse
 from django.db.models import Q
@@ -65,7 +68,7 @@ class NCDRAddManyView(NCDRView, CreateView):
     template_name = "forms/create.html"
 
     def get_form(self, *args, **kwargs):
-        formset_cls = formset_factory(self.form_class, extra=50)
+        formset_cls = formset_factory(self.form_class)
         if self.request.POST:
             return formset_cls(self.request.POST)
         else:
@@ -73,12 +76,7 @@ class NCDRAddManyView(NCDRView, CreateView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(NCDRAddManyView, self).get_context_data(*args, **kwargs)
-        formset_cls = formset_factory(self.form_class, extra=50)
-        if self.request.POST:
-            ctx["formset"] = formset_cls(self.request.POST)
-        else:
-            ctx["formset"] = self.get_form()
-        ctx["model"] = self.model
+        ctx["formset"] = self.get_form()
         return ctx
 
     @transaction.atomic
@@ -115,18 +113,30 @@ class NCDREditView(NCDRView, UpdateView):
     def form_valid(self, form):
         result = super(NCDREditView, self).form_valid(form)
         messages.success(
-            self.request, '{} updated.'.format(
+            self.request, '{} updated'.format(
                 self.object.get_display_name()
             )
         )
         return result
 
     def get_success_url(self, *args, **kwargs):
-        return self.model.get_edit_list_url()
+        if "next" in self.request.GET:
+            return self.request.GET["next"]
+        else:
+            return self.model.get_edit_list_url()
 
 
-class NCDRDeleteView(NCDRView, UpdateView):
+class NCDRDeleteView(NCDRView, DeleteView):
     template_name = "forms/delete.html"
+
+    def delete(self, *args, **kwargs):
+        messages.success(
+            self.request, '{} deleted'.format(
+                self.get_object().name
+            )
+        )
+
+        return super().delete(*args, **kwargs)
 
     def get_success_url(self, *args, **kwargs):
         return models.Table.get_edit_list_url()
@@ -157,7 +167,7 @@ class DatabaseList(ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super(DatabaseList, self).get_queryset()
-        return qs.all_populated()
+        return qs.all_populated(self.request.user)
 
 
 class DatabaseDetail(DetailView):
@@ -180,7 +190,9 @@ class TableDetail(DetailView):
     def get_context_data(self, *args, **kwargs):
         # get the list of tables in this database
         ctx = super(TableDetail, self).get_context_data(*args, **kwargs)
-        ctx["tables"] = self.object.database.table_set.all_populated()
+        ctx["tables"] = self.object.database.table_set.all_populated(
+            self.request.user
+        )
         return ctx
 
 
@@ -189,7 +201,56 @@ class NcdrReferenceRedirect(RedirectView):
         return SITE_PREFIX + reverse('column_list', kwargs=dict(letter="A"))
 
 
-class NcdrReferenceList(ListView):
+class PublishAll(View):
+    http_method_names = ["post"]
+
+    def get_success_url(self):
+        return self.request.GET["next"]
+
+    def post(self, *args, **kwargs):
+        unpublished = models.Column.objects.filter(
+            published=False
+        )
+
+        unpublished_count = unpublished.count()
+        unpublished.update(published=True)
+        messages.success(
+            self.request, '{} published'.format(
+                unpublished_count
+            )
+        )
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class Publish(View, SingleObjectMixin):
+    http_method_names = ["post"]
+    model = models.Column
+
+    def get_success_url(self):
+        return self.request.GET["next"]
+
+    def post(self, *args, **kwargs):
+        obj = self.get_object()
+        obj.published = bool(kwargs["publish"])
+        obj.save()
+
+        if kwargs["publish"]:
+            msg = '{} published'.format(
+                obj.name
+            )
+        else:
+            msg = '{} unpublished'.format(
+                obj.name
+            )
+
+        messages.success(
+            self.request, msg
+        )
+
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class ColumnList(ListView):
     model = models.Column
     template_name = "column_list.html"
     NUMERIC = "0-9"
@@ -197,8 +258,9 @@ class NcdrReferenceList(ListView):
 
     def get_queryset(self, *args, **kwargs):
         references = super(
-            NcdrReferenceList, self
+            ColumnList, self
         ).get_queryset()
+        references = references.to_show(self.request.user)
 
         if self.kwargs["letter"] == self.NUMERIC:
             """ startswith 0, or 1, or 2 etc
@@ -206,12 +268,12 @@ class NcdrReferenceList(ListView):
             startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
             return references.filter(
                 functools.reduce(operator.or_, startswith_args)
-        )
+            )
 
         return references.filter(name__istartswith=self.kwargs["letter"][0])
 
     def get_context_data(self, *args, **kwargs):
-        ctx = super(NcdrReferenceList, self).get_context_data(*args, **kwargs)
+        ctx = super(ColumnList, self).get_context_data(*args, **kwargs)
         symbols = [i for i in ascii_uppercase]
         symbols.append(self.NUMERIC)
         url = lambda x: reverse('column_list', kwargs=dict(letter=x))
@@ -242,8 +304,6 @@ class PreviewModeSwitch(RedirectView):
         gets passed in an integer that we boolerise™
     """
     def get_redirect_url(self, *args, **kwargs):
-        if self.kwargs["preview_mode"]:
-            return reverse('database_list')
         return self.request.GET["next"]
 
     def get(self, request, *args, **kwargs):
@@ -253,9 +313,15 @@ class PreviewModeSwitch(RedirectView):
         return super(PreviewModeSwitch, self).get(request, *args, **kwargs)
 
 
-class PreviewList(ListView):
-    def get(self, *args, **kwargs):
-        return super().get(*args, **kwargs)
+class UnPublishedList(NCDRView, ListView):
+    template_name = "forms/unpublished_list.html"
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data()
+        ctx["object_list"] = ctx["object_list"].filter(
+            published=False
+        )
+        return ctx
 
 
 class AboutView(TemplateView):

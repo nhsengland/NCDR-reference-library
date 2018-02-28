@@ -5,47 +5,52 @@ This is the template that is used by everything on the
 
 {% block contents %}
   <div class="container main-content">
-    {% block form_navigation %}
-      <div class="row">
-        <div class="col-md-12">
-          <nav class="row">
-            <a href="{{ view.model.get_edit_list_url }}" class="col-md-2">
-              Edit {{ view.model.get_model_display_name_plural }}
+    <aside class="side-nav col-md-3">
+      <ul>
+        <li class="list-title">
+          <a href="{{ view.pertinant.0.get_edit_list_url }}">
+            Forms
+          </a>
+        </li>
+        {% for some_model in view.pertinant %}
+          <li>
+            <a class="table-link{% if some_model.get_model_api_name == view.model.get_model_api_name %} active{% endif %}" href="{{ some_model.get_edit_list_url }}">
+              {{ some_model.get_model_display_name_plural }}
             </a>
-            <a href="{{ view.model.get_add_url }}" class="col-md-2">
-              Add {{ view.model.get_model_display_name_plural }}
-            </a>
-            <div class="col-md-8">
-              {% include 'partials/form_navigation.html' %}
-            </div>
-          </nav>
-        </div>
-      </div>
-    {% endblock %}
-    {% block form_title %}
-      <div class="row">
-        <div class="col-md-12">
-          <h3>Edit {{ model.get_model_display_name_plural }}</h3>
-          {% if model.get_form_description_template %}
-            <div class="row nhs-england-well">
-              {% include model.get_form_description_template %}
-            </div>
-          {% endif %}
-          {% for m in object_list %}
-            <div class="content-offset-below-20">
-              <a href="{{ m.get_edit_url }}">
-                {% include m.get_form_display_template %}
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+    <div class="col-md-9">
+      {% block form_navigation %}
+        <div class="row">
+          <div class="col-md-12">
+            <nav class="row">
+              <a href="{{ view.model.get_edit_list_url }}" class="col-md-3">
+                Edit {{ view.model.get_model_display_name_plural }}
               </a>
-              {% if not forloop.last %}
-                <hr />
-              {% endif %}
-            </div>
-          {% endfor %}
+              <a href="{{ view.model.get_add_url }}" class="col-md-3">
+                Add {{ view.model.get_model_display_name_plural }}
+              </a>
+            </nav>
+          </div>
         </div>
-      </div>
-    {% endblock %}
+      {% endblock %}
+      {% block form_title %}
+        <div class="row">
+          <div class="col-md-12">
+            <h3>Edit {{ model.get_model_display_name_plural }}</h3>
+            {% if model.get_form_description_template %}
+              <div class="row nhs-england-well">
+                {% include model.get_form_description_template %}
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      {% endblock %}
 
-    {% block form_contents %}
-    {% endblock %}
+      {% block form_contents %}
+      {% endblock %}
+    </div>
   </div>
 {% endblock %}

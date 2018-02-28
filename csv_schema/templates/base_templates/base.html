@@ -24,24 +24,25 @@
   <body {% if request.user.userprofile.preview_mode %}class="preview-mode"{% endif %}>
     {% if request.user.is_authenticated %}
     <div class="banner-head">
-      {% if request.user.userprofile.preview_mode %}
-        <div class="container content-offset-10">
-          <div class="row">
-            <div class="col-md-8 col-md-push-2 text-center">
-              You are currently viewing a preview version of the site
-            </div>
-            <a class="btn pull-right" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">log out</a>
-            <a class="btn pull-right" href="{{ models.csv_schema.userprofile.get_url_preview_mode_off }}">View normal site</a>
-          </div>
-        </div>
-      {% else %}
       <div class="container content-offset-10">
         <div class="row">
-          <a class="btn pull-right" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">log out</a>
-          <a class="btn pull-right" href="{{ models.csv_schema.userprofile.get_url_preview_mode_on }}">Preview site</a>
+          <div class="col-md-12 text-center">
+          {% if request.user.userprofile.preview_mode %}
+              You are currently viewing a preview version of the site
+              <a class="btn pull-right relative" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log out</a>
+              <a class="btn pull-right relative" href="{{ models.csv_schema.userprofile.get_url_preview_mode_off }}?next={{ request.get_full_path }}">View normal site</a>
+          {% else %}
+              <a class="btn pull-right relative" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">log out</a>
+              <a class="btn pull-right relative" href="{{ models.csv_schema.userprofile.get_url_preview_mode_on }}?next={{ request.get_full_path }}">Preview site</a>
+          {% endif %}
+          {% if view.model %}
+            <a class="btn pull-right relative" href="{{ view.model.get_edit_list_url }}">Edit {{ view.model.get_model_display_name_plural }}</a>
+          {% else %}
+            <a class="btn pull-right relative" href="{{ models.csv_schema.table.get_edit_list_url }}">Edit information</a>
+          {% endif %}
+          </div>
         </div>
       </div>
-      {% endif %}
     </div>
     {% endif %}
     {% block header %}

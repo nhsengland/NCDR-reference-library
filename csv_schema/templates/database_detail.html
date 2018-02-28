@@ -11,7 +11,7 @@
           {{ object.get_display_name }}
         </a>
       <li>
-      {% for table in object.table_set.all_populated %}
+      {% for table in object.table_set.all %}
         <li>
           <a class="table-link" href="{{ table.get_absolute_url }}">
             {{ table.name }}
@@ -50,7 +50,7 @@
         Raw Name: <strong class="coloured-header">{{ object.name }}</strong>
       </div>
       <div class="col-md-6">
-        Owned by: <strong class="coloured-header">{{ object.get_owner }}</strong>
+        Owned by: <strong class="coloured-header">{{ object.owner }}</strong>
       </div>
     </div>
     <div class="row">

@@ -1,3 +1,7 @@
+.relative {
+  position: relative;
+  z-index: 1000; }
+
 body {
   background: #fff;
   margin-top: 0;
@@ -8,6 +12,10 @@ body {
   font-size: 18px;
   min-height: 100%;
   overflow-x: hidden; }
+
+.alert-success {
+  background-color: #e8edee;
+  color: #425563; }
 
 .banner-head {
   background-color: #0072ce;

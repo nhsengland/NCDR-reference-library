@@ -5,11 +5,11 @@
   Added and editted elements are <strong>unpublished</strong> by default.
 </p>
 <p>
-  <a href="">There are currently 10 unpublished columns</a>
+  <a href="{{ models.csv_schema.column.get_unpublished_list_url }}">There are currently {{ model_objects.csv_schema.column.unpublished.count }} unpublished columns</a>
 </p>
 <p>
-  <a href="" class="btn btn-primary">Publish Columns</a>
-</p>
-<p>
-  <a href="{{ models.csv_schema.userprofile.get_url_preview_mode_on }}">Preview the site with the unpublished columns</a>
+  <form method="post" action="{{ models.csv_schema.column.get_publish_all_url }}?next={{ request.get_full_path }}">
+    {% csrf_token %}
+    <input class="btn btn-primary" type="submit" value="Publish All {{ model_objects.csv_schema.column.unpublished.count }} Columns" />
+  </form>
 </p>
