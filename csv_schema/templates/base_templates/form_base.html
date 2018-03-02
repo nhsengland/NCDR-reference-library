@@ -29,10 +29,10 @@ This is the template that is used by everything on the
         <div class="col-md-5">
           {% block form_actions %}
             <nav class="form-action-nav">
-              <a href="{{ view.model.get_edit_list_url }}" class="col-md-6">
+              <a href="{{ view.model.get_edit_list_url }}" class="{% if request.get_full_path != view.model.get_add_url %}active-form {% endif %} col-md-6 text-center">
                 Edit {{ view.model.get_model_display_name_plural }}
               </a>
-              <a href="{{ view.model.get_add_url }}" class="col-md-6">
+              <a href="{{ view.model.get_add_url }}" class="{% if request.get_full_path == view.model.get_add_url %}active-form {% endif %}col-md-6 text-center">
                 Add {{ view.model.get_model_display_name_plural }}
               </a>
             </nav>

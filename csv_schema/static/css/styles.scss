@@ -505,3 +505,14 @@ hr {
 .hidden-form{
   display: none;
 }
+
+.active-form{
+  background-color: $primary-colour;
+  color: $text-colour-on-dark;
+  border-radius: 5px;
+
+  &:hover{
+    color: $text-colour-on-dark;
+    background-color: $primary-colour-light;
+  }
+}

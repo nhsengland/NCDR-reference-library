@@ -339,4 +339,12 @@ hr {
 .hidden-form {
   display: none; }
 
+.active-form {
+  background-color: #005eb8;
+  color: #FFF;
+  border-radius: 5px; }
+  .active-form:hover {
+    color: #FFF;
+    background-color: #0072ce; }
+
 /*# sourceMappingURL=styles.css.map */

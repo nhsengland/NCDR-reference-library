@@ -19,6 +19,9 @@
       {{ formset.management_form }}
       <div id="items-form-container">
         {% for form in formset.forms %}
+          {% if not forloop.first %}
+            <hr />
+          {% endif %}
           {% include view.model.get_form_template %}
         {% endfor %}
       </div>
@@ -38,8 +41,8 @@
 
     <script type="text/html" id="record-template">
       <div id="item-__prefix__">
-        {% include view.model.get_form_template with form=formset.empty_form %}
         <hr />
+        {% include view.model.get_form_template with form=formset.empty_form %}
       </div>
     </script>
     <script>
