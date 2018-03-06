@@ -10,12 +10,16 @@
       </div>
 
       <div class="row content-offset-below-20">
-        {# this needs to be changed to 10 when moving to settings.USE_GROUPINGS = False #}
-        <div class="col-sm-12">
+        <div class="col-sm-10">
           <h1>
             <div class="row">
               <div class="col-md-12">
                 {{ object.name }}
+                {% if object.data_element.grouping.exists %}
+                  <small>
+                    <a href="{{ object.data_element.grouping.first.get_absolute_url }}">{{ object.data_element.grouping.first.name }}</a>
+                  </small>
+                {% endif %}
               </div>
             </div>
             <div class="row">
@@ -27,13 +31,6 @@
             </div>
           </h1>
         </div>
-        {% if object.grouping %}
-        <div class="col-sm-2 text-right">
-          <div style="margin-top: 25px">
-              <a href="{{ object.grouping.get_absolute_url }}" class="label label-default">{{ object.grouping }}</a>
-          </div>
-        </div>
-        {% endif %}
       </div>
     </div>
   </div>
@@ -46,35 +43,44 @@
       </p>
     </div>
     <div class="col-md-4 col-md-push-1">
-      <div class="row">
+        {% if object.data_element.grouping.exists %}
+          <div class="row">
+            <div class="col-md-12">
+            <h4 class="sub-row-title coloured-header">Grouping</h4>
+            <p>
+              <a href="{{ object.data_element.grouping.first.get_absolute_url }}">{{ object.data_element.grouping.first.name }}</a>
+            </p>
+        {% endif %}
         {% if object.link %}
-          <div class="col-md-12">
-              <h4 class="sub-row-title coloured-header">External Links</h4>
-              <p>
-                <a target="_blank" href="{{ object.link }}">
-                  {{ object.link_display_name }}
-                </a>
-              </p>
+          <div class="row">
+            <div class="col-md-12">
+                <h4 class="sub-row-title coloured-header">External Links</h4>
+                <p>
+                  <a target="_blank" href="{{ object.link }}">
+                    {{ object.link_display_name }}
+                  </a>
+                </p>
+            </div>
           </div>
         {% endif %}
-      </div>
-      {% if object.link and object.is_derived_item %}
+        {% if object.link and object.is_derived_item %}
+          <div class="row">
+            <div class="col-md-12">
+              <hr />
+            </div>
+          </div>
+        {% endif %}
         <div class="row">
           <div class="col-md-12">
-            <hr />
-          </div>
-        </div>
-      {% endif %}
-      <div class="row">
-        <div class="col-md-12">
-          {% if object.is_derived_item %}
-            <h4 class="sub-row-title coloured-header">Derivation</h4>
-            {% if object.derivation == 'N/A' %}
-              External
-            {% else %}
-              {{ object.derivation | urlize }}
+            {% if object.is_derived_item %}
+              <h4 class="sub-row-title coloured-header">Derivation</h4>
+              {% if object.derivation == 'N/A' %}
+                External
+              {% else %}
+                {{ object.derivation | urlize }}
+              {% endif %}
             {% endif %}
-          {% endif %}
+          </div>
         </div>
       </div>
     </div>
@@ -83,42 +89,16 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8">
-      {% for table, columns in object.related %}
-        {% ifchanged table.database.name %}
-          <div class="row">
-            <div class="col-md-12">
-              <h3 class="sub-row-title">Used in the {{ table.database.get_display_name }}:</h3>
-            </div>
-          </div>
-        {% endifchanged %}
+      <h3>Similar Columns</h3>
+      {% for column in object.related %}
         <div class="row">
           <div class="col-md-12">
-            <h4>
-              <a href="{{ table.get_absolute_url }}">
-                {{ table.name }}
-              </a>
-            </h4>
-            {% if table.description %}
-              <div class="row">
-                <div class="col-md-12">
-                  <p>
-                    {{ table.description }}
-                  </p>
-                </div>
-              </div>
-            {% endif %}
-            {% if columns|length > 1 or object not in columns %}
-              <div class="row">
-                <div class="col-md-12">
-                  As {% for column in columns %}{% if not forloop.first %}{% if forloop.last %} & {% else %}, {% endif %}{% endif %}{{ column }}{% endfor %}
-                </div>
-              </div>
+            {% include "partials/column.html" with HIDE_GROUPING=1 %}
+            {% if not forloop.last %}
+              <hr />
             {% endif %}
           </div>
         </div>
-        {% if not forloop.last %}
-          <hr />
-        {% endif %}
       {% endfor %}
     </div>
   </div>

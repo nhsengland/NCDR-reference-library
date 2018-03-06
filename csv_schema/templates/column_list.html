@@ -29,48 +29,7 @@
       <div class="row">
         <div class="col-md-10">
           {% for column in object_list %}
-            <h3>
-              <span class="column-title">
-                <a href="{{ column.get_absolute_url }}">
-                  {{ column.name }}
-                </a>
-              </span>
-              <small>
-                {{ column.data_type }}
-              </small>
-              {% if not hide_groupings %}
-                <small class="pull-right">
-                  {% if column.grouping and settings.USE_GROUPINGS %}
-                    <a href="{{ column.grouping.get_absolute_url }}" class="label label-default">{{ column.grouping }}</a>
-                  {% endif %}
-                </small>
-              {% endif %}
-            </h3>
-            <h4 class="faded">
-              {{ column.table.database.name }} / {{ column.table.name }}
-            </h4>
-            <div class="row">
-              <div class="col-md-12">
-                <p>
-                  {{ column.description | urlize }}
-                </p>
-              </div>
-            </div>
-            <div class="row content-offset-top-25 content-offset-below-10">
-              <div class="col-md-6">
-                {% if column.useage_count > 1 %}
-                  Used in <a href="{{ column.get_absolute_url }}">
-                    {{ column.useage_count }} places
-                  </a>
-                {% else %}
-                  {% if column.useage_count == 1 %}
-                    Used in <a href="{{ column.tables.first.get_absolute_url }}">
-                      {{ column.tables.first.name }}
-                    </a>
-                  {% endif %}
-                {% endif %}
-              </div>
-            </div>
+            {% include "partials/column.html" %}
             {% if not forloop.last %}
               <hr />
             {% endif %}

@@ -45,7 +45,7 @@
         </div>
       {% endif %}
       {% for column in object.column_set.all %}
-        {% include 'partials/column.html' %}
+        {% include 'partials/column.html' with HIDE_DB_TABLE=1 %}
         {% if not forloop.last %}
           <hr />
         {% endif %}

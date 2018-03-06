@@ -412,23 +412,11 @@ class Column(NcdrModel, models.Model):
 
             the tables are sorted by database name then name
         """
-        result = []
         other_columns = self.data_element.column_set.exclude(id=self.id)
         other_columns = other_columns.order_by(
             "table__name"
-        ).order_by(
-            "table__database__name"
         )
-
-        table_to_columns = defaultdict(list)
-
-        for other_column in other_columns:
-            table_to_columns[other_column.table].append(other_column)
-
-        result = [(i, v,) for i, v in table_to_columns.items()]
-        result = sorted(result, key=lambda x: x[0].name)
-        result = sorted(result, key=lambda x: x[0].database.name)
-        return result
+        return other_columns.order_by("table__database__name")
 
     def __str__(self):
         return self.name

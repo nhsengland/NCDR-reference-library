@@ -41,16 +41,13 @@
         </div>
         <p>
           {{ data_element.description }}
+          {% if not data_element.description %}
+            {{ data_element.column_set.first.description | urlize }}
+          {% endif %}
         </p>
         {% for column in data_element.column_set.all %}
           {% if request.user.userprofile.preview_mode or column.published %}
-            <div class="row">
-              <div class="col-md-12">
-                <a href="{{ column.get_absolute_url }}">
-                  {{ column.table.database.name }}/{{ column.table.name }}/{{ column.name }}
-                </a>
-              </div>
-            </div>
+            {% include "partials/column.html" with HIDE_GROUPING=1 HIDE_DESCRIPTION=1 %}
           {% endif %}
         {% endfor %}
       {% endfor %}

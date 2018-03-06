@@ -1,4 +1,4 @@
-<h4>
+<h3>
   <span>
     <a href="{{ column.get_absolute_url }}">
       {{ column.name }}
@@ -7,19 +7,33 @@
   <small>
     {{ column.data_type }}
   </small>
-  <small class="pull-right">
-    {% if column.grouping and settings.USE_GROUPINGS %}
-      <a href="{{ column.grouping.get_absolute_url }}" class="label label-default">{{ column.grouping }}</a>
-    {% endif %}
-  </small>
-</h4>
-<div class="row">
-  <div class="col-md-12">
-    <p>
-      {{ column.description | urlize }}
-    </p>
+  {# this is set on the with tag #}
+  {% if not HIDE_GROUPING %}
+    <small>
+      {% if column.data_element %}
+        -
+        <a href="{{ column.data_element.get_absolute_url }}">
+          {{ column.data_element.grouping.first.name }}
+        </a>
+      {% endif %}
+    </small>
+  {% endif %}
+</h3>
+{# this is set on the with tag #}
+{% if not HIDE_DB_TABLE %}
+  <h4 class="faded">
+    {{ column.table.database.name }} / {{ column.table.name }}
+  </h4>
+{% endif %}
+{% if not HIDE_DESCRIPTION %}
+  <div class="row">
+    <div class="col-md-12">
+      <p>
+        {{ column.description | urlize }}
+      </p>
+    </div>
   </div>
-</div>
+{% endif %}
 <div class="row content-offset-top-25 content-offset-below-10">
   <div class="col-md-6">
     {% if column.useage_count > 1 %}
