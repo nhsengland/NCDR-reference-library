@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from collections import defaultdict
 from django.contrib.auth.signals import user_logged_out
 from django.urls import reverse
 from django.utils.text import slugify

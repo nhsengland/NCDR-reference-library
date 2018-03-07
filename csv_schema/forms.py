@@ -20,7 +20,7 @@ class DatabaseForm(forms.ModelForm):
 class ColumnForm(forms.ModelForm):
     class Meta:
         model = models.Column
-        fields = '__all__'
+        exclude = ['slug']
 
 
 class DataElementForm(forms.ModelForm):
@@ -32,4 +32,4 @@ class DataElementForm(forms.ModelForm):
 class GroupingForm(forms.ModelForm):
     class Meta:
         model = models.Grouping
-        fields = '__all__'
+        exclude = ['slug']
