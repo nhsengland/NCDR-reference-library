@@ -22,7 +22,9 @@
           {% if not forloop.first %}
             <hr />
           {% endif %}
-          {% include view.model.get_form_template %}
+          <div class="model-form">
+            {% include view.model.get_form_template %}
+          </div>
         {% endfor %}
       </div>
       <div class="row">
@@ -40,7 +42,7 @@
   </div>
 
     <script type="text/html" id="record-template">
-      <div id="item-__prefix__">
+      <div class="model-form" id="item-__prefix__">
         <hr />
         {% include view.model.get_form_template with form=formset.empty_form %}
       </div>
@@ -49,7 +51,7 @@
 
 
     var addAnother = function(){
-      var count = $('#items-form-container').children().length;
+      var count = $('#items-form-container').children(".model-form").length;
       var tmplMarkup = $('#record-template').html();
       var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
       $('div#items-form-container').append(compiledTmpl);

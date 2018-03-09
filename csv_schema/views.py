@@ -76,7 +76,10 @@ class NCDRAddManyView(NCDRView, CreateView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super(NCDRAddManyView, self).get_context_data(*args, **kwargs)
-        ctx["formset"] = self.get_form()
+        if "formset" in kwargs:
+            ctx["formset"] = kwargs["formset"]
+        else:
+            ctx["formset"] = self.get_form()
         return ctx
 
     @transaction.atomic
