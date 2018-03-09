@@ -335,14 +335,14 @@ class Column(NcdrModel, models.Model):
     data_element = models.ForeignKey(
         DataElement, on_delete=models.SET_NULL, null=True, blank=True
     )
-    table = models.ForeignKey(
-        Table, on_delete=models.CASCADE, null=True, blank=True
-    )
+    table = models.ForeignKey(Table, on_delete=models.CASCADE)
 
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.
     technical_check = models.CharField(max_length=255, null=True, blank=True)
-    is_derived_item = models.NullBooleanField(default=False)
+    is_derived_item = models.NullBooleanField(
+        default=False, verbose_name="Is the item derived?"
+    )
     definition_id = models.IntegerField(null=True, blank=True)
     author = models.CharField(max_length=255, blank=True, null=True)
     created_date_ext = models.DateField(blank=True, null=True)
