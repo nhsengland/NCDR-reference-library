@@ -323,7 +323,7 @@ class Column(NcdrModel, models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = "Column"
-        unique_together = (("name", "table"),)
+        unique_together = (("name", "table",),)
 
     objects = ColumnQueryset.as_manager()
 

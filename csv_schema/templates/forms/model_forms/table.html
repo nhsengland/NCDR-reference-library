@@ -1,5 +1,11 @@
 {% load bootstrap %}
-<div class="row">
+
+{% for error in form.non_field_errors %}
+  <div class="error-text content-offset-below-20">
+    {{ error }}
+  </div>
+{% endfor %}
+<div class="row"
   <div class="col-md-3">
     <div>
       {{ form.name|bootstrap }}
