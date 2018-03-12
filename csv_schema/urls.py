@@ -64,31 +64,31 @@ urlpatterns = [
     ),
 
 
-    path('about', views.AboutView.as_view(), name="about_page"),
+    path('about/', views.AboutView.as_view(), name="about_page"),
     path(
-        'database/<str:db_name>/<str:table_name>',
+        'database/<str:db_name>/<str:table_name>/',
         views.TableDetail.as_view(),
         name="table_detail"
     ),
     path(
-        'database/<str:db_name>',
+        'database/<str:db_name>/',
         views.DatabaseDetail.as_view(),
         name="database_detail"
     ),
     path('database', views.DatabaseList.as_view(), name="database_list"),
 
     path(
-        'column/<slug:slug>',
+        'column/<slug:slug>/',
         views.ColumnDetail.as_view(),
         name="column_detail"
     ),
-    path('columns', views.NcdrReferenceRedirect.as_view(), name="column_redirect"),
-    path('columns/<str:letter>', views.ColumnList.as_view(), name="column_list"),
+    path('columns/', views.NcdrReferenceRedirect.as_view(), name="column_redirect"),
+    path('columns/<str:letter>/', views.ColumnList.as_view(), name="column_list"),
     path('', views.IndexView.as_view(), name="index_view"),
 
-    path('grouping', views.GroupingRedirect.as_view(), name="grouping_redirect"),
+    path('grouping/', views.GroupingRedirect.as_view(), name="grouping_redirect"),
     path(
-        'grouping/<slug:slug>',
+        'grouping/<slug:slug>/',
         views.GroupingDetail.as_view(),
         name="grouping_detail"
     ),

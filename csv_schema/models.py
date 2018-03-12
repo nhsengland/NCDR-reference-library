@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 import functools
 import operator
+import itertools
 from django.contrib.auth.signals import user_logged_out
 from django.urls import reverse
 from django.utils.text import slugify
@@ -20,28 +21,13 @@ else:
 
 DATE_FORMAT = "%b %y"
 
-NHS_DIGITAL = "NHS Digital"
-VARIOUS = "Various"
+BEST_MATCH = "Best Match"
+MOST_RECENT = "Most Recent"
 
-DATABASE_NAME_TO_DISPLAY_NAME = dict(
-    NHSE_111="NHS 111 Data Set",
-    NHSE_IAPT="Improving Access to Psychological Therapies (IAPT) Data Set",
-    NHSE_IAPT_PILOT="Improving Access to Psychological Therapies (IAPT) Data Set - pilot",
-    NHSE_IAPT_AnnualRefresh="Improving Access to Psychological Therapies (IAPT) Data Set - annual refresh",
-    NHSE_Mental_Health="Mental Health Data",
-    NHSE_SUSPlus_Live="Secondary Uses Service + (SUS+)",
-    NHSE_Reference="NHS England Reference Data"
-)
-
-DATABASE_NAME_TO_OWNER = dict(
-    NHSE_111=NHS_DIGITAL,
-    NHSE_IAPT=NHS_DIGITAL,
-    NHSE_IAPT_PILOT=NHS_DIGITAL,
-    NHSE_IAPT_AnnualRefresh=NHS_DIGITAL,
-    NHSE_Mental_Health=NHS_DIGITAL,
-    NHSE_SUSPlus_Live=NHS_DIGITAL,
-    NHSE_Reference=VARIOUS
-)
+SEARCH_OPTIONS = [
+    BEST_MATCH,
+    MOST_RECENT
+]
 
 
 def unique_slug(some_cls, name):
@@ -77,17 +63,40 @@ user_logged_out.connect(turn_preview_mode_off)
 
 
 class NCDRQueryset(models.QuerySet):
-    def search(self, search_param):
-        """ returns all tables that have columns
-        """
-        if not search_param:
-            return self.none()
-
+    def search_most_recent(self, search_param, user):
         filters = []
         for i in self.model.SEARCH_FIELDS:
             field = "{}__icontains".format(i)
             filters.append(models.Q(**{field: search_param}))
-        return self.filter(functools.reduce(operator.or_, filters))
+        return self.filter(functools.reduce(operator.or_, filters)).distinct()
+
+    def search_best_match(self, search_param, user):
+        query_results = []
+        for i in self.model.SEARCH_FIELDS:
+            field = "{}__icontains".format(i)
+            query_results.append(self.filter(**{field: search_param}))
+        all_results = itertools.chain(*query_results)
+        reviewed = set()
+
+        for i in all_results:
+            if i in reviewed:
+                continue
+            else:
+                reviewed.add(i)
+                yield i
+
+    def search(self, search_param, user, option=MOST_RECENT):
+        """ returns all tables that have columns
+            we default to MOST_RECENT as querysets are
+            more efficient for a lot of operations
+        """
+        if not search_param:
+            return self.none()
+
+        if option == MOST_RECENT:
+            return self.search_most_recent(search_param, user)
+        else:
+            return list(self.search_best_match(search_param, user))
 
 
 class NcdrModel(models.Model):
@@ -124,6 +133,10 @@ class NcdrModel(models.Model):
         return SITE_PREFIX + reverse(
             "search", kwargs=dict(model_name=cls.__name__.lower())
         )
+
+    @classmethod
+    def get_search_detail_template(cls):
+        return "search/{}.html".format(cls.get_model_api_name())
 
     def get_edit_url(self):
         return SITE_PREFIX + reverse(
@@ -179,7 +192,7 @@ class DatabaseQueryset(NCDRQueryset):
 
 class Database(NcdrModel):
     SEARCH_FIELDS = [
-        "name", "display_name", "description", "link"
+        "display_name", "name", "description", "link"
     ]
     name = models.CharField(max_length=255, unique=True)
     display_name = models.CharField(
@@ -210,15 +223,8 @@ class Database(NcdrModel):
     def get_display_name(self):
         if self.display_name:
             return self.display_name
-        elif self.name in DATABASE_NAME_TO_DISPLAY_NAME:
-            return DATABASE_NAME_TO_DISPLAY_NAME[self.name]
         else:
             return self.name.replace("_", "").title()
-
-    def save(self, *args, **kwargs):
-        if not self.owner:
-            self.owner = DATABASE_NAME_TO_OWNER.get(self.name)
-        return super().save(*args, **kwargs)
 
 
 class TableQueryset(NCDRQueryset):
@@ -308,6 +314,16 @@ class DataElement(NcdrModel, models.Model):
     grouping = models.ManyToManyField(
         Grouping, null=True, blank=True
     )
+
+    @property
+    def slug(self):
+        return slugify(self.name)
+
+    def get_absolute_url(self):
+        return "{}#{}".format(
+            self.grouping.first().get_absolute_url(),
+            self.slug
+        )
 
     class Meta:
         ordering = ['name']

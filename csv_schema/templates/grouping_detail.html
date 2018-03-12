@@ -36,7 +36,7 @@
       {% for data_element in object.dataelement_set.all %}
         <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
           <div class="col-md-12">
-            <h3 class="sub-row-title">{{ data_element.name }}</h3>
+            <h3 id="{{ data_element.slug }}" class="sub-row-title">{{ data_element.name }}</h3>
           </div>
         </div>
         <p>

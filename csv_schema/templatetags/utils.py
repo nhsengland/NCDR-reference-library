@@ -1,5 +1,6 @@
 # templatetags file
 from django import template
+from django.urls import resolve
 
 register = template.Library()
 
@@ -22,3 +23,8 @@ def chunks(iterable, chunk_size):
             # some items will remain which haven't been yielded yet,
             # unless len(iterable) is divisible by chunk_size
             yield chunk
+
+
+@register.filter(name="url_name")
+def url_name(request):
+    return resolve(request.path_info).url_name

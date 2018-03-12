@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-12">
+    <h3>
+      <a href="{{ result.get_absolute_url }}">
+        {{ result.get_display_name }}
+      </a>
+      <small>
+        {{ result.name }}
+      </small>
+    </h3>
+  </div>
+</div>
+{% if result.description %}
+  <div class="row">
+    <div class="col-md-12">
+      {{ result.description }}
+    </div>
+  </div>
+{% endif %}

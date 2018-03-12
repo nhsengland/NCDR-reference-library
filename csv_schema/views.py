@@ -65,25 +65,49 @@ class NCDRFormView(LoginRequiredMixin, NCDRView):
 
 class NCDRSearchRedirect(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
-        url = reverse(
-            "search",
-            kwargs=dict(model_name=NCDRView.pertinant[0].get_model_api_name())
+        q = self.request.GET.get("q")
+        url = None
+
+        if q:
+            for p in NCDRView.pertinant:
+                if p.objects.search(q, self.request.user).exists():
+                    url = reverse(
+                        "search",
+                        kwargs=dict(
+                            model_name=p.get_model_api_name()
+                        )
+                    )
+                    break
+
+        if not url:
+            url = reverse(
+                "search",
+                kwargs=dict(
+                    model_name=NCDRView.pertinant[0].get_model_api_name()
+                )
+            )
+
+        return "{}?{}&search_option={}".format(
+            url, self.request.GET.urlencode(), models.SEARCH_OPTIONS[0]
         )
-        return "{}?{}".format(url, self.request.GET.urlencode())
+
 
 
 class NCDRSearch(NCDRView, ListView):
     template_name = "search.html"
 
     def get_queryset(self, *args, **kwargs):
-        return self.model.objects.search(self.request.GET.get("q"))
+        return self.model.objects.search(
+            self.request.GET["q"], self.request.user, self.request.GET["search_option"]
+        )
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
         query = self.request.GET.get("q")
         ctx["results"] = [
-            (i, i.objects.search(query).count(),) for i in self.pertinant
+            (i, i.objects.search(query, self.request.user).count(),) for i in self.pertinant
         ]
+        ctx["search_options"] = models.SEARCH_OPTIONS
 
         return ctx
 

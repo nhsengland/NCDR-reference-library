@@ -31,6 +31,29 @@ EXPECTED_COLUMN_NAMES = set([
     LINK
 ])
 
+DATABASE_NAME_TO_DISPLAY_NAME = dict(
+    NHSE_111="NHS 111 Data Set",
+    NHSE_IAPT="Improving Access to Psychological Therapies (IAPT) Data Set",
+    NHSE_IAPT_Pilot="Improving Access to Psychological Therapies (IAPT) Data Set - pilot",
+    NHSE_IAPT_AnnualRefresh="Improving Access to Psychological Therapies (IAPT) Data Set - annual refresh",
+    NHSE_Mental_Health="Mental Health Data",
+    NHSE_SUSPlus_Live="Secondary Uses Service + (SUS+)",
+    NHSE_Reference="NHS England Reference Data"
+)
+
+NHS_DIGITAL = "NHS Digital"
+VARIOUS = "Various"
+
+DATABASE_NAME_TO_OWNER = dict(
+    NHSE_111=NHS_DIGITAL,
+    NHSE_IAPT=NHS_DIGITAL,
+    NHSE_IAPT_PILOT=NHS_DIGITAL,
+    NHSE_IAPT_AnnualRefresh=NHS_DIGITAL,
+    NHSE_Mental_Health=NHS_DIGITAL,
+    NHSE_SUSPlus_Live=NHS_DIGITAL,
+    NHSE_Reference=VARIOUS
+)
+
 
 NA = "N/A"
 
@@ -39,9 +62,17 @@ def process_row(csv_row):
     if not csv_row[TABLE] or csv_row[TABLE] == NA:
         if csv_row[SCHEMA].strip():
             return
-        obj, _ = models.Database.objects.get_or_create(
+        obj, created = models.Database.objects.get_or_create(
             name=csv_row[DATABASE]
         )
+        if created:
+            obj.owner = DATABASE_NAME_TO_OWNER.get(
+                csv_row[DATABASE], None
+            )
+            obj.display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(
+                csv_row[DATABASE], None
+            )
+            obj.save()
     else:
         obj = models.Table.objects.filter(
             name=csv_row[TABLE], database__name=csv_row[DATABASE]
