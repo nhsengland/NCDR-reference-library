@@ -2,6 +2,8 @@ from django.urls import path
 from csv_schema import views
 
 urlpatterns = [
+
+    # form urls
     path(
         'form/preview_mode/<int:preview_mode>',
         views.PreviewModeSwitch.as_view(),
@@ -48,6 +50,20 @@ urlpatterns = [
         views.NCDREditListView.as_view(),
         name="edit_list"
     ),
+
+    # search urls
+    path(
+        'search/',
+        views.NCDRSearchRedirect.as_view(),
+        name="search_redirect"
+    ),
+    path(
+        'search/<slug:model_name>/',
+        views.NCDRSearch.as_view(),
+        name="search"
+    ),
+
+
     path('about', views.AboutView.as_view(), name="about_page"),
     path(
         'database/<str:db_name>/<str:table_name>',

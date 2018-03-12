@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+import functools
+import operator
 from django.contrib.auth.signals import user_logged_out
 from django.urls import reverse
 from django.utils.text import slugify
@@ -74,6 +76,20 @@ def turn_preview_mode_off(sender, user, request, **kwargs):
 user_logged_out.connect(turn_preview_mode_off)
 
 
+class NCDRQueryset(models.QuerySet):
+    def search(self, search_param):
+        """ returns all tables that have columns
+        """
+        if not search_param:
+            return self.none()
+
+        filters = []
+        for i in self.model.SEARCH_FIELDS:
+            field = "{}__icontains".format(i)
+            filters.append(models.Q(**{field: search_param}))
+        return self.filter(functools.reduce(operator.or_, filters))
+
+
 class NcdrModel(models.Model):
     @classmethod
     def get_form_display_template(cls):
@@ -101,6 +117,12 @@ class NcdrModel(models.Model):
     def get_add_url(cls):
         return SITE_PREFIX + reverse(
             "add_many", kwargs=dict(model_name=cls.__name__.lower())
+        )
+
+    @classmethod
+    def get_search_url(cls):
+        return SITE_PREFIX + reverse(
+            "search", kwargs=dict(model_name=cls.__name__.lower())
         )
 
     def get_edit_url(self):
@@ -140,11 +162,13 @@ class NcdrModel(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
+    objects = NCDRQueryset.as_manager()
+
     class Meta:
         abstract = True
 
 
-class DatabaseQueryset(models.QuerySet):
+class DatabaseQueryset(NCDRQueryset):
     def all_populated(self, user):
         """ returns all tables that have columns
         """
@@ -154,6 +178,9 @@ class DatabaseQueryset(models.QuerySet):
 
 
 class Database(NcdrModel):
+    SEARCH_FIELDS = [
+        "name", "display_name", "description", "link"
+    ]
     name = models.CharField(max_length=255, unique=True)
     display_name = models.CharField(
         max_length=255, unique=True, blank=True, null=True
@@ -194,7 +221,7 @@ class Database(NcdrModel):
         return super().save(*args, **kwargs)
 
 
-class TableQueryset(models.QuerySet):
+class TableQueryset(NCDRQueryset):
     def all_populated(self, user):
         """ returns all tables that have columns
         """
@@ -208,6 +235,10 @@ class TableQueryset(models.QuerySet):
 
 
 class Table(NcdrModel):
+    SEARCH_FIELDS = [
+        "name", "description", "link"
+    ]
+
     name = models.CharField(max_length=255)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
@@ -243,6 +274,10 @@ class Table(NcdrModel):
 
 
 class Grouping(NcdrModel, models.Model):
+    SEARCH_FIELDS = [
+        "name", "description"
+    ]
+
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.CharField(
@@ -264,6 +299,10 @@ class Grouping(NcdrModel, models.Model):
 
 
 class DataElement(NcdrModel, models.Model):
+    SEARCH_FIELDS = [
+        "name", "description"
+    ]
+
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
     grouping = models.ManyToManyField(
@@ -277,7 +316,7 @@ class DataElement(NcdrModel, models.Model):
         return self.name
 
 
-class ColumnQueryset(models.QuerySet):
+class ColumnQueryset(NCDRQueryset):
     def to_show(self, user):
         if user.is_authenticated and user.userprofile.preview_mode:
             return self.order_by(Lower('name'))
@@ -306,7 +345,7 @@ class Column(NcdrModel, models.Model):
         ("varchar(8)", "varchar(8)",),
         ("varchar(9)", "varchar(9)",),
         ("varchar(10)", "varchar(10)",),
-        ("varchar(11)", "varchar(1)1",),
+        ("varchar(11)", "varchar(11)",),
         ("varchar(12)", "varchar(12)",),
         ("varchar(13)", "varchar(13)",),
         ("varchar(14)", "varchar(14)",),
@@ -324,6 +363,10 @@ class Column(NcdrModel, models.Model):
         ordering = ['name']
         verbose_name = "Column"
         unique_together = (("name", "table",),)
+
+    SEARCH_FIELDS = [
+        "name", "description"
+    ]
 
     objects = ColumnQueryset.as_manager()
 

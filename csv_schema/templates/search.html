@@ -1,0 +1,58 @@
+{% extends "base_templates/base.html" %}
+
+{% block contents %}
+<div class="container main-content">
+  <aside class="side-nav col-md-3">
+    <ul>
+      <li class="list-title">
+        <a href="{{ view.pertinant.0.get_search_url }}">
+          Search
+        </a>
+      </li>
+      {% for some_model, some_count in results %}
+        <li>
+          <a class="table-link{% if some_model.get_model_api_name == view.model.get_model_api_name %} active{% endif %}" href="{{ some_model.get_search_url }}?{{ request.GET.urlencode }}">
+            {{ some_model.get_model_display_name_plural }}
+            {% if some_count %}
+              <span class="pull-right">
+                {{ some_count }}
+              </span>
+            {% endif %}
+          </a>
+        </li>
+      {% endfor %}
+  </aside>
+  <div class="col-md-9">
+    <div class="row">
+      <div class="col-md-12">
+        {% block form_title %}
+          <h2>
+            {% if object_list.count %}
+              {{ object_list.count }}
+              {% if object_list.count == 1 %}
+                {{ view.model.get_model_display_name.lower }}
+              {% else %}
+                {{ view.model.get_model_display_name_plural.lower }}
+              {% endif %}
+              found containing '{{ request.GET.q }}'
+            {% else %}
+              {% if not request.GET.q %}
+                Sorry we couldn't find any {{ view.model.get_model_display_name_plural.lower }}
+                matching that query
+              {% else %}
+                Sorry we couldn't find any {{ view.model.get_model_display_name_plural.lower }}
+                containing '{{ request.GET.q }}'
+              {% endif %}
+            {% endif %}
+          </h2>
+        {% endblock %}
+      </div>
+    </div>
+    {% if view.model.get_model_api_name == 'column' %}
+      {% for column in object_list %}
+        {% include 'partials/column.html' with HIDE_GROUPING=1 %}
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

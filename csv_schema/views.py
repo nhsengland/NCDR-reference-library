@@ -34,7 +34,7 @@ else:
     SITE_PREFIX = ""
 
 
-class NCDRView(LoginRequiredMixin):
+class NCDRView(object):
     pertinant = [
         c_models.Column,
         c_models.Table,
@@ -59,12 +59,42 @@ class NCDRView(LoginRequiredMixin):
         return model
 
 
+class NCDRFormView(LoginRequiredMixin, NCDRView):
+    pass
+
+
+class NCDRSearchRedirect(RedirectView):
+    def get_redirect_url(self, *args, **kwargs):
+        url = reverse(
+            "search",
+            kwargs=dict(model_name=NCDRView.pertinant[0].get_model_api_name())
+        )
+        return "{}?{}".format(url, self.request.GET.urlencode())
+
+
+class NCDRSearch(NCDRView, ListView):
+    template_name = "search.html"
+
+    def get_queryset(self, *args, **kwargs):
+        return self.model.objects.search(self.request.GET.get("q"))
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        query = self.request.GET.get("q")
+        ctx["results"] = [
+            (i, i.objects.search(query).count(),) for i in self.pertinant
+        ]
+
+        return ctx
+
+
 class NCDRFormRedirect(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
+        # todo, handle what happens if there is no search parameter
         return NCDRView.pertinant[0].get_edit_list_url()
 
 
-class NCDRAddManyView(NCDRView, CreateView):
+class NCDRAddManyView(NCDRFormView, CreateView):
     template_name = "forms/create.html"
 
     def get_form(self, *args, **kwargs):
@@ -110,7 +140,7 @@ class NCDRAddManyView(NCDRView, CreateView):
         return self.model.get_edit_list_url()
 
 
-class NCDREditView(NCDRView, UpdateView):
+class NCDREditView(NCDRFormView, UpdateView):
     template_name = "forms/update.html"
 
     def form_valid(self, form):
@@ -129,7 +159,7 @@ class NCDREditView(NCDRView, UpdateView):
             return self.model.get_edit_list_url()
 
 
-class NCDRDeleteView(NCDRView, DeleteView):
+class NCDRDeleteView(NCDRFormView, DeleteView):
     template_name = "forms/delete.html"
 
     def delete(self, *args, **kwargs):
@@ -145,7 +175,7 @@ class NCDRDeleteView(NCDRView, DeleteView):
         return models.Table.get_edit_list_url()
 
 
-class NCDREditListView(NCDRView, ListView):
+class NCDREditListView(NCDRFormView, ListView):
     paginate_by = 100
     template_name = "forms/edit_list.html"
 
@@ -204,7 +234,7 @@ class NcdrReferenceRedirect(RedirectView):
         return SITE_PREFIX + reverse('column_list', kwargs=dict(letter="A"))
 
 
-class PublishAll(View):
+class PublishAll(View, LoginRequiredMixin):
     http_method_names = ["post"]
 
     def get_success_url(self):
@@ -225,7 +255,7 @@ class PublishAll(View):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class Publish(View, SingleObjectMixin):
+class Publish(View, SingleObjectMixin, LoginRequiredMixin):
     http_method_names = ["post"]
     model = models.Column
 
@@ -316,7 +346,7 @@ class PreviewModeSwitch(RedirectView):
         return super(PreviewModeSwitch, self).get(request, *args, **kwargs)
 
 
-class UnPublishedList(NCDRView, ListView):
+class UnPublishedList(NCDRFormView, ListView):
     template_name = "forms/unpublished_list.html"
 
     def get_context_data(self, *args, **kwargs):

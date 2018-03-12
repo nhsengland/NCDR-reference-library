@@ -60,13 +60,21 @@
             </div>
           </div>
           <div class="col-md-5 col-md-push-1 text-right">
+            <form class="ncdr-search" method="get" action="{{ settings.SITE_PREFIX }}/search">
+              <input type="text" value="{{ request.GET.q }}" name="q" autocomplete="off">
+              <button type="submit" class="btn">
+                Search NCDR
+              </button>
+            </form>
             {% block messages %}
               {% if messages %}
-                {% for message in messages %}
-                  <div class="alert alert-success ncdr-alert" role="alert">
-                    {{ message }}
-                  </div>
-                {% endfor %}
+                <div class="alert-container">
+                  {% for message in messages %}
+                    <div class="alert alert-success ncdr-alert" role="alert">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                </div>
               {% endif %}
             {% endblock %}
           </div>

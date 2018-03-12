@@ -77,6 +77,13 @@ body {
   padding-top: 22px;
 }
 
+.alert-container{
+  position: absolute;
+  width: 100%;
+  text-align: right;
+  padding-right: 15px;
+}
+
 .alert-success{
   background-color: $tertiary-colour;
   color: $tertiary-colour-text;
@@ -514,5 +521,41 @@ hr {
   &:hover{
     color: $text-colour-on-dark;
     background-color: $primary-colour-light;
+  }
+}
+
+.ncdr-search{
+  padding-top: 40px;
+  display: block;
+
+  input{
+    border-radius: 0;
+    border: 2px solid #FFF;
+    padding: 5px;
+    margin: 0;
+    outline: 0;
+    height: 38px;
+    box-sizing: border-box;
+    width: 50%;
+    font-size: 14px;
+    color: #555;
+
+    &:focus{
+      border: 2px solid #ffb81c;
+    }
+  }
+
+  button{
+    border: 2px solid #fff;
+    color: #fff;
+    padding: 8px 30px;
+    border-radius: 0;
+    background: #005eb8;
+    background-image: none;
+
+    &:hover{
+      background: #0072ce;
+      color: #fff;
+    }
   }
 }
