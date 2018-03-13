@@ -45,20 +45,22 @@
               {% endif %}
             {% endif %}
           </h2>
-          <div class="row">
-            <div class="col-md-4">
-              <form method="get" action="{{ some_model.get_search_url }}">
-                <div class="form-group">
-                  <select onchange="this.form.submit()" name="search_option" class="form-control">
-                    {% for search_option in search_options %}
-                      <option value="{{ search_option }}" {% if search_option == request.GET.search_option %}selected{% endif %}>{{ search_option }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-                <input type="hidden" name="q" value="{{ request.GET.q }}">
-              </form>
+          {% if object_list|length %}
+            <div class="row">
+              <div class="col-md-4">
+                <form method="get" action="{{ some_model.get_search_url }}">
+                  <div class="form-group">
+                    <select onchange="this.form.submit()" name="search_option" class="form-control">
+                      {% for search_option in search_options %}
+                        <option value="{{ search_option }}" {% if search_option == request.GET.search_option %}selected{% endif %}>{{ search_option }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                  <input type="hidden" name="q" value="{{ request.GET.q }}">
+                </form>
+              </div>
             </div>
-          </div>
+          {% endif %}
         {% endblock %}
       </div>
     </div>

@@ -92,22 +92,27 @@ class NCDRSearchRedirect(RedirectView):
         )
 
 
-
 class NCDRSearch(NCDRView, ListView):
     template_name = "search.html"
 
     def get_queryset(self, *args, **kwargs):
         return self.model.objects.search(
-            self.request.GET["q"], self.request.user, self.request.GET["search_option"]
+            self.request.GET["q"],
+            self.request.user,
+            self.request.GET.get("search_option", models.SEARCH_OPTIONS[0])
         )
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
         query = self.request.GET.get("q")
+        user = self.request.user
         ctx["results"] = [
-            (i, i.objects.search(query, self.request.user).count(),) for i in self.pertinant
+            (i, i.objects.search_count(query, user),) for i in self.pertinant
         ]
         ctx["search_options"] = models.SEARCH_OPTIONS
+        ctx["search_count"] = self.model.objects.search_count(
+            query, user
+        )
 
         return ctx
 
@@ -224,7 +229,7 @@ class DatabaseList(ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super(DatabaseList, self).get_queryset()
-        return qs.all_populated(self.request.user)
+        return qs.viewable(self.request.user)
 
 
 class DatabaseDetail(DetailView):
@@ -247,7 +252,7 @@ class TableDetail(DetailView):
     def get_context_data(self, *args, **kwargs):
         # get the list of tables in this database
         ctx = super(TableDetail, self).get_context_data(*args, **kwargs)
-        ctx["tables"] = self.object.database.table_set.all_populated(
+        ctx["tables"] = self.object.database.table_set.viewable(
             self.request.user
         )
         return ctx
@@ -317,7 +322,7 @@ class ColumnList(ListView):
         references = super(
             ColumnList, self
         ).get_queryset()
-        references = references.to_show(self.request.user)
+        references = references.viewable(self.request.user)
 
         if self.kwargs["letter"] == self.NUMERIC:
             """ startswith 0, or 1, or 2 etc

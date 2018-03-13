@@ -63,18 +63,25 @@ user_logged_out.connect(turn_preview_mode_off)
 
 
 class NCDRQueryset(models.QuerySet):
+    def viewable(self, user):
+        raise NotImplementedError(
+            "we should be implementing a 'viewable' method"
+        )
+
     def search_most_recent(self, search_param, user):
         filters = []
+        qs = self.viewable(user)
         for i in self.model.SEARCH_FIELDS:
             field = "{}__icontains".format(i)
             filters.append(models.Q(**{field: search_param}))
-        return self.filter(functools.reduce(operator.or_, filters)).distinct()
+        return qs.filter(functools.reduce(operator.or_, filters)).distinct()
 
     def search_best_match(self, search_param, user):
+        qs = self.viewable(user)
         query_results = []
         for i in self.model.SEARCH_FIELDS:
             field = "{}__icontains".format(i)
-            query_results.append(self.filter(**{field: search_param}))
+            query_results.append(qs.filter(**{field: search_param}))
         all_results = itertools.chain(*query_results)
         reviewed = set()
 
@@ -84,6 +91,9 @@ class NCDRQueryset(models.QuerySet):
             else:
                 reviewed.add(i)
                 yield i
+
+    def search_count(self, search_param, user):
+        return self.search_most_recent(search_param, user).count()
 
     def search(self, search_param, user, option=MOST_RECENT):
         """ returns all tables that have columns
@@ -182,11 +192,11 @@ class NcdrModel(models.Model):
 
 
 class DatabaseQueryset(NCDRQueryset):
-    def all_populated(self, user):
+    def viewable(self, user):
         """ returns all tables that have columns
         """
         return self.filter(
-            table__in=Table.objects.all_populated(user)
+            table__in=Table.objects.viewable(user)
         ).distinct()
 
 
@@ -228,10 +238,8 @@ class Database(NcdrModel):
 
 
 class TableQueryset(NCDRQueryset):
-    def all_populated(self, user):
-        """ returns all tables that have columns
-        """
-        populated_columns = Column.objects.to_show(user)
+    def viewable(self, user):
+        populated_columns = Column.objects.viewable(user)
         populated_tables = populated_columns.values_list(
             "table_id", flat=True
         ).distinct()
@@ -279,11 +287,21 @@ class Table(NcdrModel):
         return "{} / {}".format(self.database.name, self.name)
 
 
+class GroupingQueryset(NCDRQueryset):
+    def viewable(self, user):
+        return self.filter(
+            dataelement__in=DataElement.objects.viewable(
+                user
+            )
+        )
+
+
 class Grouping(NcdrModel, models.Model):
     SEARCH_FIELDS = [
         "name", "description"
     ]
 
+    objects = GroupingQueryset.as_manager()
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     description = models.CharField(
@@ -304,10 +322,19 @@ class Grouping(NcdrModel, models.Model):
         return super(Grouping, self).save(*args, **kwargs)
 
 
+class DataElementQueryset(NCDRQueryset):
+    def viewable(self, user):
+        populated_columns = Column.objects.viewable(user)
+        return self.filter(
+            column__in=populated_columns
+        ).distinct()
+
+
 class DataElement(NcdrModel, models.Model):
     SEARCH_FIELDS = [
         "name", "description"
     ]
+    objects = DataElementQueryset.as_manager()
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
@@ -333,16 +360,16 @@ class DataElement(NcdrModel, models.Model):
 
 
 class ColumnQueryset(NCDRQueryset):
-    def to_show(self, user):
+    def unpublished(self):
+        return self.filter(published=False)
+
+    def viewable(self, user):
         if user.is_authenticated and user.userprofile.preview_mode:
             return self.order_by(Lower('name'))
         else:
             return self.filter(
                 published=True
             ).order_by(Lower('name'))
-
-    def unpublished(self):
-        return self.filter(published=False)
 
 
 class Column(NcdrModel, models.Model):
