@@ -1,4 +1,5 @@
 {% load staticfiles %}
+{% load compress %}
 {% load utils %}
 {% url 'about_page' as about_page %}
 {% url 'database_list' as database_list %}
@@ -21,8 +22,10 @@
     <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/mark.js/8.11.1/jquery.mark.js" integrity="sha256-m4GLhtBF1Ue31vdmii9AEzvSYnBTJFzYkVToaD047Z4=" crossorigin="anonymous"></script>
     <script src="{{ settings.SITE_PREFIX }}{% static "js/mark.js/dist/mark.js" %}"></script>
-  	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/nhsengland.css" %}">
-  	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/styles.css" %}">
+    {% compress css %}
+    	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/nhsengland.css" %}">
+    	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/styles.css" %}">
+    {% endcompress %}
   </head>
   <body {% if request.user.userprofile.preview_mode %}class="preview-mode"{% endif %}>
     {% if request.user.is_authenticated %}
