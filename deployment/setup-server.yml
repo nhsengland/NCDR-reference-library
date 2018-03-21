@@ -25,3 +25,9 @@
   hosts: webserver
   roles:
     - ncdr
+
+- name: Set the project back ups
+  user: ubuntu
+  hosts: webserver
+  roles:
+    - backup

@@ -22,7 +22,11 @@ When running the server locally, we are using sass. So installl sass and run
 update hosts.dev (and use keys natch)
 set your branch in deployment/group_vars/all
 cd deployment
-ansible-playbook setup-server.yml -i hosts.dev
+ansible-playbook setup-server.yml -i hosts.dev --vault-password-file ~/.vault.txt
+
+to view the encrypted variables
+ansible-vault edit all --vault-password-file ~/.vault.txt
+
 
 #### loading in new files.
 We currently accept 3 csv files.

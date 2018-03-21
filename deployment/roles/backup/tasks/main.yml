@@ -4,17 +4,27 @@
     src: "templates/backup.sh.jinja2"
     dest: "{{ PROJECT_PATH }}/scripts/backup.sh"
     owner: ubuntu
-    mode: 711
+    mode: 0741
 
-- name: create BOTO configuration
-  template:
-    src: config/boto.ini
-    dest: /home/ubuntu/.boto
+- name: Creates backups dir
+  file:
+    path: "{{ BACKUPS_DIR }}"
+    state: directory
 
-- name: create S3 configuration
+- name: Creates AWS dir
+  file:
+    path: /home/ubuntu/.aws
+    state: directory
+
+- name: create AWS credentials
   template:
-    src: config/s3.ini
-    dest: /home/ubuntu/.s3.ini
+    src: templates/aws_credentials.ini
+    dest: /home/ubuntu/.aws/credentials
+
+- name: create AWS config
+  template:
+    src: templates/aws_config.ini
+    dest: /home/ubuntu/.aws/config
 
 - name: fire the backup cron
   cron:

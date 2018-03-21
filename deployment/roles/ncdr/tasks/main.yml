@@ -20,11 +20,6 @@
     path: "{{ LOG_DIR }}"
     state: directory
 
-- name: Creates backups dir
-  file:
-    path: "{{ BACKUPS_DIR }}"
-    state: directory
-
 
 - name: Creates config dir
   file:
