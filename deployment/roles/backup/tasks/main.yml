@@ -1,0 +1,25 @@
+- name: Create the backup script
+  become: yes
+  template:
+    src: "templates/backup.sh.jinja2"
+    dest: "{{ PROJECT_PATH }}/scripts/backup.sh"
+    owner: ubuntu
+    mode: 711
+
+- name: create BOTO configuration
+  template:
+    src: config/boto.ini
+    dest: /home/ubuntu/.boto
+
+- name: create S3 configuration
+  template:
+    src: config/s3.ini
+    dest: /home/ubuntu/.s3.ini
+
+- name: fire the backup cron
+  cron:
+    name: "backup"
+    minute: "0"
+    hour: "1"
+    user: "ubuntu"
+    job: "{{ PROJECT_PATH }}/scripts/backup.sh"

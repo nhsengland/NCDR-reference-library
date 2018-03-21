@@ -1,6 +1,6 @@
 bind = "127.0.0.1:4567"
-logfile = "{{ log_dir }}/gunicorn.log"
+logfile = "{{ LOG_DIR }}/gunicorn.log"
 workers = 3
 timeout = 120
-accesslog = "{{ log_dir }}/elcid.access.log"
-errorlog = "{{ log_dir }}/elcid.error.log"
+accesslog = "{{ LOG_DIR }}/elcid.access.log"
+errorlog = "{{ LOG_DIR }}/elcid.error.log"

@@ -7,7 +7,7 @@
 # - name: Ensure database is created
 #   become: yes
 #   become_user: postgres
-#   postgresql_db: name={{ db_name }}
+#   postgresql_db: name={{ DB_NAME }}
 #                  encoding='UTF-8'
 #                  lc_collate='en_US.UTF-8'
 #                  lc_ctype='en_US.UTF-8'
@@ -17,16 +17,16 @@
 # - name: Ensure user has access to the database
 #   become: yes
 #   become_user: postgres
-#   postgresql_user: db={{ db_name }}
-#                    name={{ db_user }}
-#                    password={{ db_password }}
+#   postgresql_user: db={{ DB_NAME }}
+#                    name={{ DB_USER }}
+#                    password={{ DB_PASSWORD }}
 #                    priv=ALL
 #                    state=present
 
 - name: Ensure no existing virtualenv exists
   file:
     state: absent
-    path: "{{ virtualenv_path }}/"
+    path: "{{ VIRTUALENV_PATH }}/"
 
 - name: Create the virtualenv
   shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv -p /usr/bin/python3 {{ application_name }}
@@ -35,6 +35,6 @@
 
 - name: Create the virtualenv project
   shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && setvirtualenvproject
-  chdir: "{{ project_path}}"
+  chdir: "{{ PROJECT_PATH}}"
   args:
     executable: /bin/bash

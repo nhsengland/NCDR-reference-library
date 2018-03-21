@@ -2,40 +2,46 @@
 # set up the NCDR project itself
 
 - name: Setup the Git repo
-  git: repo={{ git_repo }}
-       version={{ git_branch }}
-       dest={{ project_path }}
+  git: repo={{ GIT_REPO }}
+       version={{ GIT_BRANCH }}
+       dest={{ PROJECT_PATH }}
        accept_hostkey=yes
        force=yes
 
 - name: Delete all .pyc files
   command: find . -name '*.pyc' -delete
   args:
-    chdir: "{{ project_path }}"
+    chdir: "{{ PROJECT_PATH }}"
   tags: git
   changed_when: False
 
 - name: Creates log dir
   file:
-    path: "{{ log_dir }}"
+    path: "{{ LOG_DIR }}"
     state: directory
+
+- name: Creates backups dir
+  file:
+    path: "{{ BACKUPS_DIR }}"
+    state: directory
+
 
 - name: Creates config dir
   file:
-    path: "{{ config_dir }}"
+    path: "{{ CONFIG_DIR }}"
     state: directory
 
 # otherwise it complains silently and
 # blows up the world
 - name: Creates gunicorn log
   file:
-    path: "{{ log_dir }}/gunicorn.log"
+    path: "{{ LOG_DIR }}/gunicorn.log"
     state: touch
 
 - name: Create configs
   template:
     src: "templates/{{ item }}.jinja2"
-    dest: "{{ project_path }}/deployment/config/{{ item }}"
+    dest: "{{ PROJECT_PATH }}/deployment/config/{{ item }}"
     mode: 0744
     owner: ubuntu
   with_items:
@@ -44,30 +50,30 @@
     - nginx_site.conf
 
 - name: Install packages required by the Django app inside virtualenv
-  pip: virtualenv={{ virtualenv_path }} requirements={{ requirements_file }}
+  pip: virtualenv={{ VIRTUALENV_PATH }} requirements={{ REQUIREMENTS_FILE }}
   executable: pip3
 
 - name: Create local settings
   template:
     src: "templates/local_settings.py.jinja2"
-    dest: "{{ project_path }}/ncdr_reference/local_settings.py"
+    dest: "{{ PROJECT_PATH }}/ncdr_reference/local_settings.py"
     mode: 0744
     owner: ubuntu
 
 - name: Run Django database migrations
   args:
-    chdir: "{{ project_path}}"
-  command: "{{ virtualenv_path }}/bin/python manage.py migrate"
+    chdir: "{{ PROJECT_PATH}}"
+  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
 
 - name: Run Django collectstatic
   args:
-    chdir: "{{ project_path}}"
-  command: "{{ virtualenv_path }}/bin/python manage.py collectstatic --noinput"
+    chdir: "{{ PROJECT_PATH}}"
+  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py collectstatic --noinput"
 
 - name: Run Django initial_load
   args:
-    chdir: "{{ project_path}}"
-  command: "{{ virtualenv_path }}/bin/python manage.py initial_load"
+    chdir: "{{ PROJECT_PATH}}"
+  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py initial_load"
 
 - name: Remove old nginx default
   become: true
@@ -78,7 +84,7 @@
 - name: Symlink nginx
   become: true
   file:
-    src: "{{ project_path }}/deployment/config/nginx_site.conf"
+    src: "{{ PROJECT_PATH }}/deployment/config/nginx_site.conf"
     dest: "/etc/nginx/sites-available/default"
     owner: root
     group: root

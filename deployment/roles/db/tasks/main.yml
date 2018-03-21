@@ -20,6 +20,13 @@
   when:
     ansible_distribution == "Debian" or ansible_distribution == "Ubuntu"
 
+- name: Copy in pgpass
+  template:
+    src: templates/pgpass.conf.jinja2
+    dest: /home/ubuntu/
+    owner: ubuntu
+    mode: 0710
+
 - name: Restart postgres
   sudo: yes
   command: "service postgresql restart"
@@ -28,14 +35,14 @@
   become: true
   become_user: postgres
   postgresql_user:
-    name={{ db_user }}
-    password={{ db_password }}
+    name={{ DB_USER }}
+    password={{ DB_PASSWORD }}
 
 - name: create ncdr database
   become: true
   become_user: postgres
   postgresql_db:
-    name={{ db_name }}
+    name={{ DB_NAME }}
     encoding='UTF-8'
-    owner={{ db_user }}
+    owner={{ DB_USER }}
     template=template0
