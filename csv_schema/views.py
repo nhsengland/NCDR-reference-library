@@ -259,9 +259,16 @@ class TableDetail(DetailView):
         return ctx
 
 
-class NcdrReferenceRedirect(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        return SITE_PREFIX + reverse('column_list', kwargs=dict(letter="A"))
+class DataElementDetail(DetailView):
+    model = models.DataElement
+    template_name = "data_element_detail.html"
+
+
+class DataElementList(ListView):
+    model = models.DataElement
+    template_name = "data_element_list.html"
+    NUMERIC = "0-9"
+    paginate_by = 50
 
 
 class PublishAll(View, LoginRequiredMixin):
@@ -313,42 +320,13 @@ class Publish(View, SingleObjectMixin, LoginRequiredMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class ColumnList(ListView):
-    model = models.Column
-    template_name = "column_list.html"
-    NUMERIC = "0-9"
-    paginate_by = 50
+class GroupingList(ListView):
+    model = models.Grouping
+    template_name = "grouping_list.html"
 
     def get_queryset(self, *args, **kwargs):
-        references = super(
-            ColumnList, self
-        ).get_queryset()
-        references = references.viewable(self.request.user)
-
-        if self.kwargs["letter"] == self.NUMERIC:
-            """ startswith 0, or 1, or 2 etc
-            """
-            startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
-            return references.filter(
-                functools.reduce(operator.or_, startswith_args)
-            )
-
-        return references.filter(name__istartswith=self.kwargs["letter"][0])
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(ColumnList, self).get_context_data(*args, **kwargs)
-        symbols = [i for i in ascii_uppercase]
-        symbols.append(self.NUMERIC)
-        url = lambda x: reverse('column_list', kwargs=dict(letter=x))
-        ctx['other_pages'] = ((symbol, SITE_PREFIX + url(symbol),) for symbol in symbols)
-        return ctx
-
-
-class GroupingRedirect(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        return reverse('grouping_detail', kwargs=dict(
-            slug=models.Grouping.objects.first().slug)
-        )
+        qs = super().get_queryset()
+        return qs.viewable(self.request.user)
 
 
 class GroupingDetail(DetailView):

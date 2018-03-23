@@ -1,0 +1,57 @@
+{% extends "base_templates/base.html" %}
+{% load markdown_deux_tags %}
+{% load utils %}
+{% block contents %}
+  <div class="card-list container main-content">
+    <article>
+      <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a>{{ models.csv_schema.dataelement.get_model_display_name_plural }}
+      <div class="row">
+        <div class="col-md-12">
+          <h1 class="title">
+            {{ models.csv_schema.dataelement.get_model_display_name_plural }}
+          </h1>
+        </div>
+      </div>
+      <div class="row nhs-england-well">
+        <div class="col-md-12">
+          Data Elements are groups of columns that map to the same thing, for example diagnosis codes or dates of birth.
+        </div>
+      </div>
+
+      {% if not object_list %}
+        <h1 class="faded text-center">No {{ models.csv_schema.dataelement.get_model_display_name_plural }} start with {{ view.kwargs.letter }}</h1>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-10">
+          {% for data_element in object_list %}
+            {% include "partials/data_element.html" %}
+            {% if not forloop.last %}
+              <hr />
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+      {% if is_paginated %}
+        <ul class="pagination">
+          {% if page_obj.has_previous %}
+            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+          {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+          {% endif %}
+          {% for i in paginator.page_range %}
+            {% if page_obj.number == i %}
+              <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+            {% else %}
+              <li><a href="?page={{ i }}">{{ i }}</a></li>
+            {% endif %}
+          {% endfor %}
+          {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+          {% else %}
+            <li class="disabled"><span>&raquo;</span></li>
+          {% endif %}
+        </ul>
+      {% endif %}
+    </article>
+  </div>
+{% endblock contents %}

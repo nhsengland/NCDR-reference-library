@@ -294,7 +294,7 @@ class GroupingQueryset(NCDRQueryset):
             dataelement__in=DataElement.objects.viewable(
                 user
             )
-        )
+        ).distinct()
 
 
 class Grouping(NcdrModel, models.Model):
@@ -339,19 +339,24 @@ class DataElement(NcdrModel, models.Model):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
-    grouping = models.ManyToManyField(
-        Grouping, null=True, blank=True
-    )
+    slug = models.SlugField(max_length=255, unique=True)
+    grouping = models.ManyToManyField(Grouping)
 
-    @property
-    def slug(self):
-        return slugify(self.name)
+    def save(self, *args, **kwargs):
+        if self.name and not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return "{}#{}".format(
-            self.grouping.first().get_absolute_url(),
-            self.slug
+        return SITE_PREFIX + reverse(
+            "data_element_detail", kwargs=dict(slug=self.slug)
         )
+
+    def get_description(self):
+        if self.description:
+            return self.description
+        else:
+            return self.column_set.first().description
 
     class Meta:
         ordering = ['name']

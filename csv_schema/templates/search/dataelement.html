@@ -1,16 +1,1 @@
-<div class="row">
-  <div class="col-md-12">
-    <h3>
-      <a href="{{ result.get_absolute_url }}">
-        {{ result.name }}
-      </a>
-    </h3>
-  </div>
-</div>
-{% if result.column_set.first.description %}
-  <div class="row">
-    <div class="col-md-12">
-      {{ result.column_set.first.description }}
-    </div>
-  </div>
-{% endif %}
+{% include "partials/data_element.html" with data_element=result %}

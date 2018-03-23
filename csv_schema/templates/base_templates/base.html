@@ -4,6 +4,7 @@
 {% url 'about_page' as about_page %}
 {% url 'database_list' as database_list %}
 {% url 'column_redirect' as column_redirect %}
+{% url 'data_element_list' as data_element_list %}
 {% url 'grouping_redirect' as grouping_redirect %}
 <!DOCTYPE html>
 <html lang="en">
@@ -54,7 +55,13 @@
               <a class="btn pull-right relative" href="{{ models.csv_schema.userprofile.get_url_preview_mode_on }}?next={{ request.get_full_path }}">Preview site</a>
           {% endif %}
           {% if view.model %}
-            <a class="btn pull-right relative" href="{{ view.model.get_edit_list_url }}">Edit {{ view.model.get_model_display_name_plural }}</a>
+            {% if object %}
+              {% if not request|url_name == 'edit' %}
+                <a class="btn pull-right relative" href="{{ object.get_edit_url }}">Edit {{ object.get_display_name }}</a>
+              {% endif %}
+            {% else %}
+              <a class="btn pull-right relative" href="{{ view.model.get_edit_list_url }}">Edit {{ view.model.get_model_display_name_plural }}</a>
+            {% endif %}
           {% else %}
             <a class="btn pull-right relative" href="{{ models.csv_schema.table.get_edit_list_url }}">Edit information</a>
           {% endif %}
@@ -107,10 +114,11 @@
                   </a>
                 </li>
                 <li>
-                  <a {% if request|url_name == 'column_detail' or request|url_name == 'column_list' %} class="active" {% endif %} href="{{ settings.SITE_PREFIX }}{{ column_redirect }}">
-                    {{ models.csv_schema.column.get_model_display_name_plural }}
+                  <a {% if request|url_name == 'data_element_detail' or request|url_name == 'data_element_list' %} class="active" {% endif %} href="{{ settings.SITE_PREFIX }}{{ data_element_list }}">
+                    {{ models.csv_schema.dataelement.get_model_display_name_plural }}
                   </a>
                 </li>
+
                 <li>
                   <a {% if request|url_name == 'grouping_detail' %}class="active" {% endif %} href="{{ settings.SITE_PREFIX }}{{ grouping_redirect }}">
                     {{ models.csv_schema.grouping.get_model_display_name_plural }}

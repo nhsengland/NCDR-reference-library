@@ -44,12 +44,14 @@
           </div>
         </div>
       {% endif %}
-      {% for column in object.column_set.all %}
-        {% include 'partials/column.html' with HIDE_DB_TABLE=1 %}
-        {% if not forloop.last %}
-          <hr />
-        {% endif %}
-      {% endfor %}
+      {% with object.column_set.all|viewable:request as columns %}
+        {% for column in columns %}
+          {% include 'partials/column.html' with HIDE_DB_TABLE=1 %}
+          {% if not forloop.last %}
+            <hr />
+          {% endif %}
+        {% endfor %}
+      {% endwith %}
     </article>
   </div>
 {% endblock contents %}

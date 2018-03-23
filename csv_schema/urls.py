@@ -77,6 +77,11 @@ urlpatterns = [
         views.DatabaseDetail.as_view(),
         name="database_detail"
     ),
+    path(
+        'data_element/<slug:slug>/',
+        views.DataElementDetail.as_view(),
+        name="data_element_detail"
+    ),
     path('database', views.DatabaseList.as_view(), name="database_list"),
 
     path(
@@ -84,11 +89,14 @@ urlpatterns = [
         views.ColumnDetail.as_view(),
         name="column_detail"
     ),
-    path('columns/', views.NcdrReferenceRedirect.as_view(), name="column_redirect"),
-    path('columns/<str:letter>/', views.ColumnList.as_view(), name="column_list"),
+    path(
+        'data_element/',
+        views.DataElementList.as_view(),
+        name="data_element_list"
+    ),
     path('', views.IndexView.as_view(), name="index_view"),
 
-    path('grouping/', views.GroupingRedirect.as_view(), name="grouping_redirect"),
+    path('grouping/', views.GroupingList.as_view(), name="grouping_redirect"),
     path(
         'grouping/<slug:slug>/',
         views.GroupingDetail.as_view(),

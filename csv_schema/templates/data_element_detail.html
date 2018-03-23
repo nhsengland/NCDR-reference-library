@@ -1,0 +1,105 @@
+{% extends "base_templates/base.html" %}
+{% load utils %}
+{% block contents %}
+<div class="container main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'column_redirect' %}">Data Elements</a><a class="ncdr-breadcrumbs" href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a>{{ object.name }}
+        </div>
+      </div>
+
+      <div class="row content-offset-below-20">
+        <div class="col-sm-10">
+          <h1>
+            <div class="row">
+              <div class="col-md-12">
+                {{ object.name }}
+              </div>
+            </div>
+          </h1>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container">
+  <div class="row nhs-england-well">
+    <div class="col-md-7">
+      <p>
+        {{ object.get_description | urlize }}
+      </p>
+    </div>
+    <div class="col-md-4 col-md-push-1">
+        {% if object.grouping.exists %}
+          <div class="row">
+            <div class="col-md-12">
+            <h4 class="sub-row-title coloured-header">Grouping</h4>
+            {% for grouping in object.grouping.all %}
+              <p>
+                <a href="{{ grouping.get_absolute_url }}">
+                  {{ grouping.name }}
+                </a>
+              </p>
+            {% endfor %}
+        {% endif %}
+        {% if object.link %}
+          <div class="row">
+            <div class="col-md-12">
+                <h4 class="sub-row-title coloured-header">External Links</h4>
+                <p>
+                  <a target="_blank" href="{{ object.link }}">
+                    {{ object.link_display_name }}
+                  </a>
+                </p>
+            </div>
+          </div>
+        {% endif %}
+        {% if object.link and object.is_derived_item %}
+          <div class="row">
+            <div class="col-md-12">
+              <hr />
+            </div>
+          </div>
+        {% endif %}
+        <div class="row">
+          <div class="col-md-12">
+            {% if object.is_derived_item %}
+              <h4 class="sub-row-title coloured-header">Derivation</h4>
+              {% if object.derivation == 'N/A' %}
+                External
+              {% else %}
+                {{ object.derivation | urlize }}
+              {% endif %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+  {% with object.column_set|viewable:request as columns %}
+    <div class="container">
+      <div class="row">
+        <div class="col-md-8">
+          <h3>Columns</h3>
+          {% if columns.exists %}
+            {% for column in columns %}
+              <div class="row">
+                <div class="col-md-12">
+                  {% include "partials/column.html" with HIDE_GROUPING=1 %}
+                  {% if not forloop.last %}
+                    <hr />
+                  {% endif %}
+                </div>
+              </div>
+            {% endfor %}
+          {% else %}
+            <h1 class="faded text-center">No Columns exist for this mapping</h1>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  {% endwith %}
+{% endblock %}

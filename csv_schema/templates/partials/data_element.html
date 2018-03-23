@@ -1,0 +1,18 @@
+{% load utils %}
+<div class="row{% if not forloop.first %} content-offset-30{% endif %}">
+  <div class="col-md-12">
+    <h3 id="{{ data_element.slug }}" class="sub-row-title">
+      <a href="{{ data_element.get_absolute_url }}">
+        {{ data_element.name }}
+      </a>
+      <small>
+        {% with data_element.column_set.all|viewable:request as columns %}
+          {{ columns.count }} Columns
+        {% endwith %}
+      </small>
+    </h3>
+  </div>
+</div>
+<p>
+  {{ data_element.get_description | urlize }}
+</p>

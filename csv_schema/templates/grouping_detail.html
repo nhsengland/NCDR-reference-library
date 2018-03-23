@@ -2,22 +2,8 @@
 {% load utils %}
 {% load markdown_deux_tags %}
 {% block contents %}
-  <div class="main-content container table-detail">
-    <aside class="side-nav col-md-4">
-      <ul>
-        <li class="list-title">
-          <div>Groupings</div>
-        <li>
-        {% for grouping in groupings %}
-          <li>
-            <a class="table-link {% if object.id == grouping.id %} active{% endif %}" href="{{ grouping.get_absolute_url }}">
-              {{ grouping.name }}
-            </a>
-          </li>
-        {% endfor %}
-      </ul>
-    </aside>
-    <article class="col-md-8">
+  <div class="main-content container main-content">
+    <article >
       <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'grouping_redirect' %}">Groupings</a>{{ object.name }}
       <h1 class="title">
         <div class="row">
@@ -33,24 +19,11 @@
           </div>
         </div>
       {% endif %}
-      {% for data_element in object.dataelement_set.all %}
-        <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
-          <div class="col-md-12">
-            <h3 id="{{ data_element.slug }}" class="sub-row-title">{{ data_element.name }}</h3>
-          </div>
-        </div>
-        <p>
-          {{ data_element.description }}
-          {% if not data_element.description %}
-            {{ data_element.column_set.first.description | urlize }}
-          {% endif %}
-        </p>
-        {% for column in data_element.column_set.all %}
-          {% if request.user.userprofile.preview_mode or column.published %}
-            {% include "partials/column.html" with HIDE_GROUPING=1 HIDE_DESCRIPTION=1 %}
-          {% endif %}
+      {% with object.dataelement_set.all|viewable:request as data_elements %}
+        {% for data_element in data_elements %}
+          {% include 'partials/data_element.html' %}
         {% endfor %}
-      {% endfor %}
+      {% endwith %}
     </article>
   </div>
 {% endblock contents %}
