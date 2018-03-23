@@ -483,22 +483,6 @@ class Column(NcdrModel, models.Model):
             pk=self.id
         ))
 
-    def get_bread_crumb_link(self):
-        if self.name[0] in range(10):
-            from csv_schema import views
-            return SITE_PREFIX + reverse("column_list", kwargs=dict(
-                letter=views.ColumnList.NUMERIC
-            ))
-        return SITE_PREFIX + reverse("column_list", kwargs=dict(
-            letter=self.name[0].upper()
-        ))
-
-    def get_bread_crumb_name(self):
-        if self.name[0] in range(10):
-            from csv_schema import views
-            return views.ColumnList.NUMERIC
-        return self.name[0].upper()
-
     @cached_property
     def useage_count(self):
         count = self.tables.count()
