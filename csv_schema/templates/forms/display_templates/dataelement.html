@@ -1,15 +1,17 @@
-<div class="row">
-  <div class="col-md-12">
-    <h4>
-      {{ m.name }}
-    </h4>
-  </div>
-</div>
-{% if m.grouping.exists %}
+<a href="{{ m.get_edit_url }}">
   <div class="row">
     <div class="col-md-12">
-      grouping{{ m.grouping.all|pluralize }}:
-      {{ m.grouping.all|join:", " }}
+      <h4>
+        {{ m.name }}
+      </h4>
     </div>
   </div>
-{% endif %}
+  {% if m.grouping.exists %}
+    <div class="row">
+      <div class="col-md-12">
+        grouping{{ m.grouping.all|pluralize }}:
+        {{ m.grouping.all|join:", " }}
+      </div>
+    </div>
+  {% endif %}
+</a>

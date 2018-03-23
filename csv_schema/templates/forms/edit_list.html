@@ -2,6 +2,13 @@
 {% block form_title %}
   <h3>Edit {{ view.model.get_model_display_name_plural }}</h3>
 {% endblock %}
+
+{% block js %}
+  {{ block.super }}
+  <script src="https://unpkg.com/vue"></script>
+{% endblock js %}
+
+
 {% block form_description %}
   {% if view.model.get_form_description_template %}
     <div class="row nhs-england-well">
@@ -14,9 +21,7 @@
     <div class="col-md-12">
       {% for m in object_list %}
         <div class="content-offset-below-20">
-          <a href="{{ m.get_edit_url }}">
-            {% include m.get_form_display_template %}
-          </a>
+          {% include m.get_form_display_template %}
           {% if not forloop.last %}
             <hr />
           {% endif %}
@@ -54,4 +59,11 @@
       {% endif %}
     </div>
   </div>
+
 {% endblock %}
+
+{% block extra_js %}
+  {% if view.model.get_edit_list_js_template %}
+    {% include view.model.get_edit_list_js_template %}
+  {% endif %}
+{% endblock extra_js %}

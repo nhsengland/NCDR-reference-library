@@ -1,15 +1,17 @@
-<div class="row">
-  <div class="col-md-12">
-    <h4>
-      {{ m.get_display_name }}
-      <small>{{ m.name }}</small>
-    </h4>
-  </div>
-</div>
-{% if m.description %}
+<a href="{{ m.get_edit_url }}">
   <div class="row">
     <div class="col-md-12">
-      {{ m.description }}
+      <h4>
+        {{ m.get_display_name }}
+        <small>{{ m.name }}</small>
+      </h4>
     </div>
   </div>
-{% endif %}
+  {% if m.description %}
+    <div class="row">
+      <div class="col-md-12">
+        {{ m.description }}
+      </div>
+    </div>
+  {% endif %}
+</a>

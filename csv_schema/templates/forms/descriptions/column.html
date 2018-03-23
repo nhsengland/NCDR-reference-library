@@ -5,13 +5,13 @@
   Added and editted elements are <strong>unpublished</strong> by default.
 </p>
 <p>
-  <a href="{{ models.csv_schema.column.get_unpublished_list_url }}">There are currently {{ model_objects.csv_schema.column.unpublished.count }} unpublished columns</a>
+  <a href="{{ models.csv_schema.column.get_unpublished_list_url }}">There are currently [[ state.unpublished ]]  unpublished columns</a>
 </p>
 {% if model_objects.csv_schema.column.unpublished.exists %}
   <p>
     <form method="post" action="{{ models.csv_schema.column.get_publish_all_url }}?next={{ request.get_full_path }}">
       {% csrf_token %}
-      <input class="btn btn-primary" type="submit" value="Publish All {{ model_objects.csv_schema.column.unpublished.count }} Columns" />
+      <input class="btn btn-primary" type="submit" value="Publish All [[ state.unpublished ]] Columns" />
     </form>
   </p>
 {% endif %}

@@ -1,18 +1,11 @@
 <div class="row">
-  <div class="col-md-10">
-    {% include "partials/default_form_template.html" %}
-  </div>
+  <a href="{{ m.get_edit_url }}">
+    <div class="col-md-10">
+      {% include "partials/default_form_template.html" %}
+    </div>
+  </a>
   <div class="col-md-2">
-    {% if m.published %}
-      <form method="post" action="{{ m.get_unpublish_url}}?next={{ request.get_full_path }}">
-        {% csrf_token %}
-        <input class="btn btn-danger" type="submit" value="Unpublish" />
-      </form>
-    {% else %}
-      <form method="post" action="{{ m.get_publish_url}}?next={{ request.get_full_path }}">
-        {% csrf_token %}
-        <input class="btn btn-primary" type="submit" value="Publish" />
-      </form>
-    {% endif %}
+    <publish :state="state" :column="columns[{{ forloop.counter0 }}]">
+    </publish>
   </div>
 </div>

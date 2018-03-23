@@ -1,5 +1,6 @@
-from django.urls import path
+from django.urls import path, include
 from csv_schema import views
+from csv_schema import api
 
 urlpatterns = [
 
@@ -92,4 +93,5 @@ urlpatterns = [
         views.GroupingDetail.as_view(),
         name="grouping_detail"
     ),
+    path(r'api/', include(api.router.urls)),
 ]

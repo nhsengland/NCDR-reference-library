@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 import functools
 import operator
 import itertools
+import json
 from django.contrib.auth.signals import user_logged_out
 from django.urls import reverse
 from django.utils.text import slugify
@@ -371,6 +372,15 @@ class ColumnQueryset(NCDRQueryset):
                 published=True
             ).order_by(Lower('name'))
 
+    def to_json(self):
+        result = []
+        for i in self:
+            result.append(dict(
+                published=i.published,
+                url=i.get_publish_url()
+            ))
+        return json.dumps(result)
+
 
 class Column(NcdrModel, models.Model):
     DATA_TYPE_CHOICES = (
@@ -456,14 +466,13 @@ class Column(NcdrModel, models.Model):
     def get_publish_all_url(cls):
         return SITE_PREFIX + reverse("publish_all")
 
-    def get_publish_url(self):
-        return SITE_PREFIX + reverse("publish", kwargs=dict(
-            pk=self.id, publish=1
-        ))
+    @classmethod
+    def get_edit_list_js_template(cls):
+        return "forms/column_form_js.html"
 
-    def get_unpublish_url(self):
-        return SITE_PREFIX + reverse("publish", kwargs=dict(
-            pk=self.id, publish=0
+    def get_publish_url(self):
+        return SITE_PREFIX + reverse("columns-detail", kwargs=dict(
+            pk=self.id
         ))
 
     def get_bread_crumb_link(self):

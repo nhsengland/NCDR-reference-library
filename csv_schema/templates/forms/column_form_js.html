@@ -1,0 +1,96 @@
+
+<script type="text/x-template" id="publish">
+  <form v-on:submit.prevent="publish(column, state)" method="patch" action="">
+    <div v-if="!column.published">
+      <input class="btn btn-primary" type="submit" value="publish" :disabled=column.loading />
+    </div>
+    <div v-if="column.published">
+      <input class="btn btn-danger" type="submit" value="unpublish" :disabled=column.loading />
+    </div>
+  </form>
+</script>
+
+<script>
+  !function(){
+    {% autoescape off %}
+      var columns = {{ object_list.to_json }};
+    {% endautoescape %}
+
+    var state = {
+      unpublished:{{ model_objects.csv_schema.column.unpublished.count }}
+    }
+
+    // using jQuery
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = jQuery.trim(cookies[i]);
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    var csrftoken = getCookie('csrftoken');
+
+    function csrfSafeMethod(method) {
+        // these HTTP methods do not require CSRF protection
+        return (/^(GET|HEAD|OPTIONS|TRACE)$/.test(method));
+    }
+    $.ajaxSetup({
+        beforeSend: function(xhr, settings) {
+            if (!csrfSafeMethod(settings.type) && !this.crossDomain) {
+                xhr.setRequestHeader("X-CSRFToken", csrftoken);
+            }
+        }
+    });
+
+
+    var publish = function(column, state){
+      column.loading = true;
+
+      data = {published: !column.published};
+
+      $.ajax({
+          url: column.url,
+          type: 'PATCH',
+          data: data,
+          success: function(result){
+            column.loading = false;
+            column.published = result.published;
+              if(!column.published){
+                state.unpublished = state.unpublished + 1;
+              }
+              else{
+                state.unpublished = state.unpublished - 1;
+              }
+          },
+      });
+    }
+    // this is only trye for columns
+    Vue.component('publish', {
+      props: ['column', 'state'],
+      delimiters: ['[[', ']]'],
+      template: '#publish',
+      methods: {
+        publish: publish
+      }
+    });
+    new Vue({
+      el: '#vue-container',
+      delimiters: ['[[', ']]'],
+      data: function(){
+        return {
+          columns: columns,
+          state: state
+        };
+      }
+    });
+
+  }();
+</script>

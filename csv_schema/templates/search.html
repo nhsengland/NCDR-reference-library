@@ -13,11 +13,9 @@
         <li>
           <a class="table-link{% if some_model.get_model_api_name == view.model.get_model_api_name %} active{% endif %}" href="{{ some_model.get_search_url }}?{{ request.GET.urlencode }}">
             {{ some_model.get_model_display_name_plural }}
-            {% if some_count %}
-              <span class="pull-right">
-                {{ some_count }}
-              </span>
-            {% endif %}
+            <span class="pull-right">
+              {{ some_count }}
+            </span>
           </a>
         </li>
       {% endfor %}
@@ -70,8 +68,30 @@
       {% endif %}
       <div class="search-result">
         {% include view.model.get_search_detail_template %}
+
       </div>
     {% endfor %}
+    {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+          {% if page_obj.number == i %}
+            <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+          {% else %}
+            <li><a href="?page={{ i }}&q={{ request.GET.q }}">{{ i }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">&raquo;</a></li>
+        {% else %}
+          <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+    {% endif %}
   </div>
 </div>
 <script>

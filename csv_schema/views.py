@@ -94,6 +94,7 @@ class NCDRSearchRedirect(RedirectView):
 
 class NCDRSearch(NCDRView, ListView):
     template_name = "search.html"
+    paginate_by = 30
 
     def get_queryset(self, *args, **kwargs):
         return self.model.objects.search(
@@ -201,7 +202,7 @@ class NCDRDeleteView(NCDRFormView, DeleteView):
         return super().delete(*args, **kwargs)
 
     def get_success_url(self, *args, **kwargs):
-        return models.Table.get_edit_list_url()
+        return self.model.get_edit_list_url()
 
 
 class NCDREditListView(NCDRFormView, ListView):

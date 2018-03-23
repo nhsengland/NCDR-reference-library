@@ -3,8 +3,9 @@ This is the template that is used by everything on the
 /form/ subfolder
 
 
+
 {% block contents %}
-  <div class="container main-content">
+  <div id="vue-container" class="container main-content">
     <aside class="side-nav col-md-3">
       <ul>
         <li class="list-title">
@@ -42,7 +43,6 @@ This is the template that is used by everything on the
       <div class="row">
         <div class="col-md-12">
           {% block form_description %}
-
           {% endblock %}
         </div>
       </div>
@@ -50,4 +50,6 @@ This is the template that is used by everything on the
       {% endblock %}
     </div>
   </div>
+{% block extra_js %}
+{% endblock extra_js %}
 {% endblock %}
