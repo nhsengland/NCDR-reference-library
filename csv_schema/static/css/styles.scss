@@ -565,3 +565,5 @@ hr {
     @include primary-background-colour-hover;
   }
 }
+
+[v-cloak] { display:none }

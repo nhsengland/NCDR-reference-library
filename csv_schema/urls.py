@@ -1,6 +1,7 @@
 from django.urls import path, include
 from csv_schema import views
 from csv_schema import api
+from django.views.decorators.cache import never_cache
 
 urlpatterns = [
 
@@ -22,7 +23,7 @@ urlpatterns = [
     ),
     path(
         'form/<slug:model_name>/unpublished/',
-        views.UnPublishedList.as_view(),
+        never_cache(views.UnPublishedList.as_view()),
         name="unpublished_list"
     ),
     path(
@@ -48,7 +49,7 @@ urlpatterns = [
     ),
     path(
         'form/<slug:model_name>/',
-        views.NCDREditListView.as_view(),
+        never_cache(views.NCDREditListView.as_view()),
         name="edit_list"
     ),
 

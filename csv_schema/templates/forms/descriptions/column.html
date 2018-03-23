@@ -4,7 +4,7 @@
 <p>
   Added and editted elements are <strong>unpublished</strong> by default.
 </p>
-{% if request.url == view.model.get_add_url %}
+{% if not request.url == view.model.get_add_url %}
   <p>
     <a v-cloak href="{{ models.csv_schema.column.get_unpublished_list_url }}">There are currently [[ state.unpublished ]]  unpublished columns</a>
   </p>
