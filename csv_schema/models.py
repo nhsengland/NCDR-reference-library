@@ -364,6 +364,9 @@ class ColumnQueryset(NCDRQueryset):
     def unpublished(self):
         return self.filter(published=False)
 
+    def published(self):
+        return self.filter(published=True)
+
     def viewable(self, user):
         if user.is_authenticated and user.userprofile.preview_mode:
             return self.order_by(Lower('name'))

@@ -90,16 +90,29 @@
   <div class="row">
     <div class="col-md-8">
       <h3>Similar Columns</h3>
-      {% for column in object.related %}
-        <div class="row">
-          <div class="col-md-12">
-            {% include "partials/column.html" with HIDE_GROUPING=1 %}
-            {% if not forloop.last %}
-              <hr />
-            {% endif %}
+      {% if request.user.userprofile.preview_mode %}
+        {% for column in object.related %}
+          <div class="row">
+            <div class="col-md-12">
+              {% include "partials/column.html" with HIDE_GROUPING=1 %}
+              {% if not forloop.last %}
+                <hr />
+              {% endif %}
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      {% else %}
+        {% for column in object.related.published %}
+          <div class="row">
+            <div class="col-md-12">
+              {% include "partials/column.html" with HIDE_GROUPING=1 %}
+              {% if not forloop.last %}
+                <hr />
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
     </div>
   </div>
 </div>
