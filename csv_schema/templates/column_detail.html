@@ -15,11 +15,6 @@
             <div class="row">
               <div class="col-md-12">
                 {{ object.name }}
-                {% if object.data_element.grouping.exists %}
-                  <small>
-                    <a href="{{ object.data_element.grouping.first.get_absolute_url }}">{{ object.data_element.grouping.first.name }}</a>
-                  </small>
-                {% endif %}
               </div>
             </div>
             <div class="row">
@@ -42,78 +37,40 @@
         {{ object.description | urlize }}
       </p>
     </div>
-    <div class="col-md-4 col-md-push-1">
-        {% if object.data_element.grouping.exists %}
-          <div class="row">
-            <div class="col-md-12">
-            <h4 class="sub-row-title coloured-header">Grouping</h4>
-            <p>
-              <a href="{{ object.data_element.grouping.first.get_absolute_url }}">{{ object.data_element.grouping.first.name }}</a>
-            </p>
-        {% endif %}
-        {% if object.link %}
-          <div class="row">
-            <div class="col-md-12">
-                <h4 class="sub-row-title coloured-header">External Links</h4>
-                <p>
-                  <a target="_blank" href="{{ object.link }}">
-                    {{ object.link_display_name }}
-                  </a>
-                </p>
-            </div>
-          </div>
-        {% endif %}
-        {% if object.link and object.is_derived_item %}
-          <div class="row">
-            <div class="col-md-12">
-              <hr />
-            </div>
-          </div>
-        {% endif %}
-        <div class="row">
-          <div class="col-md-12">
-            {% if object.is_derived_item %}
-              <h4 class="sub-row-title coloured-header">Derivation</h4>
-              {% if object.derivation == 'N/A' %}
-                External
-              {% else %}
-                {{ object.derivation | urlize }}
-              {% endif %}
-            {% endif %}
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
-</div>
+
 <div class="container">
   <div class="row">
-    <div class="col-md-8">
-      <h3>Similar Columns</h3>
-      {% if request.user.userprofile.preview_mode %}
-        {% for column in object.related %}
-          <div class="row">
-            <div class="col-md-12">
-              {% include "partials/column.html" with HIDE_GROUPING=1 %}
-              {% if not forloop.last %}
-                <hr />
-              {% endif %}
-            </div>
-          </div>
-        {% endfor %}
-      {% else %}
-        {% for column in object.related.published %}
-          <div class="row">
-            <div class="col-md-12">
-              {% include "partials/column.html" with HIDE_GROUPING=1 %}
-              {% if not forloop.last %}
-                <hr />
-              {% endif %}
-            </div>
-          </div>
-        {% endfor %}
-      {% endif %}
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-3">
+          <h4 class="sub-row-title coloured-header">Data Element</h4>
+          {% if object.data_element %}
+            <a href="{{ object.data_element.get_absolute_url }}">{{ object.data_element.get_display_name }}</a>
+          {% endif %}
+        </div>
+        <div class="col-md-3">
+          <h4 class="sub-row-title coloured-header">External Links</h4>
+          <p>
+            {% if object.link %}
+              <a target="_blank" href="{{ object.link }}">
+                {{ object.link_display_name }}
+              </a>
+            {% else %}
+              None
+            {% endif %}
+          </p>
+        </div>
+        <div class="col-md-6">
+            <h4 class="sub-row-title coloured-header">Derivation</h4>
+            {% if object.derivation == 'N/A' %}
+              External
+            {% else %}
+              {{ object.derivation | urlize }}
+            {% endif %}
+        </div>
+      </div>
     </div>
   </div>
 </div>
