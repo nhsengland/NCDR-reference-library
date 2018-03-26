@@ -11,7 +11,7 @@
       </li>
       {% for some_model, some_count in results %}
         <li>
-          <a class="table-link{% if some_model.get_model_api_name == view.model.get_model_api_name %} active{% endif %}" href="{{ some_model.get_search_url }}?{{ request.GET.urlencode }}">
+          <a class="table-link{% if some_model.get_model_api_name == view.model.get_model_api_name %} active{% endif %}" href="{{ some_model.get_search_url }}?q={{ request.GET.q }}">
             {{ some_model.get_model_display_name_plural }}
             <span class="pull-right">
               {{ some_count }}
@@ -25,9 +25,9 @@
       <div class="col-md-12">
         {% block form_title %}
           <h2>
-            {% if object_list|length %}
-              {{ object_list|length }}
-              {% if object_list|length == 1 %}
+            {% if paginator.count %}
+              {{ paginator.count }}
+              {% if paginator.count == 1 %}
                 {{ view.model.get_model_display_name.lower }}
               {% else %}
                 {{ view.model.get_model_display_name_plural.lower }}
