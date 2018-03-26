@@ -1,5 +1,6 @@
 {% extends "base_templates/base.html" %}
 {% load markdown_deux_tags %}
+{% load utils %}
 
 {% block contents %}
 
@@ -11,7 +12,7 @@
           {{ object.get_display_name }}
         </a>
       <li>
-      {% for table in object.table_set.all %}
+      {% for table in object.table_set.all|viewable:request %}
         <li>
           <a class="table-link" href="{{ table.get_absolute_url }}">
             {{ table.name }}

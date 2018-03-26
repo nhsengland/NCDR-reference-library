@@ -56,7 +56,9 @@
           {% endif %}
           {% if view.model %}
             {% if object %}
-              {% if not request|url_name == 'edit' %}
+              {% if request|url_name == 'edit' %}
+                <a class="btn pull-right relative" href="{{ object.get_absolute_url }}">View {{ object.get_display_name }}</a>
+              {% else %}
                 <a class="btn pull-right relative" href="{{ object.get_edit_url }}">Edit {{ object.get_display_name }}</a>
               {% endif %}
             {% else %}

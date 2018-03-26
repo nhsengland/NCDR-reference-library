@@ -1,11 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-import operator
-import functools
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.contrib import messages
-from string import ascii_uppercase
 from csv_schema import models
 from django.http import HttpResponseRedirect
 from django.forms import formset_factory
@@ -21,7 +18,6 @@ from django.views.generic import (
     View
 )
 from django.urls import reverse
-from django.db.models import Q
 from django.conf import settings
 from django.apps import apps
 from csv_schema import forms
@@ -57,6 +53,15 @@ class NCDRView(object):
                 )
             )
         return model
+
+
+class NCDRDisplay(object):
+    """ wraps the normal get queryset to prevent unpublished
+        objects being viewable
+    """
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset()
+        return qs.viewable(self.request.user)
 
 
 class NCDRFormView(LoginRequiredMixin, NCDRView):
@@ -219,33 +224,29 @@ class IndexView(RedirectView):
         return c_models.Database.get_list_url()
 
 
-class ColumnDetail(DetailView):
+class ColumnDetail(NCDRDisplay, DetailView):
     model = models.Column
     template_name = "column_detail.html"
 
 
-class DatabaseList(ListView):
+class DatabaseList(NCDRDisplay, ListView):
     model = models.Database
     template_name = "database_list.html"
 
-    def get_queryset(self, *args, **kwargs):
-        qs = super(DatabaseList, self).get_queryset()
-        return qs.viewable(self.request.user)
 
-
-class DatabaseDetail(DetailView):
+class DatabaseDetail(NCDRDisplay, DetailView):
     model = models.Database
     slug_url_kwarg = 'db_name'
     slug_field = 'name'
     template_name = "database_detail.html"
 
 
-class TableDetail(DetailView):
+class TableDetail(NCDRDisplay, DetailView):
     model = models.Table
     template_name = "table_detail.html"
 
     def get_object(self, *args, **kwargs):
-        return models.Table.objects.get(
+        return self.get_queryset().get(
             name=self.kwargs["table_name"],
             database__name=self.kwargs["db_name"]
         )
@@ -259,16 +260,20 @@ class TableDetail(DetailView):
         return ctx
 
 
-class DataElementDetail(DetailView):
+class DataElementDetail(NCDRDisplay, DetailView):
     model = models.DataElement
     template_name = "data_element_detail.html"
 
 
-class DataElementList(ListView):
+class DataElementList(NCDRDisplay, ListView):
     model = models.DataElement
     template_name = "data_element_list.html"
     NUMERIC = "0-9"
     paginate_by = 50
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset()
+        return qs.viewable(self.request.user)
 
 
 class PublishAll(View, LoginRequiredMixin):
@@ -320,23 +325,21 @@ class Publish(View, SingleObjectMixin, LoginRequiredMixin):
         return HttpResponseRedirect(self.get_success_url())
 
 
-class GroupingList(ListView):
+class GroupingList(NCDRDisplay, ListView):
     model = models.Grouping
     template_name = "grouping_list.html"
 
-    def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset()
-        return qs.viewable(self.request.user)
 
-
-class GroupingDetail(DetailView):
+class GroupingDetail(NCDRDisplay, DetailView):
     model = models.Grouping
     template_name = "grouping_detail.html"
 
     def get_context_data(self, *args, **kwargs):
         # get the list of tables in this database
         ctx = super(GroupingDetail, self).get_context_data(*args, **kwargs)
-        ctx["groupings"] = models.Grouping.objects.all().order_by('name')
+        ctx["groupings"] = models.Grouping.objects.viewable(
+            self.request.user
+        ).order_by('name')
         return ctx
 
 
