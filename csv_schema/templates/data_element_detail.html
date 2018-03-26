@@ -32,9 +32,9 @@
       </p>
     </div>
     <div class="col-md-4 col-md-push-1">
-        {% if object.grouping.exists %}
-          <div class="row">
-            <div class="col-md-12">
+      {% if object.grouping.exists %}
+        <div class="row">
+          <div class="col-md-12">
             <h4 class="sub-row-title coloured-header">Grouping</h4>
             {% for grouping in object.grouping.all %}
               <p>
@@ -43,37 +43,38 @@
                 </a>
               </p>
             {% endfor %}
-        {% endif %}
-        {% if object.link %}
-          <div class="row">
-            <div class="col-md-12">
-                <h4 class="sub-row-title coloured-header">External Links</h4>
-                <p>
-                  <a target="_blank" href="{{ object.link }}">
-                    {{ object.link_display_name }}
-                  </a>
-                </p>
-            </div>
           </div>
-        {% endif %}
-        {% if object.link and object.is_derived_item %}
-          <div class="row">
-            <div class="col-md-12">
-              <hr />
-            </div>
-          </div>
-        {% endif %}
+        </div>
+      {% endif %}
+      {% if object.link %}
         <div class="row">
           <div class="col-md-12">
-            {% if object.is_derived_item %}
-              <h4 class="sub-row-title coloured-header">Derivation</h4>
-              {% if object.derivation == 'N/A' %}
-                External
-              {% else %}
-                {{ object.derivation | urlize }}
-              {% endif %}
-            {% endif %}
+              <h4 class="sub-row-title coloured-header">External Links</h4>
+              <p>
+                <a target="_blank" href="{{ object.link }}">
+                  {{ object.link_display_name }}
+                </a>
+              </p>
           </div>
+        </div>
+      {% endif %}
+      {% if object.link and object.is_derived_item %}
+        <div class="row">
+          <div class="col-md-12">
+            <hr />
+          </div>
+        </div>
+      {% endif %}
+      <div class="row">
+        <div class="col-md-12">
+          {% if object.is_derived_item %}
+            <h4 class="sub-row-title coloured-header">Derivation</h4>
+            {% if object.derivation == 'N/A' %}
+              External
+            {% else %}
+              {{ object.derivation | urlize }}
+            {% endif %}
+          {% endif %}
         </div>
       </div>
     </div>
