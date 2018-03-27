@@ -240,11 +240,14 @@ class Database(NcdrModel):
 
 class TableQueryset(NCDRQueryset):
     def viewable(self, user):
+        if user.is_authenticated and user.userprofile.preview_mode:
+            return self
+
         populated_columns = Column.objects.viewable(user)
         populated_tables = populated_columns.values_list(
             "table_id", flat=True
         ).distinct()
-        return Table.objects.filter(
+        return self.filter(
             id__in=populated_tables
         )
 
@@ -304,7 +307,9 @@ class Grouping(NcdrModel, models.Model):
 
     objects = GroupingQueryset.as_manager()
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(
+        max_length=255, unique=True, blank=True
+    )
     description = models.CharField(
         max_length=255, null=True, blank=True
     )
@@ -325,6 +330,9 @@ class Grouping(NcdrModel, models.Model):
 
 class DataElementQueryset(NCDRQueryset):
     def viewable(self, user):
+        if user.is_authenticated and user.userprofile.preview_mode:
+            return self
+
         populated_columns = Column.objects.viewable(user)
         return self.filter(
             column__in=populated_columns
@@ -339,7 +347,7 @@ class DataElement(NcdrModel, models.Model):
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
     grouping = models.ManyToManyField(Grouping)
 
     def save(self, *args, **kwargs):
@@ -432,7 +440,9 @@ class Column(NcdrModel, models.Model):
     objects = ColumnQueryset.as_manager()
 
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = models.SlugField(
+        max_length=255, unique=True, blank=True
+    )
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
