@@ -2,10 +2,10 @@
 <script type="text/x-template" id="publish">
   <form v-on:submit.prevent="publish(column, state)" method="patch" action="">
     <div v-if="!column.published">
-      <input class="btn btn-primary" type="submit" value="publish" :disabled=column.loading />
+      <input class="btn btn-primary" type="submit" value="Publish" :disabled=column.loading />
     </div>
     <div v-if="column.published">
-      <input class="btn btn-danger" type="submit" value="unpublish" :disabled=column.loading />
+      <input class="btn btn-danger" type="submit" value="Unpublish" :disabled=column.loading />
     </div>
   </form>
 </script>
