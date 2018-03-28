@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.db import transaction
 from django.contrib import messages
 from csv_schema import models
 from django.http import HttpResponseRedirect
 from django.forms import formset_factory
-from django.views.generic.detail import SingleObjectMixin
+from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView,
     RedirectView,
@@ -131,7 +133,7 @@ class NCDRSearch(NCDRView, ListView):
         return ctx
 
 
-class NCDRFormRedirect(RedirectView):
+class NCDRFormRedirect(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         # todo, handle what happens if there is no search parameter
         return NCDRView.pertinant[0].get_edit_list_url()
@@ -255,7 +257,8 @@ class TableDetail(NCDRDisplay, DetailView):
     template_name = "table_detail.html"
 
     def get_object(self, *args, **kwargs):
-        return self.get_queryset().get(
+        return get_object_or_404(
+            self.get_queryset(),
             name=self.kwargs["table_name"],
             database__name=self.kwargs["db_name"]
         )
@@ -285,12 +288,13 @@ class DataElementList(NCDRDisplay, ListView):
         return qs.viewable(self.request.user)
 
 
-class PublishAll(View, LoginRequiredMixin):
+class PublishAll(View):
     http_method_names = ["post"]
 
     def get_success_url(self):
         return self.request.GET["next"]
 
+    @method_decorator(login_required)
     def post(self, *args, **kwargs):
         unpublished = models.Column.objects.filter(
             published=False
@@ -303,34 +307,6 @@ class PublishAll(View, LoginRequiredMixin):
                 unpublished_count
             )
         )
-        return HttpResponseRedirect(self.get_success_url())
-
-
-class Publish(View, SingleObjectMixin, LoginRequiredMixin):
-    http_method_names = ["post"]
-    model = models.Column
-
-    def get_success_url(self):
-        return self.request.GET["next"]
-
-    def post(self, *args, **kwargs):
-        obj = self.get_object()
-        obj.published = bool(kwargs["publish"])
-        obj.save()
-
-        if kwargs["publish"]:
-            msg = '{} published'.format(
-                obj.name
-            )
-        else:
-            msg = '{} unpublished'.format(
-                obj.name
-            )
-
-        messages.success(
-            self.request, msg
-        )
-
         return HttpResponseRedirect(self.get_success_url())
 
 
@@ -352,7 +328,7 @@ class GroupingDetail(NCDRDisplay, DetailView):
         return ctx
 
 
-class PreviewModeSwitch(RedirectView):
+class PreviewModeSwitch(LoginRequiredMixin, RedirectView):
     """ Switch the preview mode on or off for a user
         gets passed in an integer that we boolerise™
     """

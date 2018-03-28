@@ -17,11 +17,6 @@ urlpatterns = [
         name="publish_all"
     ),
     path(
-        'form/publish/<int:pk>/<int:publish>/',
-        views.Publish.as_view(),
-        name="publish"
-    ),
-    path(
         'form/<slug:model_name>/unpublished/',
         never_cache(views.UnPublishedList.as_view()),
         name="unpublished_list"
