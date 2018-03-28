@@ -385,6 +385,9 @@ hr {
     .preview-mode .ncdr-search button:hover {
       background-color: #202b3a; }
 
+.hidden {
+  display: none; }
+
 [v-cloak] {
   display: none; }
 

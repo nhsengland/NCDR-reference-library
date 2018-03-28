@@ -1,19 +1,15 @@
-{% extends "base_templates/form_base.html" %}
+{% extends "forms/create/generic_create.html" %}
 {% load bootstrap %}
-{% block form_title %}
-  <h3>Add {{ view.model.get_model_display_name_plural }}</h3>
-{% endblock %}
-{% block form_description %}
-  {% if view.model.get_form_description_template %}
-    <div class="row nhs-england-well">
-      {% include view.model.get_form_description_template %}
-    </div>
-  {% endif %}
-{% endblock %}
 
 {% block form_contents %}
 <div class="row content-offset">
   <div class="col-md-12">
+    {{ view.create_form_class.table|bootstrap }}
+  </div>
+</div>
+<div class="row ">
+  <div id="form-container" class="col-md-12 hidden">
+    <hr />
     <form action="" method="post">
       {% csrf_token %}
       {{ formset.management_form }}
@@ -23,7 +19,7 @@
             <hr />
           {% endif %}
           <div class="model-form">
-            {% include view.model.get_form_template %}
+            {% include "forms/create/column_form.html" %}
           </div>
         {% endfor %}
       </div>
@@ -44,11 +40,30 @@
     <script type="text/html" id="record-template">
       <div class="model-form" id="item-__prefix__">
         <hr />
-        {% include view.model.get_form_template with form=formset.empty_form %}
+        {% include "forms/create/column_form.html" with form=formset.empty_form %}
       </div>
     </script>
     <script>
+      var addAnother = function(){
+        var count = $('#items-form-container').children(".model-form").length;
+        var tmplMarkup = $('#record-template').html();
+        var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
+        $('div#items-form-container').append(compiledTmpl);
 
+        // update form count
+        $('#id_form-TOTAL_FORMS').attr('value', count+1);
+
+        // if the table has been set, set it in all added forms
+        $('input[id*="-table"]').val($('select#id_table').val());
+      }
+
+      $("#add-another").click(function(e){
+        e.preventDefault();
+        addAnother();
+      });
+  </script>
+</div>
+<script>
     function modelMatcher (params, data) {
       data.parentText = data.parentText || "";
 
@@ -100,26 +115,34 @@
       return null;
     }
 
-    $('select[id*="-table"]').each(function(i, v){
+    // initialise the select 2 form's value
+    if($('input#id_form-0-name').val().length){
+      $('select#id_table').val(parseInt($('input#id_form-0-table').val()));
+      $("#form-container").removeClass("hidden");
+    }
+
+    $('select#id_table').each(function(i, v){
       $(v).select2({
-        matcher: modelMatcher
+        matcher: modelMatcher,
+        theme: "bootstrap",
+        templateSelection: function(item) {
+            var $option = $(item.element);
+            var $optGroup = $option.parent();
+            if($optGroup.attr('label')){
+              return $optGroup.attr('label') + ' (' + item.text + ')';
+            }
+            else{
+              return item.text;
+            }
+        }
+      });
+      $(v).change(function(e){
+        $("#form-container").removeClass("hidden");
+        $('input[id*="-table"]').val($(v).val());
       });
     });
 
-    var addAnother = function(){
-      var count = $('#items-form-container').children(".model-form").length;
-      var tmplMarkup = $('#record-template').html();
-      var compiledTmpl = tmplMarkup.replace(/__prefix__/g, count);
-      $('div#items-form-container').append(compiledTmpl);
 
-      // update form count
-      $('#id_form-TOTAL_FORMS').attr('value', count+1);
-    }
 
-    $("#add-another").click(function(e){
-      e.preventDefault();
-      addAnother();
-    });
-  </script>
-</div>
+</script>
 {% endblock %}

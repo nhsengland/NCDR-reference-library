@@ -56,10 +56,23 @@ class GroupedModelChoiceField(forms.ModelChoiceField):
     choices = property(_get_choices, forms.ChoiceField._set_choices)
 
 
-# Example subclass
-class ExampleChoiceField(GroupedModelChoiceField):
+class ColumnSelectField(GroupedModelChoiceField):
     def optgroup_from_instance(self, obj):
         return obj.database.name
+
+
+class CreateColumnForm(forms.ModelForm):
+    class Meta:
+        model = models.Column
+        exclude = ['slug']
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['table'].label = "Which Table Would You Like to Add Columns To"
+
+    table = ColumnSelectField(
+        queryset=models.Table.objects.all()
+    )
 
 
 class ColumnForm(forms.ModelForm):
@@ -67,7 +80,7 @@ class ColumnForm(forms.ModelForm):
         model = models.Column
         exclude = ['slug']
 
-    table = ExampleChoiceField(
+    table = ColumnSelectField(
         queryset=models.Table.objects.all()
     )
 

@@ -10,8 +10,7 @@
       <div class="row nhs-england-well">
         <div class="col-md-12">
           {{ models.csv_schema.grouping.get_model_display_name_plural }} are collections
-          of Data Elements. For example the grouping 'Demographics' contains all
-          data elements related to demographics such as date of birth.
+          of Data Elements that contain information about a similar theme.
         </div>
       </div>
       {% for grouping in object_list|chunks:3 %}

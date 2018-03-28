@@ -1,6 +1,6 @@
 {% load bootstrap %}
 {% for error in form.non_field_errors %}
-  <div class="alert alert-danger content-offset-below-20">
+  <div class="content-offset-below-20">
     {{ error }}
   </div>
 {% endfor %}
@@ -33,9 +33,9 @@
 </div>
 <div class="row">
   <div class="col-md-6">
-    {{ form.table|bootstrap }}
+    {{ form.data_element|bootstrap }}
   </div>
   <div class="col-md-6">
-    {{ form.data_element|bootstrap }}
+    {{ form.table.as_hidden }}
   </div>
 </div>

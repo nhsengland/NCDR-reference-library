@@ -44,6 +44,14 @@ class NCDRView(object):
         return getattr(forms, "{}Form".format(self.model.__name__))
 
     @property
+    def create_form_class(self):
+        return getattr(
+            forms,
+            "Create{}Form".format(self.model.__name__),
+            self.form_class
+        )
+
+    @property
     def model(self):
         model = apps.get_model("csv_schema", self.kwargs["model_name"])
         if model not in self.pertinant:
@@ -130,7 +138,8 @@ class NCDRFormRedirect(RedirectView):
 
 
 class NCDRAddManyView(NCDRFormView, CreateView):
-    template_name = "forms/create.html"
+    def get_template_names(self):
+        return [self.model.get_create_template()]
 
     def get_form(self, *args, **kwargs):
         formset_cls = formset_factory(self.form_class)

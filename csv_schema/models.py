@@ -146,6 +146,10 @@ class NcdrModel(models.Model):
         )
 
     @classmethod
+    def get_create_template(cls):
+        return "forms/create/generic_create.html"
+
+    @classmethod
     def get_search_detail_template(cls):
         return "search/{}.html".format(cls.get_model_api_name())
 
@@ -499,6 +503,10 @@ class Column(NcdrModel, models.Model):
         if self.data_element:
             count += self.data_element.column_set.count()
         return count
+
+    @classmethod
+    def get_create_template(cls):
+        return "forms/create/column_create.html"
 
     @cached_property
     def related(self):
