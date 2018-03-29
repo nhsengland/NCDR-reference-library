@@ -238,10 +238,10 @@ class Database(NcdrModel):
     def get_display_name(self):
         return self.display_name
 
-    def save(self):
+    def save(self, *args, **kwargs):
         if not self.display_name:
             self.display_name = self.name.replace("_", "").title()
-        super().save()
+        return super().save(*args, **kwargs)
 
 
 class TableQueryset(NCDRQueryset):
