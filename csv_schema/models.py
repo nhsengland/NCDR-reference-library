@@ -202,7 +202,7 @@ class DatabaseQueryset(NCDRQueryset):
         """
         return self.filter(
             table__in=Table.objects.viewable(user)
-        ).distinct()
+        ).distinct().order_by(Lower('display_name'))
 
 
 class Database(NcdrModel):
@@ -236,10 +236,12 @@ class Database(NcdrModel):
         )
 
     def get_display_name(self):
-        if self.display_name:
-            return self.display_name
-        else:
-            return self.name.replace("_", "").title()
+        return self.display_name
+
+    def save(self):
+        if not self.display_name:
+            self.display_name = self.name.replace("_", "").title()
+        super().save()
 
 
 class TableQueryset(NCDRQueryset):
@@ -250,7 +252,7 @@ class TableQueryset(NCDRQueryset):
         populated_columns = Column.objects.viewable(user)
         populated_tables = populated_columns.values_list(
             "table_id", flat=True
-        ).distinct()
+        ).distinct().order_by(Lower(''))
         return self.filter(
             id__in=populated_tables
         )
@@ -301,7 +303,7 @@ class GroupingQueryset(NCDRQueryset):
             dataelement__in=DataElement.objects.viewable(
                 user
             )
-        ).distinct()
+        ).distinct().order_by(Lower('name'))
 
 
 class Grouping(NcdrModel, models.Model):
@@ -317,6 +319,9 @@ class Grouping(NcdrModel, models.Model):
     description = models.CharField(
         max_length=255, null=True, blank=True
     )
+
+    class Meta:
+        ordering = ['name']
 
     def __str__(self):
         return self.name

@@ -50,7 +50,6 @@ class GroupedModelChoiceField(forms.ModelChoiceField):
             current_optgroup_choices.append(self.__choice_from_instance__(item))
 
         all_choices.append((current_optgroup, current_optgroup_choices))
-
         return all_choices
 
     choices = property(_get_choices, forms.ChoiceField._set_choices)
@@ -71,7 +70,7 @@ class CreateColumnForm(forms.ModelForm):
         self.fields['table'].label = "Which Table Would You Like to Add Columns To"
 
     table = ColumnSelectField(
-        queryset=models.Table.objects.all()
+        queryset=models.Table.objects.all().order_by("database__name")
     )
 
 

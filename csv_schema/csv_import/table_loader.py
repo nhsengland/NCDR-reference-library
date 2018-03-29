@@ -70,8 +70,9 @@ def process_row(csv_row):
                 csv_row[DATABASE], None
             )
             obj.display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(
-                csv_row[DATABASE], None
+                csv_row[DATABASE]
             )
+
             obj.save()
     else:
         obj = models.Table.objects.filter(
