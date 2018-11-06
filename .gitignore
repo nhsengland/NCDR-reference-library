@@ -17,3 +17,4 @@ static/*
 etc/*
 deployment/ansible.cfg
 .sass-cache/*
+deployment/group_vars/*
