@@ -1,9 +1,5 @@
 from django import forms
 from csv_schema import models
-from django.utils.html import (
-    mark_safe, format_html, escape
-)
-from django.forms.utils import flatatt
 
 
 class TableForm(forms.ModelForm):
@@ -67,11 +63,11 @@ class CreateColumnForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['table'].label = "Which Table Would You Like to Add Columns To"
 
-    table = ColumnSelectField(
-        queryset=models.Table.objects.all().order_by("database__name")
-    )
+        self.fields['table'] = ColumnSelectField(
+            queryset=models.Table.objects.order_by("database__name")
+        )
+        self.fields['table'].label = "Which Table Would You Like to Add Columns To"
 
 
 class ColumnForm(forms.ModelForm):
@@ -79,9 +75,11 @@ class ColumnForm(forms.ModelForm):
         model = models.Column
         exclude = ['slug']
 
-    table = ColumnSelectField(
-        queryset=models.Table.objects.all()
-    )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['table'] = ColumnSelectField(
+            queryset=models.Table.objects.all()
+        )
 
 
 class DataElementForm(forms.ModelForm):
