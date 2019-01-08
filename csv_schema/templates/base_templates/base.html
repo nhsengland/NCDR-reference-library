@@ -152,6 +152,15 @@
               <div class="row">
                 <div class="col-md-9">
                   <ul class="nav">
+                    {% if request.user.is_authenticated %}
+                      <li>
+                        <a href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
+                    	</li>
+                    {% else %}
+                      <li>
+                    	  <a href="{{ models.csv_schema.column.get_edit_list_url }}">Log In</a>
+                    	</li>
+                    {% endif %}
                   	<li>
                   	  <a target="_blank" href="http://www.england.nhs.uk/terms-and-conditions/">Terms &amp; Conditions</a>
                   	</li>
@@ -167,15 +176,6 @@
                   	<li>
                   	  <a target="_blank" href="http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/">Open Government Licence v0.3.0</a>
                   	</li>
-                    {% if request.user.is_authenticated %}
-                      <li>
-                        <a href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
-                    	</li>
-                    {% else %}
-                      <li>
-                    	  <a href="{{ models.csv_schema.column.get_edit_list_url }}">Log In</a>
-                    	</li>
-                    {% endif %}
                   </ul>
                   <div class="pull-right social-networks">
                         <a target="_blank" href="http://www.twitter.com/NHSEngland" title="Follow us on Twitter" target="_blank" class="external-link">
