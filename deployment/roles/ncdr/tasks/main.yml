@@ -93,7 +93,7 @@
     enabled: yes
 
 - name: Kill gunicorn
-  sudo: yes
+  become: yes
   command: "pkill gunicorn"
   ignore_errors: True
 

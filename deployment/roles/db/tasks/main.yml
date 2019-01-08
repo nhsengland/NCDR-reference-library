@@ -28,7 +28,7 @@
     mode: 0600
 
 - name: Restart postgres
-  sudo: yes
+  become: yes
   command: "service postgresql restart"
 
 - name: add ncdr database user

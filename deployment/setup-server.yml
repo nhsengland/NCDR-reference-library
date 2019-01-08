@@ -1,6 +1,6 @@
 ---
 - name: Things you want on servers generally
-  sudo: yes
+  become: yes
   user: ubuntu
   hosts: webserver
   gather_facts: no
@@ -14,7 +14,7 @@
     - django
 
 - name: Make the server capable of running a standard Django deployment
-  sudo: yes
+  become: yes
   user: ubuntu
   hosts: webserver
   roles:
