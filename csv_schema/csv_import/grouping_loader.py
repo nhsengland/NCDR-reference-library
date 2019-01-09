@@ -1,5 +1,7 @@
 import csv
+
 from django.db import transaction
+
 from csv_schema import models
 
 EXPECTED_COLUMN_NAMES = [

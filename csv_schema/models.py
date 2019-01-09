@@ -1,18 +1,19 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import functools
-import operator
 import itertools
 import json
-from django.contrib.auth.signals import user_logged_out
-from django.urls import reverse
-from django.utils.text import slugify
-from django.utils.functional import cached_property
-from django.db.models.functions import Lower
-from django.conf import settings
-from django.db import models
-from django.contrib.auth.models import User
+import operator
 
+from django.conf import settings
+from django.contrib.auth.models import User
+from django.contrib.auth.signals import user_logged_out
+from django.db import models
+from django.db.models.functions import Lower
+from django.urls import reverse
+from django.utils.functional import cached_property
+from django.utils.text import slugify
 from django_auto_one_to_one import AutoOneToOneModel
 
 if getattr(settings, "SITE_PREFIX", ""):
@@ -59,6 +60,7 @@ def turn_preview_mode_off(sender, user, request, **kwargs):
     profile = user.userprofile
     profile.preview_mode = False
     profile.save()
+
 
 user_logged_out.connect(turn_preview_mode_off)
 

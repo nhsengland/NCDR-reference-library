@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.db import transaction
-import csv
-from csv_schema import models
 
+import csv
+
+from django.db import transaction
+
+from csv_schema import models
 
 # CSV Columns we use
 DATABASE = "Database"

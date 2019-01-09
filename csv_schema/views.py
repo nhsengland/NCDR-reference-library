@@ -1,30 +1,29 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
-from django.db import transaction
+
+from django.apps import apps
+from django.conf import settings
 from django.contrib import messages
-from csv_schema import models
-from django.http import HttpResponseRedirect
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.forms import formset_factory
+from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import (
-    ListView,
-    RedirectView,
-    DetailView,
-    TemplateView,
-    UpdateView,
     CreateView,
     DeleteView,
-    View
+    DetailView,
+    ListView,
+    RedirectView,
+    TemplateView,
+    UpdateView,
+    View,
 )
-from django.urls import reverse
-from django.conf import settings
-from django.apps import apps
-from csv_schema import forms
-from csv_schema import models as c_models
 
+from . import forms, models
 
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
@@ -34,11 +33,11 @@ else:
 
 class NCDRView(object):
     pertinant = [
-        c_models.Column,
-        c_models.Table,
-        c_models.Database,
-        c_models.DataElement,
-        c_models.Grouping,
+        models.Column,
+        models.Table,
+        models.Database,
+        models.DataElement,
+        models.Grouping,
     ]
 
     @property
@@ -232,7 +231,7 @@ class NCDREditListView(NCDRFormView, ListView):
 class IndexView(RedirectView):
 
     def get_redirect_url(self, *args, **kwargs):
-        return c_models.Database.get_list_url()
+        return models.Database.get_list_url()
 
 
 class ColumnDetail(NCDRDisplay, DetailView):

@@ -1,7 +1,7 @@
-from rest_framework import mixins, viewsets
-from csv_schema import models
-from csv_schema import serializers
+from rest_framework import viewsets
 from rest_framework.routers import DefaultRouter
+
+from csv_schema import models, serializers
 
 
 class ColumnViewSet(

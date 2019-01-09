@@ -1,8 +1,13 @@
 language: python
+
 python:
   - "3.6.3"
+
 install:
   - pip install --upgrade pip
-  - pip install -r requirements.txt
+  - make setup
+
 script:
-  - python manage.py test
+  - make lint
+  - make sort
+  - make test

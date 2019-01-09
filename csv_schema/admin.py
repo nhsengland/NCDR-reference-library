@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.db.models import Q
+
 from django.contrib import admin
+from django.db.models import Q
+
 from csv_schema import models
 
 
@@ -15,14 +17,13 @@ class IsTechnicalCheckedFilter(admin.SimpleListFilter):
 
         return (
             ('yes', 'Yes'),
-            ('no',  'No'),
+            ('no', 'No'),
         )
 
     def queryset(self, request, queryset):
         if self.value() == 'yes':
             return queryset.filter(
-                technical_check__isnull=False).exclude(technical_check=''
-            )
+                technical_check__isnull=False).exclude(technical_check='')
 
         if self.value() == 'no':
             return queryset.filter(
@@ -47,6 +48,7 @@ class DatabaseFilter(admin.SimpleListFilter):
         return queryset
 
 
+@admin.register(models.Column)
 class ColumnAdmin(admin.ModelAdmin):
     list_filter = [IsTechnicalCheckedFilter]
     list_display = [
@@ -69,9 +71,9 @@ class ColumnAdmin(admin.ModelAdmin):
     get_database_name.short_description = "Database"
 
 
+@admin.register(models.Table)
 class TableAdmin(admin.ModelAdmin):
     list_filter = [DatabaseFilter]
 
+
 admin.site.register(models.Database)
-admin.site.register(models.Table, TableAdmin)
-admin.site.register(models.Column, ColumnAdmin)

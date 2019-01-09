@@ -1,7 +1,7 @@
-from django.urls import path, include
-from csv_schema import views
-from csv_schema import api
+from django.urls import include, path
 from django.views.decorators.cache import never_cache
+
+from . import api, views
 
 urlpatterns = [
 

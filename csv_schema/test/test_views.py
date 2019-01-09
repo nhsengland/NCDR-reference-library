@@ -1,11 +1,11 @@
 import datetime
-from django.urls import reverse
-from django.test import Client
-from django.test import TestCase
-from django.utils.functional import cached_property
+
 from django.contrib.auth.models import User
-from csv_schema import models
-from csv_schema import views
+from django.test import Client, TestCase
+from django.urls import reverse
+from django.utils.functional import cached_property
+
+from csv_schema import models, views
 
 
 class AbstractViewTestCase(TestCase):
@@ -126,12 +126,8 @@ class PublishAllTestCase(AbstractViewTestCase):
         url = url + "?next=/"
         self.login()
         result = self.client.post(url)
-        self.assertEqual(
-            result.status_code,302
-        )
-        self.assertEqual(
-            result.url, '/'
-        )
+        self.assertEqual(result.status_code, 302)
+        self.assertEqual(result.url, '/')
         self.assertTrue(
             models.Column.objects.get(id=column.id).published
         )

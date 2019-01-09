@@ -2,6 +2,7 @@
 Load a csv of database and table descriptions into the ncdr
 """
 from django.core.management.base import BaseCommand
+
 from csv_schema.csv_import import table_loader
 
 

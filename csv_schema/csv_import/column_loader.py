@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.db import transaction
-import datetime
 import csv
-from csv_schema import models
+import datetime
+
+from django.db import transaction
 from django.utils.text import slugify
+
+from csv_schema import models
 
 TABLE_NAME = "Table"
 DATABASE = "Database"
