@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'bootstrapform',
     'rest_framework',
     'ncdr',
+    'metrics',
 ]
 
 MIDDLEWARE = [
