@@ -33,5 +33,7 @@ urlpatterns = [
     path('search/', SearchRedirect.as_view(), name="search_redirect"),
     path('search/<slug:model_name>/', Search.as_view(), name="search"),
 
+    path('', include('metrics.urls')),
+
     path('accounts/', include('django.contrib.auth.urls')),
 ]
