@@ -90,7 +90,7 @@
             </div>
           </div>
           <div class="col-md-5 col-md-push-1 text-right">
-            <form class="ncdr-search" method="get" action="/search">
+            <form class="ncdr-search" method="get" action="{% url 'search_redirect' %}">
               <input type="text" value="{{ request.GET.q }}" name="q" autocomplete="off">
               <button type="submit" class="btn">
                 Search Reference Library
