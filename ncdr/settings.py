@@ -25,10 +25,6 @@ SECRET_KEY = 'TOBEOVERRIDDEN'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# e.g.
-# SITE_PREFIX = "/hello"
-# ie without trailing /
-SITE_PREFIX = ""
 
 # Application definition
 

@@ -5,7 +5,7 @@
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">{{ object.table.database.get_display_name }}</a><a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}"> {{ object.table.name }}</a>{{ object.name }}
+          <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">{{ object.table.database.get_display_name }}</a><a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}"> {{ object.table.name }}</a>{{ object.name }}
         </div>
       </div>
 

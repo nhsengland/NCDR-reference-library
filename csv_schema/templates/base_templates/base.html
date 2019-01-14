@@ -33,12 +33,12 @@
     <!-- Latest compiled and minified JavaScript -->
     {% block staticfiles %}
       {% block js %}
-        <script src="{{ settings.SITE_PREFIX }}{% static "js/mark.js/dist/mark.js" %}"></script>
+        <script src="{% static "js/mark.js/dist/mark.js" %}"></script>
       {% endblock js %}
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
       {% compress css %}
-      	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/nhsengland.css" %}">
-      	<link rel="stylesheet" href="{{ settings.SITE_PREFIX }}{% static "css/styles.css" %}">
+      	<link rel="stylesheet" href="{% static "css/nhsengland.css" %}">
+      	<link rel="stylesheet" href="{% static "css/styles.css" %}">
       {% endcompress %}
     {% endblock staticfiles %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
@@ -51,10 +51,10 @@
           <div class="col-md-12 text-center">
           {% if request.user.userprofile.preview_mode %}
               You are currently viewing a preview version of the site
-              <a class="btn pull-right relative" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
+              <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
               <a class="btn pull-right relative" href="{{ models.csv_schema.userprofile.get_url_preview_mode_off }}?next={{ request.get_full_path }}">View Normal Site</a>
           {% else %}
-              <a class="btn pull-right relative" href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
+              <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
               <a class="btn pull-right relative" href="{{ models.csv_schema.userprofile.get_url_preview_mode_on }}?next={{ request.get_full_path }}">Preview Site</a>
           {% endif %}
           {% if view.model %}
@@ -83,14 +83,14 @@
             <div class="top-logo">
               <hgroup class="header-strapline">
                 <a class="logo" href="http://www.england.nhs.uk">
-                  <img src="{{ settings.SITE_PREFIX }}{% static "/img/logos/nhs-england-logo-rev.svg" %}" alt="NHS England Data Catalogue Logo" title="NHS England Data Catalogue Logo" data-intro="Clicking on this logo will always take you back to the homepage (just in case you get lost).">
+                  <img src="{% static "/img/logos/nhs-england-logo-rev.svg" %}" alt="NHS England Data Catalogue Logo" title="NHS England Data Catalogue Logo" data-intro="Clicking on this logo will always take you back to the homepage (just in case you get lost).">
                 </a>
                 <h2 class="subtitle">NCDR Reference Library</h2>
         	    </hgroup>
             </div>
           </div>
           <div class="col-md-5 col-md-push-1 text-right">
-            <form class="ncdr-search" method="get" action="{{ settings.SITE_PREFIX }}/search">
+            <form class="ncdr-search" method="get" action="/search">
               <input type="text" value="{{ request.GET.q }}" name="q" autocomplete="off">
               <button type="submit" class="btn">
                 Search Reference Library
@@ -119,18 +119,18 @@
                   </a>
                 </li>
                 <li>
-                  <a {% if request|url_name == 'data_element_detail' or request|url_name == 'data_element_list' %} class="active" {% endif %} href="{{ settings.SITE_PREFIX }}{{ data_element_list }}">
+                  <a {% if request|url_name == 'data_element_detail' or request|url_name == 'data_element_list' %} class="active" {% endif %} href="{{ data_element_list }}">
                     {{ models.csv_schema.dataelement.get_model_display_name_plural }}
                   </a>
                 </li>
 
                 <li>
-                  <a {% if request|url_name == 'grouping_detail' %}class="active" {% endif %} href="{{ settings.SITE_PREFIX }}{{ grouping_redirect }}">
+                  <a {% if request|url_name == 'grouping_detail' %}class="active" {% endif %} href="{{ grouping_redirect }}">
                     {{ models.csv_schema.grouping.get_model_display_name_plural }}
                   </a>
                 </li>
                 <li>
-                  <a {% ifequal request.path about_page %}class="active" {% endifequal %} href="{{ settings.SITE_PREFIX }}{{ about_page }}">
+                  <a {% ifequal request.path about_page %}class="active" {% endifequal %} href="{{ about_page }}">
                     About
                   </a>
                 </li>
@@ -154,7 +154,7 @@
                   <ul class="nav">
                     {% if request.user.is_authenticated %}
                       <li>
-                        <a href="{{ settings.SITE_PREFIX }}{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
+                        <a href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
                     	</li>
                     {% else %}
                       <li>

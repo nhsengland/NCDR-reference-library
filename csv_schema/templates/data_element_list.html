@@ -4,7 +4,7 @@
 {% block contents %}
   <div class="card-list container main-content">
     <article>
-      <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a>{{ models.csv_schema.dataelement.get_model_display_name_plural }}
+      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>{{ models.csv_schema.dataelement.get_model_display_name_plural }}
       <div class="row">
         <div class="col-md-12">
           <h1 class="title">

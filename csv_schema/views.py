@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -11,11 +10,6 @@ from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
 
 from . import models
-
-if getattr(settings, "SITE_PREFIX", ""):
-    SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
-else:
-    SITE_PREFIX = ""
 
 
 class NCDRDisplay(object):

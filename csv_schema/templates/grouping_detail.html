@@ -4,7 +4,7 @@
 {% block contents %}
   <div class="main-content container main-content">
     <article >
-      <a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ settings.SITE_PREFIX }}{% url 'grouping_redirect' %}">Groupings</a>{{ object.name }}
+      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{% url 'grouping_redirect' %}">Groupings</a>{{ object.name }}
       <h1 class="title">
         <div class="row">
           <div class="col-sm-12">

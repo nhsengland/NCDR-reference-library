@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import json
 
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.signals import user_logged_out
 from django.db import models
@@ -14,11 +13,6 @@ from django.utils.text import slugify
 from django_auto_one_to_one import AutoOneToOneModel
 
 from ncdr.models import BaseModel, BaseQuerySet
-
-if getattr(settings, "SITE_PREFIX", ""):
-    SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
-else:
-    SITE_PREFIX = ""
 
 DATE_FORMAT = "%b %y"
 
@@ -36,15 +30,11 @@ class UserProfile(AutoOneToOneModel(User)):
 
     @classmethod
     def get_url_preview_mode_on(cls):
-        return SITE_PREFIX + reverse(
-            "preview_mode", kwargs=dict(preview_mode=1)
-        )
+        return reverse("preview_mode", kwargs=dict(preview_mode=1))
 
     @classmethod
     def get_url_preview_mode_off(cls):
-        return SITE_PREFIX + reverse(
-            "preview_mode", kwargs=dict(preview_mode=0)
-        )
+        return reverse("preview_mode", kwargs=dict(preview_mode=0))
 
 
 def turn_preview_mode_off(sender, user, request, **kwargs):
@@ -85,15 +75,11 @@ class Database(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return SITE_PREFIX + reverse(
-            "database_detail", kwargs=dict(db_name=self.name)
-        )
+        return reverse("database_detail", kwargs=dict(db_name=self.name))
 
     @classmethod
     def get_list_url(self):
-        return SITE_PREFIX + reverse(
-            "database_list"
-        )
+        return reverse("database_list")
 
     def get_display_name(self):
         return self.display_name
@@ -148,10 +134,7 @@ class Table(BaseModel):
     objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
-        return SITE_PREFIX + reverse("table_detail", kwargs=dict(
-            table_name=self.name,
-            db_name=self.database.name
-        ))
+        return reverse("table_detail", kwargs=dict(table_name=self.name, db_name=self.database.name))
 
     def get_display_name(self):
         return "{} / {}".format(self.database.name, self.name)
@@ -187,9 +170,7 @@ class Grouping(BaseModel, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return SITE_PREFIX + reverse("grouping_detail", kwargs=dict(
-            slug=self.slug,
-        ))
+        return reverse("grouping_detail", kwargs=dict(slug=self.slug))
 
     def save(self, *args, **kwargs):
         if self.name and not self.slug:
@@ -225,9 +206,7 @@ class DataElement(BaseModel, models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return SITE_PREFIX + reverse(
-            "data_element_detail", kwargs=dict(slug=self.slug)
-        )
+        return reverse("data_element_detail", kwargs=dict(slug=self.slug))
 
     def get_description(self):
         if self.description:
@@ -339,28 +318,22 @@ class Column(BaseModel, models.Model):
             return stripped.lstrip("www.").split("/")[0]
 
     def get_absolute_url(self):
-        return SITE_PREFIX + reverse("column_detail", kwargs=dict(
-            slug=self.slug,
-        ))
+        return reverse("column_detail", kwargs=dict(slug=self.slug))
 
     @classmethod
     def get_unpublished_list_url(cls):
-        return SITE_PREFIX + reverse("unpublished_list", kwargs=dict(
-            model_name=cls.get_model_api_name()
-        ))
+        return reverse("unpublished_list", kwargs=dict(model_name=cls.get_model_api_name()))
 
     @classmethod
     def get_publish_all_url(cls):
-        return SITE_PREFIX + reverse("publish_all")
+        return reverse("publish_all")
 
     @classmethod
     def get_edit_list_js_template(cls):
         return "forms/column_form_js.html"
 
     def get_publish_url(self):
-        return SITE_PREFIX + reverse("columns-detail", kwargs=dict(
-            pk=self.id
-        ))
+        return reverse("columns-detail", kwargs=dict(pk=self.id))
 
     @cached_property
     def useage_count(self):
