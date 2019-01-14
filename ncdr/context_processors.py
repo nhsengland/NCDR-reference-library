@@ -1,5 +1,4 @@
 from django.apps import apps
-from django.conf import settings as s
 from django.utils.functional import SimpleLazyObject
 
 
@@ -20,10 +19,3 @@ def models(request):
         "models": SimpleLazyObject(ModelContextProcessor),
         "model_objects": SimpleLazyObject(ModelObjectsContextProcessor)
     }
-
-
-def settings(request):
-    """
-    Put all settings in locals() for our templte context.
-    """
-    return {"settings": s}
