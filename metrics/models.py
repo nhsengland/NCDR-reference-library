@@ -1,4 +1,7 @@
 from django.db import models
+from django.urls import reverse
+
+from ncdr.models import BaseModel, BaseQuerySet
 
 
 class Lead(models.Model):
@@ -8,7 +11,14 @@ class Lead(models.Model):
         return self.name
 
 
-class Metric(models.Model):
+class MetricQueryset(BaseQuerySet):
+    def viewable(self, user):
+        return self.all()
+
+
+class Metric(BaseModel):
+    SEARCH_FIELDS = ["indicator"]
+
     denominator = models.ForeignKey(
         "Operand", on_delete=models.CASCADE, related_name="denominator_metrics"
     )
@@ -31,8 +41,13 @@ class Metric(models.Model):
 
     comments = models.TextField()
 
+    objects = MetricQueryset.as_manager()
+
     def __str__(self):
         return self.indicator
+
+    def get_absolute_url(self):
+        return reverse("metrics-detail", kwargs={"pk": self.pk})
 
 
 class Operand(models.Model):
