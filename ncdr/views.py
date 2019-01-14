@@ -203,12 +203,7 @@ class SearchRedirect(RedirectView):
         if q:
             for p in searchable_models:
                 if p.objects.search(q, self.request.user).exists():
-                    url = reverse(
-                        "search",
-                        kwargs=dict(
-                            model_name=p.get_model_api_name()
-                        )
-                    )
+                    url = reverse("search", kwargs={"model_name": p.get_model_api_name()})
                     break
 
         return "{}?{}&search_option={}".format(

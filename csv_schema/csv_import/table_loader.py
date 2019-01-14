@@ -33,28 +33,28 @@ EXPECTED_COLUMN_NAMES = set([
     LINK
 ])
 
-DATABASE_NAME_TO_DISPLAY_NAME = dict(
-    NHSE_111="NHS 111 Data Set",
-    NHSE_IAPT="Improving Access to Psychological Therapies (IAPT) Data Set",
-    NHSE_IAPT_Pilot="Improving Access to Psychological Therapies (IAPT) Data Set - pilot",
-    NHSE_IAPT_AnnualRefresh="Improving Access to Psychological Therapies (IAPT) Data Set - annual refresh",
-    NHSE_Mental_Health="Mental Health Data",
-    NHSE_SUSPlus_Live="Secondary Uses Service + (SUS+)",
-    NHSE_Reference="NHS England Reference Data"
-)
+DATABASE_NAME_TO_DISPLAY_NAME = {
+    "NHSE_111": "NHS 111 Data Set",
+    "NHSE_IAPT": "Improving Access to Psychological Therapies (IAPT) Data Set",
+    "NHSE_IAPT_Pilot": "Improving Access to Psychological Therapies (IAPT) Data Set - pilot",
+    "NHSE_IAPT_AnnualRefresh": "Improving Access to Psychological Therapies (IAPT) Data Set - annual refresh",
+    "NHSE_Mental_Health": "Mental Health Data",
+    "NHSE_SUSPlus_Live": "Secondary Uses Service + (SUS+)",
+    "NHSE_Reference": "NHS England Reference Data",
+}
 
 NHS_DIGITAL = "NHS Digital"
 VARIOUS = "Various"
 
-DATABASE_NAME_TO_OWNER = dict(
-    NHSE_111=NHS_DIGITAL,
-    NHSE_IAPT=NHS_DIGITAL,
-    NHSE_IAPT_PILOT=NHS_DIGITAL,
-    NHSE_IAPT_AnnualRefresh=NHS_DIGITAL,
-    NHSE_Mental_Health=NHS_DIGITAL,
-    NHSE_SUSPlus_Live=NHS_DIGITAL,
-    NHSE_Reference=VARIOUS
-)
+DATABASE_NAME_TO_OWNER = {
+    "NHSE_111": NHS_DIGITAL,
+    "NHSE_IAPT": NHS_DIGITAL,
+    "NHSE_IAPT_PILOT": NHS_DIGITAL,
+    "NHSE_IAPT_AnnualRefresh": NHS_DIGITAL,
+    "NHSE_Mental_Health": NHS_DIGITAL,
+    "NHSE_SUSPlus_Live": NHS_DIGITAL,
+    "NHSE_Reference": VARIOUS
+}
 
 
 NA = "N/A"

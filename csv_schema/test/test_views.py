@@ -48,23 +48,23 @@ class AbstractViewTestCase(TestCase):
         if not column_args:
             column_args = {}
 
-        default_args = dict(
-            name="some_item",
-            description="some description",
-            technical_check="some technical check",
-            is_derived_item=True,
-            definition_id=1,
-            author="Wilma Flintstone",
-            created_date_ext=datetime.date(2017, 1, 1),
-            table=table
-        )
+        default_args = {
+            "name": "some_item",
+            "description": "some description",
+            "technical_check": "some technical check",
+            "is_derived_item": True,
+            "definition_id": 1,
+            "author": "Wilma Flintstone",
+            "created_date_ext": datetime.date(2017, 1, 1),
+            "table": table,
+        }
 
         default_args.update(column_args)
         column = models.Column.objects.create(**default_args)
         return column
 
     def create_csv_columns(self, number, database=None, table=None):
-        default_kwargs = dict(column_args={})
+        default_kwargs = {"column_args": {}}
 
         if database:
             default_kwargs["database"] = database
@@ -79,7 +79,7 @@ class AbstractViewTestCase(TestCase):
 
 class PreviewModeSwitchTestCase(AbstractViewTestCase):
     def test_user_authenticated_on(self):
-        url = reverse("preview_mode", kwargs=dict(preview_mode=1))
+        url = reverse("preview_mode", kwargs={"preview_mode": 1})
         url = url + "?next=/"
         self.login()
 
@@ -95,7 +95,7 @@ class PreviewModeSwitchTestCase(AbstractViewTestCase):
         )
 
     def test_user_authenticated_off(self):
-        url = reverse("preview_mode", kwargs=dict(preview_mode=0))
+        url = reverse("preview_mode", kwargs={"preview_mode": 0})
         url = url + "?next=/"
         self.login()
         self.assertFalse(self.user.userprofile.preview_mode)
@@ -111,7 +111,7 @@ class PreviewModeSwitchTestCase(AbstractViewTestCase):
         )
 
     def test_user_not_authenticated(self):
-        url = reverse("preview_mode", kwargs=dict(preview_mode=1))
+        url = reverse("preview_mode", kwargs={"preview_mode": 1})
         result = self.client.get(url)
         self.assertEqual(
             result.url, '/accounts/login/?next=/form/preview_mode/1'
@@ -143,7 +143,7 @@ class PublishAllTestCase(AbstractViewTestCase):
 
 
 class UnpublishListTestCase(AbstractViewTestCase):
-    url = reverse('unpublished_list', kwargs=dict(model_name='column'))
+    url = reverse('unpublished_list', kwargs={"model_name": 'column'})
 
     def test_get(self):
         self.login()
@@ -195,7 +195,7 @@ class AbstractForm(object):
 
 class NCDRAddManyViewTestCase(AbstractForm, AbstractViewTestCase):
     def get_url(self, model_name):
-        return reverse("add_many", kwargs=dict(model_name=model_name))
+        return reverse("add_many", kwargs={"model_name": model_name})
 
 
 class NCDREditViewTestCase(AbstractForm, AbstractViewTestCase):
@@ -212,9 +212,7 @@ class NCDREditViewTestCase(AbstractForm, AbstractViewTestCase):
         )
 
     def get_url(self, model_name):
-        return reverse("edit", kwargs=dict(
-            model_name=model_name, pk=1
-        ))
+        return reverse("edit", kwargs={"model_name": model_name, "pk": 1})
 
 
 class NCDREditListViewPopulatedTestCase(AbstractForm, AbstractViewTestCase):
@@ -231,16 +229,12 @@ class NCDREditListViewPopulatedTestCase(AbstractForm, AbstractViewTestCase):
         )
 
     def get_url(self, model_name):
-        return reverse("edit_list", kwargs=dict(
-            model_name=model_name
-        ))
+        return reverse("edit_list", kwargs={"model_name": model_name})
 
 
 class NCDREditListEmptyTestCase(AbstractForm, AbstractViewTestCase):
     def get_url(self, model_name):
-        return reverse("edit_list", kwargs=dict(
-            model_name=model_name
-        ))
+        return reverse("edit_list", kwargs={"model_name": model_name})
 
 
 class NCDRSearchRedirect(AbstractViewTestCase):
@@ -283,7 +277,7 @@ class NCDRSearchRedirect(AbstractViewTestCase):
 
 class NCDRSearch(AbstractViewTestCase):
     def get_url(self, model_name, query):
-        url = reverse("search", kwargs=dict(model_name=model_name))
+        url = reverse("search", kwargs={"model_name": model_name})
         return "{}?q={}".format(url, query)
 
     def get_test(self, query):
@@ -332,30 +326,16 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.published = True
         column.save()
         table = models.Table.objects.get()
-        url = reverse(
-            "table_detail", kwargs=dict(
-                db_name=table.database.name,
-                table_name=table.name
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("table_detail", kwargs={"db_name": table.database.name, "table_name": table.name})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_get_unpulished_not_in_preview_mode(self):
         column = self.create_csv_column()
         column.published = False
         column.save()
         table = models.Table.objects.get()
-        url = reverse(
-            "table_detail", kwargs=dict(
-                db_name=table.database.name,
-                table_name=table.name
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 404
-        )
+        url = reverse("table_detail", kwargs={"db_name": table.database.name, "table_name": table.name})
+        self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
         userprofile = self.user.userprofile
@@ -366,15 +346,8 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.published = False
         column.save()
         table = models.Table.objects.get()
-        url = reverse(
-            "table_detail", kwargs=dict(
-                db_name=table.database.name,
-                table_name=table.name
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("table_detail", kwargs={"db_name": table.database.name, "table_name": table.name})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
 
 class DatabaseDetailTestCase(AbstractViewTestCase):
@@ -383,28 +356,16 @@ class DatabaseDetailTestCase(AbstractViewTestCase):
         column.published = True
         column.save()
         database = models.Database.objects.get()
-        url = reverse(
-            "database_detail", kwargs=dict(
-                db_name=database.name,
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("database_detail", kwargs={"db_name": database.name})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_get_unpulished_not_in_preview_mode(self):
         column = self.create_csv_column()
         column.published = False
         column.save()
         database = models.Database.objects.get()
-        url = reverse(
-            "database_detail", kwargs=dict(
-                db_name=database.name,
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 404
-        )
+        url = reverse("database_detail", kwargs={"db_name": database.name})
+        self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
         userprofile = self.user.userprofile
@@ -415,14 +376,8 @@ class DatabaseDetailTestCase(AbstractViewTestCase):
         column.published = False
         column.save()
         database = models.Database.objects.get()
-        url = reverse(
-            "database_detail", kwargs=dict(
-                db_name=database.name,
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("database_detail", kwargs={"db_name": database.name})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
 
 class DataElementDetailTestCase(AbstractViewTestCase):
@@ -438,26 +393,14 @@ class DataElementDetailTestCase(AbstractViewTestCase):
     def test_get_published(self):
         self.column.published = True
         self.column.save()
-        url = reverse(
-            "data_element_detail", kwargs=dict(
-                slug=self.data_element.slug,
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("data_element_detail", kwargs={"slug": self.data_element.slug})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_get_unpulished_not_in_preview_mode(self):
         self.column.published = False
         self.column.save()
-        url = reverse(
-            "data_element_detail", kwargs=dict(
-                slug=self.data_element.slug,
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 404
-        )
+        url = reverse("data_element_detail", kwargs={"slug": self.data_element.slug})
+        self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
         userprofile = self.user.userprofile
@@ -466,14 +409,8 @@ class DataElementDetailTestCase(AbstractViewTestCase):
         self.login()
         self.column.published = False
         self.column.save()
-        url = reverse(
-            "data_element_detail", kwargs=dict(
-                slug=self.data_element.slug,
-            )
-        )
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("data_element_detail", kwargs={"slug": self.data_element.slug})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
 
 class DatabaseListTestCase(AbstractViewTestCase):
@@ -497,17 +434,13 @@ class ColumnDetailTestCase(AbstractViewTestCase):
         column = self.create_csv_column()
         column.published = True
         column.save()
-        url = reverse("column_detail", kwargs=dict(slug=column.slug))
-        self.assertEqual(
-            self.client.get(url).status_code, 200
-        )
+        url = reverse("column_detail", kwargs={"slug": column.slug})
+        self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_get_unpublished(self):
         column = self.create_csv_column()
-        url = reverse("column_detail", kwargs=dict(slug=column.slug))
-        self.assertEqual(
-            self.client.get(url).status_code, 404
-        )
+        url = reverse("column_detail", kwargs={"slug": column.slug})
+        self.assertEqual(self.client.get(url).status_code, 404)
 
 
 class DataElementListTestCase(AbstractViewTestCase):
@@ -586,7 +519,7 @@ class GroupingDetailViewTestCase(AbstractViewTestCase):
         self.grouping.dataelement_set.add(self.data_element)
 
     def get_url(self):
-        return reverse('grouping_detail', kwargs=dict(slug=self.grouping.slug))
+        return reverse('grouping_detail', kwargs={"slug": self.grouping.slug})
 
     def test_get_published(self):
         self.column.published = True
