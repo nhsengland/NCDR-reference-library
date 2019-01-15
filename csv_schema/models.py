@@ -119,7 +119,8 @@ class Table(BaseModel):
     objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
-        return reverse("table_detail", kwargs={"table_name": self.name, "db_name": self.database.name})
+        kwargs = {"table_name": self.name, "db_name": self.database.name}
+        return reverse("table_detail", kwargs=kwargs)
 
     def get_display_name(self):
         return "{} / {}".format(self.database.name, self.name)

@@ -1,3 +1,4 @@
 [flake8]
-exclude = .direnv
-ignore = E501,W503
+exclude = .direnv,migrations
+ignore = W503
+max-line-length = 100
