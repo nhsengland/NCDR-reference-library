@@ -17,7 +17,7 @@
     {% endautoescape %}
 
     var state = {
-      unpublished:{{ model_objects.csv_schema.column.unpublished.count }}
+      unpublished:{{ unpublished_columns }}
     }
 
     // using jQuery

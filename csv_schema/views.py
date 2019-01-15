@@ -134,10 +134,9 @@ class PreviewModeSwitch(LoginRequiredMixin, RedirectView):
         return self.request.GET["next"]
 
     def get(self, request, *args, **kwargs):
-        user_profile = self.request.user.userprofile
-        user_profile.preview_mode = bool(self.kwargs["preview_mode"])
-        user_profile.save()
-        return super(PreviewModeSwitch, self).get(request, *args, **kwargs)
+        self.request.user.preview_mode = bool(self.kwargs["preview_mode"])
+        self.request.user.save()
+        return super().get(request, *args, **kwargs)
 
 
 class AboutView(TemplateView):

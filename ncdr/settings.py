@@ -85,6 +85,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'ncdr.context_processors.models',
+                'csv_schema.context_processors.unpublished_columns'
             ],
         },
     },
@@ -135,6 +136,10 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+# Custom User Model
+# https://docs.djangoproject.com/en/2.1/topics/auth/customizing/#substituting-a-custom-user-model
+AUTH_USER_MODEL = "ncdr.User"
 
 DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
 
