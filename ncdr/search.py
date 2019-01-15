@@ -1,0 +1,7 @@
+BEST_MATCH = "Best Match"
+MOST_RECENT = "Most Recent"
+
+SEARCH_OPTIONS = [
+    BEST_MATCH,
+    MOST_RECENT
+]

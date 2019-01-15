@@ -1,67 +1,21 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.apps import apps
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db import transaction
-from django.forms import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404
-from django.urls import reverse
 from django.utils.decorators import method_decorator
-from django.views.generic import (
-    CreateView,
-    DeleteView,
-    DetailView,
-    ListView,
-    RedirectView,
-    TemplateView,
-    UpdateView,
-    View,
-)
+from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
 
-from . import forms, models
+from . import models
 
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
     SITE_PREFIX = ""
-
-
-class NCDRView(object):
-    pertinant = [
-        models.Column,
-        models.Table,
-        models.Database,
-        models.DataElement,
-        models.Grouping,
-    ]
-
-    @property
-    def form_class(self):
-        return getattr(forms, "{}Form".format(self.model.__name__))
-
-    @property
-    def create_form_class(self):
-        return getattr(
-            forms,
-            "Create{}Form".format(self.model.__name__),
-            self.form_class
-        )
-
-    @property
-    def model(self):
-        model = apps.get_model("csv_schema", self.kwargs["model_name"])
-        if model not in self.pertinant:
-            raise ValueError(
-                'We only allow editing of a subset of models {}'.format(
-                    self.pertinant
-                )
-            )
-        return model
 
 
 class NCDRDisplay(object):
@@ -73,159 +27,10 @@ class NCDRDisplay(object):
         return qs.viewable(self.request.user)
 
 
-class NCDRFormView(LoginRequiredMixin, NCDRView):
-    pass
-
-
-class NCDRSearchRedirect(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        q = self.request.GET.get("q")
-        url = None
-
-        if q:
-            for p in NCDRView.pertinant:
-                if p.objects.search(q, self.request.user).exists():
-                    url = reverse(
-                        "search",
-                        kwargs=dict(
-                            model_name=p.get_model_api_name()
-                        )
-                    )
-                    break
-
-        if not url:
-            url = reverse(
-                "search",
-                kwargs=dict(
-                    model_name=NCDRView.pertinant[0].get_model_api_name()
-                )
-            )
-
-        return "{}?{}&search_option={}".format(
-            url, self.request.GET.urlencode(), models.SEARCH_OPTIONS[0]
-        )
-
-
-class NCDRSearch(NCDRView, ListView):
-    template_name = "search.html"
-    paginate_by = 30
-
-    def get_queryset(self, *args, **kwargs):
-        return self.model.objects.search(
-            self.request.GET["q"],
-            self.request.user,
-            self.request.GET.get("search_option", models.SEARCH_OPTIONS[0])
-        )
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super().get_context_data(*args, **kwargs)
-        query = self.request.GET.get("q")
-        user = self.request.user
-        ctx["results"] = [
-            (i, i.objects.search_count(query, user),) for i in self.pertinant
-        ]
-        ctx["search_options"] = models.SEARCH_OPTIONS
-        ctx["search_count"] = self.model.objects.search_count(
-            query, user
-        )
-
-        return ctx
-
-
 class NCDRFormRedirect(LoginRequiredMixin, RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         # todo, handle what happens if there is no search parameter
-        return NCDRView.pertinant[0].get_edit_list_url()
-
-
-class NCDRAddManyView(NCDRFormView, CreateView):
-    def get_template_names(self):
-        return [self.model.get_create_template()]
-
-    def get_form(self, *args, **kwargs):
-        formset_cls = formset_factory(self.form_class)
-        if self.request.POST:
-            return formset_cls(self.request.POST)
-        else:
-            return formset_cls()
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super(NCDRAddManyView, self).get_context_data(*args, **kwargs)
-        if "formset" in kwargs:
-            ctx["formset"] = kwargs["formset"]
-        else:
-            ctx["formset"] = self.get_form()
-        return ctx
-
-    @transaction.atomic
-    def form_valid(self, form):
-        formset = form
-        if formset.is_valid():
-            for form in formset:
-                if form.is_valid():
-                    form.save()
-            count = len(formset)
-
-            if count == 1:
-                display_name = self.model.get_model_display_name()
-            else:
-                display_name = self.model.get_model_display_name_plural()
-            messages.success(
-                self.request, '{} {} created.'.format(
-                    count,
-                    display_name
-                )
-            )
-        return HttpResponseRedirect(self.get_success_url())
-
-    def form_invalid(self, form):
-        return self.render_to_response(self.get_context_data(formset=form))
-
-    def get_success_url(self, *args, **kwargs):
-        return self.model.get_edit_list_url()
-
-
-class NCDREditView(NCDRFormView, UpdateView):
-    template_name = "forms/update.html"
-
-    def form_valid(self, form):
-        result = super(NCDREditView, self).form_valid(form)
-        messages.success(
-            self.request, '{} updated'.format(
-                self.object.get_display_name()
-            )
-        )
-        return result
-
-    def get_success_url(self, *args, **kwargs):
-        if "next" in self.request.GET:
-            return self.request.GET["next"]
-        else:
-            return self.model.get_edit_list_url()
-
-
-class NCDRDeleteView(NCDRFormView, DeleteView):
-    template_name = "forms/delete.html"
-
-    def delete(self, *args, **kwargs):
-        messages.success(
-            self.request, '{} deleted'.format(
-                self.get_object().name
-            )
-        )
-
-        return super().delete(*args, **kwargs)
-
-    def get_success_url(self, *args, **kwargs):
-        return self.model.get_edit_list_url()
-
-
-class NCDREditListView(NCDRFormView, ListView):
-    paginate_by = 100
-    template_name = "forms/edit_list.html"
-
-    def get_queryset(self):
-        return self.model.objects.all()
+        return models.Column.get_edit_list_url()
 
 
 class IndexView(RedirectView):
@@ -339,17 +144,6 @@ class PreviewModeSwitch(LoginRequiredMixin, RedirectView):
         user_profile.preview_mode = bool(self.kwargs["preview_mode"])
         user_profile.save()
         return super(PreviewModeSwitch, self).get(request, *args, **kwargs)
-
-
-class UnPublishedList(NCDRFormView, ListView):
-    template_name = "forms/unpublished_list.html"
-
-    def get_context_data(self, *args, **kwargs):
-        ctx = super().get_context_data()
-        ctx["object_list"] = ctx["object_list"].filter(
-            published=False
-        )
-        return ctx
 
 
 class AboutView(TemplateView):
