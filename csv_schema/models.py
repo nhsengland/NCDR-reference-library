@@ -16,7 +16,7 @@ from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django_auto_one_to_one import AutoOneToOneModel
 
-from ncdr_reference.search import MOST_RECENT
+from ncdr.search import MOST_RECENT
 
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))

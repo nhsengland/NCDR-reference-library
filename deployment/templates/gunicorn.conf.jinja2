@@ -3,7 +3,7 @@
 ; =====================
 
 [program:gunicorn]
-command=/home/ubuntu/.virtualenvs/NCDR-reference/bin/gunicorn ncdr_reference.wsgi -c %(here)s/gunicorn_conf.py
+command=/home/ubuntu/.virtualenvs/NCDR-reference/bin/gunicorn ncdr.wsgi -c %(here)s/gunicorn_conf.py
 directory=%(here)s/../../
 ;user=nobody
 numprocs=1
