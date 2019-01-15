@@ -8,7 +8,7 @@
   <p>
     <a v-cloak href="{{ models.csv_schema.column.get_unpublished_list_url }}">There are currently [[ state.unpublished ]]  unpublished columns</a>
   </p>
-  {% if model_objects.csv_schema.column.unpublished.exists %}
+  {% if unpublished_columns %}
     <p>
       <form method="post" action="{{ models.csv_schema.column.get_publish_all_url }}?next={{ request.get_full_path }}">
         {% csrf_token %}
