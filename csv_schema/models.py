@@ -1,10 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import functools
-import itertools
 import json
-import operator
 
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -16,7 +13,7 @@ from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django_auto_one_to_one import AutoOneToOneModel
 
-from ncdr.search import MOST_RECENT
+from ncdr.models import BaseModel, BaseQuerySet
 
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
@@ -59,140 +56,7 @@ def turn_preview_mode_off(sender, user, request, **kwargs):
 user_logged_out.connect(turn_preview_mode_off)
 
 
-class NCDRQueryset(models.QuerySet):
-    def viewable(self, user):
-        raise NotImplementedError(
-            "we should be implementing a 'viewable' method"
-        )
-
-    def search_most_recent(self, search_param, user):
-        filters = []
-        qs = self.viewable(user)
-        for i in self.model.SEARCH_FIELDS:
-            field = "{}__icontains".format(i)
-            filters.append(models.Q(**{field: search_param}))
-        return qs.filter(functools.reduce(operator.or_, filters)).distinct()
-
-    def search_best_match(self, search_param, user):
-        qs = self.viewable(user)
-        query_results = []
-        for i in self.model.SEARCH_FIELDS:
-            field = "{}__icontains".format(i)
-            query_results.append(qs.filter(**{field: search_param}))
-        all_results = itertools.chain(*query_results)
-        reviewed = set()
-
-        for i in all_results:
-            if i in reviewed:
-                continue
-            else:
-                reviewed.add(i)
-                yield i
-
-    def search_count(self, search_param, user):
-        return self.search_most_recent(search_param, user).count()
-
-    def search(self, search_param, user, option=MOST_RECENT):
-        """ returns all tables that have columns
-            we default to MOST_RECENT as querysets are
-            more efficient for a lot of operations
-        """
-        if not search_param:
-            return self.none()
-
-        if option == MOST_RECENT:
-            return self.search_most_recent(search_param, user)
-        else:
-            return list(self.search_best_match(search_param, user))
-
-
-class NcdrModel(models.Model):
-    @classmethod
-    def get_form_display_template(cls):
-        return "forms/display_templates/{}.html".format(
-            cls.get_model_api_name()
-        )
-
-    @classmethod
-    def get_form_description_template(cls):
-        return "forms/descriptions/{}.html".format(
-            cls.get_model_api_name()
-        )
-
-    @classmethod
-    def get_form_template(cls):
-        return "forms/model_forms/{}.html".format(
-            cls.get_model_api_name()
-        )
-
-    @classmethod
-    def get_model_api_name(cls):
-        return cls.__name__.lower()
-
-    @classmethod
-    def get_add_url(cls):
-        return SITE_PREFIX + reverse(
-            "add_many", kwargs=dict(model_name=cls.__name__.lower())
-        )
-
-    @classmethod
-    def get_search_url(cls):
-        return SITE_PREFIX + reverse(
-            "search", kwargs=dict(model_name=cls.__name__.lower())
-        )
-
-    @classmethod
-    def get_create_template(cls):
-        return "forms/create/generic_create.html"
-
-    @classmethod
-    def get_search_detail_template(cls):
-        return "search/{}.html".format(cls.get_model_api_name())
-
-    def get_edit_url(self):
-        return SITE_PREFIX + reverse(
-            "edit", kwargs=dict(
-                pk=self.id,
-                model_name=self.__class__.__name__.lower()
-            )
-        )
-
-    def get_delete_url(self):
-        return SITE_PREFIX + reverse(
-            "delete", kwargs=dict(
-                pk=self.id,
-                model_name=self.__class__.__name__.lower()
-            )
-        )
-
-    def get_display_name(self):
-        return self.name
-
-    @classmethod
-    def get_model_display_name(cls):
-        return cls._meta.verbose_name.title()
-
-    @classmethod
-    def get_model_display_name_plural(cls):
-        return cls._meta.verbose_name_plural.title()
-
-    @classmethod
-    def get_edit_list_url(cls):
-        return reverse(
-            "edit_list",
-            kwargs=dict(model_name=cls.get_model_api_name())
-        )
-
-    created = models.DateTimeField(auto_now_add=True)
-    updated = models.DateTimeField(auto_now=True)
-
-    objects = NCDRQueryset.as_manager()
-
-    class Meta:
-        abstract = True
-
-
-class DatabaseQueryset(NCDRQueryset):
+class DatabaseQueryset(BaseQuerySet):
     def viewable(self, user):
         """ returns all tables that have columns
         """
@@ -201,7 +65,7 @@ class DatabaseQueryset(NCDRQueryset):
         ).distinct().order_by(Lower('display_name'))
 
 
-class Database(NcdrModel):
+class Database(BaseModel):
     SEARCH_FIELDS = [
         "display_name", "name", "description", "link"
     ]
@@ -240,7 +104,7 @@ class Database(NcdrModel):
         return super().save(*args, **kwargs)
 
 
-class TableQueryset(NCDRQueryset):
+class TableQueryset(BaseQuerySet):
     def viewable(self, user):
         if user.is_authenticated and user.userprofile.preview_mode:
             return self
@@ -254,7 +118,7 @@ class TableQueryset(NCDRQueryset):
         )
 
 
-class Table(NcdrModel):
+class Table(BaseModel):
     SEARCH_FIELDS = [
         "name", "description", "link"
     ]
@@ -293,7 +157,7 @@ class Table(NcdrModel):
         return "{} / {}".format(self.database.name, self.name)
 
 
-class GroupingQueryset(NCDRQueryset):
+class GroupingQueryset(BaseQuerySet):
     def viewable(self, user):
         return self.filter(
             dataelement__in=DataElement.objects.viewable(
@@ -302,7 +166,7 @@ class GroupingQueryset(NCDRQueryset):
         ).distinct().order_by(Lower('name'))
 
 
-class Grouping(NcdrModel, models.Model):
+class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = [
         "name", "description"
     ]
@@ -333,7 +197,7 @@ class Grouping(NcdrModel, models.Model):
         return super(Grouping, self).save(*args, **kwargs)
 
 
-class DataElementQueryset(NCDRQueryset):
+class DataElementQueryset(BaseQuerySet):
     def viewable(self, user):
         if user.is_authenticated and user.userprofile.preview_mode:
             return self
@@ -344,7 +208,7 @@ class DataElementQueryset(NCDRQueryset):
         ).distinct()
 
 
-class DataElement(NcdrModel, models.Model):
+class DataElement(BaseModel, models.Model):
     SEARCH_FIELDS = [
         "name", "description"
     ]
@@ -378,7 +242,7 @@ class DataElement(NcdrModel, models.Model):
         return self.name
 
 
-class ColumnQueryset(NCDRQueryset):
+class ColumnQueryset(BaseQuerySet):
     def unpublished(self):
         return self.filter(published=False)
 
@@ -403,7 +267,7 @@ class ColumnQueryset(NCDRQueryset):
         return json.dumps(result)
 
 
-class Column(NcdrModel, models.Model):
+class Column(BaseModel, models.Model):
     DATA_TYPE_CHOICES = (
         ("datetime", "datetime",),
         ("date", "date",),

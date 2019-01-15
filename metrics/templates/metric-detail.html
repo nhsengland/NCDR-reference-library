@@ -1,0 +1,208 @@
+{% extends "base_templates/base.html" %}
+
+{% block contents %}
+<div class="container main-content">
+  <div class="row">
+    <div class="col-md-10">
+      <article>
+        <div class="row">
+          <div class="col-md-12">
+            <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>
+            <a class="ncdr-breadcrumbs" href="{% url 'metrics-list' %}">Metrics</a>
+            Metric
+          </div>
+        </div>
+
+        <h1>{{ metric.indicator }}</h1>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Business Definition</h4>
+            <p>{{ metric.definition }}</p>
+          </div>
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Rationale</h4>
+            <p>{{ metric.rationale }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Numerator</h4>
+            <p>{{ metric.numerator.value }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Denominator</h4>
+            <p>{{ metric.denominator.value }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Technical Specification</h4>
+            <pre style="overflow-x: auto;white-space:pre-line;word-wrap:normal;">{{ metric.specification }}</pre>
+          </div>
+        </div>
+
+        <hr />
+
+        <h2>Numerator</h2>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Source</h4>
+            <p>{{ metric.numerator.source }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Source Address</h4>
+            <p>{{ metric.numerator.source_address }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Lowest Level of Granularity of Data</h4>
+            <p>{{ metric.numerator.lowest_level_granularity }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Frequency of Data</h4>
+            <p>{{ metric.numerator.frequency }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Timeliness of Data</h4>
+            <p>{{ metric.numerator.timeliness }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Refresh Mechanism</h4>
+            <p>{{ metric.numerator.refresh_mechanism }}</p>
+          </div>
+        </div>
+
+        <hr />
+
+        <h2>Denominator</h2>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Source</h4>
+            <p>{{ metric.denominator.source }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Source Address</h4>
+            <p>{{ metric.denominator.source_address }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Lowest Level of Granularity of Data</h4>
+            <p>{{ metric.denominator.lowest_level_granularity }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Frequency of Data</h4>
+            <p>{{ metric.denominator.frequency }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Timeliness of Data</h4>
+            <p>{{ metric.denominator.timeliness }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Refresh Mechanism</h4>
+            <p>{{ metric.denominator.refresh_mechanism }}</p>
+          </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Publication Status</h4>
+            <p>{{ metric.publication_status }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Calculation of Metric</h4>
+            <p>{{ metric.calculation }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Report</h4>
+            <p>{{ metric.report.name }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Organisation Owner</h4>
+            <p>{{ metric.organisation_owner.name }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Team Lead</h4>
+            <p>{{ metric.team_lead.name }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Metric Lead</h4>
+            <p>{{ metric.metric_lead.name }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Comments</h4>
+            <p>{{ metric.comments }}</p>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12">
+            <h4>Theme</h4>
+            <p>{{ metric.theme.name }}</p>
+          </div>
+        </div>
+
+      </article>
+    </div>
+  </div>
+</div>
+{% endblock contents %}
