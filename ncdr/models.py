@@ -2,17 +2,10 @@ import functools
 import itertools
 import operator
 
-from django.conf import settings
 from django.db import models
 from django.urls import reverse
 
 MOST_RECENT = "Most Recent"
-
-
-def reverse_with_prefix(name, kwargs):
-    # TODO: remove this knowledge from the project
-    prefix = "/{}".format(settings.SITE_PREFIX.strip("/"))
-    return prefix + reverse(name, kwargs=kwargs)
 
 
 class BaseQuerySet(models.QuerySet):
@@ -87,13 +80,11 @@ class BaseModel(models.Model):
 
     @classmethod
     def get_add_url(cls):
-        kwargs = {"model_name": cls.get_model_api_name()}
-        return reverse_with_prefix("add_many", kwargs)
+        return reverse("add_many", kwargs={"model_name": cls.get_model_api_name()})
 
     @classmethod
     def get_search_url(cls):
-        kwargs = {"model_name": cls.get_model_api_name()}
-        return reverse_with_prefix("search", kwargs)
+        return reverse("search", kwargs={"model_name": cls.get_model_api_name()})
 
     @classmethod
     def get_create_template(cls):
@@ -104,12 +95,10 @@ class BaseModel(models.Model):
         return "search/{}.html".format(cls.get_model_api_name())
 
     def get_edit_url(self):
-        kwargs = {"pk": self.id, "model_name": self.get_model_api_name()}
-        return reverse_with_prefix("edit", kwargs)
+        return reverse("edit", kwargs={"pk": self.id, "model_name": self.get_model_api_name()})
 
     def get_delete_url(self):
-        kwargs = {"pk": self.id, "model_name": self.get_model_api_name()}
-        return reverse_with_prefix("delete", kwargs)
+        return reverse("delete", kwargs={"pk": self.id, "model_name": self.get_model_api_name()})
 
     def get_display_name(self):
         return self.name
