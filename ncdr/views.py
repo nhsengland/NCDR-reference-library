@@ -70,7 +70,8 @@ class KwargModelMixin(object):
         info = searchable_objects.get(self.kwargs["model_name"])
 
         if info is None:
-            raise ValueError("We only allow editing of a subset of models {}".format(searchable_models))
+            msg = "We only allow editing of a subset of models {}"
+            raise ValueError(msg.format(searchable_models))
 
         return info[item]
 

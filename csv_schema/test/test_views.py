@@ -323,7 +323,10 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.published = True
         column.save()
         table = models.Table.objects.get()
-        url = reverse("table_detail", kwargs={"db_name": table.database.name, "table_name": table.name})
+
+        kwargs = {"db_name": table.database.name, "table_name": table.name}
+        url = reverse("table_detail", kwargs=kwargs)
+
         self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_get_unpulished_not_in_preview_mode(self):
@@ -331,7 +334,10 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.published = False
         column.save()
         table = models.Table.objects.get()
-        url = reverse("table_detail", kwargs={"db_name": table.database.name, "table_name": table.name})
+
+        kwargs = {"db_name": table.database.name, "table_name": table.name}
+        url = reverse("table_detail", kwargs=kwargs)
+
         self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
@@ -343,7 +349,10 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.published = False
         column.save()
         table = models.Table.objects.get()
-        url = reverse("table_detail", kwargs={"db_name": table.database.name, "table_name": table.name})
+
+        kwargs = {"db_name": table.database.name, "table_name": table.name}
+        url = reverse("table_detail", kwargs=kwargs)
+
         self.assertEqual(self.client.get(url).status_code, 200)
 
 

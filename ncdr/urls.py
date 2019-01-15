@@ -24,7 +24,11 @@ urlpatterns = [
 
     path('', include("csv_schema.urls")),
 
-    path('form/<slug:model_name>/unpublished/', never_cache(Unpublished.as_view()), name="unpublished_list"),
+    path(
+        'form/<slug:model_name>/unpublished/',
+        never_cache(Unpublished.as_view()),
+        name="unpublished_list",
+    ),
     path('form/<slug:model_name>/add/', AddMany.as_view(), name="add_many"),
     path('form/<slug:model_name>/edit/<int:pk>/', Edit.as_view(), name="edit"),
     path('form/<slug:model_name>/delete/<int:pk>/', Delete.as_view(), name="delete"),
