@@ -3,14 +3,12 @@ from __future__ import unicode_literals
 
 import json
 
-from django.contrib.auth.models import User
 from django.contrib.auth.signals import user_logged_out
 from django.db import models
 from django.db.models.functions import Lower
 from django.urls import reverse
 from django.utils.functional import cached_property
 from django.utils.text import slugify
-from django_auto_one_to_one import AutoOneToOneModel
 
 from ncdr.models import BaseModel, BaseQuerySet
 
@@ -25,22 +23,9 @@ def unique_slug(some_cls, name):
         return slug
 
 
-class UserProfile(AutoOneToOneModel(User)):
-    preview_mode = models.BooleanField(default=False)
-
-    @classmethod
-    def get_url_preview_mode_on(cls):
-        return reverse("preview_mode", kwargs={"preview_mode": 1})
-
-    @classmethod
-    def get_url_preview_mode_off(cls):
-        return reverse("preview_mode", kwargs={"preview_mode": 0})
-
-
 def turn_preview_mode_off(sender, user, request, **kwargs):
-    profile = user.userprofile
-    profile.preview_mode = False
-    profile.save()
+    user.preview_mode = False
+    user.save()
 
 
 user_logged_out.connect(turn_preview_mode_off)
@@ -92,7 +77,7 @@ class Database(BaseModel):
 
 class TableQueryset(BaseQuerySet):
     def viewable(self, user):
-        if user.is_authenticated and user.userprofile.preview_mode:
+        if user.is_authenticated and user.preview_mode:
             return self
 
         populated_columns = Column.objects.viewable(user)
@@ -180,7 +165,7 @@ class Grouping(BaseModel, models.Model):
 
 class DataElementQueryset(BaseQuerySet):
     def viewable(self, user):
-        if user.is_authenticated and user.userprofile.preview_mode:
+        if user.is_authenticated and user.preview_mode:
             return self
 
         populated_columns = Column.objects.viewable(user)
@@ -229,7 +214,7 @@ class ColumnQueryset(BaseQuerySet):
         return self.filter(published=True)
 
     def viewable(self, user):
-        if user.is_authenticated and user.userprofile.preview_mode:
+        if user.is_authenticated and user.preview_mode:
             return self.order_by(Lower('name'))
         else:
             return self.filter(

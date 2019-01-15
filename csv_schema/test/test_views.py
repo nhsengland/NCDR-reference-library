@@ -1,16 +1,16 @@
 import datetime
 
-from django.contrib.auth.models import User
 from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.functional import cached_property
 
 from csv_schema import models
+from ncdr.models import User
 from ncdr.views import searchable_models
 
 
 class AbstractViewTestCase(TestCase):
-    USERNAME = "testuser"
+    EMAIL = "testuser"
     PASSWORD = "password"
 
     def setUp(self):
@@ -24,7 +24,7 @@ class AbstractViewTestCase(TestCase):
     @cached_property
     def user(self):
         user = User.objects.create(
-            username=self.USERNAME,
+            email=self.EMAIL,
             is_staff=True,
             is_superuser=True
         )
@@ -34,7 +34,7 @@ class AbstractViewTestCase(TestCase):
 
     def login(self):
         self.client.login(
-            username=self.user.username, password=self.PASSWORD
+            username=self.user.email, password=self.PASSWORD
         )
 
     def create_csv_column(
@@ -83,32 +83,29 @@ class PreviewModeSwitchTestCase(AbstractViewTestCase):
         url = url + "?next=/"
         self.login()
 
-        self.assertFalse(
-            models.UserProfile.objects.get().preview_mode
-        )
+        self.assertFalse(User.objects.get().preview_mode)
+
         result = self.client.get(url)
+
         self.assertEqual(
             result.url, "/"
         )
-        self.assertTrue(
-            models.UserProfile.objects.get().preview_mode
-        )
+        self.assertTrue(User.objects.get().preview_mode)
 
     def test_user_authenticated_off(self):
         url = reverse("preview_mode", kwargs={"preview_mode": 0})
         url = url + "?next=/"
         self.login()
-        self.assertFalse(self.user.userprofile.preview_mode)
-        user_profile = self.user.userprofile
-        user_profile.preview_mode = True
-        user_profile.save
+        self.assertFalse(self.user.preview_mode)
+
+        self.user.preview_mode = True
+        self.user.save()
+
         result = self.client.get(url)
         self.assertEqual(
             result.url, "/"
         )
-        self.assertFalse(
-            models.UserProfile.objects.get().preview_mode
-        )
+        self.assertFalse(User.objects.get().preview_mode)
 
     def test_user_not_authenticated(self):
         url = reverse("preview_mode", kwargs={"preview_mode": 1})
@@ -338,9 +335,9 @@ class TableDetailTestCase(AbstractViewTestCase):
         self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
-        userprofile = self.user.userprofile
-        userprofile.preview_mode = True
-        userprofile.save()
+        self.user.preview_mode = True
+        self.user.save()
+
         self.login()
         column = self.create_csv_column()
         column.published = False
@@ -368,9 +365,8 @@ class DatabaseDetailTestCase(AbstractViewTestCase):
         self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
-        userprofile = self.user.userprofile
-        userprofile.preview_mode = True
-        userprofile.save()
+        self.user.preview_mode = True
+        self.user.save()
         self.login()
         column = self.create_csv_column()
         column.published = False
@@ -403,9 +399,8 @@ class DataElementDetailTestCase(AbstractViewTestCase):
         self.assertEqual(self.client.get(url).status_code, 404)
 
     def test_get_unpublished_preview_mode(self):
-        userprofile = self.user.userprofile
-        userprofile.preview_mode = True
-        userprofile.save()
+        self.user.preview_mode = True
+        self.user.save()
         self.login()
         self.column.published = False
         self.column.save()
