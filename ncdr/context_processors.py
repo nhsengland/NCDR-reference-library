@@ -4,14 +4,14 @@ from django.utils.functional import SimpleLazyObject
 
 class ModelContextProcessor(object):
     def __init__(self):
-        for i, v in apps.all_models.items():
-            setattr(self, i, v)
+        for app_label, models in apps.all_models.items():
+            setattr(self, app_label, models)
 
 
 class ModelObjectsContextProcessor(object):
     def __init__(self):
-        for i, v in apps.all_models.items():
-            setattr(self, i, {k: y.objects for k, y in v.items()})
+        for app_label, models in apps.all_models.items():
+            setattr(self, app_label, {model_label: model.objects for model_label, model in models.items()})
 
 
 def models(request):
