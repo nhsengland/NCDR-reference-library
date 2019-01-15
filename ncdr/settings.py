@@ -85,6 +85,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'ncdr.context_processors.models',
+                'csv_schema.context_processors.unpublished_columns'
             ],
         },
     },
