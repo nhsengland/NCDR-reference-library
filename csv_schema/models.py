@@ -16,20 +16,14 @@ from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django_auto_one_to_one import AutoOneToOneModel
 
+from ncdr_reference.search import MOST_RECENT
+
 if getattr(settings, "SITE_PREFIX", ""):
     SITE_PREFIX = "/{}".format(settings.SITE_PREFIX.strip("/"))
 else:
     SITE_PREFIX = ""
 
 DATE_FORMAT = "%b %y"
-
-BEST_MATCH = "Best Match"
-MOST_RECENT = "Most Recent"
-
-SEARCH_OPTIONS = [
-    BEST_MATCH,
-    MOST_RECENT
-]
 
 
 def unique_slug(some_cls, name):

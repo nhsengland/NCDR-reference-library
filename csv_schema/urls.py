@@ -1,5 +1,4 @@
 from django.urls import include, path
-from django.views.decorators.cache import never_cache
 
 from . import api, views
 
@@ -17,47 +16,9 @@ urlpatterns = [
         name="publish_all"
     ),
     path(
-        'form/<slug:model_name>/unpublished/',
-        never_cache(views.UnPublishedList.as_view()),
-        name="unpublished_list"
-    ),
-    path(
         'form/',
         views.NCDRFormRedirect.as_view(),
         name="redirect"
-    ),
-    path(
-        'form/<slug:model_name>/add/',
-        views.NCDRAddManyView.as_view(),
-        name="add_many"
-    ),
-    path(
-        'form/<slug:model_name>/edit/<int:pk>/',
-        views.NCDREditView.as_view(),
-        name="edit"
-    ),
-
-    path(
-        'form/<slug:model_name>/delete/<int:pk>/',
-        views.NCDRDeleteView.as_view(),
-        name="delete"
-    ),
-    path(
-        'form/<slug:model_name>/',
-        never_cache(views.NCDREditListView.as_view()),
-        name="edit_list"
-    ),
-
-    # search urls
-    path(
-        'search/',
-        views.NCDRSearchRedirect.as_view(),
-        name="search_redirect"
-    ),
-    path(
-        'search/<slug:model_name>/',
-        views.NCDRSearch.as_view(),
-        name="search"
     ),
 
 
