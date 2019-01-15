@@ -30,11 +30,11 @@ class UserProfile(AutoOneToOneModel(User)):
 
     @classmethod
     def get_url_preview_mode_on(cls):
-        return reverse("preview_mode", kwargs=dict(preview_mode=1))
+        return reverse("preview_mode", kwargs={"preview_mode": 1})
 
     @classmethod
     def get_url_preview_mode_off(cls):
-        return reverse("preview_mode", kwargs=dict(preview_mode=0))
+        return reverse("preview_mode", kwargs={"preview_mode": 0})
 
 
 def turn_preview_mode_off(sender, user, request, **kwargs):
@@ -75,7 +75,7 @@ class Database(BaseModel):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("database_detail", kwargs=dict(db_name=self.name))
+        return reverse("database_detail", kwargs={"db_name": self.name})
 
     @classmethod
     def get_list_url(self):
@@ -134,7 +134,7 @@ class Table(BaseModel):
     objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
-        return reverse("table_detail", kwargs=dict(table_name=self.name, db_name=self.database.name))
+        return reverse("table_detail", kwargs={"table_name": self.name, "db_name": self.database.name})
 
     def get_display_name(self):
         return "{} / {}".format(self.database.name, self.name)
@@ -170,7 +170,7 @@ class Grouping(BaseModel, models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("grouping_detail", kwargs=dict(slug=self.slug))
+        return reverse("grouping_detail", kwargs={"slug": self.slug})
 
     def save(self, *args, **kwargs):
         if self.name and not self.slug:
@@ -206,7 +206,7 @@ class DataElement(BaseModel, models.Model):
         return super().save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse("data_element_detail", kwargs=dict(slug=self.slug))
+        return reverse("data_element_detail", kwargs={"slug": self.slug})
 
     def get_description(self):
         if self.description:
@@ -239,10 +239,7 @@ class ColumnQueryset(BaseQuerySet):
     def to_json(self):
         result = []
         for i in self:
-            result.append(dict(
-                published=i.published,
-                url=i.get_publish_url()
-            ))
+            result.append({"published": i.published, "url": i.get_publish_url()})
         return json.dumps(result)
 
 
@@ -318,11 +315,11 @@ class Column(BaseModel, models.Model):
             return stripped.lstrip("www.").split("/")[0]
 
     def get_absolute_url(self):
-        return reverse("column_detail", kwargs=dict(slug=self.slug))
+        return reverse("column_detail", kwargs={"slug": self.slug})
 
     @classmethod
     def get_unpublished_list_url(cls):
-        return reverse("unpublished_list", kwargs=dict(model_name=cls.get_model_api_name()))
+        return reverse("unpublished_list", kwargs={"model_name": cls.get_model_api_name()})
 
     @classmethod
     def get_publish_all_url(cls):
@@ -333,7 +330,7 @@ class Column(BaseModel, models.Model):
         return "forms/column_form_js.html"
 
     def get_publish_url(self):
-        return reverse("columns-detail", kwargs=dict(pk=self.id))
+        return reverse("columns-detail", kwargs={"pk": self.id})
 
     @cached_property
     def useage_count(self):
