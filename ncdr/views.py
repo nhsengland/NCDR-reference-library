@@ -1,4 +1,3 @@
-from django.apps import apps
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
@@ -18,38 +17,66 @@ from csv_schema.models import Column, Database, DataElement, Grouping, Table
 
 from .search import BEST_MATCH, SEARCH_OPTIONS
 
+searchable_objects = {
+    'column': {
+        'model': Column,
+        'form': forms.ColumnForm,
+        'create_form': forms.CreateColumnForm,
+    },
+    'table': {
+        'model': Table,
+        'form': forms.TableForm,
+        'create_form': forms.TableForm,
+    },
+    'database': {
+        'model': Database,
+        'form': forms.DatabaseForm,
+        'create_form': forms.DatabaseForm,
+    },
+    'dataelement': {
+        'model': DataElement,
+        'form': forms.DataElementForm,
+        'create_form': forms.DataElementForm,
+    },
+    'grouping': {
+        'model': Grouping,
+        'form': forms.GroupingForm,
+        'create_form': forms.GroupingForm,
+    },
+}
+searchable_models = [v["model"] for v in searchable_objects.values()]
+
 
 class KwargModelMixin(object):
-    pertinant = [
-        Column,
-        Table,
-        Database,
-        DataElement,
-        Grouping,
-    ]
+    """
+    Mixin to look up a model, form, and create form from a given URL kwarg
+
+    Views using this mixin can avoid defining a model or form_class class
+    variable while still inheriting from the Django GCBVs since those will be
+    populated via the included properies.
+    """
+    @property
+    def create_form_class(self):
+        return self.get_item("create_form")
 
     @property
     def form_class(self):
-        return getattr(forms, "{}Form".format(self.model.__name__))
+        return self.get_item("form")
 
-    @property
-    def create_form_class(self):
-        return getattr(
-            forms,
-            "Create{}Form".format(self.model.__name__),
-            self.form_class
-        )
+    def get_item(self, item):
+        """
+        Get the model name from the URL kwargs and look it up in `searchable_objects`
+        """
+        info = searchable_objects.get(self.kwargs["model_name"])
+
+        if info is None:
+            raise ValueError("We only allow editing of a subset of models {}".format(searchable_models))
+
+        return info[item]
 
     @property
     def model(self):
-        model = apps.get_model("csv_schema", self.kwargs["model_name"])
-        if model not in self.pertinant:
-            raise ValueError(
-                'We only allow editing of a subset of models {}'.format(
-                    self.pertinant
-                )
-            )
-        return model
+        return self.get_item("model")
 
 
 class AddMany(LoginRequiredMixin, KwargModelMixin, CreateView):
@@ -158,7 +185,7 @@ class Search(KwargModelMixin, ListView):
         query = self.request.GET.get("q")
         user = self.request.user
         ctx["results"] = [
-            (i, i.objects.search_count(query, user),) for i in self.pertinant
+            (i, i.objects.search_count(query, user),) for i in searchable_models
         ]
         ctx["search_options"] = SEARCH_OPTIONS
         ctx["search_count"] = self.model.objects.search_count(
@@ -171,10 +198,10 @@ class Search(KwargModelMixin, ListView):
 class SearchRedirect(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         q = self.request.GET.get("q")
-        url = None
+        url = reverse("search", kwargs={"model_name": Column.get_model_api_name()})
 
         if q:
-            for p in KwargModelMixin.pertinant:
+            for p in searchable_models:
                 if p.objects.search(q, self.request.user).exists():
                     url = reverse(
                         "search",
@@ -183,14 +210,6 @@ class SearchRedirect(RedirectView):
                         )
                     )
                     break
-
-        if not url:
-            url = reverse(
-                "search",
-                kwargs=dict(
-                    model_name=Column.get_model_api_name()
-                )
-            )
 
         return "{}?{}&search_option={}".format(
             url, self.request.GET.urlencode(), BEST_MATCH

@@ -5,7 +5,8 @@ from django.test import Client, TestCase
 from django.urls import reverse
 from django.utils.functional import cached_property
 
-from csv_schema import models, views
+from csv_schema import models
+from ncdr.views import searchable_models
 
 
 class AbstractViewTestCase(TestCase):
@@ -188,8 +189,8 @@ class AbstractForm(object):
 
     def test_get(self):
         self.login()
-        for i in views.NCDRView.pertinant:
-            self.client.get(self.get_url(model_name=i.get_model_api_name()))
+        for model in searchable_models:
+            self.client.get(self.get_url(model_name=model.get_model_api_name()))
 
 
 class NCDRAddManyViewTestCase(AbstractForm, AbstractViewTestCase):
@@ -286,16 +287,16 @@ class NCDRSearch(AbstractViewTestCase):
         return "{}?q={}".format(url, query)
 
     def get_test(self, query):
-        for i in views.NCDRView.pertinant:
-            url = self.get_url(model_name=i.get_model_api_name(), query=query)
+        for model in searchable_models:
+            url = self.get_url(model_name=model.get_model_api_name(), query=query)
             result = self.client.get(url)
             self.assertEqual(result.status_code, 200)
 
     def test_get_empty(self):
         """ test all empty pages
         """
-        for i in views.NCDRView.pertinant:
-            self.assertFalse(i.objects.exists())
+        for model in searchable_models:
+            self.assertFalse(model.objects.exists())
         self.get_test("blah")
 
     def test_get_populated(self):
@@ -310,10 +311,8 @@ class NCDRSearch(AbstractViewTestCase):
             name="grouping",
             dataelement=data_element
         )
-        for i in views.NCDRView.pertinant:
-            o = i.objects.get()
-            o.name = "something"
-            o.save()
+        for model in searchable_models:
+            model.objects.update(name="something")
 
         self.get_test("somethign")
 
