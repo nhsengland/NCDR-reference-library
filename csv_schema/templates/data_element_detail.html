@@ -1,87 +1,86 @@
 {% extends "base_templates/base.html" %}
-{% load utils %}
+
 {% block contents %}
 <div class="container main-content">
+
   <div class="row">
     <div class="col-md-12">
-      <div class="row">
-        <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{% url 'data_element_list' %}">Data Elements</a><a class="ncdr-breadcrumbs" href="{{ object.get_bread_crumb_link }}"> {{ object.get_bread_crumb_name }}</a>{{ object.name }}
-        </div>
+
+      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>
+      <a class="ncdr-breadcrumbs" href="{% url 'data_element_list' %}">Data Elements</a>
+      {{ data_element.name|truncatechars:50 }}
+
+      <div class="content-offset-below-20">
+        <h1>{{ data_element.name }}</h1>
       </div>
 
-      <div class="row content-offset-below-20">
-        <div class="col-sm-10">
-          <h1>
-            <div class="row">
-              <div class="col-md-12">
-                {{ object.name }}
-              </div>
-            </div>
-          </h1>
-        </div>
-      </div>
     </div>
   </div>
-</div>
-<div class="container">
+
   <div class="row nhs-england-well">
+
     <div class="col-md-7">
-      <p>
-        {{ object.get_description | urlize }}
-      </p>
+      <p>{{ data_element.get_description | urlize }}</p>
     </div>
+
     <div class="col-md-4 col-md-push-1">
-      {% if object.grouping.exists %}
-        <div class="row">
-          <div class="col-md-12">
-            <h4 class="sub-row-title coloured-header">Grouping</h4>
-            {% for grouping in object.grouping.all %}
-              <p>
-                <a href="{{ grouping.get_absolute_url }}">
-                  {{ grouping.name }}
-                </a>
-              </p>
-            {% endfor %}
-          </div>
-        </div>
+      {% if data_element.grouping.exists %}
+      <h4 class="sub-row-title coloured-header">Grouping</h4>
+
+      {% for grouping in data_element.grouping.all %}
+      <p><a href="{{ grouping.get_absolute_url }}">{{ grouping.name }}</a></p>
+      {% endfor %}
+
       {% endif %}
-      {% if object.link %}
-        <div class="row">
-          <div class="col-md-12">
-              <h4 class="sub-row-title coloured-header">External Links</h4>
-              <p>
-                <a target="_blank" href="{{ object.link }}">
-                  {{ object.link_display_name }}
-                </a>
-              </p>
-          </div>
-        </div>
+
+      {% if data_element.link %}
+      <h4 class="sub-row-title coloured-header">External Links</h4>
+      <p><a target="_blank" href="{{ data_element.link }}">{{ data_element.link_display_name }}</a></p>
+      {% endif %}
+    </div>
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-8">
+
+      <h3>Columns</h3>
+
+      {% for column in object_list %}
+        {% include "partials/column.html" with HIDE_GROUPING=1 %}
+        {% if not forloop.last %}<hr />{% endif %}
+      {% empty %}
+        <h1 class="faded text-center">No Columns exist for this mapping</h1>
+      {% endfor %}
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+        {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
       {% endif %}
     </div>
   </div>
+
 </div>
-  {% with object.column_set|viewable:request as columns %}
-    <div class="container">
-      <div class="row">
-        <div class="col-md-8">
-          <h3>Columns</h3>
-          {% if columns.exists %}
-            {% for column in columns %}
-              <div class="row">
-                <div class="col-md-12">
-                  {% include "partials/column.html" with HIDE_GROUPING=1 %}
-                  {% if not forloop.last %}
-                    <hr />
-                  {% endif %}
-                </div>
-              </div>
-            {% endfor %}
-          {% else %}
-            <h1 class="faded text-center">No Columns exist for this mapping</h1>
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  {% endwith %}
 {% endblock %}

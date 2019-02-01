@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import HttpResponseRedirect
+from django.http import Http404, HttpResponseRedirect
 from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView, RedirectView, TemplateView, View
@@ -70,9 +70,27 @@ class TableDetail(NCDRDisplay, DetailView):
         return ctx
 
 
-class DataElementDetail(NCDRDisplay, DetailView):
-    model = models.DataElement
+class DataElementDetail(NCDRDisplay, ListView):
+    model = models.Column
+    paginate_by = 10
     template_name = "data_element_detail.html"
+
+    def get(self, request, *args, **kwargs):
+        try:
+            self.object = (models.DataElement.objects.viewable(request.user)
+                                                     .get(slug=self.kwargs['slug']))
+        except models.DataElement.DoesNotExist:
+            raise Http404
+
+        return super().get(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['data_element'] = self.object
+        return context
+
+    def get_queryset(self):
+        return super().get_queryset().filter(data_element=self.object)
 
 
 class DataElementList(NCDRDisplay, ListView):
