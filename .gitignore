@@ -13,7 +13,7 @@ coverage-js
 *.bak
 node_modules
 *.swp
-static/*
+/static/*
 etc/*
 deployment/ansible.cfg
 .sass-cache/*
