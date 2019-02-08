@@ -5,6 +5,19 @@
   <div class="card-list container main-content">
     <article>
       <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>{{ models.csv_schema.dataelement.get_model_display_name_plural }}
+
+      <nav class="content-offset">
+        <div class="row">
+          <div class="col-md-12">
+            {% for letter, other_page in other_pages %}
+              <a class="letter-link {% if request.GET.letter == letter %}active {% endif %}" href="{{ other_page }}">
+                {{ letter }}
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+      </nav>
+
       <div class="row">
         <div class="col-md-12">
           <h1 class="title">
@@ -21,7 +34,7 @@
       </div>
 
       {% if not object_list %}
-        <h1 class="faded text-center">No {{ models.csv_schema.dataelement.get_model_display_name_plural }} start with {{ view.kwargs.letter }}</h1>
+        <h1 class="faded text-center">No {{ models.csv_schema.dataelement.get_model_display_name_plural }} start with {{ request.GET.letter }}</h1>
       {% endif %}
       <div class="row">
         <div class="col-md-10">
