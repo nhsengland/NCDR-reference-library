@@ -1,8 +1,27 @@
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404
-from django.views.generic import DetailView
+from django.views.generic import DetailView, View
 
 from ..models import Table
 from .base import ViewableItems
+
+
+class TableAPI(View):
+    """An API to generate Table data in the format Select2 requires it."""
+
+    http_method_names = ["get"]
+
+    def get(self, request, *args, **kwargs):
+        tables = (
+            Table.objects.filter(database_id=self.kwargs["database_pk"])
+            .viewable(request.user)
+            .values("pk", "name")
+        )
+
+        # translate dicts to the preferred shape for Select2
+        tables = [{"id": str(t["pk"]), "text": t["name"]} for t in tables]
+
+        return JsonResponse(list(tables), safe=False)
 
 
 class TableDetail(ViewableItems, DetailView):

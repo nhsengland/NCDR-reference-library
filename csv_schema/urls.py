@@ -6,7 +6,7 @@ from .views import ColumnDetail, FormRedirect, IndexView, PreviewModeSwitch, Pub
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
-from .views.table import TableDetail
+from .views.table import TableAPI, TableDetail
 
 urlpatterns = [
 
@@ -30,5 +30,7 @@ urlpatterns = [
 
     path('grouping/', GroupingList.as_view(), name="grouping_redirect"),
     path('grouping/<slug:slug>/', GroupingDetail.as_view(), name="grouping_detail"),
-    path(r'api/', include(api.router.urls)),
+
+    path('api/tables/<database_pk>', TableAPI.as_view()),
+    path('api/', include(api.router.urls)),
 ]
