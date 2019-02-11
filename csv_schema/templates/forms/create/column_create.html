@@ -4,6 +4,11 @@
 {% block form_contents %}
 <div class="row content-offset">
   <div class="col-md-12">
+    {{ view.create_form_class.database|bootstrap }}
+  </div>
+</div>
+<div class="row content-offset">
+  <div class="col-md-12">
     {{ view.create_form_class.table|bootstrap }}
   </div>
 </div>
