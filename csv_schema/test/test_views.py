@@ -38,12 +38,20 @@ class AbstractViewTestCase(TestCase):
         )
 
     def create_csv_column(
-        self, column_args=None, database="example_db", table="example_table"
+        self,
+        column_args=None,
+        database_name="example_db",
+        schema_name="example_schema",
+        table_name="example_table",
     ):
-        db, _ = models.Database.objects.get_or_create(name=database)
+        database, _ = models.Database.objects.get_or_create(name=database_name)
+        schema, _ = models.Schema.objects.get_or_create(
+            name=schema_name,
+            defaults={"database": database},
+        )
         table, _ = models.Table.objects.get_or_create(
-            name=table,
-            database=db
+            name=table_name,
+            schema=schema,
         )
         if not column_args:
             column_args = {}
@@ -317,7 +325,7 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.save()
         table = models.Table.objects.get()
 
-        kwargs = {"db_name": table.database.name, "table_name": table.name}
+        kwargs = {"db_name": table.schema.database.name, "table_name": table.name}
         url = reverse("table_detail", kwargs=kwargs)
 
         self.assertEqual(self.client.get(url).status_code, 200)
@@ -328,7 +336,7 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.save()
         table = models.Table.objects.get()
 
-        kwargs = {"db_name": table.database.name, "table_name": table.name}
+        kwargs = {"db_name": table.schema.database.name, "table_name": table.name}
         url = reverse("table_detail", kwargs=kwargs)
 
         self.assertEqual(self.client.get(url).status_code, 404)
@@ -343,7 +351,7 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.save()
         table = models.Table.objects.get()
 
-        kwargs = {"db_name": table.database.name, "table_name": table.name}
+        kwargs = {"db_name": table.schema.database.name, "table_name": table.name}
         url = reverse("table_detail", kwargs=kwargs)
 
         self.assertEqual(self.client.get(url).status_code, 200)
@@ -431,12 +439,12 @@ class ColumnDetailTestCase(AbstractViewTestCase):
         column = self.create_csv_column()
         column.published = True
         column.save()
-        url = reverse("column_detail", kwargs={"slug": column.slug})
+        url = reverse("column_detail", kwargs={"pk": column.pk})
         self.assertEqual(self.client.get(url).status_code, 200)
 
     def test_get_unpublished(self):
         column = self.create_csv_column()
-        url = reverse("column_detail", kwargs={"slug": column.slug})
+        url = reverse("column_detail", kwargs={"pk": column.pk})
         self.assertEqual(self.client.get(url).status_code, 404)
 
 

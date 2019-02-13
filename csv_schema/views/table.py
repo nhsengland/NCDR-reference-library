@@ -32,11 +32,11 @@ class TableDetail(ViewableItems, DetailView):
         return get_object_or_404(
             self.get_queryset(),
             name=self.kwargs["table_name"],
-            database__name=self.kwargs["db_name"]
+            schema__database__name=self.kwargs["db_name"]
         )
 
     def get_context_data(self, **kwargs):
         # get the list of tables in this database
         context = super().get_context_data(**kwargs)
-        context["tables"] = self.object.database.table_set.viewable(self.request.user)
+        context["tables"] = self.object.schema.tables.viewable(self.request.user)
         return context
