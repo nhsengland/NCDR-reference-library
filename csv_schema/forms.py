@@ -65,10 +65,12 @@ class CreateColumnForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        self.fields['table'] = ColumnSelectField(
-            queryset=models.Table.objects.order_by("database__name")
-        )
-        self.fields['table'].label = "Which Table Would You Like to Add Columns To"
+        databases = models.Database.objects.order_by("name")
+        self.fields["database"] = forms.ModelChoiceField(queryset=databases)
+        self.fields["database"].label = "Select a Database"
+
+        self.fields["table"] = ColumnSelectField(queryset=models.Table.objects.none())
+        self.fields["table"].label = "Which Table Would You Like to Add Columns To"
 
 
 class ColumnForm(forms.ModelForm):

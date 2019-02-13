@@ -4,6 +4,11 @@
 {% block form_contents %}
 <div class="row content-offset">
   <div class="col-md-12">
+    {{ view.create_form_class.database|bootstrap }}
+  </div>
+</div>
+<div class="row content-offset hidden">
+  <div class="col-md-12">
     {{ view.create_form_class.table|bootstrap }}
   </div>
 </div>
@@ -63,69 +68,88 @@
       });
   </script>
 </div>
+
+{# matcher function for building the Table dropdown #}
 <script>
-    function modelMatcher (params, data) {
-      data.parentText = data.parentText || "";
+  function modelMatcher (params, data) {
+    data.parentText = data.parentText || "";
 
-      // Always return the object if there is nothing to compare
-      if ($.trim(params.term) === '') {
-        return data;
-      }
-
-      // Do a recursive check for options with children
-      if (data.children && data.children.length > 0) {
-        // Clone the data object if there are children
-        // This is required as we modify the object to remove any non-matches
-        var match = $.extend(true, {}, data);
-
-        // Check each child of the option
-        for (var c = data.children.length - 1; c >= 0; c--) {
-          var child = data.children[c];
-          child.parentText += data.parentText + " " + data.text;
-
-          var matches = modelMatcher(params, child);
-
-          // If there wasn't a match, remove the object in the array
-          if (matches == null) {
-            match.children.splice(c, 1);
-          }
-        }
-
-        // If any children matched, return the new object
-        if (match.children.length > 0) {
-          return match;
-        }
-
-        // If there were no matching children, check just the plain object
-        return modelMatcher(params, match);
-      }
-
-      // If the typed-in term matches the text of this term, or the text from any
-      // parent term, then it's a match.
-      var original = (data.parentText + ' ' + data.text).toUpperCase();
-      var term = params.term.toUpperCase();
-
-
-      // Check if the text contains the term
-      if (original.indexOf(term) > -1) {
-        return data;
-      }
-
-      // If it doesn't contain the term, don't return anything
-      return null;
+    // Always return the object if there is nothing to compare
+    if ($.trim(params.term) === '') {
+      return data;
     }
 
-    // initialise the select 2 form's value
-    if($('input#id_form-0-name').val().length){
-      $('select#id_table').val(parseInt($('input#id_form-0-table').val()));
-      $("#form-container").removeClass("hidden");
+    // Do a recursive check for options with children
+    if (data.children && data.children.length > 0) {
+      // Clone the data object if there are children
+      // This is required as we modify the object to remove any non-matches
+      var match = $.extend(true, {}, data);
+
+      // Check each child of the option
+      for (var c = data.children.length - 1; c >= 0; c--) {
+        var child = data.children[c];
+        child.parentText += data.parentText + " " + data.text;
+
+        var matches = modelMatcher(params, child);
+
+        // If there wasn't a match, remove the object in the array
+        if (matches == null) {
+          match.children.splice(c, 1);
+        }
+      }
+
+      // If any children matched, return the new object
+      if (match.children.length > 0) {
+        return match;
+      }
+
+      // If there were no matching children, check just the plain object
+      return modelMatcher(params, match);
     }
 
-    $('select#id_table').each(function(i, v){
-      $(v).select2({
-        matcher: modelMatcher,
-        theme: "bootstrap",
-        templateSelection: function(item) {
+    // If the typed-in term matches the text of this term, or the text from any
+    // parent term, then it's a match.
+    var original = (data.parentText + ' ' + data.text).toUpperCase();
+    var term = params.term.toUpperCase();
+
+
+    // Check if the text contains the term
+    if (original.indexOf(term) > -1) {
+      return data;
+    }
+
+    // If it doesn't contain the term, don't return anything
+    return null;
+  }
+</script>
+
+{# Convert the database selector to a Select2 component #}
+<script>
+  var tables = [{"text": "111_Provider_Data", "id": 1}, {"text": "111_Provider_Data_2017_04_20", "id": 2}, {"text": "111_Provider_Data_2017_05_05", "id": 3}, {"text": "111_Provider_Data_2017_05_25", "id": 4}, {"text": "111_Provider_Data_2017_07_11", "id": 5}, {"text": "111_Provider_Data_2017_09_14", "id": 6}, {"text": "111_Provider_Data_2017_10_10", "id": 7}, {"text": "111_Provider_Data_2017_10_27", "id": 8}, {"text": "111_Provider_Data_2017_11_08", "id": 9}];
+  $('select#id_database').each(function (i, v) {
+    $(v).select2({ theme: "bootstrap" });
+    $(v).change(function(e) {
+
+      // get the data from the backend
+      $('select#id_table').each(function (i, v){
+        // clear the Table dropdown
+        $(v).val([]);
+
+        $(v).select2({
+          ajax: {
+            dataType: 'json',
+            url: '/api/tables/' + e.currentTarget.selectedIndex,
+            processResults: function (data) {
+              return {
+                results: $.map(data, function(obj) {
+                  return { id: obj.id, text: obj.text };
+                })
+              };
+            }
+          },
+          matcher: modelMatcher,
+          theme: "bootstrap",
+          templateSelection: function(item) {
             var $option = $(item.element);
             var $optGroup = $option.parent();
             if($optGroup.attr('label')){
@@ -134,15 +158,21 @@
             else{
               return item.text;
             }
-        }
+          },
+          width: '825px'
+        });
+        $(v).change(function(e){
+          $("#form-container").removeClass("hidden");
+          $('input[id*="-table"]').val($(v).val());
+        });
       });
-      $(v).change(function(e){
-        $("#form-container").removeClass("hidden");
-        $('input[id*="-table"]').val($(v).val());
-      });
+
+      // Show the table select
+      $("select#id_table").parents(".row").removeClass("hidden");
+
+      // ??
+      $('input[id*="-database"]').val($(v).val());
     });
-
-
-
+  });
 </script>
 {% endblock %}
