@@ -132,6 +132,9 @@
 
       // get the data from the backend
       $('select#id_table').each(function (i, v){
+        // clear the Table dropdown
+        $(v).val([]);
+
         $(v).select2({
           ajax: {
             dataType: 'json',
