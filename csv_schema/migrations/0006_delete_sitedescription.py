@@ -5,12 +5,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0005_auto_20171214_1415'),
-    ]
+    dependencies = [("csv_schema", "0005_auto_20171214_1415")]
 
-    operations = [
-        migrations.DeleteModel(
-            name='SiteDescription',
-        ),
-    ]
+    operations = [migrations.DeleteModel(name="SiteDescription")]

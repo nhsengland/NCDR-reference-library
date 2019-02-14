@@ -14,8 +14,8 @@ class AbstractViewTestCase(TestCase):
     PASSWORD = "password"
 
     def setUp(self):
-        self.database_list_url = reverse('database_list')
-        self.about_url = reverse('about_page')
+        self.database_list_url = reverse("database_list")
+        self.about_url = reverse("about_page")
         self.client = Client()
 
     def create_name(self, idx):
@@ -23,19 +23,13 @@ class AbstractViewTestCase(TestCase):
 
     @cached_property
     def user(self):
-        user = User.objects.create(
-            email=self.EMAIL,
-            is_staff=True,
-            is_superuser=True
-        )
+        user = User.objects.create(email=self.EMAIL, is_staff=True, is_superuser=True)
         user.set_password(self.PASSWORD)
         user.save()
         return user
 
     def login(self):
-        self.client.login(
-            username=self.user.email, password=self.PASSWORD
-        )
+        self.client.login(username=self.user.email, password=self.PASSWORD)
 
     def create_csv_column(
         self,
@@ -46,13 +40,9 @@ class AbstractViewTestCase(TestCase):
     ):
         database, _ = models.Database.objects.get_or_create(name=database_name)
         schema, _ = models.Schema.objects.get_or_create(
-            name=schema_name,
-            defaults={"database": database},
+            name=schema_name, defaults={"database": database}
         )
-        table, _ = models.Table.objects.get_or_create(
-            name=table_name,
-            schema=schema,
-        )
+        table, _ = models.Table.objects.get_or_create(name=table_name, schema=schema)
         if not column_args:
             column_args = {}
 
@@ -113,7 +103,7 @@ class ToggleModeSwitchTestCase(AbstractViewTestCase):
     def test_user_not_authenticated(self):
         url = reverse("toggle-preview-mode")
         result = self.client.get(url)
-        self.assertEqual(result.url, '/accounts/login/?next=/toggle-preview-mode')
+        self.assertEqual(result.url, "/accounts/login/?next=/toggle-preview-mode")
 
 
 class PublishAllTestCase(AbstractViewTestCase):
@@ -121,69 +111,55 @@ class PublishAllTestCase(AbstractViewTestCase):
         column = self.create_csv_column()
         column.published = False
         column.save()
-        url = reverse('publish_all')
+        url = reverse("publish_all")
         url = url + "?next=/"
         self.login()
         result = self.client.post(url)
         self.assertEqual(result.status_code, 302)
-        self.assertEqual(result.url, '/')
-        self.assertTrue(
-            models.Column.objects.get(id=column.id).published
-        )
+        self.assertEqual(result.url, "/")
+        self.assertTrue(models.Column.objects.get(id=column.id).published)
 
     def test_user_not_authenticated(self):
-        url = reverse('publish_all')
+        url = reverse("publish_all")
         url = url + "?next=/"
         result = self.client.post(url)
         self.assertEqual(
-            result.url, '/accounts/login/?next=/form/publish_all/%3Fnext%3D/'
+            result.url, "/accounts/login/?next=/form/publish_all/%3Fnext%3D/"
         )
 
 
 class UnpublishListTestCase(AbstractViewTestCase):
-    url = reverse('unpublished_list', kwargs={"model_name": 'column'})
+    url = reverse("unpublished_list", kwargs={"model_name": "column"})
 
     def test_get(self):
         self.login()
         result = self.client.get(self.url)
-        self.assertEqual(
-            result.status_code, 200
-        )
+        self.assertEqual(result.status_code, 200)
 
     def test_user_not_authenticated(self):
         result = self.client.get(self.url)
-        self.assertEqual(
-            result.url, '/accounts/login/?next=/form/column/unpublished/'
-        )
+        self.assertEqual(result.url, "/accounts/login/?next=/form/column/unpublished/")
 
 
 class NCDRFormRedirectTestCase(AbstractViewTestCase):
-    url = reverse('redirect')
+    url = reverse("redirect")
 
     def test_get(self):
         self.login()
         result = self.client.get(self.url)
-        self.assertEqual(
-            result.status_code, 302
-        )
-        self.assertEqual(
-            result.url, '/form/column/'
-        )
+        self.assertEqual(result.status_code, 302)
+        self.assertEqual(result.url, "/form/column/")
 
     def test_user_not_authenticated(self):
         result = self.client.get(self.url)
-        self.assertEqual(
-            result.url, '/accounts/login/?next=/form/'
-        )
+        self.assertEqual(result.url, "/accounts/login/?next=/form/")
 
 
 class AbstractForm(object):
     def test_user_not_authenticated(self):
         url = self.get_url(model_name="column")
         result = self.client.get(url)
-        self.assertEqual(
-            result.url, '/accounts/login/?next={}'.format(url)
-        )
+        self.assertEqual(result.url, "/accounts/login/?next={}".format(url))
 
     def test_get(self):
         self.login()
@@ -201,13 +177,9 @@ class NCDREditViewTestCase(AbstractForm, AbstractViewTestCase):
         super().setUp()
         column = self.create_csv_column()
         data_element = models.DataElement.objects.create(
-            name="data_element",
-            column=column,
+            name="data_element", column=column
         )
-        models.Grouping.objects.create(
-            name="grouping",
-            dataelement=data_element
-        )
+        models.Grouping.objects.create(name="grouping", dataelement=data_element)
 
     def get_url(self, model_name):
         return reverse("edit", kwargs={"model_name": model_name, "pk": 1})
@@ -218,13 +190,9 @@ class NCDREditListViewPopulatedTestCase(AbstractForm, AbstractViewTestCase):
         super().setUp()
         column = self.create_csv_column()
         data_element = models.DataElement.objects.create(
-            name="data_element",
-            column=column,
+            name="data_element", column=column
         )
-        models.Grouping.objects.create(
-            name="grouping",
-            dataelement=data_element
-        )
+        models.Grouping.objects.create(name="grouping", dataelement=data_element)
 
     def get_url(self, model_name):
         return reverse("edit_list", kwargs={"model_name": model_name})
@@ -249,8 +217,7 @@ class NCDRSearchRedirect(AbstractViewTestCase):
         url = self.get_url(column_name)
         result = self.client.get(url)
         self.assertEqual(
-            result.url,
-            '/search/column/?q=some_item&search_option=Best%20Match'
+            result.url, "/search/column/?q=some_item&search_option=Best%20Match"
         )
 
     def test_get_with_database(self):
@@ -268,8 +235,7 @@ class NCDRSearchRedirect(AbstractViewTestCase):
         url = self.get_url(database_name)
         result = self.client.get(url)
         self.assertEqual(
-            result.url,
-            '/search/column/?q=example_db&search_option=Best%20Match'
+            result.url, "/search/column/?q=example_db&search_option=Best%20Match"
         )
 
 
@@ -296,13 +262,9 @@ class NCDRSearch(AbstractViewTestCase):
         """
         column = self.create_csv_column()
         data_element = models.DataElement.objects.create(
-            name="data_element",
-            column=column,
+            name="data_element", column=column
         )
-        models.Grouping.objects.create(
-            name="grouping",
-            dataelement=data_element
-        )
+        models.Grouping.objects.create(name="grouping", dataelement=data_element)
         for model in searchable_models:
             model.objects.update(name="something")
 
@@ -312,10 +274,7 @@ class NCDRSearch(AbstractViewTestCase):
 class AboutTestCase(AbstractViewTestCase):
     def test_get(self):
         url = reverse("about_page")
-        self.assertEqual(
-            self.client.get(url).status_code,
-            200
-        )
+        self.assertEqual(self.client.get(url).status_code, 200)
 
 
 class TableDetailTestCase(AbstractViewTestCase):
@@ -420,18 +379,14 @@ class DataElementDetailTestCase(AbstractViewTestCase):
 
 class DatabaseListTestCase(AbstractViewTestCase):
     def get_url(self):
-        return reverse('database_list')
+        return reverse("database_list")
 
     def test_get_populated(self):
         self.create_csv_column()
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
     def test_get_empty(self):
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
 
 class ColumnDetailTestCase(AbstractViewTestCase):
@@ -450,7 +405,7 @@ class ColumnDetailTestCase(AbstractViewTestCase):
 
 class DataElementListTestCase(AbstractViewTestCase):
     def get_url(self):
-        return reverse('data_element_list')
+        return reverse("data_element_list")
 
     def test_get_populated(self):
         self.column = self.create_csv_column()
@@ -459,34 +414,26 @@ class DataElementListTestCase(AbstractViewTestCase):
         )
         self.column.data_element = self.data_element
         self.column.save()
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
     def test_empty(self):
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
 
 class IndexViewTestCase(AbstractViewTestCase):
     def get_url(self):
-        return reverse('index_view')
+        return reverse("index_view")
 
     def test_redirect(self):
-        expected = reverse('database_list')
+        expected = reverse("database_list")
         response = self.client.get(self.get_url())
-        self.assertEqual(
-            response.status_code, 302
-        )
-        self.assertEqual(
-            response.url, expected
-        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.url, expected)
 
 
 class GroupingListViewTestCase(AbstractViewTestCase):
     def get_url(self):
-        return reverse('grouping_redirect')
+        return reverse("grouping_redirect")
 
     def test_get_populated(self):
         self.column = self.create_csv_column()
@@ -495,18 +442,12 @@ class GroupingListViewTestCase(AbstractViewTestCase):
         )
         self.column.data_element = self.data_element
         self.column.save()
-        self.grouping = models.Grouping.objects.create(
-            name="grouping"
-        )
+        self.grouping = models.Grouping.objects.create(name="grouping")
         self.grouping.dataelement_set.add(self.data_element)
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
     def test_empty(self):
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
 
 class GroupingDetailViewTestCase(AbstractViewTestCase):
@@ -518,24 +459,18 @@ class GroupingDetailViewTestCase(AbstractViewTestCase):
         )
         self.column.data_element = self.data_element
         self.column.save()
-        self.grouping = models.Grouping.objects.create(
-            name="grouping"
-        )
+        self.grouping = models.Grouping.objects.create(name="grouping")
         self.grouping.dataelement_set.add(self.data_element)
 
     def get_url(self):
-        return reverse('grouping_detail', kwargs={"slug": self.grouping.slug})
+        return reverse("grouping_detail", kwargs={"slug": self.grouping.slug})
 
     def test_get_published(self):
         self.column.published = True
         self.column.save()
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 200
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 200)
 
     def test_unpublished(self):
         self.column.published = False
         self.column.save()
-        self.assertEqual(
-            self.client.get(self.get_url()).status_code, 404
-        )
+        self.assertEqual(self.client.get(self.get_url()).status_code, 404)

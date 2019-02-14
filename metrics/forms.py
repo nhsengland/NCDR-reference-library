@@ -6,7 +6,5 @@ from .models import Metric
 class MetricForm(forms.ModelForm):
     class Meta:
         model = Metric
-        fields = '__all__'
-        widgets = {
-            'is_table': forms.RadioSelect
-        }
+        fields = "__all__"
+        widgets = {"is_table": forms.RadioSelect}

@@ -5,15 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0006_delete_sitedescription'),
-    ]
+    dependencies = [("csv_schema", "0006_delete_sitedescription")]
 
     operations = [
         migrations.AddField(
-            model_name='database',
-            name='owner',
-            field=models.CharField(choices=[('NHS Digital', 'NHS Digital'), ('Various', 'Various')], default='NHS Digital', max_length=255),
+            model_name="database",
+            name="owner",
+            field=models.CharField(
+                choices=[("NHS Digital", "NHS Digital"), ("Various", "Various")],
+                default="NHS Digital",
+                max_length=255,
+            ),
             preserve_default=False,
-        ),
+        )
     ]

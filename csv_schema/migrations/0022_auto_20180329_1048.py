@@ -5,13 +5,8 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0021_auto_20180327_1636'),
-    ]
+    dependencies = [("csv_schema", "0021_auto_20180327_1636")]
 
     operations = [
-        migrations.AlterModelOptions(
-            name='grouping',
-            options={'ordering': ['name']},
-        ),
+        migrations.AlterModelOptions(name="grouping", options={"ordering": ["name"]})
     ]

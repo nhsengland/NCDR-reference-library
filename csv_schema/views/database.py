@@ -6,8 +6,8 @@ from .base import ViewableItems
 
 class DatabaseDetail(ViewableItems, DetailView):
     model = Database
-    slug_url_kwarg = 'db_name'
-    slug_field = 'name'
+    slug_url_kwarg = "db_name"
+    slug_field = "name"
     template_name = "database_detail.html"
 
 

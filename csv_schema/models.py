@@ -27,15 +27,13 @@ class DatabaseQueryset(BaseQuerySet):
     def viewable(self, user):
         """Returns all Databases with Schemas that contain viewable Tables."""
         schemas = Schema.objects.filter(tables__in=Table.objects.viewable(user))
-        return (self.filter(schemas__in=schemas)
-                    .distinct()
-                    .order_by(Lower('display_name')))
+        return (
+            self.filter(schemas__in=schemas).distinct().order_by(Lower("display_name"))
+        )
 
 
 class Database(BaseModel):
-    SEARCH_FIELDS = [
-        "display_name", "name", "description", "link"
-    ]
+    SEARCH_FIELDS = ["display_name", "name", "description", "link"]
     name = models.CharField(max_length=255, unique=True)
     display_name = models.TextField(blank=True, null=True)
     description = models.TextField(default="")
@@ -45,7 +43,7 @@ class Database(BaseModel):
     objects = DatabaseQueryset.as_manager()
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -82,33 +80,33 @@ class TableQueryset(BaseQuerySet):
             return self
 
         populated_columns = Column.objects.viewable(user)
-        populated_tables = populated_columns.values_list(
-            "table_id", flat=True
-        ).distinct().order_by(Lower(''))
-        return self.filter(
-            id__in=populated_tables
+        populated_tables = (
+            populated_columns.values_list("table_id", flat=True)
+            .distinct()
+            .order_by(Lower(""))
         )
+        return self.filter(id__in=populated_tables)
 
 
 class Table(BaseModel):
-    SEARCH_FIELDS = [
-        "name", "description", "link"
-    ]
+    SEARCH_FIELDS = ["name", "description", "link"]
 
     name = models.CharField(max_length=255)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
     is_table = models.BooleanField(
         verbose_name="Table or View",
-        choices=((True, 'Table'), (False, 'View'),),
+        choices=((True, "Table"), (False, "View")),
         default=True,
     )
     date_range = models.CharField(max_length=255, blank=True, default="")
 
-    schema = models.ForeignKey("Schema", on_delete=models.CASCADE, related_name="tables")
+    schema = models.ForeignKey(
+        "Schema", on_delete=models.CASCADE, related_name="tables"
+    )
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
         unique_together = ["name", "schema"]
 
     def __str__(self):
@@ -126,29 +124,23 @@ class Table(BaseModel):
 
 class GroupingQueryset(BaseQuerySet):
     def viewable(self, user):
-        return self.filter(
-            dataelement__in=DataElement.objects.viewable(
-                user
-            )
-        ).distinct().order_by(Lower('name'))
+        return (
+            self.filter(dataelement__in=DataElement.objects.viewable(user))
+            .distinct()
+            .order_by(Lower("name"))
+        )
 
 
 class Grouping(BaseModel, models.Model):
-    SEARCH_FIELDS = [
-        "name", "description"
-    ]
+    SEARCH_FIELDS = ["name", "description"]
 
     objects = GroupingQueryset.as_manager()
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(
-        max_length=255, unique=True, blank=True
-    )
-    description = models.CharField(
-        max_length=255, null=True, blank=True
-    )
+    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    description = models.CharField(max_length=255, null=True, blank=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -168,15 +160,11 @@ class DataElementQueryset(BaseQuerySet):
             return self
 
         populated_columns = Column.objects.viewable(user)
-        return self.filter(
-            column__in=populated_columns
-        ).distinct()
+        return self.filter(column__in=populated_columns).distinct()
 
 
 class DataElement(BaseModel, models.Model):
-    SEARCH_FIELDS = [
-        "name", "description"
-    ]
+    SEARCH_FIELDS = ["name", "description"]
     objects = DataElementQueryset.as_manager()
 
     name = models.CharField(max_length=255, unique=True)
@@ -199,7 +187,7 @@ class DataElement(BaseModel, models.Model):
             return self.column_set.first().description
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
@@ -214,11 +202,9 @@ class ColumnQueryset(BaseQuerySet):
 
     def viewable(self, user):
         if user.is_authenticated and user.preview_mode:
-            return self.order_by(Lower('name'))
+            return self.order_by(Lower("name"))
         else:
-            return self.filter(
-                published=True
-            ).order_by(Lower('name'))
+            return self.filter(published=True).order_by(Lower("name"))
 
     def to_json(self):
         result = []
@@ -229,48 +215,40 @@ class ColumnQueryset(BaseQuerySet):
 
 class Column(BaseModel, models.Model):
     DATA_TYPE_CHOICES = (
-        ("datetime", "datetime",),
-        ("date", "date",),
-        ("int", "int",),
-        ("bigint", "bigint",),
-        ("varchar(1)", "varchar(1)",),
-        ("varchar(2)", "varchar(2)",),
-        ("varchar(3)", "varchar(3)",),
-        ("varchar(4)", "varchar(4)",),
-        ("varchar(5)", "varchar(5)",),
-        ("varchar(6)", "varchar(6)",),
-        ("varchar(7)", "varchar(7)",),
-        ("varchar(8)", "varchar(8)",),
-        ("varchar(9)", "varchar(9)",),
-        ("varchar(10)", "varchar(10)",),
-        ("varchar(11)", "varchar(11)",),
-        ("varchar(12)", "varchar(12)",),
-        ("varchar(13)", "varchar(13)",),
-        ("varchar(14)", "varchar(14)",),
-        ("varchar(15)", "varchar(15)",),
-        ("varchar(16)", "varchar(16)",),
-        ("varchar(17)", "varchar(17)",),
-        ("varchar(18)", "varchar(18)",),
-        ("varchar(19)", "varchar(19)",),
-        ("varchar(20)", "varchar(20)",),
-        ("varchar(50)", "varchar(50)",),
-        ("varchar(100)", "varchar(100)",),
+        ("datetime", "datetime"),
+        ("date", "date"),
+        ("int", "int"),
+        ("bigint", "bigint"),
+        ("varchar(1)", "varchar(1)"),
+        ("varchar(2)", "varchar(2)"),
+        ("varchar(3)", "varchar(3)"),
+        ("varchar(4)", "varchar(4)"),
+        ("varchar(5)", "varchar(5)"),
+        ("varchar(6)", "varchar(6)"),
+        ("varchar(7)", "varchar(7)"),
+        ("varchar(8)", "varchar(8)"),
+        ("varchar(9)", "varchar(9)"),
+        ("varchar(10)", "varchar(10)"),
+        ("varchar(11)", "varchar(11)"),
+        ("varchar(12)", "varchar(12)"),
+        ("varchar(13)", "varchar(13)"),
+        ("varchar(14)", "varchar(14)"),
+        ("varchar(15)", "varchar(15)"),
+        ("varchar(16)", "varchar(16)"),
+        ("varchar(17)", "varchar(17)"),
+        ("varchar(18)", "varchar(18)"),
+        ("varchar(19)", "varchar(19)"),
+        ("varchar(20)", "varchar(20)"),
+        ("varchar(50)", "varchar(50)"),
+        ("varchar(100)", "varchar(100)"),
     )
 
     class Meta:
-        ordering = ['name']
+        ordering = ["name"]
         verbose_name = "Column"
-        unique_together = [
-            "name",
-            "table",
-            "data_element",
-            "is_derived_item",
-            "link",
-        ]
+        unique_together = ["name", "table", "data_element", "is_derived_item", "link"]
 
-    SEARCH_FIELDS = [
-        "name", "description"
-    ]
+    SEARCH_FIELDS = ["name", "description"]
 
     objects = ColumnQueryset.as_manager()
 
@@ -306,7 +284,9 @@ class Column(BaseModel, models.Model):
 
     @classmethod
     def get_unpublished_list_url(cls):
-        return reverse("unpublished_list", kwargs={"model_name": cls.get_model_api_name()})
+        return reverse(
+            "unpublished_list", kwargs={"model_name": cls.get_model_api_name()}
+        )
 
     @classmethod
     def get_publish_all_url(cls):
@@ -339,9 +319,7 @@ class Column(BaseModel, models.Model):
             the tables are sorted by database name then name
         """
         other_columns = self.data_element.column_set.exclude(id=self.id)
-        other_columns = other_columns.order_by(
-            "table__name"
-        )
+        other_columns = other_columns.order_by("table__name")
         return other_columns.order_by("table__schema__database__name")
 
     def __str__(self):
@@ -351,15 +329,19 @@ class Column(BaseModel, models.Model):
 class SchemaQueryset(BaseQuerySet):
     def viewable(self, user):
         """Returns all Schemas that have Databases with Columns."""
-        return (self.filter(table__in=Table.objects.viewable(user))
-                    .distinct()
-                    .order_by(Lower("name")))
+        return (
+            self.filter(table__in=Table.objects.viewable(user))
+            .distinct()
+            .order_by(Lower("name"))
+        )
 
 
 class Schema(BaseModel, models.Model):
     name = models.TextField()
 
-    database = models.ForeignKey("Database", on_delete=models.CASCADE, related_name="schemas")
+    database = models.ForeignKey(
+        "Database", on_delete=models.CASCADE, related_name="schemas"
+    )
 
     objects = SchemaQueryset.as_manager()
 

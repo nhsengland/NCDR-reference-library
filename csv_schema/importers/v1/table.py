@@ -23,15 +23,9 @@ ONLY_HISTORIC = "Only Historic"
 PROVISIONAL_SCHEDULE = "Provisional Schedule"
 UPDATED_FREQUENCY = "Updated Frequency"
 
-EXPECTED_COLUMN_NAMES = set([
-    DATABASE,
-    SCHEMA,
-    TABLE,
-    TABLE_OR_VIEW,
-    DESCRIPTION,
-    DATE_RANGE,
-    LINK
-])
+EXPECTED_COLUMN_NAMES = set(
+    [DATABASE, SCHEMA, TABLE, TABLE_OR_VIEW, DESCRIPTION, DATE_RANGE, LINK]
+)
 
 DATABASE_NAME_TO_DISPLAY_NAME = {
     "NHSE_111": "NHS 111 Data Set",
@@ -53,7 +47,7 @@ DATABASE_NAME_TO_OWNER = {
     "NHSE_IAPT_AnnualRefresh": NHS_DIGITAL,
     "NHSE_Mental_Health": NHS_DIGITAL,
     "NHSE_SUSPlus_Live": NHS_DIGITAL,
-    "NHSE_Reference": VARIOUS
+    "NHSE_Reference": VARIOUS,
 }
 
 
@@ -64,16 +58,10 @@ def process_row(csv_row):
     if not csv_row[TABLE] or csv_row[TABLE] == NA:
         if csv_row[SCHEMA].strip():
             return
-        obj, created = models.Database.objects.get_or_create(
-            name=csv_row[DATABASE]
-        )
+        obj, created = models.Database.objects.get_or_create(name=csv_row[DATABASE])
         if created:
-            obj.owner = DATABASE_NAME_TO_OWNER.get(
-                csv_row[DATABASE], None
-            )
-            obj.display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(
-                csv_row[DATABASE]
-            )
+            obj.owner = DATABASE_NAME_TO_OWNER.get(csv_row[DATABASE], None)
+            obj.display_name = DATABASE_NAME_TO_DISPLAY_NAME.get(csv_row[DATABASE])
 
             obj.save()
     else:
@@ -82,13 +70,8 @@ def process_row(csv_row):
         ).first()
 
         if not obj:
-            db, _ = models.Database.objects.get_or_create(
-                name=csv_row[DATABASE]
-            )
-            obj = models.Table.objects.create(
-                database=db,
-                name=csv_row[TABLE]
-            )
+            db, _ = models.Database.objects.get_or_create(name=csv_row[DATABASE])
+            obj = models.Table.objects.create(database=db, name=csv_row[TABLE])
 
         obj.date_range = csv_row[DATE_RANGE]
         obj.is_table = csv_row[TABLE_OR_VIEW] == "Table"
@@ -105,9 +88,7 @@ def validate_csv_structure(reader, file_name):
     missing = EXPECTED_COLUMN_NAMES - field_names
 
     if missing:
-        raise ValueError(
-            'missing fields %s in %s' % (", ".join(missing), file_name)
-        )
+        raise ValueError("missing fields %s in %s" % (", ".join(missing), file_name))
 
 
 @transaction.atomic

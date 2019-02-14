@@ -18,8 +18,9 @@ class DataElementDetail(ViewableItems, ListView):
 
     def get(self, request, *args, **kwargs):
         try:
-            self.object = (DataElement.objects.viewable(request.user)
-                                              .get(slug=self.kwargs['slug']))
+            self.object = DataElement.objects.viewable(request.user).get(
+                slug=self.kwargs["slug"]
+            )
         except DataElement.DoesNotExist:
             raise Http404
 
@@ -27,7 +28,7 @@ class DataElementDetail(ViewableItems, ListView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['data_element'] = self.object
+        context["data_element"] = self.object
         return context
 
     def get_queryset(self):

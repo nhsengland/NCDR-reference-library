@@ -6,4 +6,4 @@ from csv_schema import models
 class ColumnSerializer(serializers.ModelSerializer):
     class Meta:
         model = models.Column
-        exclude = ('created', 'updated',)
+        exclude = ("created", "updated")

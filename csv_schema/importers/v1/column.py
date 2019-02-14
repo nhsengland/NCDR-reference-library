@@ -38,22 +38,22 @@ LAST_UPDATE_DATE = "Last_Update_Date"
 LAST_UPDATE_BY = "Last_Update_By"
 
 # we skip these columns as requested
-TO_SKIP = [
-    "DB_Col_Group", "DB_Col_Name", DATA_ELEMENT, CREATED_DATE
-]
+TO_SKIP = ["DB_Col_Group", "DB_Col_Name", DATA_ELEMENT, CREATED_DATE]
 
 
 # These are the minimum expected csv columns, if they're missing, blow up
-EXPECTED_COLUMN_NAMES = set([
-    COLUMN_NAME,
-    DATA_DICTIONARY_DESCRIPTION,
-    DATA_TYPE,
-    IS_DERIVED_ITEM,
-    DERIVATION_METHODOLOGY,
-    PRESENT_IN_TABLES,
-    LINK,
-    DATA_ELEMENT
-])
+EXPECTED_COLUMN_NAMES = set(
+    [
+        COLUMN_NAME,
+        DATA_DICTIONARY_DESCRIPTION,
+        DATA_TYPE,
+        IS_DERIVED_ITEM,
+        DERIVATION_METHODOLOGY,
+        PRESENT_IN_TABLES,
+        LINK,
+        DATA_ELEMENT,
+    ]
+)
 
 CSV_FIELD_TO_COLUMN_FIELD = {
     DEFINITION_ID: "definition_id",
@@ -64,21 +64,23 @@ CSV_FIELD_TO_COLUMN_FIELD = {
     LINK: "link",
     TECHNICAL_CHECK: "technical_check",
     "Author": "author",
-    "Created_Date": "created_date_ext"
+    "Created_Date": "created_date_ext",
 }
 
-IGNORED_FIELDS = set([
-    PRESENT_IN_TABLES,
-    BUSINESS_CHECK,
-    RK_2,
-    SCHEMA,
-    CHECKED,
-    GROUPING,
-    LAST_UPDATE_DATE,
-    LAST_UPDATE_BY,
-    COLUMN_NAME,
-    LINK_TYPE
-])
+IGNORED_FIELDS = set(
+    [
+        PRESENT_IN_TABLES,
+        BUSINESS_CHECK,
+        RK_2,
+        SCHEMA,
+        CHECKED,
+        GROUPING,
+        LAST_UPDATE_DATE,
+        LAST_UPDATE_BY,
+        COLUMN_NAME,
+        LINK_TYPE,
+    ]
+)
 
 
 def process_is_derived(value):
@@ -86,11 +88,7 @@ def process_is_derived(value):
         # don't try and save an empty string
         value = None
     elif value.lower() not in ["yes - external", "yes - ncdr", "no"]:
-        raise ValueError(
-            "Unable to recognise is derived item {}".format(
-                value
-            )
-        )
+        raise ValueError("Unable to recognise is derived item {}".format(value))
     else:
         value = not value.lower() == "no"
 
@@ -120,9 +118,7 @@ def get_tables(csv_row):
                 raise ValueError(err.format(full_table_name))
         else:
             db_name, table_name = full_table_name.split(".dbo.")
-        db, _ = models.Database.objects.get_or_create(
-            name=db_name.strip()
-        )
+        db, _ = models.Database.objects.get_or_create(name=db_name.strip())
         table, _ = models.Table.objects.get_or_create(
             name=table_name.strip(), database=db
         )
@@ -146,17 +142,13 @@ def process_row(csv_row, file_name):
         column = models.Column(
             name=csv_row[COLUMN_NAME],
             table=table,
-            slug="{}{}".format(
-                slugify(csv_row[COLUMN_NAME]), idx
-            )
+            slug="{}{}".format(slugify(csv_row[COLUMN_NAME]), idx),
         )
         # auto publish anything coming in via the csv api
         column.published = True
         field_names = csv_row.keys()
 
-        known_fields = EXPECTED_COLUMN_NAMES.union(
-            CSV_FIELD_TO_COLUMN_FIELD.keys()
-        )
+        known_fields = EXPECTED_COLUMN_NAMES.union(CSV_FIELD_TO_COLUMN_FIELD.keys())
         for field_name in field_names:
             value = csv_row[field_name].strip()
             field_name = field_name.strip()
@@ -164,7 +156,11 @@ def process_row(csv_row, file_name):
             if field_name in TO_SKIP:
                 continue
 
-            if field_name == TABLE_NAME or field_name == DATABASE or field_name == DATA_ELEMENT:
+            if (
+                field_name == TABLE_NAME
+                or field_name == DATABASE
+                or field_name == DATA_ELEMENT
+            ):
                 # these fields are the Foreign keys handled above.
                 continue
 
@@ -181,9 +177,7 @@ def process_row(csv_row, file_name):
 
             if value and field_name not in known_fields:
                 e = "We are not saving a value for {} in {}, should we be?"
-                raise ValueError(
-                    e.format(field_name, file_name)
-                )
+                raise ValueError(e.format(field_name, file_name))
             elif not value and field_name not in CSV_FIELD_TO_COLUMN_FIELD:
                 continue
 
@@ -201,7 +195,7 @@ def process_row(csv_row, file_name):
 
             # don't accidentally put an empty space where a None should be
             if field_name == DEFINITION_ID:
-                if value == '':
+                if value == "":
                     value = None
 
             setattr(column, db_column_name, value)
@@ -215,9 +209,7 @@ def validate_csv_structure(reader, file_name):
     missing = EXPECTED_COLUMN_NAMES - field_names
 
     if missing:
-        raise ValueError(
-            'missing fields %s in %s' % (", ".join(missing), file_name)
-        )
+        raise ValueError("missing fields %s in %s" % (", ".join(missing), file_name))
 
 
 @transaction.atomic

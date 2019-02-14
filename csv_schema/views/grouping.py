@@ -11,7 +11,9 @@ class GroupingDetail(ViewableItems, DetailView):
     def get_context_data(self, **kwargs):
         # get the list of tables in this database
         context = super().get_context_data(**kwargs)
-        context["groupings"] = Grouping.objects.viewable(self.request.user).order_by('name')
+        context["groupings"] = Grouping.objects.viewable(self.request.user).order_by(
+            "name"
+        )
         return context
 
 

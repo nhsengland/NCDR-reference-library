@@ -9,13 +9,13 @@ class MetricDetail(DetailView):
 
     def get_queryset(self):
         return self.model.objects.select_related(
-            'denominator',
-            'metric_lead',
-            'numerator',
-            'organisation_owner',
-            'report',
-            'team_lead',
-            'theme',
+            "denominator",
+            "metric_lead",
+            "numerator",
+            "organisation_owner",
+            "report",
+            "team_lead",
+            "theme",
         )
 
 

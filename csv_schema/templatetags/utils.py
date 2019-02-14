@@ -5,9 +5,9 @@ from django.urls import resolve
 register = template.Library()
 
 
-@register.filter(name='chunks')
+@register.filter(name="chunks")
 def chunks(iterable, chunk_size):
-    if not hasattr(iterable, '__iter__'):
+    if not hasattr(iterable, "__iter__"):
         # can't use "return" and "yield" in the same function
         yield iterable
     else:

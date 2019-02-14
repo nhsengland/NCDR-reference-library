@@ -6,27 +6,26 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0008_remove_database_owner'),
-    ]
+    dependencies = [("csv_schema", "0008_remove_database_owner")]
 
     operations = [
         migrations.AlterModelOptions(
-            name='column',
-            options={'ordering': ['name'], 'verbose_name': 'Element'},
+            name="column", options={"ordering": ["name"], "verbose_name": "Element"}
         ),
-        migrations.RemoveField(
-            model_name='column',
-            name='grouping',
-        ),
+        migrations.RemoveField(model_name="column", name="grouping"),
         migrations.AddField(
-            model_name='grouping',
-            name='description',
+            model_name="grouping",
+            name="description",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
         migrations.AddField(
-            model_name='mapping',
-            name='grouping',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='csv_schema.Grouping'),
+            model_name="mapping",
+            name="grouping",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="csv_schema.Grouping",
+            ),
         ),
     ]

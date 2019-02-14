@@ -6,13 +6,6 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0023_remove_userprofile'),
-    ]
+    dependencies = [("csv_schema", "0023_remove_userprofile")]
 
-    operations = [
-        migrations.AlterUniqueTogether(
-            name='table',
-            unique_together=set(),
-        ),
-    ]
+    operations = [migrations.AlterUniqueTogether(name="table", unique_together=set())]

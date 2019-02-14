@@ -33,7 +33,7 @@ class PublishAll(LoginRequiredMixin, View):
         unpublished_count = unpublished.count()
         unpublished.update(published=True)
 
-        messages.success(self.request, '{} published'.format(unpublished_count))
+        messages.success(self.request, "{} published".format(unpublished_count))
 
         return redirect(request.GET["next"])
 

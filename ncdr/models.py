@@ -18,9 +18,7 @@ MOST_RECENT = "Most Recent"
 
 class BaseQuerySet(models.QuerySet):
     def viewable(self, user):
-        raise NotImplementedError(
-            "we should be implementing a 'viewable' method"
-        )
+        raise NotImplementedError("we should be implementing a 'viewable' method")
 
     def search_most_recent(self, search_param, user):
         filters = []
@@ -66,21 +64,15 @@ class BaseQuerySet(models.QuerySet):
 class BaseModel(models.Model):
     @classmethod
     def get_form_display_template(cls):
-        return "forms/display_templates/{}.html".format(
-            cls.get_model_api_name()
-        )
+        return "forms/display_templates/{}.html".format(cls.get_model_api_name())
 
     @classmethod
     def get_form_description_template(cls):
-        return "forms/descriptions/{}.html".format(
-            cls.get_model_api_name()
-        )
+        return "forms/descriptions/{}.html".format(cls.get_model_api_name())
 
     @classmethod
     def get_form_template(cls):
-        return "forms/model_forms/{}.html".format(
-            cls.get_model_api_name()
-        )
+        return "forms/model_forms/{}.html".format(cls.get_model_api_name())
 
     @classmethod
     def get_model_api_name(cls):
@@ -103,10 +95,14 @@ class BaseModel(models.Model):
         return "search/{}.html".format(cls.get_model_api_name())
 
     def get_edit_url(self):
-        return reverse("edit", kwargs={"pk": self.id, "model_name": self.get_model_api_name()})
+        return reverse(
+            "edit", kwargs={"pk": self.id, "model_name": self.get_model_api_name()}
+        )
 
     def get_delete_url(self):
-        return reverse("delete", kwargs={"pk": self.id, "model_name": self.get_model_api_name()})
+        return reverse(
+            "delete", kwargs={"pk": self.id, "model_name": self.get_model_api_name()}
+        )
 
     def get_display_name(self):
         return self.name

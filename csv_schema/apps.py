@@ -5,4 +5,4 @@ from django.apps import AppConfig
 
 
 class CsvSchemaConfig(AppConfig):
-    name = 'csv_schema'
+    name = "csv_schema"

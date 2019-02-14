@@ -6,20 +6,17 @@ from csv_schema import models
 class TableForm(forms.ModelForm):
     class Meta:
         model = models.Table
-        fields = '__all__'
-        widgets = {
-            'is_table': forms.RadioSelect
-        }
+        fields = "__all__"
+        widgets = {"is_table": forms.RadioSelect}
 
 
 class DatabaseForm(forms.ModelForm):
     class Meta:
         model = models.Database
-        fields = '__all__'
+        fields = "__all__"
 
 
 class GroupedModelChoiceField(forms.ModelChoiceField):
-
     def optgroup_from_instance(self, obj):
         return ""
 
@@ -108,18 +105,16 @@ class ColumnForm(forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['table'] = ColumnSelectField(
-            queryset=models.Table.objects.all()
-        )
+        self.fields["table"] = ColumnSelectField(queryset=models.Table.objects.all())
 
 
 class DataElementForm(forms.ModelForm):
     class Meta:
         model = models.DataElement
-        fields = '__all__'
+        fields = "__all__"
 
 
 class GroupingForm(forms.ModelForm):
     class Meta:
         model = models.Grouping
-        exclude = ['slug']
+        exclude = ["slug"]

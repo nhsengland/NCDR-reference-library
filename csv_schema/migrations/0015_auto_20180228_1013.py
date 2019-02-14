@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0014_auto_20180228_1012'),
-    ]
+    dependencies = [("csv_schema", "0014_auto_20180228_1012")]
 
     operations = [
         migrations.AlterField(
-            model_name='grouping',
-            name='slug',
+            model_name="grouping",
+            name="slug",
             field=models.SlugField(max_length=255, unique=True),
-        ),
+        )
     ]

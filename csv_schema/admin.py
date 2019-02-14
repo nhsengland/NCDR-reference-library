@@ -9,25 +9,23 @@ from csv_schema import models
 
 class IsTechnicalCheckedFilter(admin.SimpleListFilter):
 
-    title = 'Those That Have Been Technical Checked'
+    title = "Those That Have Been Technical Checked"
 
-    parameter_name = 'technical_check'
+    parameter_name = "technical_check"
 
     def lookups(self, request, model_admin):
 
-        return (
-            ('yes', 'Yes'),
-            ('no', 'No'),
-        )
+        return (("yes", "Yes"), ("no", "No"))
 
     def queryset(self, request, queryset):
-        if self.value() == 'yes':
-            return queryset.filter(
-                technical_check__isnull=False).exclude(technical_check='')
+        if self.value() == "yes":
+            return queryset.filter(technical_check__isnull=False).exclude(
+                technical_check=""
+            )
 
-        if self.value() == 'no':
+        if self.value() == "no":
             return queryset.filter(
-                Q(technical_check__isnull=True) | Q(technical_check__exact='')
+                Q(technical_check__isnull=True) | Q(technical_check__exact="")
             )
 
 
@@ -37,8 +35,8 @@ class DatabaseFilter(admin.SimpleListFilter):
     parameter_name = "database__name"
 
     def lookups(self, request, model_admin):
-        db_names = models.Database.objects.all().values_list('name', flat=True)
-        return [(i, i,) for i in db_names]
+        db_names = models.Database.objects.all().values_list("name", flat=True)
+        return [(i, i) for i in db_names]
 
     def queryset(self, request, queryset):
         value = self.value()
@@ -52,12 +50,12 @@ class DatabaseFilter(admin.SimpleListFilter):
 class ColumnAdmin(admin.ModelAdmin):
     list_filter = [IsTechnicalCheckedFilter]
     list_display = [
-        'name',
-        'data_type',
-        'get_table_name',
-        'get_database_name',
-        'author',
-        'technical_check'
+        "name",
+        "data_type",
+        "get_table_name",
+        "get_database_name",
+        "author",
+        "technical_check",
     ]
 
     def get_table_name(self, obj):
