@@ -77,42 +77,35 @@ class AbstractViewTestCase(TestCase):
             self.create_csv_column(**default_kwargs)
 
 
-class PreviewModeSwitchTestCase(AbstractViewTestCase):
+class ToggleModeSwitchTestCase(AbstractViewTestCase):
     def test_user_authenticated_on(self):
-        url = reverse("preview_mode", kwargs={"preview_mode": 1})
+        url = reverse("toggle-preview-mode")
         url = url + "?next=/"
         self.login()
 
-        self.assertFalse(User.objects.get().preview_mode)
+        self.assertFalse(User.objects.first().preview_mode)
 
         result = self.client.get(url)
 
-        self.assertEqual(
-            result.url, "/"
-        )
-        self.assertTrue(User.objects.get().preview_mode)
+        self.assertEqual(result.url, "/")
+        self.assertTrue(User.objects.first().preview_mode)
 
     def test_user_authenticated_off(self):
-        url = reverse("preview_mode", kwargs={"preview_mode": 0})
+        url = reverse("toggle-preview-mode")
         url = url + "?next=/"
         self.login()
-        self.assertFalse(self.user.preview_mode)
+        self.assertFalse(User.objects.first().preview_mode)
 
-        self.user.preview_mode = True
-        self.user.save()
+        self.user.toggle_preview_mode()
 
         result = self.client.get(url)
-        self.assertEqual(
-            result.url, "/"
-        )
-        self.assertFalse(User.objects.get().preview_mode)
+        self.assertEqual(result.url, "/")
+        self.assertFalse(User.objects.first().preview_mode)
 
     def test_user_not_authenticated(self):
-        url = reverse("preview_mode", kwargs={"preview_mode": 1})
+        url = reverse("toggle-preview-mode")
         result = self.client.get(url)
-        self.assertEqual(
-            result.url, '/accounts/login/?next=/form/preview_mode/1'
-        )
+        self.assertEqual(result.url, '/accounts/login/?next=/toggle-preview-mode')
 
 
 class PublishAllTestCase(AbstractViewTestCase):
