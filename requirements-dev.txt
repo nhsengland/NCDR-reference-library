@@ -1,4 +1,4 @@
-ansible==2.4.1.0
+ansible==2.7.7
 boto3==1.6.11
 flake8
 ipdb
