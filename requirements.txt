@@ -1,4 +1,4 @@
-Django==2.1.5
+Django==2.1.7
 django-appconf==1.0.2
 django-bootstrap-form==3.4
 django-compressor==2.2
