@@ -11,20 +11,12 @@
 
       <div class="row content-offset-below-20">
         <div class="col-sm-10">
-          <h1>
-            <div class="row">
-              <div class="col-md-12">
-                {{ object.name }}
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-md-12">
-                <small>
-                  {{ object.table.database.get_display_name }} / {{ object.table.name }}
-                </small>
-              </div>
-            </div>
-          </h1>
+          <h1>{{ object.name }}</h1>
+
+          <span class="faded small">
+            {{ object.table.schema.database.get_display_name }} / {{ object.table.schema }} / {{ object.table.name }}
+          </span>
+
         </div>
       </div>
     </div>
