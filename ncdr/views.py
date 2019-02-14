@@ -83,7 +83,14 @@ class KwargModelMixin(object):
         return self.get_item("model")
 
 
-class AddMany(LoginRequiredMixin, KwargModelMixin, CreateView):
+class SearchableModelsMixin:
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["searchable_models"] = searchable_models
+        return context
+
+
+class AddMany(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, CreateView):
     def get_template_names(self):
         return [self.model.get_create_template()]
 
@@ -130,7 +137,7 @@ class AddMany(LoginRequiredMixin, KwargModelMixin, CreateView):
         return self.model.get_edit_list_url()
 
 
-class Delete(LoginRequiredMixin, KwargModelMixin, DeleteView):
+class Delete(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, DeleteView):
     template_name = "forms/delete.html"
 
     def delete(self, *args, **kwargs):
@@ -146,7 +153,7 @@ class Delete(LoginRequiredMixin, KwargModelMixin, DeleteView):
         return self.model.get_edit_list_url()
 
 
-class Edit(LoginRequiredMixin, KwargModelMixin, UpdateView):
+class Edit(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, UpdateView):
     template_name = "forms/update.html"
 
     def form_valid(self, form):
@@ -165,7 +172,7 @@ class Edit(LoginRequiredMixin, KwargModelMixin, UpdateView):
             return self.model.get_edit_list_url()
 
 
-class List(LoginRequiredMixin, KwargModelMixin, ListView):
+class List(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, ListView):
     paginate_by = 100
     template_name = "forms/edit_list.html"
 
