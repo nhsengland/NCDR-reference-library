@@ -49,14 +49,15 @@
       <div class="container content-offset-10">
         <div class="row">
           <div class="col-md-12 text-center">
-          {% if request.user.preview_mode %}
-              You are currently viewing a preview version of the site
-              <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
-              <a class="btn pull-right relative" href="{{ models.csv_schema.get_url_preview_mode_off }}?next={{ request.get_full_path }}">View Normal Site</a>
-          {% else %}
-              <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
-              <a class="btn pull-right relative" href="{{ models.csv_schema.get_url_preview_mode_on }}?next={{ request.get_full_path }}">Preview Site</a>
-          {% endif %}
+            {% if request.user.preview_mode %}You are currently viewing a preview version of the site{% endif %}
+            <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
+            <a class="btn pull-right relative" href="{% url 'toggle-preview-mode' %}?next={{ request.get_full_path }}">
+              {% if request.user.preview_mode %}
+              View Normal Site
+              {% else %}
+              Preview Site
+              {% endif %}
+            </a>
           {% if view.model %}
             {% if object %}
               {% if request|url_name == 'edit' %}
