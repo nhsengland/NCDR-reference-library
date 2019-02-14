@@ -27,7 +27,7 @@ This is the template that is used by everything on the
         <div class="col-md-7">
           {% block form_title %}{% endblock %}
         </div>
-        <div class="col-md-5">
+        <div class="col-md-5 content-offset-below-20">
           {% block form_actions %}
             <nav class="form-action-nav">
               <a href="{{ view.model.get_edit_list_url }}" class="{% if request.get_full_path != view.model.get_add_url %}active-form {% endif %} col-md-6 text-center">
