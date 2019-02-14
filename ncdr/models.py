@@ -202,3 +202,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def has_module_perms(self, module):
         return _user_has_module_perms(self, module)
+
+    def toggle_preview_mode(self):
+        """Toggle the preview_mode boolean"""
+        self.preview_mode = not self.preview_mode
+        self.save()
