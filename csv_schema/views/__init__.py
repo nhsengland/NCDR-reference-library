@@ -2,6 +2,7 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.views.generic import DetailView, RedirectView, View
 
 from ..models import Column, Database
@@ -37,14 +38,12 @@ class PublishAll(LoginRequiredMixin, View):
         return redirect(request.GET["next"])
 
 
-class PreviewModeSwitch(LoginRequiredMixin, RedirectView):
-    """ Switch the preview mode on or off for a user
-        gets passed in an integer that we boolerise™
-    """
-    def get_redirect_url(self, *args, **kwargs):
-        return self.request.GET["next"]
+class TogglePreviewMode(LoginRequiredMixin, RedirectView):
+    """Toggle preview_mode on the current user."""
 
     def get(self, request, *args, **kwargs):
-        self.request.user.preview_mode = bool(self.kwargs["preview_mode"])
-        self.request.user.save()
+        request.user.toggle_preview_mode()
         return super().get(request, *args, **kwargs)
+
+    def get_redirect_url(self):
+        return self.request.GET.get("next", reverse("index_view"))
