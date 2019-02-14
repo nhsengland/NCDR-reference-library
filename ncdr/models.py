@@ -189,14 +189,6 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     objects = UserManager()
 
-    @classmethod
-    def get_url_preview_mode_off(cls):
-        return reverse("preview_mode", kwargs={"preview_mode": 0})
-
-    @classmethod
-    def get_url_preview_mode_on(cls):
-        return reverse("preview_mode", kwargs={"preview_mode": 1})
-
     def has_perm(self, perm, obj=None):
         return _user_has_perm(self, perm, obj=obj)
 
