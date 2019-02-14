@@ -44,7 +44,10 @@ searchable_objects = {
         'create_form': forms.GroupingForm,
     },
 }
-searchable_models = [v["model"] for v in searchable_objects.values()]
+searchable_models = list(sorted(
+    (v["model"] for v in searchable_objects.values()),
+    key=lambda m: m.__name__.lower(),
+))
 
 
 class KwargModelMixin(object):
