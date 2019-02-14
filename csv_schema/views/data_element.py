@@ -1,4 +1,10 @@
+import functools
+import operator
+import string
+
+from django.db.models import Q
 from django.http import Http404
+from django.urls import reverse
 from django.views.generic import ListView
 
 from ..models import Column, DataElement
@@ -33,3 +39,29 @@ class DataElementList(ViewableItems, ListView):
     template_name = "data_element_list.html"
     NUMERIC = "0-9"
     paginate_by = 50
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset().viewable(self.request.user)
+
+        symbol = self.request.GET.get("letter")
+
+        if not symbol:
+            return qs
+
+        if symbol != self.NUMERIC:
+            return qs.filter(name__istartswith=symbol[0])
+
+        # handle the 0-9 case
+        startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
+        return qs.filter(functools.reduce(operator.or_, startswith_args))
+
+    def get_context_data(self, *args, **kwargs):
+        symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
+        other_pages = [
+            (symbol, reverse("data_element_list") + "?letter={}".format(symbol))
+            for symbol in symbols
+        ]
+
+        context = super().get_context_data(*args, **kwargs)
+        context["other_pages"] = other_pages
+        return context
