@@ -7,8 +7,9 @@ A viewer for the schema of the National Commissioning Data Repository
 
     1. git clone
     1. mkvirtualenv
-    1. pip install -r requirements.txt
-    1. ./manage.py loaddata data/fixtures/site_description.json
+    1. make setup
+    1. pre-commit install
+    1. python manage.py load_data
 
 Load in all existing csvs (stored in data/csvs):
 
