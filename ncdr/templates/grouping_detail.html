@@ -19,7 +19,7 @@
           </div>
         </div>
       {% endif %}
-      {% with object.dataelement_set.all|viewable:request as data_elements %}
+      {% with object.dataelement_set.all as data_elements %}
         {% for data_element in data_elements %}
           {% include 'partials/data_element.html' %}
         {% endfor %}

@@ -2,7 +2,7 @@ import functools
 import operator
 import string
 
-from django.db.models import Q
+from django.db.models import Prefetch, Q
 from django.http import Http404
 from django.urls import reverse
 from django.views.generic import ListView
@@ -42,7 +42,16 @@ class DataElementList(ViewableItems, ListView):
     paginate_by = 50
 
     def get_queryset(self, *args, **kwargs):
-        qs = super().get_queryset().viewable(self.request.user)
+        qs = (
+            super()
+            .get_queryset()
+            .viewable(self.request.user)
+            .prefetch_related(
+                Prefetch(
+                    "column_set", queryset=Column.objects.viewable(self.request.user)
+                )
+            )
+        )
 
         symbol = self.request.GET.get("letter")
 

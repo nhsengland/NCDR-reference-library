@@ -6,8 +6,8 @@
         {{ data_element.name }}
       </a>
       <small>
-        {% with data_element.column_set.all|viewable:request as columns %}
-          {{ columns.count }} Columns
+        {% with data_element.column_set.all as columns %}
+          {{ columns|length }} Columns
         {% endwith %}
       </small>
     </h3>
