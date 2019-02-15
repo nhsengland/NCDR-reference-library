@@ -37,15 +37,6 @@ class Command(BaseCommand):
         if version == "1":
             from ncdr.importers.v1 import column, grouping, table
 
-            table.load_file(os.path.join(path, "Database structure-Table.csv"))
-            column.load_file(os.path.join(path, "Definitions-Table.csv"))
-            grouping.load_file(os.path.join(path, "Groups-Table.csv"))
-
-            return
-
-        if version == "2":
-            from ncdr.importers.v2 import column, grouping, table
-
             table.load_file(os.path.join(path, "vw_Export_Standard_DB_Structure.csv"))
 
             column.load_file(os.path.join(path, "vw_Export_Standard_Definitions.csv"))
