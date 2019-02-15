@@ -19,7 +19,14 @@ from django.urls import include, path
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
-from .views import ColumnDetail, IndexView, Logout, TogglePreviewMode, api
+from .views import (
+    ColumnDetail,
+    IndexView,
+    Logout,
+    SetLatestVersion,
+    TogglePreviewMode,
+    api,
+)
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.forms import AddMany, Delete, Edit, FormRedirect, List
@@ -63,6 +70,11 @@ urlpatterns = [
     path("grouping/<slug:slug>/", GroupingDetail.as_view(), name="grouping_detail"),
     path("search/", SearchRedirect.as_view(), name="search_redirect"),
     path("search/<slug:model_name>/", Search.as_view(), name="search"),
+    path(
+        "switch-to-latest-version",
+        SetLatestVersion.as_view(),
+        name="switch-to-latest-version",
+    ),
     path(
         "toggle-preview-mode", TogglePreviewMode.as_view(), name="toggle-preview-mode"
     ),

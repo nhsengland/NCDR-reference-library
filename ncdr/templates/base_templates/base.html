@@ -58,6 +58,11 @@
               Preview Site
               {% endif %}
             </a>
+            {% if user.current_version != latest_version %}
+            <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">
+              Switch to Latest Version
+            </a>
+            {% endif %}
           {% if view.model %}
             {% if object %}
               {% if request|url_name == 'edit' %}

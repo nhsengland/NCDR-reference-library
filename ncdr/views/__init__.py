@@ -61,6 +61,17 @@ class Logout(LogoutView):
         return super().dispatch(request, *args, **kwargs)
 
 
+class SetLatestVersion(LoginRequiredMixin, RedirectView):
+    """Switch version for the current user to the latest Version."""
+
+    def get(self, request, *args, **kwargs):
+        request.user.switch_to_latest_version()
+        return super().get(request, *args, **kwargs)
+
+    def get_redirect_url(self):
+        return self.request.GET.get("next", reverse("index_view"))
+
+
 class TogglePreviewMode(LoginRequiredMixin, RedirectView):
     """Toggle preview_mode on the current user."""
 
