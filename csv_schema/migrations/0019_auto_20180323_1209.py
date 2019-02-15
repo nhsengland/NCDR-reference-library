@@ -5,20 +5,48 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0018_auto_20180309_1141'),
-    ]
+    dependencies = [("csv_schema", "0018_auto_20180309_1141")]
 
     operations = [
         migrations.AddField(
-            model_name='dataelement',
-            name='slug',
-            field=models.SlugField(default='', max_length=255, unique=True),
+            model_name="dataelement",
+            name="slug",
+            field=models.SlugField(default="", max_length=255, unique=True),
             preserve_default=False,
         ),
         migrations.AlterField(
-            model_name='column',
-            name='data_type',
-            field=models.CharField(choices=[('datetime', 'datetime'), ('date', 'date'), ('int', 'int'), ('bigint', 'bigint'), ('varchar(1)', 'varchar(1)'), ('varchar(2)', 'varchar(2)'), ('varchar(3)', 'varchar(3)'), ('varchar(4)', 'varchar(4)'), ('varchar(5)', 'varchar(5)'), ('varchar(6)', 'varchar(6)'), ('varchar(7)', 'varchar(7)'), ('varchar(8)', 'varchar(8)'), ('varchar(9)', 'varchar(9)'), ('varchar(10)', 'varchar(10)'), ('varchar(11)', 'varchar(11)'), ('varchar(12)', 'varchar(12)'), ('varchar(13)', 'varchar(13)'), ('varchar(14)', 'varchar(14)'), ('varchar(15)', 'varchar(15)'), ('varchar(16)', 'varchar(16)'), ('varchar(17)', 'varchar(17)'), ('varchar(18)', 'varchar(18)'), ('varchar(19)', 'varchar(19)'), ('varchar(20)', 'varchar(20)'), ('varchar(50)', 'varchar(50)'), ('varchar(100)', 'varchar(100)')], max_length=255),
+            model_name="column",
+            name="data_type",
+            field=models.CharField(
+                choices=[
+                    ("datetime", "datetime"),
+                    ("date", "date"),
+                    ("int", "int"),
+                    ("bigint", "bigint"),
+                    ("varchar(1)", "varchar(1)"),
+                    ("varchar(2)", "varchar(2)"),
+                    ("varchar(3)", "varchar(3)"),
+                    ("varchar(4)", "varchar(4)"),
+                    ("varchar(5)", "varchar(5)"),
+                    ("varchar(6)", "varchar(6)"),
+                    ("varchar(7)", "varchar(7)"),
+                    ("varchar(8)", "varchar(8)"),
+                    ("varchar(9)", "varchar(9)"),
+                    ("varchar(10)", "varchar(10)"),
+                    ("varchar(11)", "varchar(11)"),
+                    ("varchar(12)", "varchar(12)"),
+                    ("varchar(13)", "varchar(13)"),
+                    ("varchar(14)", "varchar(14)"),
+                    ("varchar(15)", "varchar(15)"),
+                    ("varchar(16)", "varchar(16)"),
+                    ("varchar(17)", "varchar(17)"),
+                    ("varchar(18)", "varchar(18)"),
+                    ("varchar(19)", "varchar(19)"),
+                    ("varchar(20)", "varchar(20)"),
+                    ("varchar(50)", "varchar(50)"),
+                    ("varchar(100)", "varchar(100)"),
+                ],
+                max_length=255,
+            ),
         ),
     ]

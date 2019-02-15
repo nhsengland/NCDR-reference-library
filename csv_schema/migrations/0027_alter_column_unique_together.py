@@ -5,13 +5,13 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0026_remove_column_slug'),
-    ]
+    dependencies = [("csv_schema", "0026_remove_column_slug")]
 
     operations = [
         migrations.AlterUniqueTogether(
-            name='column',
-            unique_together={('name', 'table', 'data_element', 'is_derived_item', 'link')},
-        ),
+            name="column",
+            unique_together={
+                ("name", "table", "data_element", "is_derived_item", "link")
+            },
+        )
     ]

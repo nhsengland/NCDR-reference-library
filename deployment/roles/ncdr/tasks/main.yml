@@ -60,11 +60,6 @@
     chdir: "{{ PROJECT_PATH}}"
   command: "{{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
 
-- name: Run Django collectstatic
-  args:
-    chdir: "{{ PROJECT_PATH}}"
-  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py collectstatic --noinput"
-
 - name: Run Django initial_load
   args:
     chdir: "{{ PROJECT_PATH}}"

@@ -6,22 +6,21 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0011_userprofile'),
-    ]
+    dependencies = [("csv_schema", "0011_userprofile")]
 
     operations = [
         migrations.AddField(
-            model_name='column',
-            name='table',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='csv_schema.Table'),
+            model_name="column",
+            name="table",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to="csv_schema.Table",
+            ),
         ),
-        migrations.RemoveField(
-            model_name='column',
-            name='tables',
-        ),
+        migrations.RemoveField(model_name="column", name="tables"),
         migrations.AlterUniqueTogether(
-            name='column',
-            unique_together={('name', 'table')},
+            name="column", unique_together={("name", "table")}
         ),
     ]

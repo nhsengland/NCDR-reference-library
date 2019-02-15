@@ -5,14 +5,12 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('ncdr', '0001_switch-to-custom-user-model'),
-    ]
+    dependencies = [("ncdr", "0001_switch-to-custom-user-model")]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='preview_mode',
+            model_name="user",
+            name="preview_mode",
             field=models.BooleanField(default=False),
-        ),
+        )
     ]

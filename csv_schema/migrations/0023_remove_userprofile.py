@@ -5,16 +5,9 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0022_auto_20180329_1048'),
-    ]
+    dependencies = [("csv_schema", "0022_auto_20180329_1048")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='userprofile',
-            name='user',
-        ),
-        migrations.DeleteModel(
-            name='UserProfile',
-        ),
+        migrations.RemoveField(model_name="userprofile", name="user"),
+        migrations.DeleteModel(name="UserProfile"),
     ]

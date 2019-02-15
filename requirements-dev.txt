@@ -1,5 +1,6 @@
 ansible==2.7.7
 boto3==1.6.11
+black
 flake8
 ipdb
 isort

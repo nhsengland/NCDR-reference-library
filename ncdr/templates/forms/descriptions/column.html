@@ -1,0 +1,21 @@
+<p>
+  Columns are, well database columns, that exist in Tables within the NCDR.
+</p>
+<p>
+  Added and editted elements are <strong>unpublished</strong> by default.
+</p>
+{% if not request.url == view.model.get_add_url %}
+  <p>
+    <a v-cloak href="{{ models.ncdr.column.get_unpublished_list_url }}">There are currently [[ state.unpublished ]]  unpublished columns</a>
+  </p>
+  {% if unpublished_columns %}
+    <p>
+      <form method="post" action="{{ models.ncdr.column.get_publish_all_url }}?next={{ request.get_full_path }}">
+        {% csrf_token %}
+        <button v-cloak class="btn btn-primary" type="submit">
+            Publish All [[ state.unpublished ]] Columns
+        </button>
+      </form>
+    </p>
+  {% endif %}
+{% endif %}

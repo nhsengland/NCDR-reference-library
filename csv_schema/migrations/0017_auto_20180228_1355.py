@@ -5,18 +5,15 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0016_auto_20180228_1257'),
-    ]
+    dependencies = [("csv_schema", "0016_auto_20180228_1257")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='dataelement',
-            name='grouping',
-        ),
+        migrations.RemoveField(model_name="dataelement", name="grouping"),
         migrations.AddField(
-            model_name='dataelement',
-            name='grouping',
-            field=models.ManyToManyField(blank=True, null=True, to='csv_schema.Grouping'),
+            model_name="dataelement",
+            name="grouping",
+            field=models.ManyToManyField(
+                blank=True, null=True, to="csv_schema.Grouping"
+            ),
         ),
     ]

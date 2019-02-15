@@ -6,27 +6,36 @@ import django.db.models.deletion
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0003_auto_20171214_1322'),
-    ]
+    dependencies = [("csv_schema", "0003_auto_20171214_1322")]
 
     operations = [
         migrations.CreateModel(
-            name='Grouping',
+            name="Grouping",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created', models.DateTimeField(auto_now_add=True)),
-                ('updated', models.DateTimeField(auto_now=True)),
-                ('name', models.CharField(max_length=255, unique=True)),
-                ('slug', models.SlugField(unique=True)),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("created", models.DateTimeField(auto_now_add=True)),
+                ("updated", models.DateTimeField(auto_now=True)),
+                ("name", models.CharField(max_length=255, unique=True)),
+                ("slug", models.SlugField(unique=True)),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
         ),
         migrations.AddField(
-            model_name='column',
-            name='grouping',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, to='csv_schema.Grouping'),
+            model_name="column",
+            name="grouping",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="csv_schema.Grouping",
+            ),
         ),
     ]

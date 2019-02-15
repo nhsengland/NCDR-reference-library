@@ -6,22 +6,14 @@ from django.db import migrations
 class Migration(migrations.Migration):
     atomic = False
 
-    dependencies = [
-        ('csv_schema', '0012_auto_20180227_1546'),
-    ]
+    dependencies = [("csv_schema", "0012_auto_20180227_1546")]
 
     operations = [
-        migrations.RenameModel(
-            old_name='Mapping',
-            new_name='DataElement',
-        ),
+        migrations.RenameModel(old_name="Mapping", new_name="DataElement"),
         migrations.AlterModelOptions(
-            name='column',
-            options={'ordering': ['name'], 'verbose_name': 'Column'},
+            name="column", options={"ordering": ["name"], "verbose_name": "Column"}
         ),
         migrations.RenameField(
-            model_name='column',
-            old_name='mapping',
-            new_name='data_element',
+            model_name="column", old_name="mapping", new_name="data_element"
         ),
     ]

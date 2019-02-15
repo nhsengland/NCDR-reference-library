@@ -5,13 +5,6 @@ from django.db import migrations
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0025_add_schema_to_database'),
-    ]
+    dependencies = [("csv_schema", "0025_add_schema_to_database")]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='column',
-            name='slug',
-        ),
-    ]
+    operations = [migrations.RemoveField(model_name="column", name="slug")]

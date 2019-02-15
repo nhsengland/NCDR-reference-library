@@ -7,8 +7,9 @@ A viewer for the schema of the National Commissioning Data Repository
 
     1. git clone
     1. mkvirtualenv
-    1. pip install -r requirements.txt
-    1. ./manage.py loaddata data/fixtures/site_description.json
+    1. make setup
+    1. pre-commit install
+    1. python manage.py load_data
 
 Load in all existing csvs (stored in data/csvs):
 
@@ -17,7 +18,7 @@ Load in all existing csvs (stored in data/csvs):
 
 When running the server locally, we are using sass. So installl sass and run
 
-    sass --watch csv_schema/static/css/styles.scss:csv_schema/static/css/styles.css -->
+    sass --watch ncdr/static/css/styles.scss:ncdr/static/css/styles.css -->
 
 
 ## deployment

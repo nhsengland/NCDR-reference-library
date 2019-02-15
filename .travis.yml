@@ -1,13 +1,19 @@
+dist: xenial
 language: python
+sudo: yes
+
+addons:
+  postgresql: "10"
 
 python:
-  - "3.6.3"
+  - "3.7"
 
 install:
   - pip install --upgrade pip
   - make setup
 
 script:
+  - make format
   - make lint
   - make sort
   - make test

@@ -1,6 +1,8 @@
 from django.apps import apps
 from django.utils.functional import SimpleLazyObject
 
+from .models import Column
+
 
 class ModelContextProcessor(object):
     def __init__(self):
@@ -10,3 +12,7 @@ class ModelContextProcessor(object):
 
 def models(request):
     return {"models": SimpleLazyObject(ModelContextProcessor)}
+
+
+def unpublished_columns(request):
+    return {"unpublished_columns": Column.objects.unpublished().count()}

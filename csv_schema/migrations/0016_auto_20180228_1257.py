@@ -5,19 +5,17 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('csv_schema', '0015_auto_20180228_1013'),
-    ]
+    dependencies = [("csv_schema", "0015_auto_20180228_1013")]
 
     operations = [
         migrations.AddField(
-            model_name='database',
-            name='display_name',
+            model_name="database",
+            name="display_name",
             field=models.CharField(blank=True, max_length=255, null=True, unique=True),
         ),
         migrations.AddField(
-            model_name='database',
-            name='owner',
+            model_name="database",
+            name="owner",
             field=models.CharField(blank=True, max_length=255, null=True),
         ),
     ]

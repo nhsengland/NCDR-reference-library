@@ -1,0 +1,111 @@
+{% extends "base_templates/base.html" %}
+{% load staticfiles %}
+{% block contents %}
+  <div class="container main-content">
+    <div class="row">
+      <div class="col-md-10">
+        <article>
+          <div class="row">
+            <div class="col-md-12">
+              <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a> About
+            </div>
+          </div>
+
+          <h1>About</h1>
+          <div class="row">
+            <div class="col-md-12">
+              <img class="header-img" src="{% static "/img/stetho-computer.jpg" %}" />
+            </div>
+          </div>
+          <p class="content-offset-30">
+            The National Commissioning Data Repository (NCDR) Reference Library
+            holds definitions of all data elements held on the NCDR. The NCDR is
+            the pseudonymised patient-level data repository managed by the
+            NHS England team Data Services for Commissioners. It is designed
+            to deliver consistent data processing, linkage and reporting
+            services, mainly for the use of NHS England analytical teams in
+            order to aid in the delivery of a wide range of projects,
+            including the Five Year Forward View.
+          </p>
+          <p>
+            If you would like any further information, want to be involved with
+            developing further content or wish to provide us with feedback, please
+            <a href="mailto:england.dsfc-support@nhs.net" target="_blank">contact us</a>.
+          </p>
+
+          <h3 class="subheader">Who are Data Services for Commissioners?</h3>
+          <p>
+            The NCDR Reference Library is owned and managed by the Data
+            Services for Commissioners (DSfC) team. The vision of the DSfC
+            team is to enable commissioners to consistently access the data
+            they need in a lawful, consistent and efficient manner.
+          </p>
+          <p>
+            We enable analysts to access pseudonymised patient-level data to
+            support commissioning and population health management while
+            upholding the requirements of patient confidentiality, as
+            determined by the Information Commissioner’s Office (ICO). Our
+            focus is on increasing information and digital capability to
+            provide the data that commissioners require for effective decision
+            making, improving service quality and ensuring safety. We also hope
+            to encourage informatics colleagues to add value to promote their
+            effectiveness and efficiency.
+          </p>
+          <p>
+            The NCDR plays a key role in delivering Five Year Forward View
+            objectives. By developing datasets that are based on standard,
+            consistent definitions across differing healthcare settings, NHS
+            England will be better equipped to track people through their
+            journey around the NHS.
+          </p>
+          <p>
+            DSfC is committed to improving access to services by developing
+            reusable routine reporting and analysis methods, which can be
+            adopted throughout the whole commissioning system to support
+            strategic programmes of work and boost connectivity and
+            collaboration.
+          </p>
+          <p>
+            If you are interested in finding out more about Data Service for Commissioners,
+            please see <a target="_blank" href="https://www.england.nhs.uk/ourwork/tsd/data-services/">our website</a>
+            or <a href="mailto:england.dsfc-support@nhs.net" target="_blank">contact us</a>.
+          </p>
+
+          <h3 class="subheader">What is on the Reference Library?</h3>
+
+          <h4 class="subheader">Databases</h4>
+          <p>
+            This contains definitions of all databases and tables within the
+            NCDR, along with detailed descriptions of all data elements. This has
+            been done so analysts can be assured that the data elements they use
+            in their analyses are correct, both in how they are derived by the
+            NCDR team and how they are used by the analysts themselves.
+          </p>
+          <p>
+            Useful if you need to understand the specific contents of a table
+            or database.
+          </p>
+
+          <h4 class="subheader">Data Elements</h4>
+          <p>
+            This is one list of all unique data elements found in the NCDR, and
+            from there says which databases and tables they can be found in.
+            This allows analysts to transfer their knowledge of certain
+            datasets to others when the need arises.
+          </p>
+          <p>
+            Useful if you are looking for a specific data element and don’t know
+            where to find it.
+          </p>
+
+          <h4 class="subheader">{{ models.ncdr.grouping.get_model_display_name_plural }}</h4>
+          <p>
+            {{ models.ncdr.grouping.get_model_display_name_plural }} are collections
+            of Data Elements that contain information about a similar theme.
+          </p>
+
+        </article>
+      </div>
+    </div>
+  </div>
+{% endblock contents %}

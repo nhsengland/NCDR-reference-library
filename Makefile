@@ -2,10 +2,15 @@
 help:
 	@echo "Usage:"
 	@echo "    make help             prints this help."
+	@echo "    make format           run the auto-format check."
 	@echo "    make lint             run the import sorter check."
 	@echo "    make setup            set up local env for dev."
 	@echo "    make sort             run the linter."
 	@echo "    make test             run the tests."
+
+.PHONY: format
+format:
+	@echo "Running black" && black --check ncdr metrics || exit 1
 
 .PHONY: lint
 lint:
@@ -14,7 +19,7 @@ lint:
 .PHONY: setup
 setup:
 	pip install -r requirements.txt
-	pip install -r requirements-dev.txt
+	pip install --pre -r requirements-dev.txt
 
 .PHONY: sort
 sort:
