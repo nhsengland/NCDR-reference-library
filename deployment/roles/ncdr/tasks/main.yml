@@ -63,7 +63,7 @@
 - name: Run Django initial_load
   args:
     chdir: "{{ PROJECT_PATH}}"
-  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py initial_load"
+  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py load_data"
 
 - name: Remove old nginx default
   become: true
