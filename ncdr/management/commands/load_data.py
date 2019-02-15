@@ -25,11 +25,12 @@ class Command(BaseCommand):
         version = options["data_version"]
 
         if version not in versions:
-            msg = "Unknown version '{}', please pick from: {}"
-            raise CommandError(msg.format(version, ", ".join(versions)))
+            raise CommandError(
+                f"Unknown version '{version}', please pick from: {', '.join(versions)}"
+            )
 
         path = os.path.join(CSVS_DIR, version)
-        self.stdout.write("Importing data from {}".format(path))
+        self.stdout.write(f"Importing data from {path}")
 
         self.clear_data()
 

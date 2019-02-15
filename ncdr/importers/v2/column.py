@@ -12,8 +12,9 @@ def get_tables(tableLUT, addresses):
 
         if not schema_table:
             # Example: NHSE_SUSPlus_Live.dbo.tbl_Data_SEM_OPA
-            msg = "Present_In field not in the expected format 'Database.Schema.Table': {}t"
-            raise Exception(msg.format(address))
+            raise Exception(
+                f"Present_In field not in the expected format 'Database.Schema.Table': {address}"
+            )
 
         schema_name, _, table_name = schema_table.partition(".")
 

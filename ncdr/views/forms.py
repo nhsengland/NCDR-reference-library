@@ -55,7 +55,7 @@ class AddMany(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, Create
                 display_name = self.model.get_model_display_name()
             else:
                 display_name = self.model.get_model_display_name_plural()
-            messages.success(self.request, "{} {} created.".format(count, display_name))
+            messages.success(self.request, f"{count} {display_name} created.")
         return HttpResponseRedirect(self.get_success_url())
 
     def form_invalid(self, form):
@@ -69,7 +69,7 @@ class Delete(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, DeleteV
     template_name = "forms/delete.html"
 
     def delete(self, *args, **kwargs):
-        messages.success(self.request, "{} deleted".format(self.get_object().name))
+        messages.success(self.request, f"{self.get_object().name} deleted")
 
         return super().delete(*args, **kwargs)
 
@@ -82,9 +82,7 @@ class Edit(LoginRequiredMixin, KwargModelMixin, SearchableModelsMixin, UpdateVie
 
     def form_valid(self, form):
         result = super().form_valid(form)
-        messages.success(
-            self.request, "{} updated".format(self.object.get_display_name())
-        )
+        messages.success(self.request, f"{self.object.get_display_name()} updated")
         return result
 
     def get_success_url(self, *args, **kwargs):

@@ -38,16 +38,14 @@ class BaseQuerySet(models.QuerySet):
         filters = []
         qs = self.viewable(user)
         for i in self.model.SEARCH_FIELDS:
-            field = "{}__icontains".format(i)
-            filters.append(models.Q(**{field: search_param}))
+            filters.append(models.Q(**{f"{i}__icontains": search_param}))
         return qs.filter(functools.reduce(operator.or_, filters)).distinct()
 
     def search_best_match(self, search_param, user):
         qs = self.viewable(user)
         query_results = []
         for i in self.model.SEARCH_FIELDS:
-            field = "{}__icontains".format(i)
-            query_results.append(qs.filter(**{field: search_param}))
+            query_results.append(qs.filter(**{f"{i}__icontains": search_param}))
         all_results = itertools.chain(*query_results)
         reviewed = set()
 
@@ -78,15 +76,18 @@ class BaseQuerySet(models.QuerySet):
 class BaseModel(models.Model):
     @classmethod
     def get_form_display_template(cls):
-        return "forms/display_templates/{}.html".format(cls.get_model_api_name())
+        model_name = cls.get_model_api_name()
+        return f"forms/display_templates/{model_name}.html"
 
     @classmethod
     def get_form_description_template(cls):
-        return "forms/descriptions/{}.html".format(cls.get_model_api_name())
+        model_name = cls.get_model_api_name()
+        return f"forms/descriptions/{model_name}.html"
 
     @classmethod
     def get_form_template(cls):
-        return "forms/model_forms/{}.html".format(cls.get_model_api_name())
+        model_name = cls.get_model_api_name()
+        return f"forms/model_forms/{model_name}.html"
 
     @classmethod
     def get_model_api_name(cls):
@@ -106,7 +107,8 @@ class BaseModel(models.Model):
 
     @classmethod
     def get_search_detail_template(cls):
-        return "search/{}.html".format(cls.get_model_api_name())
+        model_name = cls.get_model_api_name()
+        return f"search/{model_name}.html"
 
     def get_edit_url(self):
         return reverse(
@@ -469,7 +471,7 @@ class Table(BaseModel):
         return reverse("table_detail", kwargs=kwargs)
 
     def get_display_name(self):
-        return "{} / {}".format(self.schema.database.name, self.name)
+        return f"{self.schema.database.name} / {self.name}"
 
 
 class UserManager(BaseUserManager):

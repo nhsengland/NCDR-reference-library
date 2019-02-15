@@ -43,6 +43,4 @@ class SearchRedirect(RedirectView):
                     )
                     break
 
-        return "{}?{}&search_option={}".format(
-            url, self.request.GET.urlencode(), BEST_MATCH
-        )
+        return f"{url}?{self.request.GET.urlencode()}&search_option={BEST_MATCH}"

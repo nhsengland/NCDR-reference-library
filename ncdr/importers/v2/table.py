@@ -29,7 +29,7 @@ def load_file(file_name):
         try:
             database = Database.objects.get(name=row["Database"])
         except Database.DoesNotExist:
-            print("Unknown database: {}".format(row["Database"]))
+            print(f"Unknown database: {row['Database']}")
             raise
 
         Schema.objects.create(name=row["Schema"], database=database)
@@ -41,7 +41,7 @@ def load_file(file_name):
                 name=row["Schema"], database__name=row["Database"]
             )
         except Schema.DoesNotExist:
-            print("Unknown database: {}".format(row["Schema"]))
+            print(f"Unknown database: {row['Schema']}")
             raise
 
         Table.objects.create(

@@ -13,7 +13,7 @@ class Command(BaseCommand):
         label = type.capitalize()
 
         def get(name):
-            return row["{} {}".format(label, name)]
+            return row[f"{label} {name}"]
 
         operand, _ = Operand.objects.get_or_create(
             type=type,

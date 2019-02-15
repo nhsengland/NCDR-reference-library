@@ -7,14 +7,14 @@ import boto3
 
 
 def dump_database(db_name, db_user, backup_name):
-    print("Dumping db_name: {}".format(db_name))
-    command = "pg_dump {} -U {}".format(db_name, db_user)
-    print("Running: {}".format(command))
+    print(f"Dumping db_name: {db_name}")
+    command = f"pg_dump {db_name} -U {db_user}"
+    print(f"Running: {command}")
     with open(backup_name, "wb") as out:
         subprocess.check_call(command, stdout=out, shell=True)
 
     if not os.path.exists(backup_name):
-        raise Exception("Database dump not saved for: {}".format(db_name))
+        raise Exception(f"Database dump not saved for: {db_name}")
 
 
 def upload(full_file_name, file_name, bucket_name):
@@ -28,7 +28,7 @@ def upload(full_file_name, file_name, bucket_name):
 
 def main(db_name, db_user, backups_dir, bucket_name):
     today = datetime.now().strftime("%d-%m-%Y")
-    backup_name = "{}-{}.dump".format(db_name, today)
+    backup_name = f"{db_name}-{today}.dump"
 
     full_backup_name = os.path.join(backups_dir, backup_name)
     dump_database(db_name, db_user, full_backup_name)
@@ -40,4 +40,4 @@ if __name__ == "__main__":
         _, db_name, db_user, backups_dir, bucket_name = sys.argv
         main(db_name, db_user, backups_dir, bucket_name)
     except Exception as e:
-        print("errored with {}".format(str(e)))
+        print(f"errored with {e}")

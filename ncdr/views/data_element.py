@@ -59,7 +59,7 @@ class DataElementList(ViewableItems, ListView):
     def get_context_data(self, *args, **kwargs):
         symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
         other_pages = [
-            (symbol, reverse("data_element_list") + "?letter={}".format(symbol))
+            (symbol, reverse("data_element_list") + f"?letter={symbol}")
             for symbol in symbols
         ]
 

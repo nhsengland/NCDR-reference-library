@@ -75,7 +75,7 @@ class Operand(models.Model):
         )
 
     def __str__(self):
-        return "{}: {}".format(self.type, self.source)
+        return f"{self.type}: {self.source}"
 
 
 class Organisation(models.Model):

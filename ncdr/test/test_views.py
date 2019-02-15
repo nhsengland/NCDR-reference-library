@@ -18,7 +18,7 @@ class AbstractViewTestCase(TestCase):
         self.client = Client()
 
     def create_name(self, idx):
-        return "name_{}".format(idx)
+        return f"name_{idx}"
 
     @cached_property
     def user(self):
@@ -158,7 +158,7 @@ class AbstractForm(object):
     def test_user_not_authenticated(self):
         url = self.get_url(model_name="column")
         result = self.client.get(url)
-        self.assertEqual(result.url, "/accounts/login/?next={}".format(url))
+        self.assertEqual(result.url, f"/accounts/login/?next={url}")
 
     def test_get(self):
         self.login()
@@ -205,7 +205,7 @@ class NCDRSearchRedirect(AbstractViewTestCase):
 
     def get_url(self, search_term):
         url = reverse("search_redirect")
-        return "{}?q={}".format(url, search_term)
+        return f"{url}?q={search_term}"
 
     def test_get_with_column(self):
         column_name = Column.objects.get().name
@@ -237,7 +237,7 @@ class NCDRSearchRedirect(AbstractViewTestCase):
 class NCDRSearch(AbstractViewTestCase):
     def get_url(self, model_name, query):
         url = reverse("search", kwargs={"model_name": model_name})
-        return "{}?q={}".format(url, query)
+        return f"{url}?q={query}"
 
     def get_test(self, query):
         for model in searchable_models:

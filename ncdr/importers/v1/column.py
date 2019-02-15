@@ -88,7 +88,7 @@ def process_is_derived(value):
         # don't try and save an empty string
         value = None
     elif value.lower() not in ["yes - external", "yes - ncdr", "no"]:
-        raise ValueError("Unable to recognise is derived item {}".format(value))
+        raise ValueError(f"Unable to recognise is derived item {value}")
     else:
         value = not value.lower() == "no"
 
@@ -114,8 +114,9 @@ def get_tables(csv_row):
                 db_name = splitted[0].strip()
                 table_name = splitted[2].strip()
             else:
-                err = "unable to process db_name and table name for {}"
-                raise ValueError(err.format(full_table_name))
+                raise ValueError(
+                    f"unable to process db_name and table name for {full_table_name}"
+                )
         else:
             db_name, table_name = full_table_name.split(".dbo.")
         db, _ = models.Database.objects.get_or_create(name=db_name.strip())
@@ -133,16 +134,15 @@ def process_row(csv_row, file_name):
 
     tables = get_tables(csv_row)
     if not csv_row[DATA_ELEMENT].strip():
-        raise ValueError("{} expected".format(DATA_ELEMENT))
+        raise ValueError(f"{DATA_ELEMENT} expected")
     mapping, _ = models.DataElement.objects.get_or_create(
         name=csv_row[DATA_ELEMENT].strip()
     )
 
     for idx, table in enumerate(tables):
+        slug = slugify(csv_row[COLUMN_NAME])
         column = models.Column(
-            name=csv_row[COLUMN_NAME],
-            table=table,
-            slug="{}{}".format(slugify(csv_row[COLUMN_NAME]), idx),
+            name=csv_row[COLUMN_NAME], table=table, slug=f"{slug}{idx}"
         )
         # auto publish anything coming in via the csv api
         column.published = True
@@ -176,8 +176,9 @@ def process_row(csv_row, file_name):
                 continue
 
             if value and field_name not in known_fields:
-                e = "We are not saving a value for {} in {}, should we be?"
-                raise ValueError(e.format(field_name, file_name))
+                raise ValueError(
+                    f"We are not saving a value for {field_name} in {file_name}, should we be?"
+                )
             elif not value and field_name not in CSV_FIELD_TO_COLUMN_FIELD:
                 continue
 
