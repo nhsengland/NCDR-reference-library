@@ -10,7 +10,7 @@ help:
 
 .PHONY: format
 format:
-	@echo "Running black" && black --check ncdr csv_schema metrics || exit 1
+	@echo "Running black" && black --check ncdr metrics || exit 1
 
 .PHONY: lint
 lint:

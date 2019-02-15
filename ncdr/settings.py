@@ -35,8 +35,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "compressor",
     "csv_schema",
+    "compressor",
     "markdown_deux",
     "bootstrapform",
     "rest_framework",
@@ -62,7 +62,7 @@ STATIC_ROOT = "static"
 STATIC_URL = "/static/"
 
 # Additional locations of static files
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "csv_schema", "static"),)
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "ncdr", "static"),)
 
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -74,7 +74,7 @@ STATICFILES_FINDERS = (
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": ["csv_schema/templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -83,7 +83,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "ncdr.context_processors.models",
-                "csv_schema.context_processors.unpublished_columns",
+                "ncdr.context_processors.unpublished_columns",
             ]
         },
     }
