@@ -532,3 +532,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Toggle the preview_mode boolean"""
         self.preview_mode = not self.preview_mode
         self.save()
+
+
+class Version(models.Model):
+    """Track a related models version number."""
+
+    class Meta:
+        get_latest_by = "pk"
+
+    def __str__(self):
+        return f"Version {self.pk}"
