@@ -15,14 +15,6 @@ from ncdr.models import BaseModel, BaseQuerySet
 DATE_FORMAT = "%b %y"
 
 
-def unique_slug(some_cls, name):
-    slug = slugify(name)
-    if some_cls.objects.filter(slug=slug).exists():
-        return "{}{}".format(slug, some_cls.objects.last().id)
-    else:
-        return slug
-
-
 def turn_preview_mode_off(sender, user, request, **kwargs):
     user.preview_mode = False
     user.save()
@@ -33,11 +25,11 @@ user_logged_out.connect(turn_preview_mode_off)
 
 class DatabaseQueryset(BaseQuerySet):
     def viewable(self, user):
-        """ returns all tables that have columns
-        """
-        return self.filter(
-            table__in=Table.objects.viewable(user)
-        ).distinct().order_by(Lower('display_name'))
+        """Returns all Databases with Schemas that contain viewable Tables."""
+        schemas = Schema.objects.filter(tables__in=Table.objects.viewable(user))
+        return (self.filter(schemas__in=schemas)
+                    .distinct()
+                    .order_by(Lower('display_name')))
 
 
 class Database(BaseModel):
@@ -45,12 +37,11 @@ class Database(BaseModel):
         "display_name", "name", "description", "link"
     ]
     name = models.CharField(max_length=255, unique=True)
-    display_name = models.CharField(
-        max_length=255, unique=True, blank=True, null=True
-    )
+    display_name = models.TextField(blank=True, null=True)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
     owner = models.CharField(max_length=255, blank=True, null=True)
+
     objects = DatabaseQueryset.as_manager()
 
     class Meta:
@@ -68,6 +59,16 @@ class Database(BaseModel):
 
     def get_display_name(self):
         return self.display_name
+
+    @property
+    def tables(self):
+        """
+        Get tables for this database
+
+        It's common to want the Tables for a Database but the two models are
+        separated by a Schema.  This property aims to simply that lookup.
+        """
+        return Table.objects.filter(schema__database=self)
 
     def save(self, *args, **kwargs):
         if not self.display_name:
@@ -102,16 +103,13 @@ class Table(BaseModel):
         choices=((True, 'Table'), (False, 'View'),),
         default=True,
     )
-
-    database = models.ForeignKey(
-        Database, on_delete=models.CASCADE
-    )
-
     date_range = models.CharField(max_length=255, blank=True, default="")
 
+    schema = models.ForeignKey("Schema", on_delete=models.CASCADE, related_name="tables")
+
     class Meta:
-        unique_together = (('name', 'database',),)
         ordering = ['name']
+        unique_together = ["name", "schema"]
 
     def __str__(self):
         return self.name
@@ -119,11 +117,11 @@ class Table(BaseModel):
     objects = TableQueryset.as_manager()
 
     def get_absolute_url(self):
-        kwargs = {"table_name": self.name, "db_name": self.database.name}
+        kwargs = {"pk": self.pk, "db_name": self.schema.database.name}
         return reverse("table_detail", kwargs=kwargs)
 
     def get_display_name(self):
-        return "{} / {}".format(self.database.name, self.name)
+        return "{} / {}".format(self.schema.database.name, self.name)
 
 
 class GroupingQueryset(BaseQuerySet):
@@ -262,7 +260,13 @@ class Column(BaseModel, models.Model):
     class Meta:
         ordering = ['name']
         verbose_name = "Column"
-        unique_together = (("name", "table",),)
+        unique_together = [
+            "name",
+            "table",
+            "data_element",
+            "is_derived_item",
+            "link",
+        ]
 
     SEARCH_FIELDS = [
         "name", "description"
@@ -271,9 +275,6 @@ class Column(BaseModel, models.Model):
     objects = ColumnQueryset.as_manager()
 
     name = models.CharField(max_length=255)
-    slug = models.SlugField(
-        max_length=255, unique=True, blank=True
-    )
     description = models.TextField(blank=True, default="")
     data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
@@ -301,7 +302,7 @@ class Column(BaseModel, models.Model):
             return stripped.lstrip("www.").split("/")[0]
 
     def get_absolute_url(self):
-        return reverse("column_detail", kwargs={"slug": self.slug})
+        return reverse("column_detail", kwargs={"pk": self.pk})
 
     @classmethod
     def get_unpublished_list_url(cls):
@@ -341,12 +342,30 @@ class Column(BaseModel, models.Model):
         other_columns = other_columns.order_by(
             "table__name"
         )
-        return other_columns.order_by("table__database__name")
+        return other_columns.order_by("table__schema__database__name")
 
     def __str__(self):
         return self.name
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = unique_slug(self.__class__, self.name)
-        return super(Column, self).save(*args, **kwargs)
+
+class SchemaQueryset(BaseQuerySet):
+    def viewable(self, user):
+        """Returns all Schemas that have Databases with Columns."""
+        return (self.filter(table__in=Table.objects.viewable(user))
+                    .distinct()
+                    .order_by(Lower("name")))
+
+
+class Schema(BaseModel, models.Model):
+    name = models.TextField()
+
+    database = models.ForeignKey("Database", on_delete=models.CASCADE, related_name="schemas")
+
+    objects = SchemaQueryset.as_manager()
+
+    class Meta:
+        ordering = ["name"]
+        unique_together = ["name", "database"]
+
+    def __str__(self):
+        return self.name

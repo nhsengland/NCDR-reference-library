@@ -10,14 +10,10 @@ A viewer for the schema of the National Commissioning Data Repository
     1. pip install -r requirements.txt
     1. ./manage.py loaddata data/fixtures/site_description.json
 
-load in all existing csvs (stored in data/csvs):
+Load in all existing csvs (stored in data/csvs):
 
-    ./manage.py initial_load
+    ./manage.py load_data
 
-for future, loading in csvs:
-
-    ./manage.py row_loader {{ path to row csv }}
-    ./manage.py table_loader {{ path to the table csv }}
 
 When running the server locally, we are using sass. So installl sass and run
 

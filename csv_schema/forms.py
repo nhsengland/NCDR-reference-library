@@ -54,13 +54,27 @@ class GroupedModelChoiceField(forms.ModelChoiceField):
 
 class ColumnSelectField(GroupedModelChoiceField):
     def optgroup_from_instance(self, obj):
-        return obj.database.name
+        return obj.schema.database.name
 
 
 class CreateColumnForm(forms.ModelForm):
     class Meta:
         model = models.Column
-        exclude = ['slug']
+        fields = [
+            "name",
+            "description",
+            "data_type",
+            "derivation",
+            "data_element",
+            "table",
+            "technical_check",
+            "is_derived_item",
+            "definition_id",
+            "author",
+            "created_date_ext",
+            "link",
+            "published",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -76,7 +90,21 @@ class CreateColumnForm(forms.ModelForm):
 class ColumnForm(forms.ModelForm):
     class Meta:
         model = models.Column
-        exclude = ['slug']
+        fields = [
+            "name",
+            "description",
+            "data_type",
+            "derivation",
+            "data_element",
+            "table",
+            "technical_check",
+            "is_derived_item",
+            "definition_id",
+            "author",
+            "created_date_ext",
+            "link",
+            "published",
+        ]
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
