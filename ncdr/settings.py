@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "ncdr",
     "metrics",
+    "debug_toolbar",
 ]
 
 MIDDLEWARE = [
@@ -57,6 +58,9 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+if DEBUG:
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
 
 ROOT_URLCONF = "ncdr.urls"
 
@@ -116,3 +120,7 @@ USE_TZ = True
 # Custom User Model
 # https://docs.djangoproject.com/en/2.1/topics/auth/customizing/#substituting-a-custom-user-model
 AUTH_USER_MODEL = "ncdr.User"
+
+
+# Debug Toolbar
+INTERNAL_IPS = ["127.0.0.1"]
