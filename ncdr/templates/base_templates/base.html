@@ -1,5 +1,4 @@
 {% load staticfiles %}
-{% load compress %}
 {% load utils %}
 {% url 'about_page' as about_page %}
 {% url 'database_list' as database_list %}
@@ -36,10 +35,8 @@
 
       <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 
-      {% compress css %}
       	<link rel="stylesheet" href="{% static "css/nhsengland.css" %}">
       	<link rel="stylesheet" href="{% static "css/styles.css" %}">
-      {% endcompress %}
     {% endblock staticfiles %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
   </head>

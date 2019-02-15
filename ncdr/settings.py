@@ -40,7 +40,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "csv_schema",
-    "compressor",
     "markdown_deux",
     "bootstrapform",
     "rest_framework",
@@ -50,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -63,16 +63,8 @@ ROOT_URLCONF = "ncdr.urls"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 STATIC_ROOT = "static"
-STATIC_URL = "/static/"
-
-# Additional locations of static files
-STATICFILES_DIRS = (os.path.join(BASE_DIR, "ncdr", "static"),)
-
-STATICFILES_FINDERS = (
-    "django.contrib.staticfiles.finders.FileSystemFinder",
-    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
-    "compressor.finders.CompressorFinder",
-)
+STATIC_URL = env.str("STATIC_URL", default="/static/")
+WHITENOISE_STATIC_PREFIX = "/static/"
 
 
 TEMPLATES = [
