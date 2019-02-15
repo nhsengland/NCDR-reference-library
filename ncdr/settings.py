@@ -129,5 +129,3 @@ USE_TZ = True
 # Custom User Model
 # https://docs.djangoproject.com/en/2.1/topics/auth/customizing/#substituting-a-custom-user-model
 AUTH_USER_MODEL = "ncdr.User"
-
-DATA_UPLOAD_MAX_NUMBER_FIELDS = 100000
