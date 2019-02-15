@@ -14,3 +14,7 @@ class DatabaseDetail(ViewableItems, DetailView):
 class DatabaseList(ViewableItems, ListView):
     model = Database
     template_name = "database_list.html"
+
+    def get_queryset(self):
+        """Only show the user their currently selected verison."""
+        return super().get_queryset().filter(version=self.request.user.current_version)
