@@ -279,6 +279,11 @@ class DatabaseQueryset(BaseQuerySet):
 
 class Database(BaseModel):
     SEARCH_FIELDS = ["display_name", "name", "description", "link"]
+
+    version = models.ForeignKey(
+        "Version", on_delete=models.CASCADE, related_name="databases"
+    )
+
     name = models.CharField(max_length=255, unique=True)
     display_name = models.TextField(blank=True, null=True)
     description = models.TextField(default="")
@@ -472,10 +477,15 @@ class UserManager(BaseUserManager):
         """
         if not email:
             raise ValueError("The given email must be set")
+
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        version = Version.objects.latest()
+
+        user = self.model(email=email, current_version=version, **extra_fields)
+
         user.set_password(password)
         user.save(using=self._db)
+
         return user
 
     def create_user(self, email, password=None, **extra_fields):
@@ -516,6 +526,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     date_joined = models.DateTimeField("date joined", default=timezone.now)
 
     preview_mode = models.BooleanField(default=False)
+    current_version = models.ForeignKey("Version", on_delete=models.PROTECT)
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
