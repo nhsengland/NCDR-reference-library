@@ -2,7 +2,7 @@ import os
 
 from django.core.management.base import BaseCommand, CommandError
 
-from ...models import Column, Database, DataElement, Grouping, Table
+from ...models import Column, Database, DataElement, Grouping, Table, Version
 
 CSVS_DIR = "data/csvs"
 versions = os.listdir(CSVS_DIR)
@@ -34,13 +34,21 @@ class Command(BaseCommand):
 
         self.clear_data()
 
+        import_version = Version.objects.create()
+
         if version == "1":
             from ncdr.importers.v1 import column, grouping, table
 
-            table.load_file(os.path.join(path, "vw_Export_Standard_DB_Structure.csv"))
+            table.load_file(
+                os.path.join(path, "vw_Export_Standard_DB_Structure.csv"),
+                import_version,
+            )
 
-            column.load_file(os.path.join(path, "vw_Export_Standard_Definitions.csv"))
+            column.load_file(
+                os.path.join(path, "vw_Export_Standard_Definitions.csv"), import_version
+            )
 
             grouping.load_file(
-                os.path.join(path, "vw_Export_Standard_GroupingMapping.csv")
+                os.path.join(path, "vw_Export_Standard_GroupingMapping.csv"),
+                import_version,
             )

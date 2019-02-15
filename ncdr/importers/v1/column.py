@@ -22,12 +22,14 @@ def get_tables(tableLUT, addresses):
 
 
 @transaction.atomic
-def load_file(file_name):
+def load_file(file_name, version):
     with open(file_name, "r", encoding="Windows-1252") as f:
         f.readline()  # ignore the first line since it's blank
         rows = list(csv.DictReader(f, delimiter="¬"))
 
-    tables = Table.objects.select_related("schema", "schema__database")
+    tables = Table.objects.select_related("schema", "schema__database").filter(
+        schema__database__version=version
+    )
     tableLUT = collections.defaultdict(lambda: collections.defaultdict(dict))
     for table in tables:
         tableLUT[table.schema.database.name][table.schema.name][table.name] = table
