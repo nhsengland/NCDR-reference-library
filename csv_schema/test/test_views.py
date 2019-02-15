@@ -325,7 +325,7 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.save()
         table = models.Table.objects.get()
 
-        kwargs = {"db_name": table.schema.database.name, "table_name": table.name}
+        kwargs = {"db_name": table.schema.database.name, "pk": table.pk}
         url = reverse("table_detail", kwargs=kwargs)
 
         self.assertEqual(self.client.get(url).status_code, 200)
@@ -336,7 +336,7 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.save()
         table = models.Table.objects.get()
 
-        kwargs = {"db_name": table.schema.database.name, "table_name": table.name}
+        kwargs = {"db_name": table.schema.database.name, "pk": table.pk}
         url = reverse("table_detail", kwargs=kwargs)
 
         self.assertEqual(self.client.get(url).status_code, 404)
@@ -351,7 +351,7 @@ class TableDetailTestCase(AbstractViewTestCase):
         column.save()
         table = models.Table.objects.get()
 
-        kwargs = {"db_name": table.schema.database.name, "table_name": table.name}
+        kwargs = {"db_name": table.schema.database.name, "pk": table.pk}
         url = reverse("table_detail", kwargs=kwargs)
 
         self.assertEqual(self.client.get(url).status_code, 200)

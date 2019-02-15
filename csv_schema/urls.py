@@ -19,7 +19,7 @@ urlpatterns = [
 
     path('database', DatabaseList.as_view(), name="database_list"),
     path('database/<str:db_name>/', DatabaseDetail.as_view(), name="database_detail"),
-    path('database/<str:db_name>/<str:table_name>/', TableDetail.as_view(), name="table_detail"),
+    path('database/<str:db_name>/<pk>/', TableDetail.as_view(), name="table_detail"),
 
     path('column/<int:pk>/', ColumnDetail.as_view(), name="column_detail"),
 

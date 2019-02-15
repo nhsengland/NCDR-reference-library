@@ -31,7 +31,7 @@ class TableDetail(ViewableItems, DetailView):
     def get_object(self, *args, **kwargs):
         return get_object_or_404(
             self.get_queryset(),
-            name=self.kwargs["table_name"],
+            pk=self.kwargs["pk"],
             schema__database__name=self.kwargs["db_name"]
         )
 
