@@ -48,7 +48,9 @@ urlpatterns = [
     path("column/<int:pk>/", ColumnDetail.as_view(), name="column_detail"),
     path("database", DatabaseList.as_view(), name="database_list"),
     path("database/<str:db_name>/", DatabaseDetail.as_view(), name="database_detail"),
-    path("database/<str:db_name>/<pk>/", TableDetail.as_view(), name="table_detail"),
+    path(
+        "database/<str:db_name>/<int:pk>/", TableDetail.as_view(), name="table_detail"
+    ),
     path("data_element/", DataElementList.as_view(), name="data_element_list"),
     path(
         "data_element/<slug:slug>/",
