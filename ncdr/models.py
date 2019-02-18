@@ -10,7 +10,6 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
-from django.contrib.auth.signals import user_logged_out
 from django.db import models
 from django.db.models.functions import Lower
 from django.urls import reverse
@@ -20,14 +19,6 @@ from django.utils.text import slugify
 
 MOST_RECENT = "Most Recent"
 DATE_FORMAT = "%b %y"
-
-
-def turn_preview_mode_off(sender, user, request, **kwargs):
-    user.preview_mode = False
-    user.save()
-
-
-user_logged_out.connect(turn_preview_mode_off)
 
 
 class BaseQuerySet(models.QuerySet):

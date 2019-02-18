@@ -19,7 +19,7 @@ from django.urls import include, path
 from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
-from .views import ColumnDetail, IndexView, TogglePreviewMode, api
+from .views import ColumnDetail, IndexView, Logout, TogglePreviewMode, api
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.forms import AddMany, Delete, Edit, FormRedirect, List
@@ -30,6 +30,7 @@ from .views.table import TableAPI, TableDetail
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index_view"),
+    path("accounts/logout/", Logout.as_view(), name="logout"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
     path("api/tables/<database_pk>", TableAPI.as_view()),

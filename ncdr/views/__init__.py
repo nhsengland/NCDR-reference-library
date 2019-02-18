@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LogoutView
 from django.urls import reverse
 from django.views.generic import DetailView, RedirectView
 
@@ -50,6 +51,14 @@ class ColumnDetail(ViewableItems, DetailView):
 class IndexView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return Database.get_list_url()
+
+
+class Logout(LogoutView):
+    def dispatch(self, request, *args, **kwargs):
+        request.user.preview_mode = False
+        request.user.save()
+
+        return super().dispatch(request, *args, **kwargs)
 
 
 class TogglePreviewMode(LoginRequiredMixin, RedirectView):
