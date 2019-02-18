@@ -46,7 +46,7 @@
       <div class="container content-offset-10">
         <div class="row">
           <div class="col-md-12 text-center">
-            {% if user.current_version != latest_version %}
+            {% if user.current_version and user.current_version != latest_version %}
             <span class="small pull-left">Data version: {{ user.current_version }}</span>
             {% endif %}
             {% if request.user.preview_mode %}You are currently viewing a preview version of the site{% endif %}
@@ -58,7 +58,7 @@
               Preview Site
               {% endif %}
             </a>
-            {% if user.current_version != latest_version %}
+            {% if user.current_version and user.current_version != latest_version %}
             <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">
               Switch to Latest Version
             </a>
