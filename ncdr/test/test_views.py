@@ -22,7 +22,9 @@ class AbstractViewTestCase(TestCase):
 
     @cached_property
     def user(self):
-        user = User.objects.create(email=self.EMAIL, is_staff=True, is_superuser=True)
+        user = User.objects.create(
+            email=self.EMAIL, is_staff=True, is_superuser=True, current_version_id=1
+        )
         user.set_password(self.PASSWORD)
         user.save()
         return user
@@ -37,7 +39,7 @@ class AbstractViewTestCase(TestCase):
         schema_name="example_schema",
         table_name="example_table",
     ):
-        database, _ = Database.objects.get_or_create(name=database_name)
+        database, _ = Database.objects.get_or_create(name=database_name, version_id=1)
         schema, _ = Schema.objects.get_or_create(
             name=schema_name, defaults={"database": database}
         )
