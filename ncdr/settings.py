@@ -45,8 +45,9 @@ INSTALLED_APPS = [
     "rest_framework",
     "ncdr",
     "metrics",
-    "debug_toolbar",
 ]
+if DEBUG:
+    INSTALLED_APPS.append("debug_toolbar")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
