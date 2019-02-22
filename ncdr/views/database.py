@@ -1,6 +1,6 @@
 from django.views.generic import DetailView, ListView
 
-from ..models import Database
+from ..models import Database, Version
 from .base import ViewableItems
 
 
@@ -17,4 +17,9 @@ class DatabaseList(ViewableItems, ListView):
 
     def get_queryset(self):
         """Only show the user their currently selected verison."""
-        return super().get_queryset().filter(version=self.request.user.current_version)
+        qs = super().get_queryset()
+
+        if not self.request.user.is_authenticated:
+            return qs.filter(version=Version.objects.latest())
+
+        return qs.filter(version=self.request.user.current_version)
