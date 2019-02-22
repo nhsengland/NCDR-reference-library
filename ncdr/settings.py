@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 import environ
+import structlog
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -124,5 +125,54 @@ USE_TZ = True
 AUTH_USER_MODEL = "ncdr.User"
 
 
+# Logging
+# https://docs.djangoproject.com/en/2.1/topics/logging/
+timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
+pre_chain = [
+    # Add the log level and a timestamp to the event_dict if the log entry
+    # is not from structlog.
+    structlog.stdlib.add_log_level,
+    timestamper,
+]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "formatter": {
+            "()": structlog.stdlib.ProcessorFormatter,
+            "processor": structlog.dev.ConsoleRenderer(colors=False),
+            "foreign_pre_chain": pre_chain,
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "formatter",
+        }
+    },
+    "loggers": {
+        "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "datastore": {"handlers": ["console"], "level": "INFO", "propagate": False},
+    },
+}
+
+structlog.configure(
+    processors=[
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.PositionalArgumentsFormatter(),
+        timestamper,
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.format_exc_info,
+        structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+    ],
+    context_class=dict,
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    wrapper_class=structlog.stdlib.BoundLogger,
+    cache_logger_on_first_use=True,
+)
+
+# THIRD PARTY
 # Debug Toolbar
 INTERNAL_IPS = ["127.0.0.1"]
