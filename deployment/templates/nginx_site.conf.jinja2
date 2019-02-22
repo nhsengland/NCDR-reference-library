@@ -8,10 +8,6 @@ server {
     server_name "";
     access_log {{ LOG_DIR }}/nginx.log timed_combined;
 
-   location /static {
-        alias /home/ubuntu/NCDR-reference/static;
-    }
-
     location / {
         proxy_pass http://127.0.0.1:4567;
 

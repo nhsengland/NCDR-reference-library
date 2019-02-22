@@ -1,14 +1,17 @@
 ---
 # This playbook installs and (re)configures Postgres.
 - name: update apt-cache
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
 
 - name: install Postgres, its headers, and psycopg2
-  apt: pkg={{ item }} state=installed
-  with_items:
-    - postgresql
-    - postgresql-server-dev-10
-    - python3-psycopg2
+  apt:
+    pkg: [
+      'postgresql',
+      'postgresql-server-dev-10',
+      'python3-psycopg2',
+    ]
+    state: present
 
 - name: Copy in pg_hba.conf
   template:
@@ -29,21 +32,23 @@
 
 - name: Restart postgres
   become: yes
-  command: "service postgresql restart"
+  service:
+    name: postgresql
+    state: restarted
 
 - name: add ncdr database user
   become: true
   become_user: postgres
   postgresql_user:
-    name={{ DB_USER }}
-    password={{ DB_PASSWORD }}
-    encrypted=yes
+    name: "{{ DB_USER }}"
+    password: "{{ DB_PASSWORD }}"
+    encrypted: yes
 
 - name: create ncdr database
   become: true
   become_user: postgres
   postgresql_db:
-    name={{ DB_NAME }}
-    encoding='UTF-8'
-    owner={{ DB_USER }}
-    template=template0
+    name: "{{ DB_NAME }}"
+    encoding: 'UTF-8'
+    owner: "{{ DB_USER }}"
+    template: template0

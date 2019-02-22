@@ -1,5 +1,5 @@
 [watcher:app]
-cmd = gunicorn
+cmd = envdir env_vars gunicorn
 args = ncdr.wsgi -c deployment/config/gunicorn_conf.py
 working_dir = /home/ubuntu/NCDR-reference
 uid = ubuntu

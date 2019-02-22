@@ -2,23 +2,27 @@
 # This playbook provides basic elements of a server we would like to maintain
 - name: update apt-cache
   become: true
-  apt: update_cache=yes
+  apt:
+    update_cache: yes
 
 - name: install packages for sysadmin
-  apt: pkg={{ item }} state=installed
-  with_items:
-    - emacs
-    - git
-    - htop
-    - iotop
-    - tree
-    - ack-grep
-    - vim
-    - zip
-    - screen
-    - python-virtualenv
-    - virtualenvwrapper
-    - python3-dev
-    - build-essential
-    - circus
-    - nginx
+  apt:
+    pkg: [
+      'ack-grep',
+      'build-essential',
+      'circus',
+      'daemontools',
+      'emacs',
+      'git',
+      'htop',
+      'iotop',
+      'nginx',
+      'python-virtualenv',
+      'python3-dev',
+      'screen',
+      'tree',
+      'vim',
+      'virtualenvwrapper',
+      'zip',
+    ]
+    state: present
