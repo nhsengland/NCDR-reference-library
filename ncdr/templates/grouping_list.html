@@ -13,7 +13,7 @@
           of Data Elements that contain information about a similar theme.
         </div>
       </div>
-      {% for grouping in object_list|chunks:3 %}
+      {% for grouping in object_list|chunked:3 %}
         <div class="row">
           {% for grouping in grouping %}
           <div class="col-md-4 card">

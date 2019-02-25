@@ -12,7 +12,7 @@
           {{ object.get_display_name }}
         </a>
       <li>
-      {% for table in object.tables|viewable:request %}
+      {% for table in object.tables %}
         <li>
           <a class="table-link" href="{{ table.get_absolute_url }}">
             {{ table.name }}

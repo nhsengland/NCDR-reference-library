@@ -8,6 +8,7 @@ django_debug_toolbar==1.11
 djangorestframework==3.9.0
 gunicorn==19.9.0
 markdown2==2.3.7
+more-itertools==6.0.0
 psycopg2-binary==2.7.6.1
 pytz==2018.9
 rcssmin==1.0.6

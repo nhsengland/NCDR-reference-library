@@ -1,28 +1,13 @@
-# templatetags file
+import more_itertools
 from django import template
 from django.urls import resolve
 
 register = template.Library()
 
 
-@register.filter(name="chunks")
-def chunks(iterable, chunk_size):
-    if not hasattr(iterable, "__iter__"):
-        # can't use "return" and "yield" in the same function
-        yield iterable
-    else:
-        i = 0
-        chunk = []
-        for item in iterable:
-            chunk.append(item)
-            i += 1
-            if not i % chunk_size:
-                yield chunk
-                chunk = []
-        if chunk:
-            # some items will remain which haven't been yielded yet,
-            # unless len(iterable) is divisible by chunk_size
-            yield chunk
+@register.filter
+def chunked(iterable, chunk_size):
+    return more_itertools.chunked(iterable, chunk_size)
 
 
 @register.filter(name="url_name")
