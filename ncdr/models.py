@@ -1,8 +1,3 @@
-import functools
-import itertools
-import json
-import operator
-
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -11,103 +6,13 @@ from django.contrib.auth.models import (
     _user_has_perm,
 )
 from django.db import models
-from django.db.models.functions import Lower
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 
-MOST_RECENT = "Most Recent"
-DATE_FORMAT = "%b %y"
-
-
-class BaseQuerySet(models.QuerySet):
-    def search_most_recent(self, search_param):
-        filters = []
-        qs = self.published()
-        for i in self.model.SEARCH_FIELDS:
-            filters.append(models.Q(**{f"{i}__icontains": search_param}))
-        return qs.filter(functools.reduce(operator.or_, filters)).distinct()
-
-    def search_best_match(self, search_param):
-        qs = self.published()
-        query_results = []
-        for i in self.model.SEARCH_FIELDS:
-            query_results.append(qs.filter(**{f"{i}__icontains": search_param}))
-        all_results = itertools.chain(*query_results)
-        reviewed = set()
-
-        for i in all_results:
-            if i in reviewed:
-                continue
-            else:
-                reviewed.add(i)
-                yield i
-
-    def search_count(self, search_param):
-        return self.search_most_recent(search_param).count()
-
-    def search(self, search_param, option=MOST_RECENT):
-        """ returns all tables that have columns
-            we default to MOST_RECENT as querysets are
-            more efficient for a lot of operations
-        """
-        if not search_param:
-            return self.none()
-
-        if option == MOST_RECENT:
-            return self.search_most_recent(search_param)
-        else:
-            return list(self.search_best_match(search_param))
-
 
 class BaseModel(models.Model):
-    @classmethod
-    def get_form_display_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"forms/display_templates/{model_name}.html"
-
-    @classmethod
-    def get_form_description_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"forms/descriptions/{model_name}.html"
-
-    @classmethod
-    def get_form_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"forms/model_forms/{model_name}.html"
-
-    @classmethod
-    def get_model_api_name(cls):
-        return cls.__name__.lower()
-
-    @classmethod
-    def get_add_url(cls):
-        return reverse("add_many", kwargs={"model_name": cls.get_model_api_name()})
-
-    @classmethod
-    def get_search_url(cls):
-        return reverse("search", kwargs={"model_name": cls.get_model_api_name()})
-
-    @classmethod
-    def get_create_template(cls):
-        return "forms/create/generic_create.html"
-
-    @classmethod
-    def get_search_detail_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"search/{model_name}.html"
-
-    def get_edit_url(self):
-        return reverse(
-            "edit", kwargs={"pk": self.id, "model_name": self.get_model_api_name()}
-        )
-
-    def get_delete_url(self):
-        return reverse(
-            "delete", kwargs={"pk": self.id, "model_name": self.get_model_api_name()}
-        )
-
     def get_display_name(self):
         return self.name
 
@@ -120,25 +25,14 @@ class BaseModel(models.Model):
         return cls._meta.verbose_name_plural.title()
 
     @classmethod
-    def get_edit_list_url(cls):
-        return reverse("edit_list", kwargs={"model_name": cls.get_model_api_name()})
+    def get_model_name(cls):
+        return cls.__name__.lower()
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    objects = BaseQuerySet.as_manager()
-
     class Meta:
         abstract = True
-
-
-class ColumnQueryset(BaseQuerySet):
-    def to_json(self):
-        # FIXME: what is this for?
-        result = []
-        for i in self:
-            result.append({"published": i.published, "url": i.get_absolute_url()})
-        return json.dumps(result)
 
 
 class Column(BaseModel, models.Model):
@@ -192,8 +86,6 @@ class Column(BaseModel, models.Model):
     created_date_ext = models.DateField(blank=True, null=True)
     link = models.URLField(max_length=500, blank=True, null=True)
 
-    objects = ColumnQueryset.as_manager()
-
     class Meta:
         ordering = ["name"]
         unique_together = ["name", "table", "data_element", "is_derived_item", "link"]
@@ -207,14 +99,6 @@ class Column(BaseModel, models.Model):
             "column_detail",
             kwargs={"db_name": self.table.schema.database.name, "pk": self.pk},
         )
-
-    @classmethod
-    def get_create_template(cls):
-        return "forms/create/column_create.html"
-
-    @classmethod
-    def get_edit_list_js_template(cls):
-        return "forms/column_form_js.html"
 
     @property
     def link_display_name(self):
@@ -321,23 +205,12 @@ class DataElement(BaseModel, models.Model):
         return super().save(*args, **kwargs)
 
 
-class GroupingQueryset(BaseQuerySet):
-    def viewable(self, user):
-        return (
-            self.filter(dataelement__in=DataElement.objects.viewable(user))
-            .distinct()
-            .order_by(Lower("name"))
-        )
-
-
 class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
 
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     description = models.CharField(max_length=255, null=True, blank=True)
-
-    objects = GroupingQueryset.as_manager()
 
     class Meta:
         ordering = ["name"]
@@ -354,19 +227,12 @@ class Grouping(BaseModel, models.Model):
         return super(Grouping, self).save(*args, **kwargs)
 
 
-class SchemaQueryset(BaseQuerySet):
-    def published(self):
-        return self.filter(database__version__is_published=True)
-
-
 class Schema(BaseModel, models.Model):
     name = models.TextField()
 
     database = models.ForeignKey(
         "Database", on_delete=models.CASCADE, related_name="schemas"
     )
-
-    objects = SchemaQueryset.as_manager()
 
     class Meta:
         ordering = ["name"]
