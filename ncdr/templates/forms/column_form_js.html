@@ -16,8 +16,9 @@
       var columns = {{ object_list.to_json }};
     {% endautoescape %}
 
+    // FIXME: what is this used for?
     var state = {
-      unpublished:{{ unpublished_columns }}
+      unpublished: 10
     }
 
     // using jQuery

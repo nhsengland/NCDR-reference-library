@@ -12,7 +12,7 @@ class Lead(models.Model):
 
 
 class MetricQueryset(BaseQuerySet):
-    def viewable(self, user):
+    def published(self):
         return self.all()
 
 

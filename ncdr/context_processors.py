@@ -1,7 +1,7 @@
 from django.apps import apps
 from django.utils.functional import SimpleLazyObject
 
-from .models import Column, Version
+from .models import Version
 
 
 class ModelContextProcessor(object):
@@ -16,7 +16,3 @@ def latest_version(request):
 
 def models(request):
     return {"models": SimpleLazyObject(ModelContextProcessor)}
-
-
-def unpublished_columns(request):
-    return {"unpublished_columns": Column.objects.unpublished().count()}

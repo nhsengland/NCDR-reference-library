@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
+from django.http import Http404
 from django.urls import reverse
 from django.views.generic import DetailView, RedirectView
 
 from ..models import Column, Database
 from ..search import searchable_models, searchable_objects
-from .base import ViewableItems
 
 
 class KwargModelMixin(object):
@@ -43,9 +43,17 @@ class KwargModelMixin(object):
         return self.get_item("model")
 
 
-class ColumnDetail(ViewableItems, DetailView):
+class ColumnDetail(DetailView):
     model = Column
     template_name = "column_detail.html"
+
+    def get_queryset(self):
+        try:
+            database = self.request.version.databases.get(name=self.kwargs["db_name"])
+        except Database.DoesNotExist:
+            raise Http404
+
+        return Column.objects.filter(table__schema__database=database)
 
 
 class IndexView(RedirectView):

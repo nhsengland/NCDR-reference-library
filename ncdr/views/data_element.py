@@ -8,18 +8,21 @@ from django.urls import reverse
 from django.views.generic import ListView
 
 from ..models import Column, DataElement
-from .base import ViewableItems
 
 
-class DataElementDetail(ViewableItems, ListView):
+class DataElementDetail(ListView):
     model = Column
     paginate_by = 10
     template_name = "data_element_detail.html"
 
     def get(self, request, *args, **kwargs):
         try:
-            self.object = DataElement.objects.viewable(request.user).get(
-                slug=self.kwargs["slug"]
+            self.object = (
+                DataElement.objects.filter(
+                    column__table__schema__database__version=request.version
+                )
+                .distinct()
+                .get(slug=self.kwargs["slug"])
             )
         except DataElement.DoesNotExist:
             raise Http404
@@ -32,25 +35,43 @@ class DataElementDetail(ViewableItems, ListView):
         return context
 
     def get_queryset(self):
-        return super().get_queryset().filter(data_element=self.object)
+        return (
+            super()
+            .get_queryset()
+            .filter(
+                table__schema__database__version=self.request.version,
+                data_element=self.object,
+            )
+            .select_related("table__schema__database")
+        )
 
 
-class DataElementList(ViewableItems, ListView):
+class DataElementList(ListView):
     model = DataElement
     template_name = "data_element_list.html"
     NUMERIC = "0-9"
     paginate_by = 50
 
-    def get_queryset(self, *args, **kwargs):
+    def get_context_data(self, *args, **kwargs):
+        symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
+        other_pages = [
+            (symbol, reverse("data_element_list") + f"?letter={symbol}")
+            for symbol in symbols
+        ]
+
+        context = super().get_context_data(*args, **kwargs)
+        context["other_pages"] = other_pages
+        return context
+
+    def get_queryset(self):
+        columns = Column.objects.filter(
+            table__schema__database__version=self.request.version
+        )
         qs = (
             super()
             .get_queryset()
-            .viewable(self.request.user)
-            .prefetch_related(
-                Prefetch(
-                    "column_set", queryset=Column.objects.viewable(self.request.user)
-                )
-            )
+            .filter(column__in=columns)
+            .prefetch_related(Prefetch("column_set", queryset=columns))
         )
 
         symbol = self.request.GET.get("letter")
@@ -64,14 +85,3 @@ class DataElementList(ViewableItems, ListView):
         # handle the 0-9 case
         startswith_args = [Q(name__startswith=str(i)) for i in range(10)]
         return qs.filter(functools.reduce(operator.or_, startswith_args))
-
-    def get_context_data(self, *args, **kwargs):
-        symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
-        other_pages = [
-            (symbol, reverse("data_element_list") + f"?letter={symbol}")
-            for symbol in symbols
-        ]
-
-        context = super().get_context_data(*args, **kwargs)
-        context["other_pages"] = other_pages
-        return context

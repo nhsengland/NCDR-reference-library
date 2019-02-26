@@ -52,7 +52,7 @@ class CreateColumnForm(forms.ModelForm):
             "author",
             "created_date_ext",
             "link",
-            "published",
+            # "published",
         ]
 
     def __init__(self, *args, **kwargs):
@@ -82,7 +82,7 @@ class ColumnForm(forms.ModelForm):
             "author",
             "created_date_ext",
             "link",
-            "published",
+            # "published",
         ]
 
     def __init__(self, *args, **kwargs):

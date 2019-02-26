@@ -57,6 +57,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "ncdr.middleware.latest_version",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -86,7 +87,6 @@ TEMPLATES = [
                 "django.contrib.messages.context_processors.messages",
                 "ncdr.context_processors.latest_version",
                 "ncdr.context_processors.models",
-                "ncdr.context_processors.unpublished_columns",
             ]
         },
     }

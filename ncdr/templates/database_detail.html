@@ -14,7 +14,7 @@
       <li>
       {% for table in object.tables %}
         <li>
-          <a class="table-link" href="{{ table.get_absolute_url }}">
+          <a class="table-link" href="{% url 'table_detail' db_name=object.name pk=table.pk %}">
             {{ table.name }}
           </a>
         </li>

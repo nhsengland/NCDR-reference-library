@@ -54,11 +54,31 @@ urlpatterns = [
         name="unpublished_list",
     ),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about_page"),
-    path("column/<int:pk>/", ColumnDetail.as_view(), name="column_detail"),
-    path("database", DatabaseList.as_view(), name="database_list"),
-    path("database/<str:db_name>/", DatabaseDetail.as_view(), name="database_detail"),
     path(
-        "database/<str:db_name>/<int:pk>/", TableDetail.as_view(), name="table_detail"
+        "database/",
+        include(
+            [
+                path("", DatabaseList.as_view(), name="database_list"),
+                path(
+                    "<str:db_name>/",
+                    include(
+                        [
+                            path("", DatabaseDetail.as_view(), name="database_detail"),
+                            path(
+                                "table/<int:pk>/",
+                                TableDetail.as_view(),
+                                name="table_detail",
+                            ),
+                            path(
+                                "column/<int:pk>/",
+                                ColumnDetail.as_view(),
+                                name="column_detail",
+                            ),
+                        ]
+                    ),
+                ),
+            ]
+        ),
     ),
     path("data_element/", DataElementList.as_view(), name="data_element_list"),
     path(
