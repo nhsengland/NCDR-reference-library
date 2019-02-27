@@ -364,12 +364,3 @@ class Version(models.Model):
 
     def __str__(self):
         return f"Version {self.pk}"
-
-    @classmethod
-    def latest_published(cls):
-        """
-        Shortcut method for getting the latest Version that's also published
-
-        This is commonly used for unauthenticated Users.
-        """
-        return Version.objects.filter(is_published=True).latest()

@@ -15,7 +15,8 @@ def latest_version(get_response):
         if request.user.is_authenticated and request.user.current_version:
             version = request.user.current_version
         else:
-            version = Version.latest_published()
+            # Unauthenticated users should get a published version too
+            version = Version.objects.filter(is_published=True).latest()
 
         request.version = version
 
