@@ -15,7 +15,7 @@ deploy:
 
 .PHONY: format
 format:
-	@echo "Running black" && black --check ncdr metrics || exit 1
+	@echo "Running black" && black --check ncdr metrics tests || exit 1
 
 .PHONY: lint
 lint:
@@ -32,4 +32,4 @@ sort:
 
 .PHONY: test
 test:
-	python manage.py test
+	pytest
