@@ -1,18 +1,5 @@
-from django.apps import apps
-from django.utils.functional import SimpleLazyObject
-
 from .models import Version
-
-
-class ModelContextProcessor(object):
-    def __init__(self):
-        for app_label, models in apps.all_models.items():
-            setattr(self, app_label, models)
 
 
 def latest_version(request):
     return {"latest_version": Version.objects.latest()}
-
-
-def models(request):
-    return {"models": SimpleLazyObject(ModelContextProcessor)}

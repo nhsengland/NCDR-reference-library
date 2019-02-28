@@ -6,13 +6,11 @@
 {% block contents %}
   <div class="card-list container main-content">
     <article>
-      <h1 class="title">
-        {{ models.ncdr.grouping.get_model_display_name_plural }}
-      </h1>
+      <h1 class="title">Groupings</h1>
       <div class="row nhs-england-well">
         <div class="col-md-12">
-          {{ models.ncdr.grouping.get_model_display_name_plural }} are collections
-          of Data Elements that contain information about a similar theme.
+          Groupings are collections of Data Elements that contain information
+          about a similar theme.
         </div>
       </div>
       {% for grouping in object_list|chunked:3 %}

@@ -104,19 +104,19 @@
             <nav>
               <ul>
                 <li>
-                  <a {% if request|url_name == 'database_detail' or request|url_name == 'database_list' %} class="active" {% endif %} href="{{ models.ncdr.database.get_list_url }}">
-                    {{ models.ncdr.database.get_model_display_name_plural }}
+                  <a {% if request|url_name == 'database_detail' or request|url_name == 'database_list' %} class="active" {% endif %} href="{{ database_list }}">
+                    Databases
                   </a>
                 </li>
                 <li>
                   <a {% if request|url_name == 'data_element_detail' or request|url_name == 'data_element_list' %} class="active" {% endif %} href="{{ data_element_list }}">
-                    {{ models.ncdr.dataelement.get_model_display_name_plural }}
+                    Data Elements
                   </a>
                 </li>
 
                 <li>
                   <a {% if request|url_name == 'grouping_detail' %}class="active" {% endif %} href="{{ grouping_redirect }}">
-                    {{ models.ncdr.grouping.get_model_display_name_plural }}
+                    Groupings
                   </a>
                 </li>
                 <li>

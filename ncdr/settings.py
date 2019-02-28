@@ -84,7 +84,6 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "ncdr.context_processors.latest_version",
-                "ncdr.context_processors.models",
             ]
         },
     }
