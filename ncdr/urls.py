@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-from .views import ColumnDetail, IndexView, Logout, TogglePreviewMode, api
+from .views import ColumnDetail, IndexView, Logout, api
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
@@ -85,9 +85,6 @@ urlpatterns = [
         "switch-to-version/<int:pk>/",
         SwitchToVersion.as_view(),
         name="switch-to-version",
-    ),
-    path(
-        "toggle-preview-mode", TogglePreviewMode.as_view(), name="toggle-preview-mode"
     ),
     path("unpublished/", UnpublishedVersions.as_view(), name="unpublished_list"),
     path("", include("metrics.urls")),
