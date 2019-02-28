@@ -8,14 +8,31 @@ from django.views.generic import ListView, RedirectView, View
 from ..models import Version
 
 
-class SetLatestVersion(LoginRequiredMixin, RedirectView):
-    """Switch version for the current user to the latest Version."""
+class SwitchToLatestVersion(LoginRequiredMixin, RedirectView):
+    """Switch to the given version for the current user."""
 
     def get(self, request, *args, **kwargs):
         request.user.switch_to_latest_version()
         return super().get(request, *args, **kwargs)
 
-    def get_redirect_url(self):
+    def get_redirect_url(self, *args, **kwargs):
+        return self.request.GET.get("next", reverse("index_view"))
+
+
+class SwitchToVersion(LoginRequiredMixin, RedirectView):
+    """Switch to the given version for the current user."""
+
+    def get(self, request, *args, **kwargs):
+        try:
+            version = Version.objects.get(pk=self.kwargs["pk"])
+        except Version.DoesNotExist:
+            raise Http404
+
+        request.user.switch_to_version(version)
+
+        return super().get(request, *args, **kwargs)
+
+    def get_redirect_url(self, *args, **kwargs):
         return self.request.GET.get("next", reverse("index_view"))
 
 

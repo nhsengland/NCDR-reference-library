@@ -24,7 +24,12 @@ from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
 from .views.search import Search, SearchRedirect
 from .views.table import TableAPI, TableDetail
-from .views.version import PublishVersion, SetLatestVersion, UnpublishedVersions
+from .views.version import (
+    PublishVersion,
+    SwitchToLatestVersion,
+    SwitchToVersion,
+    UnpublishedVersions,
+)
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index_view"),
@@ -73,8 +78,13 @@ urlpatterns = [
     path("search/<slug:model_name>/", Search.as_view(), name="search"),
     path(
         "switch-to-latest-version",
-        SetLatestVersion.as_view(),
+        SwitchToLatestVersion.as_view(),
         name="switch-to-latest-version",
+    ),
+    path(
+        "switch-to-version/<int:pk>/",
+        SwitchToVersion.as_view(),
+        name="switch-to-version",
     ),
     path(
         "toggle-preview-mode", TogglePreviewMode.as_view(), name="toggle-preview-mode"

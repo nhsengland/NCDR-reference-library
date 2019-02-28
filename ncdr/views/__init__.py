@@ -1,7 +1,5 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LogoutView
 from django.http import Http404
-from django.urls import reverse
 from django.views.generic import DetailView, RedirectView
 
 from ..models import Column, Database
@@ -31,14 +29,3 @@ class Logout(LogoutView):
         request.user.save()
 
         return super().dispatch(request, *args, **kwargs)
-
-
-class TogglePreviewMode(LoginRequiredMixin, RedirectView):
-    """Toggle preview_mode on the current user."""
-
-    def get(self, request, *args, **kwargs):
-        request.user.toggle_preview_mode()
-        return super().get(request, *args, **kwargs)
-
-    def get_redirect_url(self):
-        return self.request.GET.get("next", reverse("index_view"))

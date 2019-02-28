@@ -333,7 +333,6 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField("date joined", default=timezone.now)
 
-    preview_mode = models.BooleanField(default=False)
     current_version = models.ForeignKey("Version", on_delete=models.PROTECT)
 
     EMAIL_FIELD = "email"
@@ -348,13 +347,13 @@ class User(AbstractBaseUser, PermissionsMixin):
         return _user_has_module_perms(self, module)
 
     def switch_to_latest_version(self):
-        """Update this user to the latest Version"""
-        self.current_version = Version.objects.latest()
+        """Update this user to the latest published Version"""
+        self.current_version = Version.objects.filter(is_published=True).latest()
         self.save()
 
-    def toggle_preview_mode(self):
-        """Toggle the preview_mode boolean"""
-        self.preview_mode = not self.preview_mode
+    def switch_to_version(self, version):
+        """Update this user to the given Version"""
+        self.current_version = version
         self.save()
 
 

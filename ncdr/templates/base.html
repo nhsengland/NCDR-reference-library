@@ -42,29 +42,24 @@
     {% endblock staticfiles %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
   </head>
-  <body {% if request.user.preview_mode %}class="preview-mode"{% endif %}>
+  <body {% if not request.version.is_published %}class="preview-mode"{% endif %}>
     {% if request.user.is_authenticated %}
     <div class="banner-head">
-      <div class="container content-offset-10">
+      <div class="container content-offset-10 content-offset-below-10">
         <div class="row">
           <div class="col-md-12 text-center">
             {% if user.current_version and user.current_version != latest_version %}
-            <span class="small pull-left">Data version: {{ user.current_version }}</span>
+            <span class="small pull-left">Data version: {{ user.current_version.pk }}</span>
             {% endif %}
-            {% if request.user.preview_mode %}You are currently viewing a preview version of the site{% endif %}
+
+            {% if not request.version.is_published %}You are currently viewing a preview version of the site{% endif %}
+
             <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
-            <a class="btn pull-right relative" href="{% url 'toggle-preview-mode' %}?next={{ request.get_full_path }}">
-              {% if request.user.preview_mode %}
-              View Normal Site
-              {% else %}
-              Preview Site
-              {% endif %}
-            </a>
-            {% if user.current_version and user.current_version != latest_version %}
-            <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">
-              Switch to Latest Version
-            </a>
+
+            {% if not request.version.is_published %}
+            <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">View Normal Site</a>
             {% endif %}
+
           </div>
         </div>
       </div>
