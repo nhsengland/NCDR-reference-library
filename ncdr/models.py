@@ -360,7 +360,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Version(models.Model):
     """Track a related models version number."""
 
+    created_by = models.ForeignKey(
+        "User", null=True, on_delete=models.SET_NULL, related_name="versions"
+    )
+
     is_published = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
 
     class Meta:
         get_latest_by = "pk"

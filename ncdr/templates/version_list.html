@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block contents %}
+<div class="container main-content">
+
+  <div class="row">
+    <div class="col-md-12 content-offset-below-20">
+      <h3>Versions</h3>
+    </div>
+  </div>
+
+  <div class="row unpublished">
+    <div class="col-md-12">
+
+      <div class="line">
+        <span class="number"></span>
+        <span class="created"><strong>Uploaded On</strong></span>
+        <span class="author"><strong>Uploaded By</strong></span>
+        <span class="published"><strong>Published?</strong></span>
+        <span class="tools" style="width:135px"></span>
+      </div>
+
+      {% for version in object_list %}
+      <div class="line {% cycle '' 'striped' %}">
+        <span class="number" ><strong>{{ version.pk }}</strong></span>
+        <span class="created">{{ version.created_at }}</span>
+        <span class="author">{{ version.created_by.email|default:"-" }}</span>
+        <span class="published">
+          {% if version.is_published %}
+          {% include "svgs/tick.html" %}
+          {% else %}
+          {% include "svgs/cross.html" %}
+          {% endif %}
+        </span>
+        <span class="tools">
+          <a class="btn btn-success" href="{% url 'switch-to-version' pk=version.pk %}">View</a>
+
+          {% if version.is_published %}
+          <form action="{% url 'unpublish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Unpublish</button>
+          </form>
+          {% else %}
+          <form action="{% url 'publish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Publish</button>
+          </form>
+          {% endif %}
+        </span>
+      </div>
+      {% endfor %}
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      {% if is_paginated %}
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+        {% endif %}
+        {% for i in paginator.page_range %}
+        {% if page_obj.number == i %}
+        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+        {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+      </ul>
+      {% endif %}
+    </div>
+  </div>
+
+</div>
+{% endblock %}

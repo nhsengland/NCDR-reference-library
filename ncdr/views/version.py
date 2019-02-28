@@ -48,12 +48,29 @@ class PublishVersion(LoginRequiredMixin, View):
         version.is_published = True
         version.save()
 
-        messages.success(request, f"Published Version: {version.pk}")
+        messages.success(request, f"Version {version.pk} has been published")
 
         return redirect(request.GET.get("next", reverse("index_view")))
 
 
-class UnpublishedVersions(LoginRequiredMixin, ListView):
+class UnPublishVersion(LoginRequiredMixin, View):
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        try:
+            version = Version.objects.get(pk=self.kwargs["pk"])
+        except Version.DoesNotExist:
+            raise Http404
+
+        version.is_published = False
+        version.save()
+
+        messages.success(request, f"Version {version.pk} has been unpublished")
+
+        return redirect(request.GET.get("next", reverse("index_view")))
+
+
+class VersionList(LoginRequiredMixin, ListView):
     paginate_by = 50
-    queryset = Version.objects.filter(is_published=False)
-    template_name = "unpublished_list.html"
+    queryset = Version.objects.order_by("-pk", "-created_at")
+    template_name = "version_list.html"

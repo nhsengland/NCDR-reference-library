@@ -502,4 +502,57 @@ hr {
   word-break: break-all;
 }
 
+.nhsuk-icon {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+}
+
+.nhsuk-icon__cross {
+  fill: #da291c;
+}
+
+.nhsuk-icon__tick {
+  fill: none;
+  stroke: #007f3b;
+}
+
+.unpublished .line {
+  align-items: center;
+  display: flex;
+  padding: 10px 20px;
+}
+.unpublished .striped {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.unpublished span {
+  display: inline-block;
+}
+.unpublished span.number {
+  display: inline-block;
+  text-align: center;
+  width: 50px;
+}
+.unpublished span.created {
+  display: inline-block;
+  width: 250px;
+}
+.unpublished span.author {
+  flex-grow: 1;
+}
+.unpublished span.published {
+  height: 30px;
+  margin-right: 20px;
+}
+.unpublished span.tools {
+  width: 165px;
+}
+.unpublished span.tools a {
+  display: inline-block;
+  margin-right: 10px;
+}
+.unpublished form {
+  display: inline-block;
+}
+
 /*# sourceMappingURL=styles.css.map */

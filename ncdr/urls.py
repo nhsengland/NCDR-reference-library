@@ -28,7 +28,8 @@ from .views.version import (
     PublishVersion,
     SwitchToLatestVersion,
     SwitchToVersion,
-    UnpublishedVersions,
+    UnPublishVersion,
+    VersionList,
 )
 
 urlpatterns = [
@@ -84,7 +85,8 @@ urlpatterns = [
         SwitchToVersion.as_view(),
         name="switch-to-version",
     ),
-    path("unpublished/", UnpublishedVersions.as_view(), name="unpublished_list"),
+    path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
+    path("versions/", VersionList.as_view(), name="version_list"),
     path("", include("metrics.urls")),
 ]
 
