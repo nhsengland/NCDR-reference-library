@@ -28,6 +28,10 @@ class BaseModel(models.Model):
     def get_model_name(cls):
         return cls.__name__.lower()
 
+    @property
+    def search_template(self):
+        return f"search/{self.__class__.__name__.lower()}.html"
+
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
