@@ -1,4 +1,3 @@
-from django.contrib.auth.views import LogoutView
 from django.http import Http404
 from django.views.generic import DetailView, RedirectView
 
@@ -21,11 +20,3 @@ class ColumnDetail(DetailView):
 class IndexView(RedirectView):
     def get_redirect_url(self, *args, **kwargs):
         return Database.get_list_url()
-
-
-class Logout(LogoutView):
-    def dispatch(self, request, *args, **kwargs):
-        request.user.preview_mode = False
-        request.user.save()
-
-        return super().dispatch(request, *args, **kwargs)

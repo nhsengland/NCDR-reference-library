@@ -18,7 +18,7 @@ from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import TemplateView
 
-from .views import ColumnDetail, IndexView, Logout
+from .views import ColumnDetail, IndexView
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
@@ -34,7 +34,6 @@ from .views.version import (
 
 urlpatterns = [
     path("", IndexView.as_view(), name="index_view"),
-    path("accounts/logout/", Logout.as_view(), name="logout"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about_page"),
