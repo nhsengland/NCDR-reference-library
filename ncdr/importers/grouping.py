@@ -2,7 +2,7 @@ import csv
 
 from django.db import transaction
 
-from ...models import DataElement, Grouping
+from ..models import DataElement, Grouping
 
 
 @transaction.atomic

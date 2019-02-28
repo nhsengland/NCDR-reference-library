@@ -3,7 +3,7 @@ import csv
 
 from django.db import transaction
 
-from ...models import Column, DataElement, Table
+from ..models import Column, DataElement, Table
 
 
 def get_tables(tableLUT, addresses):

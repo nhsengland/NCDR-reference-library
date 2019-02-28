@@ -2,7 +2,7 @@ import csv
 
 from django.db import transaction
 
-from ...models import Database, Schema, Table
+from ..models import Database, Schema, Table
 
 
 @transaction.atomic
