@@ -12,9 +12,7 @@
     <small>
       {% if column.data_element %}
         -
-        <a href="{{ column.data_element.get_absolute_url }}">
-          {{ column.data_element.get_display_name }}
-        </a>
+        <a href="{{ column.data_element.get_absolute_url }}">{{ column.data_element.name }}</a>
       {% endif %}
     </small>
   {% endif %}

@@ -13,9 +13,6 @@ from django.utils.text import slugify
 
 
 class BaseModel(models.Model):
-    def get_display_name(self):
-        return self.name
-
     @classmethod
     def get_model_display_name(cls):
         return cls._meta.verbose_name.title()
@@ -153,9 +150,6 @@ class Database(BaseModel):
     def get_absolute_url(self):
         return reverse("database_detail", kwargs={"db_name": self.name})
 
-    def get_display_name(self):
-        return self.display_name
-
     @property
     def tables(self):
         """
@@ -266,9 +260,6 @@ class Table(BaseModel):
     def get_absolute_url(self):
         kwargs = {"pk": self.pk, "db_name": self.schema.database.name}
         return reverse("table_detail", kwargs=kwargs)
-
-    def get_display_name(self):
-        return f"{self.schema.database.name} / {self.name}"
 
 
 class UserManager(BaseUserManager):

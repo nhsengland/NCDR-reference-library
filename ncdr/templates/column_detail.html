@@ -6,7 +6,14 @@
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">{{ object.table.database.get_display_name }}</a><a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}"> {{ object.table.name }}</a>{{ object.name }}
+          <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>
+          <a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">
+            {{ object.table.database.display_name }}
+          </a>
+          <a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}">
+            {{ object.table.name }}
+          </a>
+          {{ object.name }}
         </div>
       </div>
 
@@ -50,7 +57,7 @@
         <div class="col-md-3">
           <h4 class="sub-row-title coloured-header">Data Element</h4>
           {% if object.data_element %}
-            <a href="{{ object.data_element.get_absolute_url }}">{{ object.data_element.get_display_name }}</a>
+          <a href="{{ object.data_element.get_absolute_url }}">{{ object.data_element.name }}</a>
           {% endif %}
         </div>
         <div class="col-md-9">

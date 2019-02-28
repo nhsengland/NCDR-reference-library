@@ -10,7 +10,7 @@
     <ul>
       <li class="list-title active">
         <a href="">
-          {{ object.get_display_name }}
+          {{ object.display_name }}
         </a>
       <li>
       {% for table in object.tables %}
@@ -23,11 +23,11 @@
     </ul>
   </aside>
   <article class="col-md-8">
-    <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>{{ object.get_display_name }}
+    <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>{{ object.display_name }}
     <h1 class="title">
       <div class="row">
         <div class="col-sm-12">
-          {{ object.get_display_name }}
+          {{ object.display_name }}
         </div>
       </div>
       {% if object.date_range and not object.date_range == 'N/A' %}

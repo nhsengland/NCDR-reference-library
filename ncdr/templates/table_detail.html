@@ -9,7 +9,7 @@
       <ul>
         <li class="list-title">
           <a href="{{ object.schema.database.get_absolute_url }}">
-            {{ object.schema.database.get_display_name }}
+            {{ object.schema.database.display_name }}
           </a>
         <li>
         {% for table in tables %}
@@ -22,11 +22,17 @@
       </ul>
     </aside>
     <article class="col-md-8">
-      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ object.database.get_absolute_url }}"> {{ object.database.get_display_name }}</a>{{ object.name }}
+
+      <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>
+      <a class="ncdr-breadcrumbs" href="{{ object.database.get_absolute_url }}">
+        {{ object.database.display_name }}
+      </a>
+      {{ object.name }}
+
       <h1 class="title">
         <div class="row">
           <div class="col-sm-12">
-            {{ object.schema.database.get_display_name }} / {{ object.name }}
+            {{ object.schema.database.display_name }} / {{ object.name }}
           </div>
         </div>
         {% if object.date_range and not object.date_range == 'N/A' %}
