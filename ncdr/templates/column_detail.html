@@ -15,7 +15,7 @@
           <h1>{{ object.name }}</h1>
 
           <span class="faded small">
-            {{ object.table.schema.database.get_display_name }} / {{ object.table.schema }} / {{ object.table.name }}
+            {{ object.table.schema.database.name }}.{{ object.table.schema.name }}.{{ object.table.name }}
           </span>
 
         </div>
