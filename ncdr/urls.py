@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView, TemplateView
 
-from .views import ColumnDetail, IndexView, Login
+from .views import ColumnDetail, Login
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
@@ -33,7 +33,7 @@ from .views.version import (
 )
 
 urlpatterns = [
-    path("", IndexView.as_view(), name="index_view"),
+    path("", RedirectView.as_view(pattern_name="database_list"), name="index_view"),
     path("accounts/login/", Login.as_view(), name="login"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),

@@ -153,14 +153,6 @@ class Database(BaseModel):
     def get_absolute_url(self):
         return reverse("database_detail", kwargs={"db_name": self.name})
 
-    @classmethod
-    def get_by_name(cls, name, user):
-        Database.objects.get
-
-    @classmethod
-    def get_list_url(self):
-        return reverse("database_list")
-
     def get_display_name(self):
         return self.display_name
 

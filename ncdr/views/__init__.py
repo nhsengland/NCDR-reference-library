@@ -1,6 +1,6 @@
 from django.contrib.auth.views import LoginView
 from django.http import Http404
-from django.views.generic import DetailView, RedirectView
+from django.views.generic import DetailView
 
 from ..models import Column, Database
 
@@ -16,11 +16,6 @@ class ColumnDetail(DetailView):
             raise Http404
 
         return Column.objects.filter(table__schema__database=database)
-
-
-class IndexView(RedirectView):
-    def get_redirect_url(self, *args, **kwargs):
-        return Database.get_list_url()
 
 
 class Login(LoginView):
