@@ -333,7 +333,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField("date joined", default=timezone.now)
 
-    current_version = models.ForeignKey("Version", on_delete=models.PROTECT)
+    current_version = models.ForeignKey("Version", null=True, on_delete=models.SET_NULL)
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
