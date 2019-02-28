@@ -43,7 +43,6 @@ INSTALLED_APPS = [
     "csv_schema",
     "markdown_deux",
     "bootstrapform",
-    "rest_framework",
     "ncdr",
     "metrics",
 ]
