@@ -108,18 +108,6 @@ class Column(BaseModel, models.Model):
             return stripped.lstrip("www.").split("/")[0]
 
     @cached_property
-    def related(self):
-        """
-            returns a tuple of (table, columns within the table)
-            the column names are sorted alphabetically
-
-            the tables are sorted by database name then name
-        """
-        other_columns = self.data_element.column_set.exclude(id=self.id)
-        other_columns = other_columns.order_by("table__name")
-        return other_columns.order_by("table__schema__database__name")
-
-    @cached_property
     def usage_count(self):
         count = self.tables.count()
         if self.data_element:
