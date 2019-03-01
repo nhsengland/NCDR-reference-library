@@ -28,7 +28,7 @@ def load_file(file_name, version):
     )
     for row in schema_rows:
         try:
-            database = Database.objects.get(name=row["Database"])
+            database = Database.objects.get(version=version, name=row["Database"])
         except Database.DoesNotExist:
             print(f"Unknown database: {row['Database']}")
             raise
