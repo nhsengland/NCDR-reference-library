@@ -639,3 +639,21 @@ hr {
     display: inline-block;
   }
 }
+
+// Version audit log
+.audit-log {
+  .line {
+    align-items: center;
+    display: flex;
+    padding: 10px 20px;
+  }
+
+  .striped {
+    background-color: rgba(0, 0, 0, .05);
+  }
+
+  .date {
+    display: inline-block;
+    width: 250px;
+  }
+}

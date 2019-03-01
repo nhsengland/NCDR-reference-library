@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% load static %}
+
+{% block contents %}
+<div class="container main-content">
+
+  <div class="row content-offset-below-20">
+    <div class="col-md-12">
+      <h3>Version Timeline</h3>
+    </div>
+
+    <div class="col-md-2 pull-right">
+      <a href="{% url 'audit-log' %}">Audit Log</a>
+      |
+      <a href="{% url 'version_list' %}">Versions</a>
+    </div>
+  </div>
+
+  <div class="row audit-log">
+    <div class="col-md-12">
+
+      <ul>
+        {% for log in object_list %}
+        <li>Version {{ log.version_id }} published at {{ log.created_at }}</li>
+        {% endfor %}
+      </ul>
+
+    </div>
+  </div>
+
+</div>
+{% endblock %}

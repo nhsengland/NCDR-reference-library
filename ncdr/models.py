@@ -5,7 +5,7 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
-from django.db import models
+from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -344,3 +344,61 @@ class Version(models.Model):
 
     def __str__(self):
         return f"Version {self.pk}"
+
+    @transaction.atomic
+    def _set_publish_state(self, publish, user):
+        previous_published = Version.objects.filter(is_published=True).latest()
+
+        self.is_published = publish
+        self.save()
+
+        now_published = Version.objects.filter(is_published=True).latest()
+
+        VersionAuditLog.objects.create(
+            version=self,
+            previous_published=previous_published,
+            now_published=now_published,
+            created_by=user,
+            changed_to_published=publish,
+        )
+
+    def publish(self, user):
+        self._set_publish_state(True, user)
+
+    def unpublish(self, user):
+        self._set_publish_state(False, user)
+
+
+class VersionAuditLog(models.Model):
+    version = models.ForeignKey(
+        "Version", on_delete=models.CASCADE, related_name="logs"
+    )
+    previous_published = models.ForeignKey(
+        "Version",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="previous_published_versions",
+    )
+    now_published = models.ForeignKey(
+        "Version",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="now_published_versions",
+    )
+    created_by = models.ForeignKey(
+        "User", on_delete=models.CASCADE, related_name="version_logs"
+    )
+
+    changed_to_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = [
+            "created_at",
+            "version",
+            "previous_published",
+            "now_published",
+        ]
+
+    def __str__(self):
+        return f"Audit Log for Version: {self.version_id}"

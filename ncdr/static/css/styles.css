@@ -555,4 +555,17 @@ hr {
   display: inline-block;
 }
 
+.audit-log .line {
+  align-items: center;
+  display: flex;
+  padding: 10px 20px;
+}
+.audit-log .striped {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+.audit-log .date {
+  display: inline-block;
+  width: 250px;
+}
+
 /*# sourceMappingURL=styles.css.map */

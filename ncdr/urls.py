@@ -25,9 +25,11 @@ from .views.grouping import GroupingDetail, GroupingList
 from .views.search import Search, SearchRedirect
 from .views.table import TableDetail
 from .views.version import (
+    AuditLog,
     PublishVersion,
     SwitchToLatestVersion,
     SwitchToVersion,
+    Timeline,
     UnPublishVersion,
     VersionList,
 )
@@ -38,6 +40,7 @@ urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about_page"),
+    path("audit-log", AuditLog.as_view(), name="audit-log"),
     path(
         "database/",
         include(
@@ -85,6 +88,7 @@ urlpatterns = [
         SwitchToVersion.as_view(),
         name="switch-to-version",
     ),
+    path("timeline", Timeline.as_view(), name="timeline"),
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
     path("versions/", VersionList.as_view(), name="version_list"),
     path("", include("metrics.urls")),

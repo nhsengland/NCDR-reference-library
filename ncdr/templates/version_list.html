@@ -5,9 +5,15 @@
 {% block contents %}
 <div class="container main-content">
 
-  <div class="row">
-    <div class="col-md-12 content-offset-below-20">
+  <div class="row content-offset-below-20">
+    <div class="col-md-10">
       <h3>Versions</h3>
+    </div>
+
+    <div class="col-md-2 pull-right">
+      <a href="{% url 'audit-log' %}">Audit Log</a>
+      |
+      <a href="{% url 'timeline' %}">Timeline</a>
     </div>
   </div>
 
