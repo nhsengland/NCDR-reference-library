@@ -5,49 +5,45 @@ A viewer for the schema of the National Commissioning Data Repository
 
 ## Set Up
 
-    1. git clone
-    1. mkvirtualenv
-    1. make setup
-    1. pre-commit install
-    1. python manage.py load_data
+### Quick Start
 
-Load in all existing csvs (stored in data/csvs):
-
-    ./manage.py load_data
+    1. `git clone`
+    1. create and active a `virtualenv`
+    1. `make setup`
+    1. `pre-commit install`
 
 
-When running the server locally, we are using sass. So installl sass and run
+This project uses a few tools which are either not installed via Pip or aren't Python tools.
+The project leaves it up to you to decide how to install them.
 
-    sass --watch ncdr/static/css/styles.scss:ncdr/static/css/styles.css -->
-
-
-## deployment
-1. update hosts.dev (and use keys natch)
-1. set your branch in deployment/group_vars/all
-1. create .vault.txt and put the vault password in there
-1. cd deployment
-1. ansible-playbook setup-server.yml -i hosts.dev --vault-password-file .vault.txt
-
-to view the encrypted variables
-ansible-vault edit all --vault-password-file ~/.vault.txt
+    1. (Pre-Commit)[https://pre-commit.com]
+    1. (Sass)[https://sass-lang.com]
 
 
-## loading in new files.
-We currently accept 3 csv files.
+## Running
 
-1. Columns
-A file that contains all the information about NCDR references. These are columns
-that exist in multiple tables and carry the same information.
+To update CSS locally:
 
-2. Database and Tables
-These contain information about the details and tables. For example descriptions
-and display names.
+    sass --watch ncdr/static/css/styles.scss:ncdr/static/css/styles.css
 
-3. Mappings
-These contain information about the Mappings and Groupings of different columns.
+
+To import new CSVs via the web form, run the Queue worker:
+
+    python rq_worker
+
+
+## Deployment
+
+    1. update hosts.dev (and use keys natch)
+    1. set your branch in deployment/group_vars/all
+    1. create .vault.txt and put the vault password in there
+    1. `make deploy`
+
+To view the encrypted variables:
+
+    ansible-vault edit all --vault-password-file ~/.vault.txt
 
 
 ## TODO
-change the csv loader into a form.
 add in a search function, but lets find out which columns to query
 make the table look more like https://data.england.nhs.uk/dataset?
