@@ -71,6 +71,18 @@ STATIC_ROOT = "static"
 STATIC_URL = env.str("STATIC_URL", default="/static/")
 WHITENOISE_STATIC_PREFIX = "/static/"
 
+# Storage for user uploaded files
+# https://docs.djangoproject.com/en/2.1/topics/files/
+AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
+AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
+AWS_DEFAULT_ACL = "public-read"
+DEFAULT_FILE_STORAGE = env.str(
+    "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
+)
+
+if DEBUG:
+    MEDIA_ROOT = "data/csvs"
+
 
 TEMPLATES = [
     {
