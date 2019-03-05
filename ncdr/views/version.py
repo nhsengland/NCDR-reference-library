@@ -118,5 +118,7 @@ class Upload(LoginRequiredMixin, CreateView):
 
 class VersionList(LoginRequiredMixin, ListView):
     paginate_by = 50
-    queryset = Version.objects.order_by("-pk", "-created_at")
+    queryset = Version.objects.order_by("-pk", "-created_at").select_related(
+        "created_by"
+    )
     template_name = "version_list.html"
