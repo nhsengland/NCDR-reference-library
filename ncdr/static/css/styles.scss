@@ -657,3 +657,21 @@ hr {
     width: 250px;
   }
 }
+
+// Version upload form
+form.upload {
+  .form-group {
+    align-items: baseline;
+    display: flex;
+    margin-bottom: 0;
+  }
+
+  input[type="file"] {
+    display: flex;
+  }
+
+  .help-text {
+    color: #737373;
+    font-size: 70%;
+  }
+}

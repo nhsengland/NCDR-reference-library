@@ -4,8 +4,12 @@ from django.db.models import F
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import ListView, RedirectView, View
+from django.views.generic import CreateView, ListView, RedirectView, View
 
+from services.rq import queue
+
+from ..forms import UploadForm
+from ..importers import import_data
 from ..models import Version, VersionAuditLog
 
 
@@ -86,6 +90,30 @@ class UnPublishVersion(LoginRequiredMixin, View):
         messages.success(request, f"Version {version.pk} has been unpublished")
 
         return redirect(request.GET.get("next", reverse("index_view")))
+
+
+class Upload(LoginRequiredMixin, CreateView):
+    form_class = UploadForm
+    template_name = "upload.html"
+
+    def form_valid(self, form):
+        # create a Version with the files
+        version = Version.create(
+            db_structure=self.request.FILES["db_structure"],
+            definitions=self.request.FILES["definitions"],
+            grouping_mapping=self.request.FILES["grouping_mapping"],
+            is_published=False,
+            created_by=self.request.user,
+        )
+
+        # enqueue with RQ
+        queue.enqueue(import_data, version.pk)
+
+        messages.info(
+            self.request, f"Version {version.pk} has been queued for processing."
+        )
+
+        return redirect("version_list")
 
 
 class VersionList(LoginRequiredMixin, ListView):

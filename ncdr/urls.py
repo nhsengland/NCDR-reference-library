@@ -31,6 +31,7 @@ from .views.version import (
     SwitchToVersion,
     Timeline,
     UnPublishVersion,
+    Upload,
     VersionList,
 )
 
@@ -90,6 +91,7 @@ urlpatterns = [
     ),
     path("timeline", Timeline.as_view(), name="timeline"),
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
+    path("upload", Upload.as_view(), name="upload"),
     path("versions/", VersionList.as_view(), name="version_list"),
     path("", include("metrics.urls")),
 ]

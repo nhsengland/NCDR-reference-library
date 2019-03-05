@@ -568,4 +568,17 @@ hr {
   width: 250px;
 }
 
+form.upload .form-group {
+  align-items: baseline;
+  display: flex;
+  margin-bottom: 0;
+}
+form.upload input[type=file] {
+  display: flex;
+}
+form.upload .help-text {
+  color: #737373;
+  font-size: 70%;
+}
+
 /*# sourceMappingURL=styles.css.map */

@@ -151,7 +151,7 @@ LOGGING = {
     },
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
-        "datastore": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "ncdr": {"handlers": ["console"], "level": "INFO", "propagate": False},
     },
 }
 
