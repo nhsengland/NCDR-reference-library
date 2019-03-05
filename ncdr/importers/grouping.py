@@ -1,15 +1,11 @@
 import csv
 
-from django.db import transaction
-
 from ..models import DataElement, Grouping
 
 
-@transaction.atomic
-def load_file(file_name, version):
-    with open(file_name, "r", encoding="Windows-1252") as f:
-        f.readline()  # ignore the first line since it's blank
-        rows = list(csv.DictReader(f, delimiter="¬"))
+def load_file(fd, version):
+    fd.readline()  # ignore the first line since it's blank
+    rows = list(csv.DictReader(fd, delimiter="¬"))
 
     for row in rows:
         grouping, _ = Grouping.objects.get_or_create(
