@@ -12,6 +12,10 @@ from django.utils.functional import cached_property
 from django.utils.text import slugify
 
 
+def versioned_path(version, filename):
+    return f"{version.pk}/{filename}"
+
+
 class BaseModel(models.Model):
     @classmethod
     def get_model_display_name(cls):
@@ -336,6 +340,11 @@ class Version(models.Model):
         "User", null=True, on_delete=models.SET_NULL, related_name="versions"
     )
 
+    db_structure = models.FileField(upload_to=versioned_path, null=True)
+    definitions = models.FileField(upload_to=versioned_path, null=True)
+    grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
+    last_process_at = models.DateTimeField(null=True)
+
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -361,6 +370,30 @@ class Version(models.Model):
             created_by=user,
             changed_to_published=publish,
         )
+
+    @classmethod
+    def create(
+        self, *, db_structure, definitions, grouping_mapping, is_published, created_by
+    ):
+        """
+        Wrap creating a Version with attached files
+
+        The versioned_path function uses the passed Version instance's PK to
+        generate the path for uploading files to.  However when creating an
+        instance with Version.objects.create we can't guarantee version.pk will
+        have been set as the model is not typically saved before the function
+        is run.
+        """
+        version = Version.objects.create(
+            created_by=created_by, is_published=is_published
+        )
+
+        version.db_structure = db_structure
+        version.definitions = definitions
+        version.grouping_mapping = grouping_mapping
+        version.save()
+
+        return version
 
     def publish(self, user):
         self._set_publish_state(True, user)
