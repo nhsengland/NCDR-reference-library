@@ -134,6 +134,11 @@ USE_TZ = True
 AUTH_USER_MODEL = "ncdr.User"
 
 
+# Configure error notification email address for RQ logger
+# https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-ADMINS
+ADMINS = [("Support", "support@openhealthcare.org.uk")]
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.1/topics/logging/
 timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
@@ -154,16 +159,27 @@ LOGGING = {
             "foreign_pre_chain": pre_chain,
         }
     },
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "formatter",
-        }
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+        },
     },
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
         "ncdr": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "rq": {
+            "handlers": ["console", "mail_admins"],
+            "level": "INFO",
+            "propagate": False,
+        },
     },
 }
 
