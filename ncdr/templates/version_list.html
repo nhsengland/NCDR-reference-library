@@ -50,12 +50,12 @@
           {% if version.is_published %}
           <form action="{% url 'unpublish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Unpublish</button>
+            <button type="submit" {% if not version.last_process_at %}disabled {% endif %}class="btn btn-danger">Unpublish</button>
           </form>
           {% else %}
           <form action="{% url 'publish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger">Publish</button>
+            <button type="submit" {% if not version.last_process_at %}disabled {% endif %}class="btn btn-danger">Publish</button>
           </form>
           {% endif %}
         </span>
