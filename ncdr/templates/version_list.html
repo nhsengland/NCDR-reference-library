@@ -19,15 +19,16 @@
     </div>
   </div>
 
-  <div class="row unpublished">
+  <div class="row versions">
     <div class="col-md-12">
 
       <div class="line">
         <span class="number"></span>
         <span class="created"><strong>Uploaded On</strong></span>
         <span class="author"><strong>Uploaded By</strong></span>
+        <span class="processed"><strong>Processed At</strong></span>
         <span class="published"><strong>Published?</strong></span>
-        <span class="tools" style="width:135px"></span>
+        <span class="tools"></span>
       </div>
 
       {% for version in object_list %}
@@ -35,6 +36,7 @@
         <span class="number" ><strong>{{ version.pk }}</strong></span>
         <span class="created">{{ version.created_at }}</span>
         <span class="author">{{ version.created_by.email|default:"-" }}</span>
+        <span class="processed">{{ version.last_process_at|default:"-" }}</span>
         <span class="published">
           {% if version.is_published %}
           {% include "svgs/tick.html" %}

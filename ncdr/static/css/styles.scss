@@ -590,8 +590,8 @@ hr {
   stroke: #007f3b;
 }
 
-// unpublished page
-.unpublished {
+// Version List
+.versions {
   .line {
     align-items: center;
     display: flex;
@@ -621,22 +621,28 @@ hr {
     flex-grow: 1;
   }
 
+  span.processed {
+    width: 215px;
+  }
+
   span.published {
     height: 30px;
-    margin-right: 20px;
+    text-align: center;
+    width: 95px;
   }
 
   span.tools {
+    text-align: right;
     width: 165px;
 
-    & a {
+    a {
       display: inline-block;
-      margin-right: 10px;
     }
-  }
 
-  form {
-    display: inline-block;
+    form {
+      display: inline-block;
+      margin-left: 10px;
+    }
   }
 }
 
