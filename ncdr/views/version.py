@@ -8,6 +8,7 @@ from django.views.generic import CreateView, ListView, RedirectView, View
 
 from services.rq import queue
 
+from ..exceptions import VersionAlreadyExists
 from ..forms import UploadForm
 from ..importers import import_data
 from ..models import Version, VersionAuditLog
@@ -98,13 +99,18 @@ class Upload(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         # create a Version with the files
-        version = Version.create(
-            db_structure=self.request.FILES["db_structure"],
-            definitions=self.request.FILES["definitions"],
-            grouping_mapping=self.request.FILES["grouping_mapping"],
-            is_published=False,
-            created_by=self.request.user,
-        )
+        try:
+            version = Version.create(
+                db_structure=self.request.FILES["db_structure"],
+                definitions=self.request.FILES["definitions"],
+                grouping_mapping=self.request.FILES["grouping_mapping"],
+                is_published=False,
+                created_by=self.request.user,
+            )
+        except VersionAlreadyExists as e:
+            msg = f"These files already exist in Version {e.existing_pk}"
+            messages.error(self.request, msg)
+            return redirect("version_list")
 
         # enqueue with RQ
         queue.enqueue(import_data, version.pk)

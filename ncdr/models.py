@@ -1,3 +1,5 @@
+from hashlib import md5
+
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -5,11 +7,13 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
-from django.db import models, transaction
+from django.db import IntegrityError, models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.text import slugify
+
+from .exceptions import VersionAlreadyExists
 
 
 def versioned_path(version, filename):
@@ -344,6 +348,7 @@ class Version(models.Model):
     definitions = models.FileField(upload_to=versioned_path, null=True)
     grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
     last_process_at = models.DateTimeField(null=True)
+    files_hash = models.TextField(null=True, unique=True)
 
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
@@ -384,9 +389,26 @@ class Version(models.Model):
         have been set as the model is not typically saved before the function
         is run.
         """
-        version = Version.objects.create(
-            created_by=created_by, is_published=is_published
-        )
+        contents_hash = md5(
+            db_structure.read() + definitions.read() + grouping_mapping.read()
+        ).digest()
+
+        # reset file streams after reading them to generate hash
+        db_structure.seek(0)
+        definitions.seek(0)
+        grouping_mapping.seek(0)
+
+        try:
+            version = Version.objects.create(
+                created_by=created_by,
+                is_published=is_published,
+                files_hash=contents_hash,
+            )
+        except IntegrityError:
+            # use an Exception to expose the existing version instead of
+            # polluting the return value.
+            version = Version.objects.get(files_hash=contents_hash)
+            raise VersionAlreadyExists(existing_pk=version.pk)
 
         version.db_structure = db_structure
         version.definitions = definitions
