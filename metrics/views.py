@@ -22,4 +22,5 @@ class MetricDetail(DetailView):
 class MetricsList(ListView):
     model = Metric
     ordering = "indicator"
+    paginate_by = 30
     template_name = "metrics-list.html"
