@@ -74,11 +74,6 @@
     chdir: "{{ PROJECT_PATH}}"
   command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
 
-- name: Run Django initial_load
-  args:
-    chdir: "{{ PROJECT_PATH}}"
-  command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py load_data"
-
 - name: Remove old nginx default
   become: true
   file:
