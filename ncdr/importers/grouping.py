@@ -1,5 +1,7 @@
 import csv
 
+from django.utils.text import slugify
+
 from ..models import DataElement, Grouping
 
 
@@ -11,7 +13,7 @@ def load_file(fd, version):
     csv_desc_by_name = {row["Grouping"]: row["Grouping Description"] for row in rows}
     missing_names = set(csv_desc_by_name.keys()) - set(existing_names)
     Grouping.objects.bulk_create(
-        Grouping(name=name, description=csv_desc_by_name[name])
+        Grouping(name=name, slug=slugify(name), description=csv_desc_by_name[name])
         for name in missing_names
     )
     groupingLUT = {g.name: g for g in Grouping.objects.all()}

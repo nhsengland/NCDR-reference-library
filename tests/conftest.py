@@ -40,7 +40,7 @@ def published_column(published_table):
 
 @pytest.fixture
 def published_data_element(published_column):
-    data_element = DataElement.objects.create(name="test")
+    data_element = DataElement.objects.create(name="test", slug="test")
     data_element.column_set.add(published_column)
     return data_element
 
@@ -52,7 +52,7 @@ def published_database(published_version):
 
 @pytest.fixture
 def published_grouping(published_data_element):
-    grouping = Grouping.objects.create(name="test")
+    grouping = Grouping.objects.create(name="test", slug="test")
     grouping.dataelement_set.add(published_data_element)
     return grouping
 
@@ -79,7 +79,7 @@ def unpublished_column(unpublished_table):
 
 @pytest.fixture
 def unpublished_data_element(unpublished_column):
-    data_element = DataElement.objects.create(name="test")
+    data_element = DataElement.objects.create(name="test", slug="test")
     data_element.column_set.add(unpublished_column)
     return data_element
 
@@ -91,7 +91,7 @@ def unpublished_database(unpublished_version):
 
 @pytest.fixture
 def unpublished_grouping(unpublished_data_element):
-    grouping = Grouping.objects.create(name="test")
+    grouping = Grouping.objects.create(name="test", slug="test")
     grouping.dataelement_set.add(unpublished_data_element)
     return grouping
 

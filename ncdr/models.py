@@ -11,7 +11,6 @@ from django.db import IntegrityError, models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django.utils.text import slugify
 
 from .exceptions import VersionAlreadyExists
 
@@ -186,11 +185,6 @@ class DataElement(BaseModel, models.Model):
         else:
             return self.column_set.first().description
 
-    def save(self, *args, **kwargs):
-        if self.name and not self.slug:
-            self.slug = slugify(self.name)
-        return super().save(*args, **kwargs)
-
 
 class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
@@ -207,11 +201,6 @@ class Grouping(BaseModel, models.Model):
 
     def get_absolute_url(self):
         return reverse("grouping_detail", kwargs={"slug": self.slug})
-
-    def save(self, *args, **kwargs):
-        if self.name and not self.slug:
-            self.slug = slugify(self.name)
-        return super(Grouping, self).save(*args, **kwargs)
 
 
 class Schema(BaseModel, models.Model):

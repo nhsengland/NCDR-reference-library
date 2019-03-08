@@ -1,6 +1,8 @@
 import collections
 import csv
 
+from django.utils.text import slugify
+
 from ..models import Column, DataElement, Table
 
 
@@ -24,7 +26,9 @@ def get_data_elementLUT(rows):
     existing_de_names = set(DataElement.objects.values_list("name", flat=True))
     csv_de_names = set(row["Data_Element"] for row in rows)
     missing_de_names = csv_de_names - existing_de_names
-    DataElement.objects.bulk_create(DataElement(name=name) for name in missing_de_names)
+    DataElement.objects.bulk_create(
+        DataElement(name=name, slug=slugify(name)) for name in missing_de_names
+    )
 
     return {de.name: de for de in DataElement.objects.all()}
 
