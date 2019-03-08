@@ -6,7 +6,7 @@ import ncdr.models
 
 class Migration(migrations.Migration):
 
-    dependencies = [("ncdr", "0002_add_audit_log")]
+    dependencies = [("ncdr", "0003_add_audit_log")]
 
     operations = [
         migrations.AddField(
