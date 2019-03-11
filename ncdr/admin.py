@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Column, Database, Table
+from .models import Column, Database, DataElement, Grouping, Schema, Table
 
 
 class DatabaseFilter(admin.SimpleListFilter):
@@ -41,9 +41,26 @@ class ColumnAdmin(admin.ModelAdmin):
     get_database_name.short_description = "Database"
 
 
+@admin.register(Database)
+class DatabaseAdmin(admin.ModelAdmin):
+    list_filter = ["version"]
+
+
+@admin.register(DataElement)
+class DataElementAdmin(admin.ModelAdmin):
+    list_filter = ["column__table__schema__database__version"]
+
+
+@admin.register(Grouping)
+class GroupingAdmin(admin.ModelAdmin):
+    list_filter = ["dataelement__column__table__schema__database__version"]
+
+
+@admin.register(Schema)
+class SchemaAdmin(admin.ModelAdmin):
+    list_filter = ["database__version"]
+
+
 @admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
-    list_filter = [DatabaseFilter]
-
-
-admin.site.register(Database)
+    list_filter = ["schema__database__version", DatabaseFilter]
