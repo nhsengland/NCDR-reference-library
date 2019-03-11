@@ -36,7 +36,7 @@ class ColumnAdmin(admin.ModelAdmin):
     get_table_name.short_description = "Table"
 
     def get_database_name(self, obj):
-        return obj.table.database.name
+        return obj.table.schema.database.name
 
     get_database_name.short_description = "Database"
 
