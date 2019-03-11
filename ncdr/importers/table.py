@@ -48,5 +48,6 @@ def load_file(fd, version):
             description=row["Description"],
             link=row["Link"],
             is_table=row["Table or View"] == "Table",
+            date_range=row["Date_Range"],
             schema=schema,
         )
