@@ -79,18 +79,18 @@ class Column(BaseModel, models.Model):
     )
     table = models.ForeignKey("Table", on_delete=models.CASCADE)
 
-    name = models.CharField(max_length=255)
+    name = models.TextField()
     description = models.TextField(blank=True, default="")
-    data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
+    data_type = models.TextField(choices=DATA_TYPE_CHOICES)
     derivation = models.TextField(blank=True, default="")
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.
-    technical_check = models.CharField(max_length=255, null=True, blank=True)
+    technical_check = models.TextField(null=True, blank=True)
     is_derived_item = models.NullBooleanField(
         default=False, verbose_name="Is the item derived?"
     )
     definition_id = models.IntegerField(null=True, blank=True)
-    author = models.CharField(max_length=255, blank=True, null=True)
+    author = models.TextField(blank=True, null=True)
     created_date_ext = models.DateField(blank=True, null=True)
     link = models.URLField(max_length=500, blank=True, null=True)
 
@@ -133,7 +133,7 @@ class Database(BaseModel):
     display_name = models.TextField(blank=True, null=True)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
-    owner = models.CharField(max_length=255, blank=True, null=True)
+    owner = models.TextField(blank=True, null=True)
 
     class Meta:
         ordering = ["name"]
@@ -166,7 +166,7 @@ class DataElement(BaseModel, models.Model):
 
     grouping = models.ManyToManyField("Grouping")
 
-    name = models.CharField(max_length=255, unique=True)
+    name = models.TextField(unique=True)
     description = models.TextField(default="")
     slug = models.SlugField(max_length=255, unique=True, blank=True)
 
@@ -189,9 +189,9 @@ class DataElement(BaseModel, models.Model):
 class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
 
-    name = models.CharField(max_length=255, unique=True)
+    name = models.TextField(unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    description = models.CharField(max_length=255, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ["name"]
@@ -221,7 +221,7 @@ class Schema(BaseModel, models.Model):
 class Table(BaseModel):
     SEARCH_FIELDS = ["name", "description", "link"]
 
-    name = models.CharField(max_length=255)
+    name = models.TextField()
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
     is_table = models.BooleanField(
@@ -229,7 +229,7 @@ class Table(BaseModel):
         choices=((True, "Table"), (False, "View")),
         default=True,
     )
-    date_range = models.CharField(max_length=255, blank=True, default="")
+    date_range = models.TextField(blank=True, default="")
 
     schema = models.ForeignKey(
         "Schema", on_delete=models.CASCADE, related_name="tables"
