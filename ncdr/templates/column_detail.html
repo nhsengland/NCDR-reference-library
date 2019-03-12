@@ -1,11 +1,19 @@
-{% extends "base_templates/base.html" %}
+{% extends "base.html" %}
+
 {% block contents %}
 <div class="container main-content">
   <div class="row">
     <div class="col-md-12">
       <div class="row">
         <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a><a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">{{ object.table.database.get_display_name }}</a><a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}"> {{ object.table.name }}</a>{{ object.name }}
+          <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a>
+          <a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">
+            {{ object.table.database.display_name }}
+          </a>
+          <a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}">
+            {{ object.table.name }}
+          </a>
+          {{ object.name }}
         </div>
       </div>
 
@@ -14,7 +22,7 @@
           <h1>{{ object.name }}</h1>
 
           <span class="faded small">
-            {{ object.table.schema.database.get_display_name }} / {{ object.table.schema }} / {{ object.table.name }}
+            {{ object.table.schema.database.name }}.{{ object.table.schema.name }}.{{ object.table.name }}
           </span>
 
         </div>
@@ -24,10 +32,20 @@
 </div>
 <div class="container">
   <div class="row nhs-england-well">
+
     <div class="col-md-7">
       <p>
         {{ object.description | urlize }}
       </p>
+    </div>
+
+    <div class="col-md-5 derivation">
+      <h4 class="sub-row-title coloured-header">Derivation</h4>
+      {% if object.derivation == 'N/A' %}
+      External
+      {% else %}
+      {{ object.derivation | urlize }}
+      {% endif %}
     </div>
   </div>
 </div>
@@ -39,10 +57,10 @@
         <div class="col-md-3">
           <h4 class="sub-row-title coloured-header">Data Element</h4>
           {% if object.data_element %}
-            <a href="{{ object.data_element.get_absolute_url }}">{{ object.data_element.get_display_name }}</a>
+          <a href="{{ object.data_element.get_absolute_url }}">{{ object.data_element.name }}</a>
           {% endif %}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-9">
           <h4 class="sub-row-title coloured-header">External Links</h4>
           <p>
             {% if object.link %}
@@ -53,14 +71,6 @@
               None
             {% endif %}
           </p>
-        </div>
-        <div class="col-md-6 derivation">
-            <h4 class="sub-row-title coloured-header">Derivation</h4>
-            {% if object.derivation == 'N/A' %}
-              External
-            {% else %}
-              {{ object.derivation | urlize }}
-            {% endif %}
         </div>
       </div>
     </div>

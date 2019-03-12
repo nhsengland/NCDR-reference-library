@@ -1,19 +1,19 @@
-{% extends "base_templates/base.html" %}
+{% extends "base.html" %}
+
 {% load markdown_deux_tags %}
 {% load utils %}
+
 {% block contents %}
   <div class="card-list container main-content">
     <article>
-      <h1 class="title">
-        {{ models.ncdr.grouping.get_model_display_name_plural }}
-      </h1>
+      <h1 class="title">Groupings</h1>
       <div class="row nhs-england-well">
         <div class="col-md-12">
-          {{ models.ncdr.grouping.get_model_display_name_plural }} are collections
-          of Data Elements that contain information about a similar theme.
+          Groupings are collections of Data Elements that contain information
+          about a similar theme.
         </div>
       </div>
-      {% for grouping in object_list|chunks:3 %}
+      {% for grouping in object_list|chunked:3 %}
         <div class="row">
           {% for grouping in grouping %}
           <div class="col-md-4 card">
@@ -22,7 +22,7 @@
                 <h3>
                   <a href="{{ grouping.get_absolute_url }}">
                     <p>
-                      {{ grouping.get_display_name }}
+                      {{ grouping.name }}
                     </p>
                     <div class="arrow">
                       {% include 'partials/arrow.html' %}

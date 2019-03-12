@@ -2,15 +2,26 @@
 help:
 	@echo "Usage:"
 	@echo "    make help             prints this help."
+	@echo "    make deploy           deploy to the server configured in hosts.dev."
+	@echo "    make fix              fix formatting and import sort order."
 	@echo "    make format           run the auto-format check."
 	@echo "    make lint             run the import sorter check."
 	@echo "    make setup            set up local env for dev."
 	@echo "    make sort             run the linter."
 	@echo "    make test             run the tests."
 
+.PHONY: deploy
+deploy:
+	(cd deployment; ansible-playbook setup-server.yml -i hosts.dev --vault-password-file .vault.txt)
+
+.PHONY: fix
+fix:
+	black ncdr metrics tests
+	isort
+
 .PHONY: format
 format:
-	@echo "Running black" && black --check ncdr metrics || exit 1
+	@echo "Running black" && black --check ncdr metrics tests || exit 1
 
 .PHONY: lint
 lint:
@@ -27,4 +38,4 @@ sort:
 
 .PHONY: test
 test:
-	python manage.py test
+	pytest

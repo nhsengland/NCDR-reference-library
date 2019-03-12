@@ -12,9 +12,7 @@
     <small>
       {% if column.data_element %}
         -
-        <a href="{{ column.data_element.get_absolute_url }}">
-          {{ column.data_element.get_display_name }}
-        </a>
+        <a href="{{ column.data_element.get_absolute_url }}">{{ column.data_element.name }}</a>
       {% endif %}
     </small>
   {% endif %}
@@ -36,9 +34,9 @@
 {% endif %}
 <div class="row content-offset-top-25 content-offset-below-10">
   <div class="col-md-6">
-    {% if column.useage_count > 1 %}
+    {% if column.usage_count > 1 %}
       <a href="{{ column.get_absolute_url }}">
-        Used in {{ column.useage_count }} places
+        Used in {{ column.usage_count }} places
       </a>
     {% endif %}
   </div>

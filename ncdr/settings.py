@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 import environ
+import structlog
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,14 +40,13 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    "csv_schema",
     "markdown_deux",
     "bootstrapform",
-    "rest_framework",
     "ncdr",
     "metrics",
-    "debug_toolbar",
 ]
+if DEBUG:
+    INSTALLED_APPS.append("debug_toolbar")
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -55,6 +55,7 @@ MIDDLEWARE = [
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "ncdr.middleware.latest_version",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
@@ -82,8 +83,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "ncdr.context_processors.models",
-                "ncdr.context_processors.unpublished_columns",
+                "ncdr.context_processors.latest_version",
             ]
         },
     }
@@ -122,5 +122,54 @@ USE_TZ = True
 AUTH_USER_MODEL = "ncdr.User"
 
 
+# Logging
+# https://docs.djangoproject.com/en/2.1/topics/logging/
+timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
+pre_chain = [
+    # Add the log level and a timestamp to the event_dict if the log entry
+    # is not from structlog.
+    structlog.stdlib.add_log_level,
+    timestamper,
+]
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "formatter": {
+            "()": structlog.stdlib.ProcessorFormatter,
+            "processor": structlog.dev.ConsoleRenderer(colors=False),
+            "foreign_pre_chain": pre_chain,
+        }
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "formatter": "formatter",
+        }
+    },
+    "loggers": {
+        "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "datastore": {"handlers": ["console"], "level": "INFO", "propagate": False},
+    },
+}
+
+structlog.configure(
+    processors=[
+        structlog.stdlib.add_log_level,
+        structlog.stdlib.PositionalArgumentsFormatter(),
+        timestamper,
+        structlog.processors.StackInfoRenderer(),
+        structlog.processors.format_exc_info,
+        structlog.stdlib.ProcessorFormatter.wrap_for_formatter,
+    ],
+    context_class=dict,
+    logger_factory=structlog.stdlib.LoggerFactory(),
+    wrapper_class=structlog.stdlib.BoundLogger,
+    cache_logger_on_first_use=True,
+)
+
+# THIRD PARTY
 # Debug Toolbar
 INTERNAL_IPS = ["127.0.0.1"]

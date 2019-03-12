@@ -2,11 +2,12 @@
 # set up the NCDR project itself
 
 - name: Setup the Git repo
-  git: repo={{ GIT_REPO }}
-       version={{ GIT_BRANCH }}
-       dest={{ PROJECT_PATH }}
-       accept_hostkey=yes
-       force=yes
+  git:
+    repo: "{{ GIT_REPO }}"
+    version: "{{ GIT_BRANCH }}"
+    dest: "{{ PROJECT_PATH }}"
+    accept_hostkey: yes
+    force: yes
 
 - name: Delete all .pyc files
   command: find . -name '*.pyc' -delete
@@ -14,6 +15,22 @@
     chdir: "{{ PROJECT_PATH }}"
   tags: git
   changed_when: False
+
+- name: Ensure no existing virtualenv exists
+  file:
+    state: absent
+    path: "{{ VIRTUALENV_PATH }}/"
+
+- name: Create the virtualenv
+  shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && mkvirtualenv -p /usr/bin/python3 {{ application_name }}
+  args:
+    executable: /bin/bash
+
+- name: Create the virtualenv project
+  shell: . /usr/share/virtualenvwrapper/virtualenvwrapper.sh && setvirtualenvproject
+  args:
+    chdir: "{{ PROJECT_PATH }}"
+    executable: /bin/bash
 
 - name: Creates log dir
   file:
@@ -25,6 +42,20 @@
   file:
     path: "{{ CONFIG_DIR }}"
     state: directory
+
+- name: Create environment variable files directory
+  file:
+    path: "{{ PROJECT_PATH }}/env_vars"
+    state: directory
+
+- name: Create environment variable files for envdir
+  template:
+    src: "{{ item }}"
+    dest: "{{ PROJECT_PATH }}/env_vars/{{ item | basename | regex_replace('\\.jinja2', '') }}"
+    mode: 0744
+    owner: ubuntu
+  with_fileglob:
+    - templates/settings/*.jinja2
 
 # otherwise it complains silently and
 # blows up the world
@@ -40,30 +71,23 @@
     mode: 0744
     owner: ubuntu
   with_items:
-    - gunicorn.conf
     - gunicorn_conf.py
     - nginx_site.conf
 
 - name: Install packages required by the Django app inside virtualenv
-  pip: virtualenv={{ VIRTUALENV_PATH }} requirements={{ REQUIREMENTS_FILE }}
-  executable: pip3
-
-- name: Create local settings
-  template:
-    src: "templates/local_settings.py.jinja2"
-    dest: "{{ PROJECT_PATH }}/ncdr/local_settings.py"
-    mode: 0744
-    owner: ubuntu
+  pip:
+    virtualenv: "{{ VIRTUALENV_PATH }}"
+    requirements: "{{ REQUIREMENTS_FILE }}"
 
 - name: Run Django database migrations
   args:
     chdir: "{{ PROJECT_PATH}}"
-  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
+  command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
 
 - name: Run Django initial_load
   args:
     chdir: "{{ PROJECT_PATH}}"
-  command: "{{ VIRTUALENV_PATH }}/bin/python manage.py load_data"
+  command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py load_data"
 
 - name: Remove old nginx default
   become: true

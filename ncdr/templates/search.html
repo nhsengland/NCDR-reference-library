@@ -1,76 +1,79 @@
-{% extends "base_templates/base.html" %}
+{% extends "base.html" %}
 
 {% block contents %}
 <div class="container main-content">
   <aside class="side-nav col-md-3">
     <ul>
-      <li class="list-title">
-        <a href="{{ view.pertinant.0.get_search_url }}">
-          Search
+      <li class="list-title"><a>Search</a></li>
+
+      {% for model, count in results %}
+      <li>
+        {% with result_model=object_list|first %}
+        <a
+          class="table-link{% if model.get_model_name == result_model.get_model_name %} active{% endif %}"
+          href="{% url 'search' model_name=model.get_model_name %}?q={{ request.GET.q }}&search_option={{ request.GET.search_option }}">
+          {{ model.get_model_display_name_plural }}
+          <span class="pull-right">
+            {{ count }}
+          </span>
         </a>
+        {% endwith %}
       </li>
-      {% for some_model, some_count in results %}
-        <li>
-          <a class="table-link{% if some_model.get_model_api_name == view.model.get_model_api_name %} active{% endif %}" href="{{ some_model.get_search_url }}?q={{ request.GET.q }}">
-            {{ some_model.get_model_display_name_plural }}
-            <span class="pull-right">
-              {{ some_count }}
-            </span>
-          </a>
-        </li>
       {% endfor %}
   </aside>
   <div class="col-md-9">
     <div class="row">
       <div class="col-md-12">
-        {% block form_title %}
-          <h2>
-            {% if paginator.count %}
-              {{ paginator.count }}
-              {% if paginator.count == 1 %}
-                {{ view.model.get_model_display_name.lower }}
-              {% else %}
-                {{ view.model.get_model_display_name_plural.lower }}
-              {% endif %}
-              found containing '{{ request.GET.q }}'
+        <h2>
+          {% if paginator.count %}
+            {{ paginator.count }}
+            {% if paginator.count == 1 %}
+            {{ view.model.get_model_display_name.lower }}
             {% else %}
-              {% if not request.GET.q %}
-                Sorry we couldn't find any {{ view.model.get_model_display_name_plural.lower }}
-                matching that query
-              {% else %}
-                Sorry we couldn't find any {{ view.model.get_model_display_name_plural.lower }}
-                containing '{{ request.GET.q }}'
-              {% endif %}
+            {{ view.model.get_model_display_name_plural.lower }}
             {% endif %}
-          </h2>
-          {% if object_list|length %}
-            <div class="row">
-              <div class="col-md-4">
-                <form method="get" action="{{ some_model.get_search_url }}">
-                  <div class="form-group">
-                    <select onchange="this.form.submit()" name="search_option" class="form-control">
-                      {% for search_option in search_options %}
-                        <option value="{{ search_option }}" {% if search_option == request.GET.search_option %}selected{% endif %}>{{ search_option }}</option>
-                      {% endfor %}
-                    </select>
-                  </div>
-                  <input type="hidden" name="q" value="{{ request.GET.q }}">
-                </form>
-              </div>
-            </div>
+            found containing '{{ request.GET.q }}'
+            {% else %}
+            {% if not request.GET.q %}
+            Sorry we couldn't find any {{ view.model.get_model_display_name_plural.lower }}
+            matching that query
+            {% else %}
+            Sorry we couldn't find any {{ view.model.get_model_display_name_plural.lower }}
+            containing '{{ request.GET.q }}'
+            {% endif %}
           {% endif %}
-        {% endblock %}
-      </div>
-    </div>
-    {% for result in object_list %}
-      {% if not forloop.first %}
-        <hr />
-      {% endif %}
-      <div class="search-result">
-        {% include view.model.get_search_detail_template %}
+        </h2>
+
+        {% if object_list|length %}
+        <div class="row">
+          <div class="col-md-4">
+            <form method="get">
+              <div class="form-group">
+                <select onchange="this.form.submit()" name="search_option" class="form-control">
+                  {% for search_option in search_options %}
+                  <option value="{{ search_option }}" {% if search_option == request.GET.search_option %}selected{% endif %}>{{ search_option }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+              <input type="hidden" name="q" value="{{ request.GET.q }}">
+            </form>
+          </div>
+        </div>
+        {% endif %}
 
       </div>
+    </div>
+
+    {% for result in object_list %}
+
+      {% if not forloop.first %}<hr />{% endif %}
+
+      <div class="search-result">
+        {% include result.search_template %}
+      </div>
+
     {% endfor %}
+
     {% if is_paginated %}
       <ul class="pagination">
         {% if page_obj.has_previous %}
@@ -92,9 +95,12 @@
         {% endif %}
       </ul>
     {% endif %}
+
   </div>
 </div>
+
 <script>
   $(".search-result").mark("{{ request.GET.q }}", {});
 </script>
+
 {% endblock %}

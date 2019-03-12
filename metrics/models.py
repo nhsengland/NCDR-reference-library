@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 
-from ncdr.models import BaseModel, BaseQuerySet
+from ncdr.models import BaseModel
 
 
 class Lead(models.Model):
@@ -9,11 +9,6 @@ class Lead(models.Model):
 
     def __str__(self):
         return self.name
-
-
-class MetricQueryset(BaseQuerySet):
-    def viewable(self, user):
-        return self.all()
 
 
 class Metric(BaseModel):
@@ -40,8 +35,6 @@ class Metric(BaseModel):
     calculation = models.TextField()
 
     comments = models.TextField()
-
-    objects = MetricQueryset.as_manager()
 
     def __str__(self):
         return self.indicator

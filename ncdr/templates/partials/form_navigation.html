@@ -1,5 +1,0 @@
-{% for m in view.pertinant %}
-  <a class="pull-right form-nav {% if view.model.get_model_display_name == m.get_model_display_name %} active{% endif %}" href="{{ m.get_edit_list_url }}">
-    {{ m.get_model_display_name_plural }}
-  </a>
-{% endfor %}

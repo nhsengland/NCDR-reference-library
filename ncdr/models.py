@@ -1,8 +1,3 @@
-import functools
-import itertools
-import json
-import operator
-
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -10,110 +5,14 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
-from django.db import models
-from django.db.models.functions import Lower
+from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 
-MOST_RECENT = "Most Recent"
-DATE_FORMAT = "%b %y"
-
-
-class BaseQuerySet(models.QuerySet):
-    def viewable(self, user):
-        raise NotImplementedError("we should be implementing a 'viewable' method")
-
-    def search_most_recent(self, search_param, user):
-        filters = []
-        qs = self.viewable(user)
-        for i in self.model.SEARCH_FIELDS:
-            filters.append(models.Q(**{f"{i}__icontains": search_param}))
-        return qs.filter(functools.reduce(operator.or_, filters)).distinct()
-
-    def search_best_match(self, search_param, user):
-        qs = self.viewable(user)
-        query_results = []
-        for i in self.model.SEARCH_FIELDS:
-            query_results.append(qs.filter(**{f"{i}__icontains": search_param}))
-        all_results = itertools.chain(*query_results)
-        reviewed = set()
-
-        for i in all_results:
-            if i in reviewed:
-                continue
-            else:
-                reviewed.add(i)
-                yield i
-
-    def search_count(self, search_param, user):
-        return self.search_most_recent(search_param, user).count()
-
-    def search(self, search_param, user, option=MOST_RECENT):
-        """ returns all tables that have columns
-            we default to MOST_RECENT as querysets are
-            more efficient for a lot of operations
-        """
-        if not search_param:
-            return self.none()
-
-        if option == MOST_RECENT:
-            return self.search_most_recent(search_param, user)
-        else:
-            return list(self.search_best_match(search_param, user))
-
 
 class BaseModel(models.Model):
-    @classmethod
-    def get_form_display_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"forms/display_templates/{model_name}.html"
-
-    @classmethod
-    def get_form_description_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"forms/descriptions/{model_name}.html"
-
-    @classmethod
-    def get_form_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"forms/model_forms/{model_name}.html"
-
-    @classmethod
-    def get_model_api_name(cls):
-        return cls.__name__.lower()
-
-    @classmethod
-    def get_add_url(cls):
-        return reverse("add_many", kwargs={"model_name": cls.get_model_api_name()})
-
-    @classmethod
-    def get_search_url(cls):
-        return reverse("search", kwargs={"model_name": cls.get_model_api_name()})
-
-    @classmethod
-    def get_create_template(cls):
-        return "forms/create/generic_create.html"
-
-    @classmethod
-    def get_search_detail_template(cls):
-        model_name = cls.get_model_api_name()
-        return f"search/{model_name}.html"
-
-    def get_edit_url(self):
-        return reverse(
-            "edit", kwargs={"pk": self.id, "model_name": self.get_model_api_name()}
-        )
-
-    def get_delete_url(self):
-        return reverse(
-            "delete", kwargs={"pk": self.id, "model_name": self.get_model_api_name()}
-        )
-
-    def get_display_name(self):
-        return self.name
-
     @classmethod
     def get_model_display_name(cls):
         return cls._meta.verbose_name.title()
@@ -123,36 +22,18 @@ class BaseModel(models.Model):
         return cls._meta.verbose_name_plural.title()
 
     @classmethod
-    def get_edit_list_url(cls):
-        return reverse("edit_list", kwargs={"model_name": cls.get_model_api_name()})
+    def get_model_name(cls):
+        return cls.__name__.lower()
+
+    @property
+    def search_template(self):
+        return f"search/{self.__class__.__name__.lower()}.html"
 
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    objects = BaseQuerySet.as_manager()
-
     class Meta:
         abstract = True
-
-
-class ColumnQueryset(BaseQuerySet):
-    def unpublished(self):
-        return self.filter(published=False)
-
-    def published(self):
-        return self.filter(published=True)
-
-    def viewable(self, user):
-        if user.is_authenticated and user.preview_mode:
-            return self.order_by(Lower("name"))
-        else:
-            return self.filter(published=True).order_by(Lower("name"))
-
-    def to_json(self):
-        result = []
-        for i in self:
-            result.append({"published": i.published, "url": i.get_publish_url()})
-        return json.dumps(result)
 
 
 class Column(BaseModel, models.Model):
@@ -184,25 +65,17 @@ class Column(BaseModel, models.Model):
         ("varchar(50)", "varchar(50)"),
         ("varchar(100)", "varchar(100)"),
     )
-
-    class Meta:
-        ordering = ["name"]
-        verbose_name = "Column"
-        unique_together = ["name", "table", "data_element", "is_derived_item", "link"]
-
     SEARCH_FIELDS = ["name", "description"]
 
-    objects = ColumnQueryset.as_manager()
-
-    name = models.CharField(max_length=255)
-    description = models.TextField(blank=True, default="")
-    data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
-    derivation = models.TextField(blank=True, default="")
     data_element = models.ForeignKey(
         "DataElement", on_delete=models.SET_NULL, null=True, blank=True
     )
     table = models.ForeignKey("Table", on_delete=models.CASCADE)
 
+    name = models.CharField(max_length=255)
+    description = models.TextField(blank=True, default="")
+    data_type = models.CharField(max_length=255, choices=DATA_TYPE_CHOICES)
+    derivation = models.TextField(blank=True, default="")
     # currently the below are not being shown in the template
     # after requirements are finalised we could consider removing them.
     technical_check = models.CharField(max_length=255, null=True, blank=True)
@@ -213,7 +86,20 @@ class Column(BaseModel, models.Model):
     author = models.CharField(max_length=255, blank=True, null=True)
     created_date_ext = models.DateField(blank=True, null=True)
     link = models.URLField(max_length=500, blank=True, null=True)
-    published = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ["name"]
+        unique_together = ["name", "table", "data_element", "is_derived_item", "link"]
+        verbose_name = "Column"
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse(
+            "column_detail",
+            kwargs={"db_name": self.table.schema.database.name, "pk": self.pk},
+        )
 
     @property
     def link_display_name(self):
@@ -221,87 +107,36 @@ class Column(BaseModel, models.Model):
             stripped = self.link.lstrip("http://").lstrip("https://")
             return stripped.lstrip("www.").split("/")[0]
 
-    def get_absolute_url(self):
-        return reverse("column_detail", kwargs={"pk": self.pk})
-
-    @classmethod
-    def get_unpublished_list_url(cls):
-        return reverse(
-            "unpublished_list", kwargs={"model_name": cls.get_model_api_name()}
-        )
-
-    @classmethod
-    def get_publish_all_url(cls):
-        return reverse("publish_all")
-
-    @classmethod
-    def get_edit_list_js_template(cls):
-        return "forms/column_form_js.html"
-
-    def get_publish_url(self):
-        return reverse("columns-detail", kwargs={"pk": self.id})
-
     @cached_property
-    def useage_count(self):
+    def usage_count(self):
         count = self.tables.count()
         if self.data_element:
             count += self.data_element.column_set.count()
         return count
 
-    @classmethod
-    def get_create_template(cls):
-        return "forms/create/column_create.html"
-
-    @cached_property
-    def related(self):
-        """
-            returns a tuple of (table, columns within the table)
-            the column names are sorted alphabetically
-
-            the tables are sorted by database name then name
-        """
-        other_columns = self.data_element.column_set.exclude(id=self.id)
-        other_columns = other_columns.order_by("table__name")
-        return other_columns.order_by("table__schema__database__name")
-
-    def __str__(self):
-        return self.name
-
-
-class DatabaseQueryset(BaseQuerySet):
-    def viewable(self, user):
-        """Returns all Databases with Schemas that contain viewable Tables."""
-        schemas = Schema.objects.filter(tables__in=Table.objects.viewable(user))
-        return (
-            self.filter(schemas__in=schemas).distinct().order_by(Lower("display_name"))
-        )
-
 
 class Database(BaseModel):
     SEARCH_FIELDS = ["display_name", "name", "description", "link"]
-    name = models.CharField(max_length=255, unique=True)
+
+    version = models.ForeignKey(
+        "Version", on_delete=models.CASCADE, related_name="databases"
+    )
+
+    name = models.TextField()
     display_name = models.TextField(blank=True, null=True)
     description = models.TextField(default="")
     link = models.URLField(max_length=500, blank=True, null=True)
     owner = models.CharField(max_length=255, blank=True, null=True)
 
-    objects = DatabaseQueryset.as_manager()
-
     class Meta:
         ordering = ["name"]
+        unique_together = ["name", "version"]
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse("database_detail", kwargs={"db_name": self.name})
-
-    @classmethod
-    def get_list_url(self):
-        return reverse("database_list")
-
-    def get_display_name(self):
-        return self.display_name
 
     @property
     def tables(self):
@@ -319,28 +154,20 @@ class Database(BaseModel):
         return super().save(*args, **kwargs)
 
 
-class DataElementQueryset(BaseQuerySet):
-    def viewable(self, user):
-        if user.is_authenticated and user.preview_mode:
-            return self
-
-        populated_columns = Column.objects.viewable(user)
-        return self.filter(column__in=populated_columns).distinct()
-
-
 class DataElement(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
-    objects = DataElementQueryset.as_manager()
+
+    grouping = models.ManyToManyField("Grouping")
 
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(default="")
     slug = models.SlugField(max_length=255, unique=True, blank=True)
-    grouping = models.ManyToManyField("Grouping")
 
-    def save(self, *args, **kwargs):
-        if self.name and not self.slug:
-            self.slug = slugify(self.name)
-        return super().save(*args, **kwargs)
+    class Meta:
+        ordering = ["name"]
+
+    def __str__(self):
+        return self.name
 
     def get_absolute_url(self):
         return reverse("data_element_detail", kwargs={"slug": self.slug})
@@ -351,26 +178,15 @@ class DataElement(BaseModel, models.Model):
         else:
             return self.column_set.first().description
 
-    class Meta:
-        ordering = ["name"]
-
-    def __str__(self):
-        return self.name
-
-
-class GroupingQueryset(BaseQuerySet):
-    def viewable(self, user):
-        return (
-            self.filter(dataelement__in=DataElement.objects.viewable(user))
-            .distinct()
-            .order_by(Lower("name"))
-        )
+    def save(self, *args, **kwargs):
+        if self.name and not self.slug:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
 
 
 class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
 
-    objects = GroupingQueryset.as_manager()
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     description = models.CharField(max_length=255, null=True, blank=True)
@@ -390,16 +206,6 @@ class Grouping(BaseModel, models.Model):
         return super(Grouping, self).save(*args, **kwargs)
 
 
-class SchemaQueryset(BaseQuerySet):
-    def viewable(self, user):
-        """Returns all Schemas that have Databases with Columns."""
-        return (
-            self.filter(table__in=Table.objects.viewable(user))
-            .distinct()
-            .order_by(Lower("name"))
-        )
-
-
 class Schema(BaseModel, models.Model):
     name = models.TextField()
 
@@ -407,28 +213,12 @@ class Schema(BaseModel, models.Model):
         "Database", on_delete=models.CASCADE, related_name="schemas"
     )
 
-    objects = SchemaQueryset.as_manager()
-
     class Meta:
         ordering = ["name"]
         unique_together = ["name", "database"]
 
     def __str__(self):
         return self.name
-
-
-class TableQueryset(BaseQuerySet):
-    def viewable(self, user):
-        if user.is_authenticated and user.preview_mode:
-            return self
-
-        populated_columns = Column.objects.viewable(user)
-        populated_tables = (
-            populated_columns.values_list("table_id", flat=True)
-            .distinct()
-            .order_by(Lower(""))
-        )
-        return self.filter(id__in=populated_tables)
 
 
 class Table(BaseModel):
@@ -455,14 +245,9 @@ class Table(BaseModel):
     def __str__(self):
         return self.name
 
-    objects = TableQueryset.as_manager()
-
     def get_absolute_url(self):
         kwargs = {"pk": self.pk, "db_name": self.schema.database.name}
         return reverse("table_detail", kwargs=kwargs)
-
-    def get_display_name(self):
-        return f"{self.schema.database.name} / {self.name}"
 
 
 class UserManager(BaseUserManager):
@@ -472,10 +257,15 @@ class UserManager(BaseUserManager):
         """
         if not email:
             raise ValueError("The given email must be set")
+
         email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
+        version = Version.objects.latest()
+
+        user = self.model(email=email, current_version=version, **extra_fields)
+
         user.set_password(password)
         user.save(using=self._db)
+
         return user
 
     def create_user(self, email, password=None, **extra_fields):
@@ -515,7 +305,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     )
     date_joined = models.DateTimeField("date joined", default=timezone.now)
 
-    preview_mode = models.BooleanField(default=False)
+    current_version = models.ForeignKey("Version", null=True, on_delete=models.SET_NULL)
 
     EMAIL_FIELD = "email"
     USERNAME_FIELD = "email"
@@ -528,7 +318,87 @@ class User(AbstractBaseUser, PermissionsMixin):
     def has_module_perms(self, module):
         return _user_has_module_perms(self, module)
 
-    def toggle_preview_mode(self):
-        """Toggle the preview_mode boolean"""
-        self.preview_mode = not self.preview_mode
+    def switch_to_latest_version(self):
+        """Update this user to the latest published Version"""
+        self.current_version = Version.objects.filter(is_published=True).latest()
         self.save()
+
+    def switch_to_version(self, version):
+        """Update this user to the given Version"""
+        self.current_version = version
+        self.save()
+
+
+class Version(models.Model):
+    """Track a related models version number."""
+
+    created_by = models.ForeignKey(
+        "User", null=True, on_delete=models.SET_NULL, related_name="versions"
+    )
+
+    is_published = models.BooleanField(default=False)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        get_latest_by = "pk"
+
+    def __str__(self):
+        return f"Version {self.pk}"
+
+    @transaction.atomic
+    def _set_publish_state(self, publish, user):
+        previous_published = Version.objects.filter(is_published=True).latest()
+
+        self.is_published = publish
+        self.save()
+
+        now_published = Version.objects.filter(is_published=True).latest()
+
+        VersionAuditLog.objects.create(
+            version=self,
+            previous_published=previous_published,
+            now_published=now_published,
+            created_by=user,
+            changed_to_published=publish,
+        )
+
+    def publish(self, user):
+        self._set_publish_state(True, user)
+
+    def unpublish(self, user):
+        self._set_publish_state(False, user)
+
+
+class VersionAuditLog(models.Model):
+    version = models.ForeignKey(
+        "Version", on_delete=models.CASCADE, related_name="logs"
+    )
+    previous_published = models.ForeignKey(
+        "Version",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="previous_published_versions",
+    )
+    now_published = models.ForeignKey(
+        "Version",
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="now_published_versions",
+    )
+    created_by = models.ForeignKey(
+        "User", on_delete=models.CASCADE, related_name="version_logs"
+    )
+
+    changed_to_published = models.BooleanField(default=True)
+    created_at = models.DateTimeField(default=timezone.now)
+
+    class Meta:
+        unique_together = [
+            "created_at",
+            "version",
+            "previous_published",
+            "now_published",
+        ]
+
+    def __str__(self):
+        return f"Audit Log for Version: {self.version_id}"

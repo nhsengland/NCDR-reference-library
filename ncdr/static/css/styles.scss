@@ -188,7 +188,7 @@ h4.subheader{
 header.masthead{
   @include primary-background-colour;
   // height: 223px;
-  padding: 47px 0 0 0;
+  padding: 54px 0 0 0;
 
   .container, .container-fluid{
     overflow-y: hidden;
@@ -574,4 +574,86 @@ hr {
 
 .derivation {
   word-break: break-all;
+}
+
+// SVG Icons
+.nhsuk-icon {
+  display: inline-block;
+  height: 30px;
+  width: 30px;
+}
+.nhsuk-icon__cross {
+  fill: #da291c;
+}
+.nhsuk-icon__tick {
+  fill: none;
+  stroke: #007f3b;
+}
+
+// unpublished page
+.unpublished {
+  .line {
+    align-items: center;
+    display: flex;
+    padding: 10px 20px;
+  }
+
+  .striped {
+    background-color: rgba(0, 0, 0, .05);
+  }
+
+  span {
+    display: inline-block;
+  }
+
+  span.number {
+    display: inline-block;
+    text-align: center;
+    width: 50px;
+  }
+
+  span.created {
+    display: inline-block;
+    width: 250px;
+  }
+
+  span.author {
+    flex-grow: 1;
+  }
+
+  span.published {
+    height: 30px;
+    margin-right: 20px;
+  }
+
+  span.tools {
+    width: 165px;
+
+    & a {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+
+  form {
+    display: inline-block;
+  }
+}
+
+// Version audit log
+.audit-log {
+  .line {
+    align-items: center;
+    display: flex;
+    padding: 10px 20px;
+  }
+
+  .striped {
+    background-color: rgba(0, 0, 0, .05);
+  }
+
+  .date {
+    display: inline-block;
+    width: 250px;
+  }
 }

@@ -1,4 +1,4 @@
-{% extends "base_templates/base.html" %}
+{% extends "base.html" %}
 
 {% block contents %}
 <div class="container main-content">
@@ -7,7 +7,7 @@
       <article>
         <div class="row">
           <div class="col-md-12">
-            <a class="ncdr-breadcrumbs" href="{% url 'database_list' %}">Home</a>
+            <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a>
             <a class="ncdr-breadcrumbs" href="{% url 'metrics-list' %}">Metrics</a>
             Metric
           </div>

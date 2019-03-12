@@ -16,42 +16,56 @@ Including another URLconf
 from django.conf import settings
 from django.contrib import admin
 from django.urls import include, path
-from django.views.decorators.cache import never_cache
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView, TemplateView
 
-from .views import ColumnDetail, IndexView, Logout, TogglePreviewMode, api
+from .views import ColumnDetail, Login
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
-from .views.forms import AddMany, Delete, Edit, FormRedirect, List
 from .views.grouping import GroupingDetail, GroupingList
-from .views.publishing import PublishAll, Unpublished
 from .views.search import Search, SearchRedirect
-from .views.table import TableAPI, TableDetail
+from .views.table import TableDetail
+from .views.version import (
+    AuditLog,
+    PublishVersion,
+    SwitchToLatestVersion,
+    SwitchToVersion,
+    Timeline,
+    UnPublishVersion,
+    VersionList,
+)
 
 urlpatterns = [
-    path("", IndexView.as_view(), name="index_view"),
-    path("accounts/logout/", Logout.as_view(), name="logout"),
+    path("", RedirectView.as_view(pattern_name="database_list"), name="index_view"),
+    path("accounts/login/", Login.as_view(), name="login"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
-    path("api/tables/<database_pk>", TableAPI.as_view()),
-    path("api/", include(api.router.urls)),
-    path("form/", FormRedirect.as_view(), name="redirect"),
-    path("form/publish_all/", PublishAll.as_view(), name="publish_all"),
-    path("form/<slug:model_name>/", never_cache(List.as_view()), name="edit_list"),
-    path("form/<slug:model_name>/add/", AddMany.as_view(), name="add_many"),
-    path("form/<slug:model_name>/edit/<int:pk>/", Edit.as_view(), name="edit"),
-    path("form/<slug:model_name>/delete/<int:pk>/", Delete.as_view(), name="delete"),
-    path(
-        "form/<slug:model_name>/unpublished/",
-        never_cache(Unpublished.as_view()),
-        name="unpublished_list",
-    ),
     path("about/", TemplateView.as_view(template_name="about.html"), name="about_page"),
-    path("column/<int:pk>/", ColumnDetail.as_view(), name="column_detail"),
-    path("database", DatabaseList.as_view(), name="database_list"),
-    path("database/<str:db_name>/", DatabaseDetail.as_view(), name="database_detail"),
+    path("audit-log", AuditLog.as_view(), name="audit-log"),
     path(
-        "database/<str:db_name>/<int:pk>/", TableDetail.as_view(), name="table_detail"
+        "database/",
+        include(
+            [
+                path("", DatabaseList.as_view(), name="database_list"),
+                path(
+                    "<str:db_name>/",
+                    include(
+                        [
+                            path("", DatabaseDetail.as_view(), name="database_detail"),
+                            path(
+                                "table/<int:pk>/",
+                                TableDetail.as_view(),
+                                name="table_detail",
+                            ),
+                            path(
+                                "column/<int:pk>/",
+                                ColumnDetail.as_view(),
+                                name="column_detail",
+                            ),
+                        ]
+                    ),
+                ),
+            ]
+        ),
     ),
     path("data_element/", DataElementList.as_view(), name="data_element_list"),
     path(
@@ -61,11 +75,22 @@ urlpatterns = [
     ),
     path("grouping/", GroupingList.as_view(), name="grouping_redirect"),
     path("grouping/<slug:slug>/", GroupingDetail.as_view(), name="grouping_detail"),
+    path("publish/<int:pk>/", PublishVersion.as_view(), name="publish_version"),
     path("search/", SearchRedirect.as_view(), name="search_redirect"),
     path("search/<slug:model_name>/", Search.as_view(), name="search"),
     path(
-        "toggle-preview-mode", TogglePreviewMode.as_view(), name="toggle-preview-mode"
+        "switch-to-latest-version",
+        SwitchToLatestVersion.as_view(),
+        name="switch-to-latest-version",
     ),
+    path(
+        "switch-to-version/<int:pk>/",
+        SwitchToVersion.as_view(),
+        name="switch-to-version",
+    ),
+    path("timeline", Timeline.as_view(), name="timeline"),
+    path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
+    path("versions/", VersionList.as_view(), name="version_list"),
     path("", include("metrics.urls")),
 ]
 

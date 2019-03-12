@@ -1,55 +1,34 @@
 import os
 
-from django.core.management.base import BaseCommand, CommandError
+from django.core.management.base import BaseCommand
 
-from ...models import Column, Database, DataElement, Grouping, Table
+from ncdr.importers import column, grouping, table
+
+from ...models import Version
 
 CSVS_DIR = "data/csvs"
-versions = os.listdir(CSVS_DIR)
 
 
 class Command(BaseCommand):
     """Load in CSV files"""
 
-    def add_arguments(self, parser):
-        parser.add_argument("--data-version", default=max(versions))
-
-    def clear_data(self):
-        DataElement.objects.all().delete()
-        Column.objects.all().delete()
-        Grouping.objects.all().delete()
-        Table.objects.all().delete()
-        Database.objects.all().delete()
-
     def handle(self, *args, **options):
-        version = options["data_version"]
-
-        if version not in versions:
-            raise CommandError(
-                f"Unknown version '{version}', please pick from: {', '.join(versions)}"
-            )
-
-        path = os.path.join(CSVS_DIR, version)
+        # FIXME: ???
+        path = os.path.join(CSVS_DIR, "1")
         self.stdout.write(f"Importing data from {path}")
 
-        self.clear_data()
+        # publish the very first import
+        is_published = Version.objects.count() < 2
+        import_version = Version.objects.create(is_published=is_published)
 
-        if version == "1":
-            from ncdr.importers.v1 import column, grouping, table
+        table.load_file(
+            os.path.join(path, "vw_Export_Standard_DB_Structure.csv"), import_version
+        )
 
-            table.load_file(os.path.join(path, "Database structure-Table.csv"))
-            column.load_file(os.path.join(path, "Definitions-Table.csv"))
-            grouping.load_file(os.path.join(path, "Groups-Table.csv"))
+        column.load_file(
+            os.path.join(path, "vw_Export_Standard_Definitions.csv"), import_version
+        )
 
-            return
-
-        if version == "2":
-            from ncdr.importers.v2 import column, grouping, table
-
-            table.load_file(os.path.join(path, "vw_Export_Standard_DB_Structure.csv"))
-
-            column.load_file(os.path.join(path, "vw_Export_Standard_Definitions.csv"))
-
-            grouping.load_file(
-                os.path.join(path, "vw_Export_Standard_GroupingMapping.csv")
-            )
+        grouping.load_file(
+            os.path.join(path, "vw_Export_Standard_GroupingMapping.csv"), import_version
+        )
