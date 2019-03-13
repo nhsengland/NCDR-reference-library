@@ -37,6 +37,9 @@ from .views.version import (
 
 urlpatterns = [
     path("", RedirectView.as_view(pattern_name="database_list"), name="index_view"),
+    path(
+        "favicon.ico", RedirectView.as_view(url="/static/favicon.ico", permanent=True)
+    ),
     path("accounts/login/", Login.as_view(), name="login"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
