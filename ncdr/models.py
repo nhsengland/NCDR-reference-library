@@ -352,15 +352,17 @@ class Version(models.Model):
     def _set_publish_state(self, publish, user):
         previous_published = Version.objects.filter(is_published=True).latest()
 
+        # Unpublish all existing Versions first so we only ever have one
+        # version published at a time
+        Version.objects.update(is_published=False)
+
         self.is_published = publish
         self.save()
-
-        now_published = Version.objects.filter(is_published=True).latest()
 
         VersionAuditLog.objects.create(
             version=self,
             previous_published=previous_published,
-            now_published=now_published,
+            now_published=self,
             created_by=user,
             changed_to_published=publish,
         )
