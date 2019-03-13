@@ -77,6 +77,7 @@ WHITENOISE_STATIC_PREFIX = "/static/"
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
 AWS_DEFAULT_ACL = "public-read"
+AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
 DEFAULT_FILE_STORAGE = env.str(
     "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
 )
