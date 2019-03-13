@@ -13,6 +13,7 @@ import os
 
 import environ
 import structlog
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -197,6 +198,19 @@ structlog.configure(
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
+
+# Auth URLS
+# Redefine these so the URLs are reversed and take into account SCRIPT_NAME
+# from the WSGI env.  Without this a login_required page will redirect to
+#
+#   /accounts/login
+#
+# instead of the expected
+#
+#   /ncdr/accounts/login
+#
+LOGIN_URL = reverse_lazy("login")
+LOGOUT_URL = reverse_lazy("logout")
 
 # THIRD PARTY
 # Debug Toolbar
