@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db import transaction
 from django.db.models import F
 from django.http import Http404
 from django.shortcuts import redirect
@@ -97,6 +98,7 @@ class Upload(LoginRequiredMixin, CreateView):
     form_class = UploadForm
     template_name = "upload.html"
 
+    @transaction.atomic()
     def form_valid(self, form):
         # create a Version with the files
         try:
