@@ -1,29 +1,6 @@
 from django.contrib import admin
-from django.db.models import Q
 
-from .models import Column, Database, Table
-
-
-class IsTechnicalCheckedFilter(admin.SimpleListFilter):
-
-    title = "Those That Have Been Technical Checked"
-
-    parameter_name = "technical_check"
-
-    def lookups(self, request, model_admin):
-
-        return (("yes", "Yes"), ("no", "No"))
-
-    def queryset(self, request, queryset):
-        if self.value() == "yes":
-            return queryset.filter(technical_check__isnull=False).exclude(
-                technical_check=""
-            )
-
-        if self.value() == "no":
-            return queryset.filter(
-                Q(technical_check__isnull=True) | Q(technical_check__exact="")
-            )
+from .models import Column, Database, DataElement, Grouping, Schema, Table
 
 
 class DatabaseFilter(admin.SimpleListFilter):
@@ -45,14 +22,12 @@ class DatabaseFilter(admin.SimpleListFilter):
 
 @admin.register(Column)
 class ColumnAdmin(admin.ModelAdmin):
-    list_filter = [IsTechnicalCheckedFilter]
     list_display = [
         "name",
         "data_type",
         "get_table_name",
         "get_database_name",
         "author",
-        "technical_check",
     ]
 
     def get_table_name(self, obj):
@@ -61,14 +36,31 @@ class ColumnAdmin(admin.ModelAdmin):
     get_table_name.short_description = "Table"
 
     def get_database_name(self, obj):
-        return obj.table.database.name
+        return obj.table.schema.database.name
 
     get_database_name.short_description = "Database"
 
 
+@admin.register(Database)
+class DatabaseAdmin(admin.ModelAdmin):
+    list_filter = ["version"]
+
+
+@admin.register(DataElement)
+class DataElementAdmin(admin.ModelAdmin):
+    list_filter = ["column__table__schema__database__version"]
+
+
+@admin.register(Grouping)
+class GroupingAdmin(admin.ModelAdmin):
+    list_filter = ["dataelement__column__table__schema__database__version"]
+
+
+@admin.register(Schema)
+class SchemaAdmin(admin.ModelAdmin):
+    list_filter = ["database__version"]
+
+
 @admin.register(Table)
 class TableAdmin(admin.ModelAdmin):
-    list_filter = [DatabaseFilter]
-
-
-admin.site.register(Database)
+    list_filter = ["schema__database__version", DatabaseFilter]
