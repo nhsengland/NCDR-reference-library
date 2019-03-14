@@ -7,7 +7,7 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
-from django.db import IntegrityError, models, transaction
+from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -389,17 +389,13 @@ class Version(models.Model):
         definitions.seek(0)
         grouping_mapping.seek(0)
 
-        try:
-            version = Version.objects.create(
-                created_by=created_by,
-                is_published=is_published,
-                files_hash=contents_hash,
-            )
-        except IntegrityError:
-            # use an Exception to expose the existing version instead of
-            # polluting the return value.
-            version = Version.objects.get(files_hash=contents_hash)
-            raise VersionAlreadyExists(existing_pk=version.pk)
+        existing_version = Version.objects.get(files_hash=contents_hash)
+        if existing_version:
+            raise VersionAlreadyExists(existing_pk=existing_version.pk)
+
+        version = Version.objects.create(
+            created_by=created_by, is_published=is_published, files_hash=contents_hash
+        )
 
         version.db_structure = db_structure
         version.definitions = definitions
