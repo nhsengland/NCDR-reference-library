@@ -45,7 +45,7 @@
           {% endif %}
         </span>
         <span class="tools">
-          <a class="btn btn-success" href="{% url 'switch-to-version' pk=version.pk %}">View</a>
+          <a class="btn btn-success" {% if not version.last_process_at %}disabled {% endif %}href="{% url 'switch-to-version' pk=version.pk %}">View</a>
 
           {% if version.is_published %}
           <form action="{% url 'unpublish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
