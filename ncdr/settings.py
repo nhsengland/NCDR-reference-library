@@ -72,8 +72,16 @@ STATIC_ROOT = "static"
 STATIC_URL = env.str("STATIC_URL", default="/static/")
 WHITENOISE_STATIC_PREFIX = "/static/"
 
-# Storage for user uploaded files
-# https://docs.djangoproject.com/en/2.1/topics/files/
+# Storage for user uploaded files (the CSV data files)
+# https://docs.djangoproject.com/en/2.1/topics/files/ In production (and QA) we
+# store the CSVs in an S3 bucket but locally we want them to exist at data/csvs
+# for ease of local development.  These settings configure django-storages (and
+# boto3 under the hood) to handle the S3 side of things.  Locally we set
+# DEFAULT_FILE_STORAGE via .envrc to use the local filesystem.  The AWS
+# credentials default to empty strings so we fail loudly when that hasn't been
+# set up in a Production/QA environment.
+#
+# Finally, MEDIA_ROOT is used to provide a path to store uploaded files under.
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
 AWS_DEFAULT_ACL = "public-read"
@@ -81,9 +89,9 @@ AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
 DEFAULT_FILE_STORAGE = env.str(
     "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
 )
-
+MEDIA_ROOT = "csvs"
 if DEBUG:
-    MEDIA_ROOT = "data/csvs"
+    MEDIA_ROOT = f"data/{MEDIA_ROOT}"
 
 
 TEMPLATES = [
