@@ -44,6 +44,13 @@ To view the encrypted variables:
     ansible-vault edit all --vault-password-file ~/.vault.txt
 
 
+
+## S3
+This project uses an S3 bucket for backups and uploaded CSVs (except when running locally).
+An IAM User (with programmatic credentials) has been generated specifically for the v0.5 series.
+A policy for the bucket, `ncdr-v0.5`, has been generated to only allow Users to access that bucket.
+
+
 ## TODO
 add in a search function, but lets find out which columns to query
 make the table look more like https://data.england.nhs.uk/dataset?
