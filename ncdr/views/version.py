@@ -31,7 +31,10 @@ class PublishVersion(LoginRequiredMixin, View):
         except Version.DoesNotExist:
             raise Http404
 
-        version.publish(request.user)
+        with transaction.atomic():
+            version.publish(request.user)
+            request.user.current_version = None
+            request.user.save()
 
         messages.success(request, f"Version {version.pk} has been published")
 
