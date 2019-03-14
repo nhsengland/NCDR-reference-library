@@ -42,5 +42,8 @@ def import_data(version_pk):
         # log the exception, whatever it is so we can track down errors later.
         log.exception("CSV processing failed")
 
+        # reraise the exception to trigger a ROLLBACK via transaction.atomic()
+        raise
+
     version.last_process_at = timezone.now()
     version.save()
