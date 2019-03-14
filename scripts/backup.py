@@ -17,22 +17,22 @@ def dump_database(db_name, db_user, backup_name):
         raise Exception(f"Database dump not saved for: {db_name}")
 
 
-def upload(full_file_name, file_name, bucket_name):
+def upload(bucket_name, local_path, key):
     """
-    Given a bucket nane, key_name and filename will upload the referenced file
+    Given a bucket name, key_name and filename will upload the referenced file
     to the given bucket against the provided key_name.
     """
     s3 = boto3.resource("s3")
-    s3.Bucket(bucket_name).upload_file(full_file_name, file_name)
+    s3.Bucket(bucket_name).upload_file(local_path, f"backups/{key}")
 
 
 def main(db_name, db_user, backups_dir, bucket_name):
-    today = datetime.now().strftime("%d-%m-%Y")
-    backup_name = f"{db_name}-{today}.dump"
+    today = datetime.now().strftime("%Y-%m-%d")
+    backup_name = f"{today}-{db_name}.dump"
 
     full_backup_name = os.path.join(backups_dir, backup_name)
     dump_database(db_name, db_user, full_backup_name)
-    upload(full_backup_name, backup_name, bucket_name)
+    upload(bucket_name, full_backup_name, backup_name)
 
 
 if __name__ == "__main__":
