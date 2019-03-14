@@ -389,9 +389,11 @@ class Version(models.Model):
         definitions.seek(0)
         grouping_mapping.seek(0)
 
-        existing_version = Version.objects.get(files_hash=contents_hash)
-        if existing_version:
+        try:
+            existing_version = Version.objects.get(files_hash=contents_hash)
             raise VersionAlreadyExists(existing_pk=existing_version.pk)
+        except Version.DoesNotExist:
+            pass
 
         version = Version.objects.create(
             created_by=created_by, is_published=is_published, files_hash=contents_hash
