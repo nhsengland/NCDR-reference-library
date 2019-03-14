@@ -1,59 +1,87 @@
 {% extends "base.html" %}
 
 {% block contents %}
-<div class="container main-content">
+<div class="card-list container main-content">
+  <article>
+    <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a>
+    Metrics
 
-  <div class="row">
-    <div class="col-md-10">
-      <article>
-        <div class="row">
-          <div class="col-md-12">
-            <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a> Metrics
-          </div>
+    <nav class="content-offset">
+      <div class="row">
+        <div class="col-md-12">
+          {% for letter, other_page in other_pages %}
+          <a class="letter-link {% if request.GET.letter == letter %}active {% endif %}" href="{{ other_page }}">
+            {{ letter }}
+          </a>
+          {% endfor %}
         </div>
+      </div>
+    </nav>
 
-        <h1>Metrics</h1>
-        <div class="row">
-          <div class="col-md-12">
-
-            <ul>
-              {% for metric in metric_list %}
-              <li><a href="{% url 'metrics-detail' pk=metric.pk %}">{{ metric.indicator }}</a></li>
-              {% endfor %}
-            </ul>
-
-          </div>
-        </div>
-
-      </article>
+    <div class="row">
+      <div class="col-md-12">
+        <h1 class="title">Metrics</h1>
+      </div>
     </div>
-  </div>
+    <div class="row nhs-england-well">
+      <div class="col-md-12">
+        <p>
+          TODO METRICS
+        </p>
+      </div>
+    </div>
 
-  <div class="row">
-    <div class="col-md-12">
-      {% if is_paginated %}
-      <ul class="pagination">
-        {% if page_obj.has_previous %}
-        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
-        {% else %}
-        <li class="disabled"><span>&laquo;</span></li>
+    {% if not object_list %}
+    <h1 class="faded text-center">
+      No Metrics{% if request.GET.letter %} start with {{ request.GET.letter }}{% endif %}
+    </h1>
+    {% else %}
+
+    <div class="row">
+      <div class="col-md-10">
+
+        {% for metric in object_list %}
+        <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
+          <div class="col-md-12">
+            <h3 class="sub-row-title">
+              <a href="{{ metric.get_absolute_url }}">{{ metric.indicator }}</a>
+            </h3>
+          </div>
+        </div>
+
+        <p>{{ metric.definition }}</p>
+
+        {% if not forloop.last %}
+        <hr />
         {% endif %}
-        {% for i in paginator.page_range %}
-        {% if page_obj.number == i %}
-        <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-        {% else %}
-        <li><a href="?page={{ i }}">{{ i }}</a></li>
-        {% endif %}
+
         {% endfor %}
-        {% if page_obj.has_next %}
-        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
-        {% else %}
-        <li class="disabled"><span>&raquo;</span></li>
-        {% endif %}
-      </ul>
-      {% endif %}
+      </div>
     </div>
-  </div>
 
+    {% if is_paginated %}
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+      <li><a href="?page={{ page_obj.previous_page_number }}&letter={{ request.GET.letter }}">&laquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+      {% else %}
+      <li><a href="?page={{ i }}&letter={{ request.GET.letter }}">{{ i }}</a></li>
+      {% endif %}
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <li><a href="?page={{ page_obj.next_page_number }}&letter={{ request.GET.letter }}">&raquo;</a></li>
+      {% else %}
+      <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+    {% endif %}
+
+    {% endif %}
+  </article>
 </div>
 {% endblock contents %}
