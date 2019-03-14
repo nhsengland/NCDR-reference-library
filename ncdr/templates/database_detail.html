@@ -54,7 +54,7 @@
     <div class="row">
       <div class="col-md-12">
         <p>
-          {% if object.link %} More Information
+          {% if object.link and object.link != "N/A" %} More Information
           about this dataset can be found at
           <a target="_blank" href="{{ object.link }}">{{ object.link }}</a>
           {% endif %}
