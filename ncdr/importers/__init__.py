@@ -38,9 +38,9 @@ def import_data(version_pk):
         table.load_file(to_text(version.db_structure), version)
         column.load_file(to_text(version.definitions), version)
         grouping.load_file(to_text(version.grouping_mapping), version)
-    except Exception as e:
-        log.exception(e)
-        return
+    except Exception:
+        # log the exception, whatever it is so we can track down errors later.
+        log.exception("CSV processing failed")
 
     version.last_process_at = timezone.now()
     version.save()
