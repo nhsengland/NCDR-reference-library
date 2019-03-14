@@ -13,6 +13,7 @@ import os
 
 import environ
 import structlog
+from django.urls import reverse_lazy
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -71,6 +72,19 @@ STATIC_ROOT = "static"
 STATIC_URL = env.str("STATIC_URL", default="/static/")
 WHITENOISE_STATIC_PREFIX = "/static/"
 
+# Storage for user uploaded files
+# https://docs.djangoproject.com/en/2.1/topics/files/
+AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
+AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
+AWS_DEFAULT_ACL = "public-read"
+AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
+DEFAULT_FILE_STORAGE = env.str(
+    "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
+)
+
+if DEBUG:
+    MEDIA_ROOT = "data/csvs"
+
 
 TEMPLATES = [
     {
@@ -122,6 +136,11 @@ USE_TZ = True
 AUTH_USER_MODEL = "ncdr.User"
 
 
+# Configure error notification email address for RQ logger
+# https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-ADMINS
+ADMINS = [("Support", "support@openhealthcare.org.uk")]
+
+
 # Logging
 # https://docs.djangoproject.com/en/2.1/topics/logging/
 timestamper = structlog.processors.TimeStamper(fmt="%Y-%m-%d %H:%M:%S")
@@ -142,16 +161,27 @@ LOGGING = {
             "foreign_pre_chain": pre_chain,
         }
     },
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
         "console": {
             "level": "DEBUG",
             "class": "logging.StreamHandler",
             "formatter": "formatter",
-        }
+        },
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
+        },
     },
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
-        "datastore": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "ncdr": {"handlers": ["console"], "level": "INFO", "propagate": False},
+        "rq": {
+            "handlers": ["console", "mail_admins"],
+            "level": "INFO",
+            "propagate": False,
+        },
     },
 }
 
@@ -169,6 +199,19 @@ structlog.configure(
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
+
+# Auth URLS
+# Redefine these so the URLs are reversed and take into account SCRIPT_NAME
+# from the WSGI env.  Without this a login_required page will redirect to
+#
+#   /accounts/login
+#
+# instead of the expected
+#
+#   /ncdr/accounts/login
+#
+LOGIN_URL = reverse_lazy("login")
+LOGOUT_URL = reverse_lazy("logout")
 
 # THIRD PARTY
 # Debug Toolbar

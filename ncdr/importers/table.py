@@ -1,15 +1,11 @@
 import csv
 
-from django.db import transaction
-
 from ..models import Database, Schema, Table
 
 
-@transaction.atomic
-def load_file(file_name, version):
-    with open(file_name, "r", encoding="Windows-1252") as f:
-        f.readline()  # ignore the first line since it's blank
-        rows = list(csv.DictReader(f, delimiter="¬"))
+def load_file(fd, version):
+    fd.readline()  # ignore the first line since it's blank
+    rows = list(csv.DictReader(fd, delimiter="¬"))
 
     db_rows = filter(
         lambda r: r["SchemaID"] == "0" and r["Table or View"] == "N/A", rows

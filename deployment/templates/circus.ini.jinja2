@@ -1,14 +1,28 @@
 [watcher:app]
 cmd = envdir env_vars gunicorn
-args = ncdr.wsgi -c deployment/config/gunicorn_conf.py
-working_dir = /home/ubuntu/NCDR-reference
+args = --bind 127.0.0.1:4567 --workers=3 --timeout=120 --access-logfile=- --error-logfile=- --capture-output ncdr.wsgi
+working_dir = {{ PROJECT_PATH }}
 uid = ubuntu
 numprocesses = 1
 autostart = true
 stdout_stream.class = FileStream
-stdout_stream.filename = {{ LOG_DIR }}/gunicorn.stdout.log
+stdout_stream.filename = {{ LOG_DIR }}/ncdr.stdout.log
 stderr_stream.class = FileStream
-stderr_stream.filename = {{ LOG_DIR }}/gunicorn.stderr.log
+stderr_stream.filename = {{ LOG_DIR }}/ncdr.stderr.log
+copy_env = true
+virtualenv = {{ VIRTUALENV_PATH }}
+virtualenv_py_ver = 3.6
+
+[watcher:rq]
+cmd = envdir env_vars python {{ PROJECT_PATH }}/rq_worker.py
+working_dir = {{ PROJECT_PATH }}
+uid = ubuntu
+numprocesses = 1
+autostart = true
+stdout_stream.class = FileStream
+stdout_stream.filename = {{ LOG_DIR }}/ncdr.stdout.log
+stderr_stream.class = FileStream
+stderr_stream.filename = {{ LOG_DIR }}/ncdr.stderr.log
 copy_env = true
 virtualenv = {{ VIRTUALENV_PATH }}
 virtualenv_py_ver = 3.6

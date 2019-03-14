@@ -17,6 +17,19 @@ server {
         proxy_set_header SCRIPT_NAME /ncdr;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+
+        client_max_body_size 5m;
+    }
+
+    # Redirect root favicon requests to the Django app
+    #
+    # Browsers typically look for a favicon at the root URL.  Since our
+    # application (in gunicorn) will 500 if we request URLs root URLs which
+    # aren't prepended with /ncdr we want to avoid polluting our logs with
+    # stack traces for something we can't fix.  So permanently redirect those
+    # requests to our known-good favicon URL.
+    location /favicon.ico {
+      return 301 http://$host/ncdr/static/favicon.ico;
     }
 
     location /protected {

@@ -57,22 +57,12 @@
   with_fileglob:
     - templates/settings/*.jinja2
 
-# otherwise it complains silently and
-# blows up the world
-- name: Creates gunicorn log
-  file:
-    path: "{{ LOG_DIR }}/gunicorn.log"
-    state: touch
-
 - name: Create configs
   template:
-    src: "templates/{{ item }}.jinja2"
-    dest: "{{ PROJECT_PATH }}/deployment/config/{{ item }}"
+    src: "templates/nginx_site.conf.jinja2"
+    dest: "{{ PROJECT_PATH }}/deployment/config/nginx_site.conf"
     mode: 0744
     owner: ubuntu
-  with_items:
-    - gunicorn_conf.py
-    - nginx_site.conf
 
 - name: Install packages required by the Django app inside virtualenv
   pip:
@@ -83,11 +73,6 @@
   args:
     chdir: "{{ PROJECT_PATH}}"
   command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
-
-- name: Run Django initial_load
-  args:
-    chdir: "{{ PROJECT_PATH}}"
-  command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py load_data"
 
 - name: Remove old nginx default
   become: true

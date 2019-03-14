@@ -1,3 +1,5 @@
+from hashlib import md5
+
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -9,7 +11,12 @@ from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
-from django.utils.text import slugify
+
+from .exceptions import VersionAlreadyExists
+
+
+def versioned_path(version, filename):
+    return f"{version.pk}/{filename}"
 
 
 class BaseModel(models.Model):
@@ -178,11 +185,6 @@ class DataElement(BaseModel, models.Model):
         else:
             return self.column_set.first().description
 
-    def save(self, *args, **kwargs):
-        if self.name and not self.slug:
-            self.slug = slugify(self.name)
-        return super().save(*args, **kwargs)
-
 
 class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
@@ -199,11 +201,6 @@ class Grouping(BaseModel, models.Model):
 
     def get_absolute_url(self):
         return reverse("grouping_detail", kwargs={"slug": self.slug})
-
-    def save(self, *args, **kwargs):
-        if self.name and not self.slug:
-            self.slug = slugify(self.name)
-        return super(Grouping, self).save(*args, **kwargs)
 
 
 class Schema(BaseModel, models.Model):
@@ -336,6 +333,12 @@ class Version(models.Model):
         "User", null=True, on_delete=models.SET_NULL, related_name="versions"
     )
 
+    db_structure = models.FileField(upload_to=versioned_path, null=True)
+    definitions = models.FileField(upload_to=versioned_path, null=True)
+    grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
+    last_process_at = models.DateTimeField(null=True)
+    files_hash = models.TextField(null=True, unique=True)
+
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -349,18 +352,59 @@ class Version(models.Model):
     def _set_publish_state(self, publish, user):
         previous_published = Version.objects.filter(is_published=True).latest()
 
+        # Unpublish all existing Versions first so we only ever have one
+        # version published at a time
+        Version.objects.update(is_published=False)
+
         self.is_published = publish
         self.save()
-
-        now_published = Version.objects.filter(is_published=True).latest()
 
         VersionAuditLog.objects.create(
             version=self,
             previous_published=previous_published,
-            now_published=now_published,
+            now_published=self,
             created_by=user,
             changed_to_published=publish,
         )
+
+    @classmethod
+    def create(
+        self, *, db_structure, definitions, grouping_mapping, is_published, created_by
+    ):
+        """
+        Wrap creating a Version with attached files
+
+        The versioned_path function uses the passed Version instance's PK to
+        generate the path for uploading files to.  However when creating an
+        instance with Version.objects.create we can't guarantee version.pk will
+        have been set as the model is not typically saved before the function
+        is run.
+        """
+        contents_hash = md5(
+            db_structure.read() + definitions.read() + grouping_mapping.read()
+        ).digest()
+
+        # reset file streams after reading them to generate hash
+        db_structure.seek(0)
+        definitions.seek(0)
+        grouping_mapping.seek(0)
+
+        try:
+            existing_version = Version.objects.get(files_hash=contents_hash)
+            raise VersionAlreadyExists(existing_pk=existing_version.pk)
+        except Version.DoesNotExist:
+            pass
+
+        version = Version.objects.create(
+            created_by=created_by, is_published=is_published, files_hash=contents_hash
+        )
+
+        version.db_structure = db_structure
+        version.definitions = definitions
+        version.grouping_mapping = grouping_mapping
+        version.save()
+
+        return version
 
     def publish(self, user):
         self._set_publish_state(True, user)

@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2-bootstrap-theme/0.1.0-beta.10/select2-bootstrap.css" />
 
+    <link rel="shortcut icon" type="image/png" href="{% static "favicon.ico" %}"/>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
@@ -55,6 +56,8 @@
             {% if not request.version.is_published %}You are currently viewing a preview version of the site{% endif %}
 
             <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
+
+            <a class="btn pull-right relative" href="{% url 'version_list' %}">Versions</a>
 
             {% if not request.version.is_published %}
             <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">View Normal Site</a>
@@ -115,7 +118,7 @@
                 </li>
 
                 <li>
-                  <a {% if request|url_name == 'grouping_detail' %}class="active" {% endif %} href="{{ grouping_redirect }}">
+                  <a {% if request|url_name == 'grouping_redirect' %}class="active" {% endif %} href="{{ grouping_redirect }}">
                     Groupings
                   </a>
                 </li>

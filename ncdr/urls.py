@@ -31,11 +31,15 @@ from .views.version import (
     SwitchToVersion,
     Timeline,
     UnPublishVersion,
+    Upload,
     VersionList,
 )
 
 urlpatterns = [
     path("", RedirectView.as_view(pattern_name="database_list"), name="index_view"),
+    path(
+        "favicon.ico", RedirectView.as_view(url="/static/favicon.ico", permanent=True)
+    ),
     path("accounts/login/", Login.as_view(), name="login"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
@@ -90,6 +94,7 @@ urlpatterns = [
     ),
     path("timeline", Timeline.as_view(), name="timeline"),
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
+    path("upload", Upload.as_view(), name="upload"),
     path("versions/", VersionList.as_view(), name="version_list"),
     path("", include("metrics.urls")),
 ]

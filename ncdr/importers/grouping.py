@@ -1,24 +1,32 @@
 import csv
 
-from django.db import transaction
+from django.utils.text import slugify
 
 from ..models import DataElement, Grouping
 
 
-@transaction.atomic
-def load_file(file_name, version):
-    with open(file_name, "r", encoding="Windows-1252") as f:
-        f.readline()  # ignore the first line since it's blank
-        rows = list(csv.DictReader(f, delimiter="¬"))
+def load_file(fd, version):
+    fd.readline()  # ignore the first line since it's blank
+    rows = list(csv.DictReader(fd, delimiter="¬"))
+
+    existing_names = set(Grouping.objects.values_list("name", flat=True))
+    csv_desc_by_name = {row["Grouping"]: row["Grouping Description"] for row in rows}
+    missing_names = set(csv_desc_by_name.keys()) - set(existing_names)
+    Grouping.objects.bulk_create(
+        Grouping(name=name, slug=slugify(name), description=csv_desc_by_name[name])
+        for name in missing_names
+    )
+    groupingLUT = {g.name: g for g in Grouping.objects.all()}
+
+    data_elementLUT = {de.name: de for de in DataElement.objects.all()}
 
     for row in rows:
-        grouping, _ = Grouping.objects.get_or_create(
-            name=row["Grouping"], defaults={"description": row["Grouping Description"]}
-        )
+        grouping = groupingLUT[row["Grouping"]]
+        # data_element = deLUT[row["Data Element"]]
 
-        data_element, _ = DataElement.objects.get_or_create(
-            name=row["Data Element"],
-            defaults={"description": row["Data Element Description"]},
-        )
+        data_element = data_elementLUT[row["Data Element"]]
+        if not data_element.description:
+            data_element.description = row["Data Element Description"]
+            data_element.save()
 
         data_element.grouping.add(grouping)

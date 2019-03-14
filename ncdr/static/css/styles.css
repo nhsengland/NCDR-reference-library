@@ -517,42 +517,47 @@ hr {
   stroke: #007f3b;
 }
 
-.unpublished .line {
+.versions .line {
   align-items: center;
   display: flex;
   padding: 10px 20px;
 }
-.unpublished .striped {
+.versions .striped {
   background-color: rgba(0, 0, 0, 0.05);
 }
-.unpublished span {
+.versions span {
   display: inline-block;
 }
-.unpublished span.number {
+.versions span.number {
   display: inline-block;
   text-align: center;
   width: 50px;
 }
-.unpublished span.created {
+.versions span.created {
   display: inline-block;
   width: 250px;
 }
-.unpublished span.author {
+.versions span.author {
   flex-grow: 1;
 }
-.unpublished span.published {
-  height: 30px;
-  margin-right: 20px;
+.versions span.processed {
+  width: 215px;
 }
-.unpublished span.tools {
+.versions span.published {
+  height: 30px;
+  text-align: center;
+  width: 95px;
+}
+.versions span.tools {
+  text-align: right;
   width: 165px;
 }
-.unpublished span.tools a {
+.versions span.tools a {
   display: inline-block;
-  margin-right: 10px;
 }
-.unpublished form {
+.versions span.tools form {
   display: inline-block;
+  margin-left: 10px;
 }
 
 .audit-log .line {
@@ -566,6 +571,19 @@ hr {
 .audit-log .date {
   display: inline-block;
   width: 250px;
+}
+
+form.upload .form-group {
+  align-items: baseline;
+  display: flex;
+  margin-bottom: 0;
+}
+form.upload input[type=file] {
+  display: flex;
+}
+form.upload .help-text {
+  color: #737373;
+  font-size: 70%;
 }
 
 /*# sourceMappingURL=styles.css.map */

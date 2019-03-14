@@ -14,30 +14,21 @@ MOST_RECENT = "Most Recent"
 SEARCH_OPTIONS = [BEST_MATCH, MOST_RECENT]
 
 searchableLUT = {
-    "column": {
-        "model": Column,
-        "published_key": "table__schema__database__version__is_published",
-    },
-    "database": {"model": Database, "published_key": "version__is_published"},
+    "column": {"model": Column, "version_link": "table__schema__database__version"},
+    "database": {"model": Database, "version_link": "version"},
     "dataelement": {
         "model": DataElement,
-        "published_key": "column__table__schema__database__version__is_published",
+        "version_link": "column__table__schema__database__version",
     },
     "grouping": {
         "model": Grouping,
-        "published_key": "dataelement__column__table__schema__database__version__is_published",
+        "version_link": "dataelement__column__table__schema__database__version",
     },
-    "table": {
-        "model": Table,
-        "published_key": "schema__database__version__is_published",
-    },
+    "table": {"model": Table, "version_link": "schema__database__version"},
 }
 
 
-def best_match(model, search_param):
-    published_key = searchableLUT[model.__name__.lower()]["published_key"]
-    qs = model.objects.filter(**{published_key: True})
-
+def best_match(model, qs, search_param):
     queries = (
         qs.filter(**{f"{field}__icontains": search_param}).distinct()
         for field in model.SEARCH_FIELDS
@@ -45,16 +36,14 @@ def best_match(model, search_param):
     yield from itertools.chain(*queries)
 
 
-def most_recent(model, search_param):
-    published_key = searchableLUT[model.__name__.lower()]["published_key"]
+def most_recent(model, qs, search_param):
     filters = [
         Q(**{f"{field}__icontains": search_param}) for field in model.SEARCH_FIELDS
     ]
-    qs = model.objects.filter(**{published_key: True})
     return qs.filter(functools.reduce(operator.or_, filters)).distinct()
 
 
-def search(model, search_param, option=MOST_RECENT):
+def search(model, version, search_param, option=MOST_RECENT):
     """ returns all tables that have columns
         we default to MOST_RECENT as querysets are
         more efficient for a lot of operations
@@ -62,10 +51,14 @@ def search(model, search_param, option=MOST_RECENT):
     if not search_param:
         return model.objects.none()
 
-    if option == MOST_RECENT:
-        return most_recent(model, search_param)
+    # Limit results to the current version
+    version_link = searchableLUT[model.__name__.lower()]["version_link"]
+    qs = model.objects.filter(**{version_link: version})
 
-    return list(set(best_match(model, search_param)))
+    if option == MOST_RECENT:
+        return most_recent(model, qs, search_param)
+
+    return list(set(best_match(model, qs, search_param)))
 
 
 class Search(ListView):
@@ -81,13 +74,17 @@ class Search(ListView):
 
         # Required for ListView to function
         self.object_list = search(
-            info["model"], q, self.request.GET.get("search_option", BEST_MATCH)
+            info["model"],
+            request.version,
+            q,
+            self.request.GET.get("search_option", BEST_MATCH),
         )
 
         models = [x["model"] for x in searchableLUT.values()]
         context = super().get_context_data(**kwargs)
         context["results"] = [
-            (model, most_recent(model, q).count()) for model in models
+            (model, search(model, request.version, q, option=MOST_RECENT).count())
+            for model in models
         ]
         context["search_options"] = SEARCH_OPTIONS
         return self.render_to_response(context)
@@ -104,8 +101,7 @@ class SearchRedirect(RedirectView):
             return full_url
 
         for model in [x["model"] for x in searchableLUT.values()]:
-            if search(model, q, option=MOST_RECENT).exists():
+            if search(model, self.request.version, q, option=MOST_RECENT).exists():
                 url = reverse("search", kwargs={"model_name": model.__name__.lower()})
                 break
-
         return full_url
