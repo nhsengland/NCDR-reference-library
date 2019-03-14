@@ -585,4 +585,10 @@ form.upload .help-text {
   font-size: 70%;
 }
 
+hr.divisor {
+  background-color: #265eb2;
+  border: 0;
+  height: 2px;
+}
+
 /*# sourceMappingURL=styles.css.map */
