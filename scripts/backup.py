@@ -19,7 +19,7 @@ def dump_database(db_name, db_user, backup_name):
 
 def upload(full_file_name, file_name, bucket_name):
     """
-    Given a bucket nane, key_name and filename will upload the referenced file
+    Given a bucket name, key_name and filename will upload the referenced file
     to the given bucket against the provided key_name.
     """
     s3 = boto3.resource("s3")
@@ -27,8 +27,8 @@ def upload(full_file_name, file_name, bucket_name):
 
 
 def main(db_name, db_user, backups_dir, bucket_name):
-    today = datetime.now().strftime("%d-%m-%Y")
-    backup_name = f"{db_name}-{today}.dump"
+    today = datetime.now().strftime("%Y-%m-%d")
+    backup_name = f"{today}-{db_name}.dump"
 
     full_backup_name = os.path.join(backups_dir, backup_name)
     dump_database(db_name, db_user, full_backup_name)
