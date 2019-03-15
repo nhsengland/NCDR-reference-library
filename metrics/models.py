@@ -36,6 +36,9 @@ class Metric(BaseModel):
 
     comments = models.TextField()
 
+    class Meta:
+        verbose_name = "Metric"
+
     def __str__(self):
         return self.indicator
 
