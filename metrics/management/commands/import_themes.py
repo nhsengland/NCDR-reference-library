@@ -16,5 +16,8 @@ class Command(BaseCommand):
             delimiter = "\t" if path.endswith(".tsv") else ","
             rows = list(csv.DictReader(f, delimiter=delimiter, quotechar='"'))
 
-        for row in rows:
-            Theme.objects.create(number=row["Number"], name=row["Theme"])
+        Theme.objects.bulk_create(
+            Theme(number=row["Number"], name=row["Theme"]) for row in rows
+        )
+
+        self.stdout.write(self.style.SUCCESS("Added Themes"))
