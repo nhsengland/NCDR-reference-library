@@ -56,7 +56,7 @@
 
           {% if metric.numerator.source_address %}
           <h4>Source Address</h4>
-          <p>{{ metric.numerator.source_address|urlize }}</p>
+          <p class="overflowing-url">{{ metric.numerator.source_address|urlize }}</p>
           {% endif %}
 
           <h4>Lowest Level of Granularity of Data</h4>
@@ -81,7 +81,7 @@
           <p>{{ metric.denominator.source }}</p>
 
           <h4>Source Address</h4>
-          <p>{{ metric.denominator.source_address|urlize }}</p>
+          <p class="overflowing-url">{{ metric.denominator.source_address|urlize }}</p>
 
           <h4>Lowest Level of Granularity of Data</h4>
           <p>{{ metric.denominator.lowest_level_granularity }}</p>

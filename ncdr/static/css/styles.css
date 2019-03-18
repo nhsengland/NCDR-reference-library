@@ -592,4 +592,12 @@ hr.divisor {
   height: 2px;
 }
 
+.overflowing-url a {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 100%;
+}
+
 /*# sourceMappingURL=styles.css.map */
