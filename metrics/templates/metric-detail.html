@@ -35,14 +35,17 @@
           <hr />
         </div>
 
+        {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
         <div class="col-md-4 text-center">
           <p><strong>{{ metric.numerator.value }}</strong></p>
           <hr class="divisor" />
           <p><strong>{{ metric.denominator.value }}</strong></p>
         </div>
+        {% endif %}
 
       </div>
 
+      {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
       <div class="row">
 
         <div class="col-md-6">
@@ -96,6 +99,7 @@
         </div>
 
       </div>
+      {% endif %}
 
       <div class="row">
         <div class="col-md-8">
