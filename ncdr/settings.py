@@ -81,10 +81,15 @@ WHITENOISE_STATIC_PREFIX = "/static/"
 # credentials default to empty strings so we fail loudly when that hasn't been
 # set up in a Production/QA environment.
 #
+# We set AWS_DEFAULT_ACL to None to use the Buckets configured ACL instead of
+# the default public-read ACL which makes files world-readable.  This is
+# changing in django-storages 2.0 and this setting can be removed once we
+# update to that version.
+#
 # Finally, MEDIA_ROOT is used to provide a path to store uploaded files under.
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
-AWS_DEFAULT_ACL = "public-read"
+AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
 DEFAULT_FILE_STORAGE = env.str(
     "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"

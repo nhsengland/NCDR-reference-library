@@ -10,14 +10,14 @@ def test_search_redirect_column(initial_version, client, published_column):
     url = f"{reverse('search_redirect')}?q={published_column.name}"
     resp = client.get(url)
 
-    assert resp.url == "/search/column/?q=test&search_option=Best%20Match"
+    assert resp.url == "/search/column/?q=test"
 
 
 def test_search_redirect_database(initial_version, client, published_database):
     url = f"{reverse('search_redirect')}?q={published_database.name}"
     resp = client.get(url)
 
-    assert resp.url == "/search/column/?q=test&search_option=Best%20Match"
+    assert resp.url == "/search/column/?q=test"
 
 
 def test_search_empty(initial_version, client):

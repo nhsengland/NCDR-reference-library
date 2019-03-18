@@ -87,3 +87,5 @@ class Command(BaseCommand):
                 numerator=numerator,
                 row=row,
             )
+
+        self.stdout.write(self.style.SUCCESS("Added Metrics"))

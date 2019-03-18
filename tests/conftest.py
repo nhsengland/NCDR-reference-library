@@ -6,6 +6,7 @@ Docs: https://docs.pytest.org/en/latest/fixture.html#conftest-py-sharing-fixture
 
 import pytest
 
+from metrics.models import Lead, Metric, Operand, Organisation, Report, Team
 from ncdr.models import (
     Column,
     Database,
@@ -31,6 +32,26 @@ def initial_version(published_version):
     deal with that situation since they "caused" it.
     """
     return published_version
+
+
+@pytest.fixture
+def metric():
+    denominator = Operand.objects.create(type="denominator")
+    lead = Lead.objects.create(name="test lead")
+    numerator = Operand.objects.create(type="numerator")
+    organisation = Organisation.objects.create(name="test org")
+    report = Report.objects.create(name="test report")
+    team = Team.objects.create(name="test team")
+
+    return Metric.objects.create(
+        denominator=denominator,
+        metric_lead=lead,
+        numerator=numerator,
+        organisation_owner=organisation,
+        report=report,
+        team_lead=team,
+        indicator="test",
+    )
 
 
 @pytest.fixture
