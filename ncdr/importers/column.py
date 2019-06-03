@@ -49,7 +49,6 @@ def get_tables(tableLUT, addresses):
 
 
 def load_file(fd, version):
-    fd.readline()  # ignore the first line since it's blank
     rows = list(csv.DictReader(fd, delimiter="¬"))
 
     tables = Table.objects.select_related("schema", "schema__database").filter(

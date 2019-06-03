@@ -4,7 +4,6 @@ from ..models import Database, Schema, Table
 
 
 def load_file(fd, version):
-    fd.readline()  # ignore the first line since it's blank
     rows = list(csv.DictReader(fd, delimiter="¬"))
 
     db_rows = filter(
