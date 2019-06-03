@@ -72,7 +72,7 @@ class DataElementList(ListView):
             .get_queryset()
             .filter(column__in=columns)
             .prefetch_related(Prefetch("column_set", queryset=columns))
-        )
+        ).distinct()
 
         symbol = self.request.GET.get("letter")
 

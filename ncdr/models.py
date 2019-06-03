@@ -20,22 +20,6 @@ def versioned_path(version, filename):
 
 
 class BaseModel(models.Model):
-    @classmethod
-    def get_model_display_name(cls):
-        return cls._meta.verbose_name.title()
-
-    @classmethod
-    def get_model_display_name_plural(cls):
-        return cls._meta.verbose_name_plural.title()
-
-    @classmethod
-    def get_model_name(cls):
-        return cls.__name__.lower()
-
-    @property
-    def search_template(self):
-        return f"search/{self.__class__.__name__.lower()}.html"
-
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
@@ -137,6 +121,7 @@ class Database(BaseModel):
     class Meta:
         ordering = ["name"]
         unique_together = ["name", "version"]
+        verbose_name = "Database"
 
     def __str__(self):
         return self.name
@@ -171,7 +156,7 @@ class DataElement(BaseModel, models.Model):
 
     class Meta:
         ordering = ["name"]
-        verbose_name_plural = "Data Elements"
+        verbose_name = "Data Element"
 
     def __str__(self):
         return self.name
@@ -195,6 +180,7 @@ class Grouping(BaseModel, models.Model):
 
     class Meta:
         ordering = ["name"]
+        verbose_name = "Grouping"
 
     def __str__(self):
         return self.name
@@ -213,6 +199,7 @@ class Schema(BaseModel, models.Model):
     class Meta:
         ordering = ["name"]
         unique_together = ["name", "database"]
+        verbose_name = "Schema"
 
     def __str__(self):
         return self.name
@@ -238,6 +225,7 @@ class Table(BaseModel):
     class Meta:
         ordering = ["name"]
         unique_together = ["name", "schema"]
+        verbose_name = "Table"
 
     def __str__(self):
         return self.name

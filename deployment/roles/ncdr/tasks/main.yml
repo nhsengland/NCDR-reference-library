@@ -74,6 +74,11 @@
     chdir: "{{ PROJECT_PATH}}"
   command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
 
+- name: Run Django collectstatic
+  args:
+    chdir: "{{ PROJECT_PATH}}"
+  command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py collectstatic --noinput"
+
 - name: Remove old nginx default
   become: true
   file:

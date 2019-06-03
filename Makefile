@@ -6,6 +6,7 @@ help:
 	@echo "    make fix              fix formatting and import sort order."
 	@echo "    make format           run the auto-format check."
 	@echo "    make lint             run the import sorter check."
+	@echo "    make metrics          run the metrics importers."
 	@echo "    make setup            set up local env for dev."
 	@echo "    make sort             run the linter."
 	@echo "    make test             run the tests."
@@ -26,6 +27,11 @@ format:
 .PHONY: lint
 lint:
 	@echo "Running flake8" && flake8 --show-source || exit 1
+
+.PHONY: metrics
+metrics:
+	@python manage.py import_themes data/metrics/themes.tsv
+	@python manage.py import_metrics data/metrics/metrics.tsv
 
 .PHONY: setup
 setup:
