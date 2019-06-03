@@ -99,7 +99,7 @@ class UnPublishVersion(LoginRequiredMixin, View):
 
 class Upload(LoginRequiredMixin, CreateView):
     form_class = UploadForm
-    template_name = "upload.html"
+    template_name = "version_upload.html"
 
     @transaction.atomic()
     def form_valid(self, form):

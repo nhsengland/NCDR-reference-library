@@ -680,3 +680,22 @@ form.upload {
     font-size: 70%;
   }
 }
+
+a.version-menu {
+    display: inline-block;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-right: 1px solid $primary-colour-light;
+    margin-left: 0;
+    margin-right: 0;
+
+    &:first-child{
+        border-right: none;
+    }
+
+    &:hover, &.active{
+        color: white;
+        @include primary-background-colour-light;
+        text-decoration: none;
+    }
+}

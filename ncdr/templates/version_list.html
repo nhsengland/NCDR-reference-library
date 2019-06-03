@@ -4,20 +4,7 @@
 
 {% block contents %}
 <div class="container main-content">
-
-  <div class="row content-offset-below-20">
-    <div class="col-md-9">
-      <h3>Versions</h3>
-    </div>
-
-    <div class="col-md-3 pull-right">
-      <a href="{% url 'audit-log' %}">Audit Log</a>
-      |
-      <a href="{% url 'upload' %}">Upload</a>
-      |
-      <a href="{% url 'timeline' %}">Timeline</a>
-    </div>
-  </div>
+  {% include "partials/admin_menu.html" with VERSION_TITLE="Versions" %}
 
   <div class="row versions">
     <div class="col-md-12">
