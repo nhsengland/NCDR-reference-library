@@ -133,3 +133,9 @@ class VersionList(LoginRequiredMixin, ListView):
         "created_by"
     )
     template_name = "version_list.html"
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        current_version = Version.objects.get(is_published=True)
+        ctx["sub_title"] = f"Current version: {current_version.pk}"
+        return ctx
