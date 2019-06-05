@@ -687,6 +687,9 @@ a.version-menu {
     padding-left: 8px;
     padding-right: 8px;
     border-right: 1px solid $primary-colour-light;
+    .preview-mode &{
+        border-right: 1px solid darken($preview-primary-colour-light, 5%);
+    }
     margin-left: 0;
     margin-right: 0;
 

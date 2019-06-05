@@ -594,6 +594,9 @@ a.version-menu {
   margin-left: 0;
   margin-right: 0;
 }
+.preview-mode a.version-menu {
+  border-right: 1px solid #a35c74;
+}
 a.version-menu:first-child {
   border-right: none;
 }
