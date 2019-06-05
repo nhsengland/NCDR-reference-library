@@ -6,7 +6,6 @@ from ..models import DataElement, Grouping
 
 
 def load_file(fd, version):
-    fd.readline()  # ignore the first line since it's blank
     rows = list(csv.DictReader(fd, delimiter="¬"))
 
     existing_names = set(Grouping.objects.values_list("name", flat=True))

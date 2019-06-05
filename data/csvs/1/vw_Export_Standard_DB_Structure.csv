@@ -1,4 +1,3 @@
-
 "DatabaseId"¬"Database"¬"SchemaID"¬"Schema"¬"Table/ViewID"¬"Table/View"¬"Table or View"¬"Name"¬"Description"¬"Date_Range"¬"Data_Start"¬"Data_End"¬"Link"¬"Link Type"¬"Data_Sharing"¬"Data_Source"¬"DatSchem"
 "1"¬"NHSE_111"¬"0"¬""¬"0"¬""¬"N/A"¬"NHS 111 data"¬"The 111 data from NECS RAIDR. This database has a restricted access and is only available to specific individuals."¬"Apr 2015 - Ongoing"¬"Apr 2015"¬"N/A"¬"N/A"¬"N/A"¬"Users should follow the confidentiality guidance published by the ONS, NHS disclosure control procedure and the HES protocol."¬"North of England Commissioning Support Unit (NECS), sourced from CCGs."¬""
 "2"¬"NHSE_IAPT"¬"0"¬""¬"0"¬""¬"N/A"¬"Improving access to psychological therapies (IAPT) data"¬"The (adult) improving access to psychological therapies (IAPT) data."¬"Apr 2013 - Ongoing"¬"Apr 2013"¬"N/A"¬"http://content.digital.nhs.uk/iapt"¬"NHS Digital - IAPT"¬"The following disclosure control rules must be applied:
