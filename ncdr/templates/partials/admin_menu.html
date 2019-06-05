@@ -1,0 +1,12 @@
+<div class="row content-offset-below-20">
+  <div class="col-md-8">
+    <h3>{{ VERSION_TITLE }}</h3>
+  </div>
+
+  <div class="col-md-4 pull-right text-right">
+    <a class="version-menu pull-right{% if request.resolver_match.url_name == 'timeline' %} active{% endif %}"  href="{% url 'timeline' %}">Timeline</a>
+    <a class="version-menu pull-right{% if request.resolver_match.url_name == 'upload' %} active{% endif %}" href="{% url 'upload' %}">Upload</a>
+    <a class="version-menu pull-right{% if request.resolver_match.url_name == 'audit-log' %} active{% endif %}" href="{% url 'audit-log' %}">Audit Log</a>
+    <a class="version-menu pull-right{% if request.resolver_match.url_name == 'version_list' %} active{% endif %}" href="{% url 'version_list' %}">List</a>
+  </div>
+</div>

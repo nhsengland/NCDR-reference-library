@@ -586,6 +586,39 @@ form.upload .help-text {
   font-size: 70%;
 }
 
+a.version-menu {
+  display: inline-block;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-right: 1px solid #0072ce;
+  margin-left: 0;
+  margin-right: 0;
+}
+a.version-menu:first-child {
+  border-right: none;
+}
+a.version-menu:hover, a.version-menu.active {
+  color: white;
+  background-color: #0072ce;
+  color: #FFF;
+  text-decoration: none;
+}
+a.version-menu:hover a.btn, a.version-menu.active a.btn {
+  color: #FFF;
+}
+a.version-menu:hover a:hover.btn, a.version-menu.active a:hover.btn {
+  color: #cccccc;
+}
+.preview-mode a.version-menu:hover, .preview-mode a.version-menu.active {
+  background-color: #AC6C82;
+}
+.preview-mode a.version-menu:hover a.btn, .preview-mode a.version-menu.active a.btn {
+  color: #FFBC67;
+}
+.preview-mode a.version-menu:hover a:hover.btn, .preview-mode a.version-menu.active a:hover.btn {
+  color: #ffe9cd;
+}
+
 hr.divisor {
   background-color: #265eb2;
   border: 0;
