@@ -24,12 +24,11 @@ from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
 from .views.search import Search, SearchRedirect
 from .views.table import TableDetail
-from .views.version import (
+from .views.version import (  # Timeline,
     AuditLog,
     PublishVersion,
     SwitchToLatestVersion,
     SwitchToVersion,
-    Timeline,
     UnPublishVersion,
     Upload,
     VersionList,
@@ -92,7 +91,7 @@ urlpatterns = [
         SwitchToVersion.as_view(),
         name="switch-to-version",
     ),
-    path("timeline", Timeline.as_view(), name="timeline"),
+    # path("timeline", Timeline.as_view(), name="timeline"),
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
     path("upload", Upload.as_view(), name="upload"),
     path("versions/", VersionList.as_view(), name="version_list"),
