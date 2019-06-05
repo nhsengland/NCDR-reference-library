@@ -9,8 +9,8 @@
     <nav class="content-offset">
       <div class="row">
         <div class="col-md-12">
-          {% for letter, other_page in other_pages %}
-          <a class="letter-link {% if request.GET.letter == letter %}active {% endif %}" href="{{ other_page }}">
+          {% for letter, other_page, exists in other_pages %}
+          <a class="letter-link {% if request.GET.letter == letter %}active {% elif not exists %} unpopulated{% endif %}" href="{{ other_page }}">
             {{ letter }}
           </a>
           {% endfor %}

@@ -32,10 +32,22 @@ class MetricsList(ListView):
     paginate_by = 30
     template_name = "metrics-list.html"
 
+    def get_queryset_for_symbol(self, qs, symbol):
+        if symbol != self.NUMERIC:
+            return qs.filter(indicator__istartswith=symbol[0])
+
+        startswith_args = [Q(indicator__startswith=str(i)) for i in range(10)]
+        return qs.filter(functools.reduce(operator.or_, startswith_args))
+
     def get_context_data(self, *args, **kwargs):
         symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
+        qs = self.model.objects.all()
         other_pages = [
-            (symbol, reverse("metrics-list") + f"?letter={symbol}")
+            (
+                symbol,
+                reverse("metrics-list") + f"?letter={symbol}",
+                self.get_queryset_for_symbol(qs, symbol).exists(),
+            )
             for symbol in symbols
         ]
 
@@ -45,15 +57,9 @@ class MetricsList(ListView):
 
     def get_queryset(self):
         qs = super().get_queryset()
-
         symbol = self.request.GET.get("letter")
 
         if not symbol:
             return qs
 
-        if symbol != self.NUMERIC:
-            return qs.filter(indicator__istartswith=symbol[0])
-
-        # handle the 0-9 case
-        startswith_args = [Q(indicator__startswith=str(i)) for i in range(10)]
-        return qs.filter(functools.reduce(operator.or_, startswith_args))
+        return self.get_queryset_for_symbol(qs, symbol)

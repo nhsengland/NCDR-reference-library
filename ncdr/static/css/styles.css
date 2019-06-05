@@ -420,6 +420,9 @@ hr {
   text-align: center;
   text-decoration: none;
 }
+.letter-link.unpopulated {
+  background-color: #4484c1;
+}
 .letter-link.active {
   background-color: #e8edee;
   color: #202a30;

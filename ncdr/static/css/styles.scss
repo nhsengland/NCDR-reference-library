@@ -499,6 +499,10 @@ hr {
   text-align: center;
   text-decoration: none;
 
+  &.unpopulated{
+    background-color: lighten(desaturate($primary-colour, 50%), 15%);
+  }
+
   &.active{
     background-color: $tertiary-colour;
     color: $text-colour;
