@@ -122,11 +122,14 @@
                     Groupings
                   </a>
                 </li>
+                {% comment %}
+                Hide metrics from the menu for the time being
                 <li>
                   <a {% if request|url_name == 'metrics-list' %}class="active" {% endif %} href="{{ metrics_list }}">
                     Metrics
                   </a>
                 </li>
+                {% endcomment %}
                 <li>
                   <a {% ifequal request.path about_page %}class="active" {% endifequal %} href="{{ about_page }}">
                     About
