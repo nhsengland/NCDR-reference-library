@@ -119,7 +119,7 @@ class Database(BaseModel):
     owner = models.TextField(blank=True, null=True)
 
     class Meta:
-        ordering = ["name"]
+        ordering = ["display_name"]
         unique_together = ["name", "version"]
         verbose_name = "Database"
 
