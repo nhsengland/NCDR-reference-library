@@ -6,9 +6,10 @@ from django.http import Http404
 from django.urls import reverse
 from django.views.generic import ListView, RedirectView
 
-from metrics.models import Metric
-
 from ..models import Column, Database, DataElement, Grouping, Table
+
+# from metrics.models import Metric
+
 
 searchableLUT = {
     "column": {"model": Column, "version_link": "table__schema__database__version"},
@@ -21,7 +22,7 @@ searchableLUT = {
         "model": Grouping,
         "version_link": "dataelement__column__table__schema__database__version",
     },
-    "metric": {"model": Metric, "version_link": None},
+    # "metric": {"model": Metric, "version_link": None},
     "table": {"model": Table, "version_link": "schema__database__version"},
 }
 
