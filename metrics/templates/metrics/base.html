@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% load utils %}
+{% block title %}Metrics{% endblock %}
+{% block header_title %}
+  Metrics
+{% endblock header_title %}
+{% block header_search %}
+<form method="get" action="{% url 'search_redirect' %}">
+  <input type="text" value="{{ request.GET.q }}" name="q" autocomplete="off">
+  <button type="submit" class="btn">
+    Search Metrics
+  </button>
+</form>
+{% endblock %}
+
+
+{% block navigation %}
+  {% url 'metrics-list' as metrics_list %}
+  {% url 'metrics-home' as metrics_home %}
+  {% url 'metrics-about' as metrics_about %}
+  <ul>
+    <li>
+      <a {% if request|url_name == 'metrics-home' %}class="active" {% endif %} href="{{ metrics_home }}">
+        Home
+      </a>
+    </li>
+    <li>
+      <a {% if request|url_name == 'metrics-list' %}class="active" {% endif %} href="{{ metrics_list }}">
+        Metrics
+      </a>
+    </li>
+    <li>
+      <a {% if request|url_name == 'metrics-about' %}class="active" {% endif %} href="{{ metrics_about }}">
+        About
+      </a>
+    </li>
+  </ul>
+{% endblock %}
