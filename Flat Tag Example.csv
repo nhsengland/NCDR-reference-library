@@ -1,0 +1,924 @@
+Metric ID¬Display name¬Indicator / Metric¬Business definition¬Rationale¬Numerator¬Denominator¬Technical specification¬Numerator source¬Numerator source address¬Numerator lowest level of granularity of data¬Numerator frequency of data¬Numerator timeliness of data¬Numerator refresh mechanism¬Denominator source¬Denominator source address¬Denominator lowest level of granularity of data¬Denominator frequency of data¬Denominator timeliness of data¬Denominator refresh mechanism¬Publication Status¬Calculation of metric¬Desired direction¬Report1¬Organisation owner¬Team lead¬Metric lead¬Comments¬Duplicate¬Progress¬Topic¬Report¬Strategic Origin¬Inidcator Type¬Organisation Type
+21¬Total A&E attendances current year activity rate by CCG per 100,000 population¬Total A&E attendances most recent 12 months rolling rate per 100,000 population by CCG¬Total Accident and Emergency (A&E) attendances most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Total A&E attendances are reported to give a full picture of emergency care activity in the CCG, planned attendances are excluded as these are not considered to be emergency care.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total A&E attendances latest 12 months¬Adjusted needs weighted population¬Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month¬Secondary Uses Service (SUS) via the NCDR¬N/A¬CCG¬Monthly¬N/A¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Total A&E attendances latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Elective; Emergency¬CCG and Activity Benchmarking Tool¬LTPsub4¬Outcome¬Clinical Commissioning Groups
+22¬Total A&E attendances prior year activity rate by CCG per 100,000 population¬Total A&E attendance rate per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬Total Accident and Emergency (A&E) attendances previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Total A&E attendances are reported to give a full picture of emergency care activity in the CCG, planned attendances are excluded as these are not considered to be emergency care.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total A&E attendances previous 12 months¬Adjusted needs weighted population¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable AE_All_yr_1 from  SP_CCG_benchmarking stored procedure"¬Secondary Uses Service (SUS) via the NCDR¬N/A¬CCG¬Monthly¬N/A¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Total A&E attendances previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Outpatients¬CCG and Activity Benchmarking Tool¬NA¬Process¬Clinical Commissioning Groups
+23¬Total A&E attendances change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of total A&E attendances most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬All Accident and Emergency (A&E) change in rate of attendance¬Total A&E attendances are reported to give a full picture of emergency care activity in the Clinical Commissioning Groups (CCG).¬Difference between total A&E attendances latest 12 months and total A&E attendances previous 12 months¬Total A&E attendances previous 12 months¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned follow-up attendances are excluded as these are not considered to be emergency care."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between total A&E attendances latest 12 months and total A&E attendances previous 12 months divided by total A&E attendances previous 12 months, expressed as a percentage.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Elective¬CCG and Activity Benchmarking Tool¬LTPsub3¬Structure¬Clinical Commissioning Groups
+24¬A&E savings potential difference between activity rate and closest 10 CCGs by CCG¬Total A&E attendances savings potential¬All Accident and Emergency (A&E) attendances potential savings by reducing activity levels to those seen in peer Clinical Commissioning Groups (CCGs).¬Total A&E attendances are reported to give a full picture of emergency care activity in the CCG, planned attendances are excluded as these are not considered to be emergency care.¬Difference between the CCG rate for total A&E attendances and the average for the 'closest 10' CCGs or the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by average unit price¬N/A¬"The savings potential for each measure represents the difference between the activity rate for the selected CCG and the closest (most similar) 10 CCGs (excluding specialised commissioning), multiplied by the CCG population and the average unit price for the selected CCG for the relevant financial year. A range is offered: the lower figure is based on the average for all of the closest 10 CCGs; the upper figure is based on the average for the five of the closest 10 CCGs with the lowest rates.
+
+Distance of closest 10 CCGs (excluding specialised commissioning) is defined as the sum of squared differences between 12 standardised demographic variables. The standardisation method is interdecile standardisation, which is calculated by taking the CCG value, subtracting the medium, and then dividing by the difference between the 90th and 10th percentiles.
+
+Closest 10 CCGs: https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/ (last accessed 25 February 2019)."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Lower figure calculated as the difference between the CCG rate for total outpatient attendances and the average for the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £ per 1,000. Upper figure calculated as the difference between the CCG rate for total outpatient attendances and the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £ per 1,000.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Elective¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+25¬Number of total A&E attendances YTD by CCG¬Number of total A&E attendances at consultant-led general and acute specialties YTD by CCG¬Total Accident and Emergency (A&E) attendances in year to date (YTD) by Clinical Commissioning Group (CCG)¬Total A&E attendances are reported to give a full picture of emergency care activity in the CCG.¬Number of actual A&E attendances YTD¬N/A¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned follow-up attendances are excluded as these are not considered to be emergency care.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable AE_All_YTD from  SP_CCG_benchmarking stored procedure"¬Secondary Uses Service (SUS) via the NCDR¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total A&E attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub1¬Process¬Clinical Commissioning Groups
+26¬Number of planned total A&E attendances YTD by CCG¬Number of planned total A&E attendances YTD by CCG¬Planned total Accident and Emergency (A&E) attendances in year to date (YTD) by Clinical Commissioning Group (CCG)¬Total A&E attendances are reported to give a full picture of emergency care activity in the CCG.¬Number of planned total A&E attendances YTD¬N/A¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned follow-up attendances are excluded as these are not considered to be emergency care.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+  [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+ FROM ( SELECT ( { [Activity Type].[Activity Description].&[Unknown A and E Type], [Activity Type].[Activity Description].&[A and E Type 1 department], [Activity Type].[Activity Description].&[A and E Type 2 department], [Activity Type].[Activity Description].&[A and E Type 3 department], [Activity Type].[Activity Description].&[A and E Type 4 department], [Activity Type].[Activity Description].&[Other A and E Type] } ) ON COLUMNS
+from [Draft_plans]
+)
+)
+)
+"¬Secondary Uses Service (SUS) via the NCDR¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total A&E attendances YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub3¬Process¬Clinical Commissioning Groups
+27¬Number of total A&E attendances YTD variance to plan by CCG¬Number variance to plan of total A&E attendances YTD by CCG¬Variance to plan of the number of all Accident and Emergency (A&E) attendances in year to date (YTD) by Clinical Commissioning Group (CCG)¬Total A&E attendances are reported to give a full picture of emergency care activity in the CCG.¬Difference between the number of total A&E attendances YTD plan and the number of total A&E attendances YTD actual¬N/A¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned attendances are excluded as these are not considered to be emergency care."¬Secondary Uses Service (SUS) via the NCDR¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of total A&E attendances YTD plan and the number of total A&E attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances; Change Metrics¬CCG and Activity Benchmarking Tool¬Joint Working¬Process¬Clinical Commissioning Groups
+28¬Total A&E attendances YTD variance to plan by CCG (%)¬Percentage variance to plan of total A&E attendances YTD by CCG¬Variance to plan of the percentage of all Accident and Emergency (A&E) attendances in year to date (YTD) by Clinical Commissioning Group (CCG)¬Total A&E attendances are reported to give a full picture of emergency care activity in the CCG.¬Difference between the number of total A&E attendances YTD plan and the number of total A&E attendances YTD actual¬Number of total A&E attendances YTD plan¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned attendances are excluded as these are not considered to be emergency care."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬Secondary Uses Service (SUS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬Not in publication¬Difference between the number of A&E attendances YTD plan and the number of A&E attendances YTD actual divided by the number of A&E attendances YTD plan, expressed as a percentage.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Finance¬CCG and Activity Benchmarking Tool¬LTPsub1¬Outcome¬Clinical Commissioning Groups
+29¬Total A&E attendances YTD variance to plan by CCG (value)¬Value of variance to plan of total A&E attendances YTD by CCG¬Value of the variance in total Accident and Emergency (A&E) attendances in year to date (YTD) minus planned total A&E attendances YTD by Clinical Commissioning Group (CCG)¬Total A&E attendances are reported to give a full picture of emergency care activity in the CCG.¬Variance to plan of total A&E attendances multiplied by the average unit price¬N/A¬"Total A&E attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned attendances are excluded as these are not considered to be emergency care."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of total A&E attendances by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Elective¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
+30¬Total A&E attendances YTD variance to plan category by CCG¬Category of percentage variance to plan of total A&E attendances YTD by CCG¬Category of percentage variance in total Accident and Emergency (A&E) attendances in year to date (YTD) minus planned total A&E attendances YTD by Clinical Commissioning Group (CCG)¬"Total A&E attendances are reported to give a full picture of emergency care activity in the CCG. Planned follow-ups are excluded as these are not considered to be emergency care.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance. "¬Total A&E attendances¬N/A¬Variance to plan of total A&E attendances YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Day Cases; Emergency¬CCG and Activity Benchmarking Tool¬LTPsub2¬Structure¬Clinical Commissioning Groups
+31¬A&E Type 1 and 2 attendances current year activity rate by CCG per 100,000 population¬A&E Type 1 and 2 attendances most recent 12 months rolling rate per 100,000 population by CCG¬Accident and Emergency (A&E) Type 1 and 2 attendances most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"A&E Type 1 and 2 attendances are reported to give a picture of emergency care activity in the CCG, excluding minor injury units and walk-in centres.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬A&E Type 1 and 2 attendances latest 12 months¬Adjusted needs weighted population¬"A&E Type 1 and 2 attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Planned follow-up attendances are excluded as these are not considered to be emergency care.
+
+Type 1 and 2 activity is considered to be complete in Secondary Uses Service (SUS), while there is some variation in reporting of other units.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable AE_12_yr_2 from  SP_CCG_benchmarking stored procedure"¬SUS via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬A&E Type 1 and 2 attendances latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Change Metrics; Finance¬CCG and Activity Benchmarking Tool¬NA¬Process¬Clinical Commissioning Groups
+32¬A&E Type 1 and 2 attendances prior year activity rate by CCG per 100,000 population¬A&E Type 1 and 2 attendance rate per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬Accident and Emergency (A&E) Type 1 and 2 attendances previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"A&E Type 1 and 2 attendances are reported to give a picture of emergency care activity in the CCG, excluding minor injury units and walk-in centres.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬A&E Type 1 and 2 attendances previous 12 months¬Adjusted needs weighted population¬"A&E Type 1 and 2 attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Planned follow-up attendances are excluded as these are not considered to be emergency care.
+
+Type 1 and 2 activity is considered to be complete in Secondary Uses Service (SUS), while there is some variation in reporting of other units.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable AE_12_yr_1 from  SP_CCG_benchmarking stored procedure"¬SUS via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬A&E Type 1 and 2 attendances previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Accident and Emergency; Elective¬CCG and Activity Benchmarking Tool¬Constitution¬Process¬Clinical Commissioning Groups
+33¬A&E Type 1 and 2 change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of A&E Type 1 and 2 attendances most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬Accident and Emergency (A&E) Type 1 and 2 change in rate of attendance¬A&E Type 1 and 2 attendances are reported to give a picture of emergency care activity in the Clinical Commissioning Groups (CCG), excluding minor injury units and walk-in centres.¬Difference between A&E Type 1 and 2 attendances latest 12 months and A&E Type 1 and 2 attendances previous 12 months¬A&E Type 1 and 2 attendances previous 12 months¬"A&E Type 1 and 2 attendances are based on 365 calendar days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Planned follow-up attendances are excluded as these are not considered to be emergency care.
+
+Type 1 and 2 activity is considered to be complete in Secondary Uses Service (SUS), while there is some variation in reporting of other units."¬SUS via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between A&E Type 1 and 2 attendances latest 12 months and A&E Type 1 and 2 attendances previous 12 months divided by A&E Type 1 and 2 attendances previous 12 months, expressed as a percentage.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances¬CCG and Activity Benchmarking Tool¬LTPsub3¬Process¬Clinical Commissioning Groups
+34¬Total referrals current year activity rate by CCG per 100,000 population¬Total referrals into general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬Total referrals to general and acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Total referrals are reported to give a view of all referrals activity in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total referrals latest 12 months¬Adjusted needs weighted population¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_2 + Ref_Oth_yr_2 from  SP_CCG_benchmarking stored procedure."¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Total referrals latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Change Metrics; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub3¬Outcome¬Clinical Commissioning Groups
+35¬Total referrals prior year activity rate by CCG per 100,000 population¬Total referrals into general and acute specialties rate per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬Total referrals to general and acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Total referrals are reported to give a view of all referrals activity in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total referrals previous 12 months¬Adjusted needs weighted population¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_1 + Ref_Oth_yr_1  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Total referrals previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub3¬Process¬Clinical Commissioning Groups
+36¬Total referrals change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of total referrals into the general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬Total referrals to general and acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG)¬Total referrals are reported to give a view of all referrals activity in the CCG.¬Difference between total referrals latest 12 months and total referrals previous 12 months¬Total referrals previous 12 months¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_2 + Ref_Oth_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_1 + Ref_Oth_yr_1  from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_1 + Ref_Oth_yr_1  from  SP_CCG_benchmarking stored procedure
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between total referrals latest 12 months and total referrals previous 12 months divided by total referrals previous 12 months, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Outpatients¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+37¬Total referrals YTD actual by CCG¬Number of total referrals to general and acute specialties YTD by CCG¬Total referrals to general and acute specialties in year to date (YTD) by CCG.¬Total referrals are reported to give a view of all referrals activity in the CCG.¬Number of total referrals to general and acute specialties¬N/A¬"Total referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_GP_YTD + Ref_Oth_YTD from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total referrals YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances¬CCG and Activity Benchmarking Tool¬LTPsub1¬Process¬Clinical Commissioning Groups
+38¬Total referrals YTD plan by CCG¬Number of planned total referrals into the general and acute specialties YTD by CCG¬Planned total referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Total referrals are reported to give a view of all referrals activity in the CCG.¬Number of planned total referrals YTD¬N/A¬"Total referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan Total Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total referrals YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Day Cases; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub4¬Structure¬Clinical Commissioning Groups
+39¬Number of total referrals YTD variance to plan by CCG¬Number variance to plan of total referrals into general and acute specialties YTD by CCG¬Variance to plan of the number of total referrals to general and acute specialties in year to date (YTD) ¬Total referrals are reported to give a view of all referrals activity in the Clinical Commissioning Groups (CCG). ¬Difference between the total number of referrals YTD plan and the total number of referrals YTD actual¬N/A¬"Total referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_GP_YTD + Ref_Oth_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan Total Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the total number of referrals YTD plan and the total number of referrals YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Emergency¬CCG and Activity Benchmarking Tool¬LTPsub4¬Outcome¬Clinical Commissioning Groups
+40¬Total referrals YTD variance to plan by CCG (%)¬Percentage variance to plan of total referrals into general and acute specialties YTD by CCG¬Variance to plan of the percentage of total referrals to general and acute specialties in year to date (YTD)¬Total referrals are reported to give a view of all referrals activity in the Clinical Commissioning Group (CCG). ¬Difference between the total number of referrals YTD plan and the total number of referrals YTD actual¬Total number of referrals YTD plan¬"Total referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_GP_YTD + Ref_Oth_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan Total Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+))
+Divided by
+Select Non Empty
+([Measures].[Plan Total Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between the total number of referrals YTD plan and the total number of referrals YTD actual divided by the total number of referrals YTD plan, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Elective¬CCG and Activity Benchmarking Tool¬Constitution¬Process¬Clinical Commissioning Groups
+41¬Total referrals YTD variance to plan by CCG (value)¬Value of variance to plan of total referrals to general and acute specialties YTD by CCG¬Value of the variance in total referrals into general and acute specialties in year to date (YTD) minus planned total referrals into general and acute specialties YTD by Clinical Commissioning Group (CCG)¬Total referrals are reported to give a view of all referrals activity in the CCG.¬Variance to plan of total referrals to general and acute specialties multiplied by the average unit price¬N/A¬Total referrals to general and acute specialities.¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of total referrals to general and acute specialties by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Acute Providers¬CCG and Activity Benchmarking Tool¬Constitution¬Structure¬Clinical Commissioning Groups
+42¬Total referrals YTD variance to plan category by CCG¬Category of percentage variance to plan of total referrals to general and acute specialties YTD by CCG¬Category of percentage variance in total referrals into general and acute specialties in year to date (YTD) minus planned total referrals into general and acute specialties YTD by Clinical Commissioning Group (CCG)¬"Total referrals are reported to give a view of all referrals activity in the CCG.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance.  "¬Total referrals¬N/A¬Variance to plan of total referrals into general and acute specialties YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Change Metrics¬CCG and Activity Benchmarking Tool¬Constitution¬Structure¬Clinical Commissioning Groups
+43¬GP referrals current year activity rate by CCG per 100,000 population¬GP referral rate into general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬GP referrals to general and acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬GP referrals latest 12 months ¬Adjusted needs weighted population¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_2 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬GP referrals latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Accident and Emergency; Attendances¬CCG and Activity Benchmarking Tool¬LTPsub3¬Structure¬Clinical Commissioning Groups
+44¬GP referrals prior year activity rate by CCG per 100,000 population¬GP referral rate into general and acute specialties per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬GP referrals to general and acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬GP referrals previous 12 months¬Adjusted needs weighted population¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_1  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬GP referrals previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Day Cases; Inpatients¬CCG and Activity Benchmarking Tool¬NA¬Process¬Clinical Commissioning Groups
+45¬GP referrals change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of GP referrals into the general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬GP referrals to general and acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG)¬GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.¬Difference between GP referrals latest 12 months and GP referrals previous 12 months¬GP referrals previous 12 months¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_1  from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_GP_yr_1  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between GP referrals latest 12 months and GP referrals previous 12 months divided by GP referrals previous 12 months, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Finance; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub4¬Structure¬Clinical Commissioning Groups
+46¬GP referrals YTD actual by CCG¬Number of GP referrals to general and acute specialties YTD by CCG¬GP referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.¬Number of GP referrals to general and acute specialties¬N/A¬"GP referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_GP_YTD  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of GP referrals YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Finance¬CCG and Activity Benchmarking Tool¬LTPsub2¬Process¬Clinical Commissioning Groups
+47¬GP referrals YTD plan by CCG¬Number of planned GP referrals into the general and acute specialties YTD by CCG¬Planned GP referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.¬Number of planned GP referrals YTD¬N/A¬"GP referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan GP Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+
+"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of GP referrals YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Day Cases; Inpatients¬CCG and Activity Benchmarking Tool¬NA¬Structure¬Clinical Commissioning Groups
+48¬Number of GP referrals YTD variance to plan by CCG¬Number variance to plan of GP referrals into general and acute specialties YTD by CCG¬Variance to plan of the number of GP referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison. ¬Difference between the number of GP referrals YTD plan and the number of GP referrals YTD actual¬N/A¬"GP referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_GP_YTD  from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan GP Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of GP referrals YTD plan and the number of GP referrals YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Elective; Emergency¬CCG and Activity Benchmarking Tool¬LTPsub1¬Process¬Clinical Commissioning Groups
+49¬GP referrals YTD variance to plan by CCG (%)¬Percentage variance to plan of GP referrals into general and acute specialties YTD by CCG¬Variance to plan of the percentage of GP referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison. ¬Difference between the number of GP referrals YTD plan and the number of GP referrals YTD actual¬Number of GP referrals YTD plan¬"GP referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(NCDR NHSE_Sandbox_Operations - variable Ref_GP_YTD  from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan GP Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+))
+Divided by
+Select Non Empty
+([Measures].[Plan GP Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between the number of GP referrals YTD plan and the number of GP referrals YTD actual divided by the number of GP referrals YTD plan, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Change Metrics¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
+50¬GP referrals YTD variance to plan by CCG (value)¬Value of variance to plan of GP referrals to general and acute specialties YTD by CCG¬Value of the variance in GP referrals into general and acute specialties in year to date (YTD) minus planned GP referrals into general and acute specialties YTD by Clinical Commissioning Group (CCG)¬GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.¬Variance to plan of GP referrals to general and acute specialties multiplied by the average unit price¬N/A¬GP referrals to general and acute specialities.¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of GP referrals to general and acute specialties by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Change Metrics; Finance¬CCG and Activity Benchmarking Tool¬NA¬Structure¬Clinical Commissioning Groups
+51¬GP referrals YTD variance to plan category by CCG¬Category of percentage variance to plan of GP referrals to general and acute specialties YTD by CCG¬Category of percentage variance in GP referrals into general and acute specialties in year to date (YTD) minus planned GP referrals into general and acute specialties YTD by Clinical Commissioning Group (CCG)¬"GP referrals are reported to give a view of GP referrals activity in the CCG; GPs are encouraged to avoid unnecessary referrals to secondary care, monitoring them allows for trend analysis and comparison.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance. "¬GP referrals¬N/A¬Variance to plan of GP referrals into general and acute specialties YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Acute Providers; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub2¬Structure¬Clinical Commissioning Groups
+52¬Other referrals current year activity rate by CCG per 100,000 population¬Other referrals into general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬Other referrals to general and acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity. Together with GP referrals this gives a full view of referrals activity in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Other referrals latest 12 months¬Adjusted needs weighted population¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_Oth_yr_2 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Other referrals latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Day Cases; Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub3¬Structure¬Clinical Commissioning Groups
+53¬Other referrals prior year activity rate by CCG per 100,000 population¬Other referral rate into general and acute specialties per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬Other referrals to general and acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Other referrals previous 12 months¬Adjusted needs weighted population¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_Oth_yr_1  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Other referrals previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Attendances; Elective¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+54¬Other referrals change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of other referrals into the general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬Other referrals to general and acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG)¬Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.¬Difference between other referrals latest 12 months and other referrals previous 12 months¬Other referrals previous 12 months¬"Referrals are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_Oth_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_Oth_yr_1  from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable Ref_Oth_yr_1  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between other referrals latest 12 months and other referrals previous 12 months divided by other referrals previous 12 months, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Emergency¬CCG and Activity Benchmarking Tool¬LTPsub4¬Structure¬Clinical Commissioning Groups
+55¬Other referrals YTD actual by CCG¬Number of other referrals to general and acute specialties YTD by CCG¬Other referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.¬Number of other referrals to general and acute specialties¬N/A¬"Other referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_Oth_YTD  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of other referrals YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Finance; Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub3¬Structure¬Clinical Commissioning Groups
+56¬Other referrals YTD plan by CCG¬Number of planned other referrals into the general and acute specialties YTD by CCG¬Planned other referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.¬Number of planned other referrals YTD¬N/A¬"Other referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan Other Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+
+"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of other referrals YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Inpatients¬CCG and Activity Benchmarking Tool¬NA¬Process¬Clinical Commissioning Groups
+57¬Number of other referrals YTD variance to plan by CCG¬Number variance to plan of other referrals into general and acute specialties YTD by CCG¬Variance to plan of the number of other referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity. ¬Difference between the number of other referrals YTD plan and the number of other referrals YTD actual¬N/A¬"Other referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable Ref_Oth_YTD  from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan Other Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of other referrals YTD plan and the number of other referrals YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Finance¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
+58¬Other referrals YTD variance to plan by CCG (%)¬Percentage variance to plan of other referrals into general and acute specialties YTD by CCG¬Variance to plan of the percentage of other referrals to general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.¬Difference between the number of other referrals YTD plan and the number of other referrals YTD actual¬Number of other referrals YTD plan¬"Other referrals to general and acute specialities.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(NCDR NHSE_Sandbox_Operations - variable Ref_Oth_YTD  from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan Other Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)))
+Divided by
+Select Non Empty
+([Measures].[Plan Other Referrals General And Acute] , [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between the number of other referrals YTD plan and the number of other referrals YTD actual divided by the number of other referrals YTD plan, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Inpatients; Outpatients¬CCG and Activity Benchmarking Tool¬Joint Working¬Process¬Clinical Commissioning Groups
+59¬Other referrals YTD variance to plan by CCG (value)¬Value of variance to plan of other referrals to general and acute specialties YTD by CCG¬Value of the variance in other referrals into general and acute specialties in year to date (YTD) minus planned other referrals into general and acute specialties YTD by Clinical Commissioning Group (CCG)¬Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.¬Variance to plan of other referrals to general and acute specialties multiplied by the average unit price¬N/A¬Other referrals to general and acute specialities.¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of other referrals to general and acute specialties by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub1¬Structure¬Clinical Commissioning Groups
+60¬Other referrals YTD variance to plan category by CCG¬Category of percentage variance to plan of other referrals to general and acute specialties YTD by CCG¬Category of percentage variance in other referrals into general and acute specialties in year to date (YTD) minus planned other referrals into general and acute specialties YTD by Clinical Commissioning Group (CCG)¬"Referrals from other sources are reported to give a view of referrals from other hospital consultants and sources other than GPs to allow monitoring of this activity in the CCG. Together with GP referrals this gives a full view of referrals activity.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance. "¬Other referrals¬N/A¬Variance to plan of other referrals into general and acute specialties YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances; Day Cases¬CCG and Activity Benchmarking Tool¬LTPsub4¬Outcome¬Clinical Commissioning Groups
+61¬Total outpatients current year activity rate by CCG per 100,000 population¬Total outpatient attendances at consultant-led general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬All outpatient attendances to consultant-led specific acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total outpatient attendances latest 12 months¬Adjusted needs weighted population¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_2 + OP_FU_yr_2 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬"Total outpatient attendances latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub1¬Structure¬Clinical Commissioning Groups
+62¬Total outpatients prior year activity rate by CCG per 100,000 population¬Total outpatient attendance rate at consultant-led general and acute specialties per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬All outpatient attendances to consultant-led specific acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total outpatient attendances previous 12 months¬Adjusted needs weighted population¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_1 + OP_FU_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬"Total outpatient attendances previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Change Metrics¬CCG and Activity Benchmarking Tool¬Joint Working¬Outcome¬Clinical Commissioning Groups
+63¬Total outpatients change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of total outpatient attendances at consultant-led general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬All outpatient attendances to consultant-led specific acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG)¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Difference between total outpatient attendances latest 12 months and total outpatient attendances previous 12 months¬Total outpatient attendances previous 12 months¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_2 + OP_FU_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_1 + OP_FU_yr_1 from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_1 + OP_FU_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬"Difference between total outpatient attendances latest 12 months and total outpatient attendances previous 12 months divided by total outpatient attendances previous 12 months, expressed as a percentage
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances¬CCG and Activity Benchmarking Tool¬LTPsub3¬Structure¬Clinical Commissioning Groups
+64¬Total outpatients savings potential difference between activity rate and closest 10 CCGs by CCG¬Total outpatient attendance savings potential¬All outpatient attendances to consultant-led specific acute specialties potential savings by reducing activity levels to those seen in peer Clinical Commissioning Groups (CCGs).¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Difference between the CCG rate for total outpatient attendances and the average for the 'closest 10' CCGs or the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by average unit price¬N/A¬"The savings potential for each measure represents the difference between the activity rate for the selected CCG and the closest (most similar) 10 CCGs (excluding specialised commissioning), multiplied by the CCG population and the average unit price for the selected CCG for the relevant financial year. A range is offered: the lower figure is based on the average for all of the closest 10 CCGs; the upper figure is based on the average for the five of the closest 10 CCGs with the lowest rates.
+
+Distance of closest 10 CCGs (excluding specialised commissioning) is defined as the sum of squared differences between 12 standardised demographic variables. The standardisation method is interdecile standardisation, which is calculated by taking the CCG value, subtracting the medium, and then dividing by the difference between the 90th and 10th percentiles.
+
+Closest 10 CCGs: https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/ (last accessed 25 February 2019)."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬"Lower figure calculated as the difference between the CCG rate for total outpatient attendances and the average for the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £ per 1,000. Upper figure calculated as the difference between the CCG rate for total outpatient attendances and the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £ per 1,000.
+
+The savings for total outpatient attendances is equal to the sum of the savings potential for first and follow-ups."¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Finance¬CCG and Activity Benchmarking Tool¬Constitution¬Process¬Clinical Commissioning Groups
+65¬Number of total outpatients attendances into consultant-led general and acute specialties YTD by CCG¬Number of total outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Outpatient attendances to consultant-led general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Number of actual total outpatient attendances YTD¬N/A¬"Total outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable OP_FA_YTD + OP_FU_YTD  from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total outpatient attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Elective; Finance¬CCG and Activity Benchmarking Tool¬Joint Working¬Process¬Clinical Commissioning Groups
+66¬Number of planned outpatient attendances into consultant-led general and acute specialties YTD by CCG¬Number of planned total outpatient attendance sat consultant-led general and acute specialties YTD by CCG¬Planned all outpatient attendances to consultant-led general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Number of planned total outpatient attendances YTD¬N/A¬"Planned outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+FROM ( SELECT ( {[Activity Type].[Activity Grouping].&[All 1st OP Attendances] , [Activity Type].[Activity Grouping].&[Follow Ups] , [Activity Type].[Activity Grouping].&[Unknown Type OP Attendances] } ) ON COLUMNS
+from [Draft_plans]
+)
+)
+)
+
+
+
+"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total outpatient attendances YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Acute Providers; Change Metrics¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+67¬Number of total outpatients YTD variance to plan by CCG¬Number variance to plan of total outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Variance to plan of the number of all outpatient attendances to consultant-led general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Difference between the number of total outpatient attendances YTD plan and the number of total outpatient attendances YTD actual¬N/A¬"Total outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable OP_FA_YTD + OP_FU_YTD  from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+FROM ( SELECT ( {[Activity Type].[Activity Grouping].&[All 1st OP Attendances] , [Activity Type].[Activity Grouping].&[Follow Ups] , [Activity Type].[Activity Grouping].&[Unknown Type OP Attendances] } ) ON COLUMNS
+from [Draft_plans]
+)))
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of total outpatient attendances YTD plan and the number of total outpatient attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency¬CCG and Activity Benchmarking Tool¬Joint Working¬Structure¬Clinical Commissioning Groups
+68¬Total outpatients YTD variance to plan by CCG (%)¬Percentage variance to plan of total outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Variance to plan of the percentage of all outpatient attendances to consultant-led general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Difference between the number of total outpatient attendances YTD plan and the number of total outpatient attendances YTD actual¬Number of total outpatient attendances YTD plan¬"Total outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(NCDR NHSE_Sandbox_Operations - variable OP_FA_YTD + OP_FU_YTD  from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+FROM ( SELECT ( {[Activity Type].[Activity Grouping].&[All 1st OP Attendances] , [Activity Type].[Activity Grouping].&[Follow Ups] , [Activity Type].[Activity Grouping].&[Unknown Type OP Attendances] } ) ON COLUMNS
+from [Draft_plans]
+))))
+Divided by
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+FROM ( SELECT ( {[Activity Type].[Activity Grouping].&[All 1st OP Attendances] , [Activity Type].[Activity Grouping].&[Follow Ups] , [Activity Type].[Activity Grouping].&[Unknown Type OP Attendances] } ) ON COLUMNS
+from [Draft_plans])))
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between the number of total outpatient attendances YTD plan and the number of total outpatient attendances YTD actual divided by the number of total outpatient attendances YTD plan, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub1¬Outcome¬Clinical Commissioning Groups
+69¬Total outpatients YTD variance to plan by CCG (value)¬Value of variance to plan of total outpatient attendances to consultant-led general and acute specialties YTD by CCG¬Value of the variance in total outpatient attendances at consultant-led general and acute specialties in year to date (YTD) minus planned total outpatient attendances at consultant-led general and acute specialties YTD by Clinical Commissioning Group (CCG)¬All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.¬Variance to plan of total outpatient attendances to consultant-led general and acute specialties multiplied by the average unit price¬N/A¬Total outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of total outpatient attendances to consultant-led general and acute specialties by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Emergency¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+70¬Total outpatients YTD variance to plan category by CCG¬Category of percentage variance to plan of all outpatient attendances to consultant-led general and acute specialties YTD by CCG¬Category of percentage variance in total outpatient attendances at consultant-led general and acute specialties in year to date (YTD) minus planned total outpatient attendances at consultant-led general and acute specialties YTD by Clinical Commissioning Group (CCG)¬"All outpatient activity is reported to give a view of the total outpatient activity level in the CCG.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance. "¬Total outpatient attendances¬N/A¬Variance to plan of total outpatient attendances at consultant-led general and acute specialties YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Day Cases¬CCG and Activity Benchmarking Tool¬LTPsub3¬Outcome¬Clinical Commissioning Groups
+71¬First outpatients current year activity rate by CCG per 100,000 population¬First outpatient attendance rate at consultant-led general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬Outpatient first attendances to consultant-led specific acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬First outpatient attendances latest 12 months¬Adjusted needs weighted population¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_2 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬"First outpatient attendances latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Acute Providers; Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub2¬Process¬Clinical Commissioning Groups
+72¬First outpatients prior year activity rate by CCG per 100,000 population¬First outpatient attendance rate at consultant-led general and acute specialties per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬Outpatient first attendances to consultant-led specific acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬First outpatient attendances previous 12 months¬Adjusted needs weighted population¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬"First outpatient attendances previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Change Metrics; Elective¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+73¬First outpatients change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of first outpatient attendances at consultant-led general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬Outpatient first attendances to consultant-led specific acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between first outpatient attendances latest 12 months and first outpatient attendances previous 12 months¬First outpatient attendances previous 12 months¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_1 from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FA_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬"Difference between first outpatient attendances latest 12 months and first outpatient attendances previous 12 months divided by first outpatient attendances previous 12 months, expressed as a percentage
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency¬CCG and Activity Benchmarking Tool¬Joint Working¬Process¬Clinical Commissioning Groups
+74¬First outpatients savings potential difference between activity rate and closest 10 CCGs by CCG¬First outpatient attendance savings potential¬Outpatient first attendances to consultant-led specific acute specialties potential savings by reducing activity levels to those seen in peer Clinical Commissioning Group (CCG)s¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between the CCG rate for first outpatient attendances and the average for the 'closest 10' CCGs or the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by average unit price¬N/A¬"The savings potential for each measure represents the difference between the activity rate for the selected CCG and the closest (most similar) 10 CCGs (excluding specialised commissioning), multiplied by the CCG population and the average unit price for the selected CCG for the relevant financial year. A range is offered: the lower figure is based on the average for all of the closest 10 CCGs; the upper figure is based on the average for the five of the closest 10 CCGs with the lowest rates.
+
+Distance of closest 10 CCGs (excluding specialised commissioning) is defined as the sum of squared differences between 12 standardised demographic variables. The standardisation method is interdecile standardisation, which is calculated by taking the CCG value, subtracting the medium, and then dividing by the difference between the 90th and 10th percentiles.
+
+Closest 10 CCGs: https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/ (last accessed 25 February 2019)."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Lower figure calculated as the difference between the CCG rate for first outpatient attendances and the average for the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £. Upper figure calculated as the difference between the CCG rate for first outpatient attendances and the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances¬CCG and Activity Benchmarking Tool¬LTPsub4¬Structure¬Clinical Commissioning Groups
+75¬Number of first outpatient attendances to consultant-led general and acute specialties YTD by CCG¬Number of total first outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Outpatient first attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Number of actual first outpatient attendances YTD¬N/A¬"First outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable OP_FA_YTD from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of first outpatient attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Acute Providers; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
+76¬Number of planned first outpatient attendances to consultant led general and acute specialties by CCG¬Number of planned first outpatient attendances at consultant-led general and acute specialties YTD by CCG¬ Planned outpatient first attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Number of planned first outpatient attendances YTD¬N/A¬"Planned first outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[All 1st OP Attendances] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of first outpatient attendances YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Acute Providers; Change Metrics¬CCG and Activity Benchmarking Tool¬LTPsub1¬Outcome¬Clinical Commissioning Groups
+77¬Number of first outpatients YTD variance to plan by CCG¬Number variance to plan of first outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Variance to plan of the number of outpatient first attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between the number of first outpatient attendances YTD plan and the number of first outpatient attendances YTD actual¬N/A¬"First outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable OP_FA_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[All 1st OP Attendances] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+))
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of first outpatient attendances YTD plan and the number of first outpatient attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Day Cases¬CCG and Activity Benchmarking Tool¬Joint Working¬Process¬Clinical Commissioning Groups
+78¬First outpatients YTD variance to plan by CCG (%)¬Percentage variance to plan of first outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Variance to plan of the percentage of outpatient first attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between the number of first outpatient attendances YTD plan and the number of first outpatient attendances YTD actual¬Number of first outpatient attendances YTD plan¬"First outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(NCDR NHSE_Sandbox_Operations - variable OP_FA_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[All 1st OP Attendances] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)))
+Divided by
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[All 1st OP Attendances] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+))
+
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between the number of first outpatient attendances YTD plan and the number of first outpatient attendances YTD actual divided by the number of first outpatient attendances YTD plan, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Emergency; Finance¬CCG and Activity Benchmarking Tool¬LTPsub2¬Structure¬Clinical Commissioning Groups
+79¬First outpatients YTD variance to plan by CCG (value)¬Value of variance to plan of outpatient first attendances to consultant-led general and acute specialties YTD by CCG¬Value of the variance in first outpatient attendances at consultant-led general and acute specialties in year to date (YTD) minus planned first outpatient attendances at consultant-led general and acute specialties YTD by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity and to monitor first to follow-up trends in the CCG.¬Variance to plan of outpatient first attendances to consultant-led general and acute specialties multiplied by the average unit price¬N/A¬First outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of outpatient first attendances to consultant-led general and acute specialties by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Acute Providers; Elective¬CCG and Activity Benchmarking Tool¬Joint Working¬Outcome¬Clinical Commissioning Groups
+80¬First outpatients YTD variance to plan category by CCG¬Category of percentage variance to plan of outpatient first attendances to consultant-led general and acute specialties YTD by CCG¬Category of percentage variance in first outpatient attendances at consultant-led general and acute specialties in year to date (YTD) minus planned first outpatient attendances at consultant-led general and acute specialties YTD by Clinical Commissioning Group (CCG)¬"Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance. "¬First outpatient attendances¬N/A¬Variance to plan of first outpatient attendances at consultant-led general and acute specialties YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Elective¬CCG and Activity Benchmarking Tool¬LTPsub3¬Process¬Clinical Commissioning Groups
+81¬Follow-up outpatients current year activity rate by CCG per 100,000 population¬Follow-up outpatient attendance rate at consultant-led general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬Outpatient follow-up attendances to consultant-led specific acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Follow up outpatient attendances latest 12 months¬Adjusted needs weighted population¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FU_yr_2 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬"Follow up outpatient attendances latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Acute Providers; Finance¬CCG and Activity Benchmarking Tool¬LTPsub1¬Outcome¬Clinical Commissioning Groups
+82¬Follow-up outpatients attendance rate to consultant-led general and acute specialities by CCG per 100,000 population¬Follow-up outpatient attendance rate at consultant-led general and acute specialties per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬Outpatient follow-up attendances to consultant-led specific acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG)¬"Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Follow up outpatient attendances previous 12 months¬Adjusted needs weighted population¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FU_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬"Follow up outpatient attendances previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Day Cases¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
+83¬Follow-up outpatients change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of follow-up outpatient attendances at consultant-led general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬Outpatient follow-up attendances to consultant-led specific acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between follow up outpatient attendances latest 12 months and follow up outpatient attendances previous 12 months¬Follow up outpatient attendances previous 12 months¬"Outpatient figures are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FU_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FU_yr_1 from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable OP_FU_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬"Difference between follow up outpatient attendances latest 12 months and follow up outpatient attendances previous 12 months divided by follow up outpatient attendances previous 12 months, expressed as a percentage
+"¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Elective; Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub3¬Process¬Clinical Commissioning Groups
+84¬Follow-up outpatients savings potential difference between activity rate and closest 10 CCGs by CCG¬Follow-up outpatient attendance savings potential¬Outpatient follow-up attendances to consultant-led specific acute specialties potential savings by reducing activity levels to those seen in peer Clinical Commissioning Group (CCG)s¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between the CCG rate for follow up outpatient attendances and the average for the 'closest 10' CCGs or the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by average unit price¬N/A¬"The savings potential for each measure represents the difference between the activity rate for the selected CCG and the closest (most similar) 10 CCGs (excluding specialised commissioning), multiplied by the CCG population and the average unit price for the selected CCG for the relevant financial year. A range is offered: the lower figure is based on the average for all of the closest 10 CCGs; the upper figure is based on the average for the five of the closest 10 CCGs with the lowest rates.
+
+Distance of closest 10 CCGs (excluding specialised commissioning) is defined as the sum of squared differences between 12 standardised demographic variables. The standardisation method is interdecile standardisation, which is calculated by taking the CCG value, subtracting the medium, and then dividing by the difference between the 90th and 10th percentiles.
+
+Closest 10 CCGs: https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/ (last accessed 25 February 2019)."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Lower figure calculated as the difference between the CCG rate for follow up outpatient attendances and the average for the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £. Upper figure calculated as the difference between the CCG rate for follow up outpatient attendances and the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances; Finance¬CCG and Activity Benchmarking Tool¬Constitution¬Process¬Clinical Commissioning Groups
+85¬Number of follow-up outpatient attendances to consultant led general and acute specialties by CCG¬Number of total follow-up outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Outpatient follow-up attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Number of actual follow-up outpatient attendances YTD¬N/A¬"Follow-up outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable OP_FU_YTD from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of follow-up outpatient attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Finance¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+86¬Number of planned follow-up attendances to consultant led general and acute specialties by CCG¬Number of planned follow-up outpatient attendance sat consultant-led general and acute specialties YTD by CCG¬Planned outpatient follow-up attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Number of planned follow-up outpatient attendances YTD¬N/A¬"Follow-up outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[Follow Ups] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)
+"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of follow-up outpatient attendances YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Acute Providers¬CCG and Activity Benchmarking Tool¬LTPsub3¬Process¬Clinical Commissioning Groups
+87¬Number of follow-up outpatients YTD variance to plan by CCG¬Number variance to plan of follow-up outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Variance to plan of the number of outpatient follow-up attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between the number of follow-up outpatient attendances YTD plan and the number of follow-up outpatient attendances YTD actual¬N/A¬"Follow-up outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable OP_FU_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[Follow Ups] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+))
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of follow-up outpatient attendances YTD plan and the number of follow-up outpatient attendances YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Accident and Emergency; Elective¬CCG and Activity Benchmarking Tool¬LTPsub2¬Process¬Clinical Commissioning Groups
+88¬Follow-up outpatients YTD variance to plan by CCG (%)¬Percentage variance to plan of follow-up outpatient attendances at consultant-led general and acute specialties YTD by CCG¬Variance to plan of the percentage of outpatient follow-up attendances to consultant-led specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.¬Difference between the number of follow up outpatient attendances YTD plan and the number of follow up outpatient attendances YTD actual¬Number of follow up outpatient attendances YTD plan¬"Follow-up outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(NCDR NHSE_Sandbox_Operations - variable OP_FU_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[Follow Ups] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)))
+Divided by
+Select Non Empty
+([Measures].[Plan CCG Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{(
+ [Activity Type].[Activity Type Groupings].[Activity Grouping].&[Follow Ups] *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+))
+
+"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between the number of follow up outpatient attendances YTD plan and the number of follow up outpatient attendances YTD actual divided by the number of follow up outpatient attendances YTD plan, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Day Cases¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
+89¬Follow-up outpatients YTD variance to plan by CCG (value)¬Value of variance to plan of outpatient follow-up attendances to consultant-led general and acute specialties YTD by CCG¬Value of the variance in follow-up outpatient attendances at consultant-led general and acute specialties in year to date (YTD) minus planned follow-up outpatient attendances at consultant-led general and acute specialties YTD by Clinical Commissioning Group (CCG)¬Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity and to monitor first to follow-up trends in the CCG.¬Variance to plan of outpatient follow-up attendances to consultant-led general and acute specialties multiplied by the average unit price¬N/A¬Follow-up outpatient attendances are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Value of variance is calculated by multiplying YTD variance to plan of outpatient follow-up attendances to consultant-led general and acute specialties by the average unit price (£) for the selected CCG¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub2¬Process¬Clinical Commissioning Groups
+90¬Follow-up outpatients YTD variance to plan category by CCG¬Category of percentage variance to plan of outpatient follow-up attendances to consultant-led general and acute specialties YTD by CCG¬Category of percentage variance in follow-up outpatient attendances at consultant-led general and acute specialties in year to date (YTD) minus planned follow-up outpatient attendances at consultant-led general and acute specialties YTD by Clinical Commissioning Group (CCG)¬"Outpatient activity is split between first and follow-up attendances to allow further analysis of total outpatient activity, monitoring first to follow-up trends etc in the CCG.
+
+The 1% CCG variance to plan threshold represents a value that has operational relevance and credibility, identifies a manageable proportion of CCGs and offers simplicity.  It is not based on statistical significance. "¬Follow-up outpatient attendances¬N/A¬Variance to plan of follow-up outpatient attendances at consultant-led general and acute specialties YTD by CCG: Green if <=0%; Amber if >0% and <1%; Red if >=1%¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬CCG plan variance numbers categorised by less than or equal to 0%, between 0 and 1%, and greater than or equal to 1%.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Elective; Emergency¬CCG and Activity Benchmarking Tool¬LTPsub3¬Outcome¬Clinical Commissioning Groups
+91¬Elective admitted spells current year activity rate by CCG per 100,000 population¬Total elective spells rate to general and acute specialties most recent 12 months rolling rate per 100,000 population by CCG¬"All elective admitted patient care to specific acute specialties most recent 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG).
+
+Activity is reported using discharge date, i.e. when the activity ended."¬"All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total elective spells latest 12 months¬Adjusted needs weighted population¬"Elective spells are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable DC_yr_2 + ORD_yr_2 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Total elective spells latest 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Accident and Emergency; Day Cases¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+92¬Elective admitted spells rate into general and acute specialties by CCG per 100,000 population¬Total elective spells rate to general and acute specialties per 100,000 population, 12 months prior to current 12 months rolling period, by CCG¬"All elective admitted patient care attendances to specific acute specialties previous 12 months rolling rate per 100,000 needs weighted population by Clinical Commissioning Group (CCG).
+
+Activity is reported using discharge date, i.e. when the activity ended."¬"All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.
+
+The rate per weighted population is adjusted for need, as otherwise high-need CCGs would show high utilisation as a result of their population base rather than policy and operational factors.
+
+Standardisation by age and sex is not a practical option because numbers required to adjust denominators to take account of data quality are not available by age and sex.  Standardisation by age and sex is also an unrealistic approach due to challenges of extracting and processing required information on a timely, monthly basis. "¬Total elective spells previous 12 months¬Adjusted needs weighted population¬"Elective spells are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Populations are General and Acute weighted populations including 10% unmet need (Standardised Mortality Ratio <75) adjustment, but excluding the market forces factor adjustment.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Activity count = NCDR NHSE_Sandbox_Operations - variable DC_yr_1 + ORD_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬ONS projected resident populations¬"https://www.england.nhs.uk/2016/04/allocations-tech-guide-16-17/
+
+Spreadsheet files, J - Overall weighted populations CCGs [latest year], CCG weighted populations
+
+Last accessed 4 April 2019"¬CCG¬Annual¬Year in advance¬Net¬Not in publication¬Total elective spells previous 12 months divided by the total needs-weighted population of segmented area, multiplied by 100,000¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that population is related to time period reported; the year of population selected is the one in which the majority of the activity occurs.¬¬Approved for publication¬Outpatients¬CCG and Activity Benchmarking Tool¬Constitution¬Process¬Clinical Commissioning Groups
+93¬Total elective change in rate compared to previous 12 months by CCG (%)¬Percentage change in the rate of total elective spells to general and acute specialties most recent 12 months rolling period versus 12 months prior to current rolling period by CCG¬"All elective admitted patient care attendances to specific acute specialties change in rate of attendance most recent 12 months rolling period vs 12 months prior to current rolling period by Clinical Commissioning Group (CCG).
+
+Activity is reported using discharge date, i.e. when the activity ended."¬All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.¬Difference between total elective spells latest 12 months and total elective spells previous 12 months ¬Total elective spells previous 12 months¬"Elective spells are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+(Activity count = NCDR NHSE_Sandbox_Operations - variable DC_yr_2 + ORD_yr_2 from  SP_CCG_benchmarking stored procedure
+Minus
+Activity count = NCDR NHSE_Sandbox_Operations - variable DC_yr_1 + ORD_yr_1 from  SP_CCG_benchmarking stored procedure)
+Divided by
+Activity count = NCDR NHSE_Sandbox_Operations - variable DC_yr_1 + ORD_yr_1 from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Strategic Data Collection Service (SDCS) via National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬Not in publication¬Difference between total elective spells latest 12 months and total elective spells previous 12 months divided by total elective spells previous 12 months, expressed as a percentage¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Change Metrics; Inpatients¬CCG and Activity Benchmarking Tool¬NA¬Outcome¬Clinical Commissioning Groups
+94¬Total elective savings potential difference between activity rate and closest 10 CCGs by CCG¬Total elective admissions savings potential¬All elective admitted patient care attendances to general and acute specialties potential savings by reducing activity levels to those seen in peer Clinical Commissioning Group (CCG)s. Activity is reported using discharge date, i.e. when the activity ended.¬All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.¬Difference between the CCG rate for total elective admissions and the average for the 'closest 10' CCGs or the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by average unit price¬N/A¬"The savings potential for each measure represents the difference between the activity rate for the selected CCG and the closest (most similar) 10 CCGs (excluding specialised commissioning), multiplied by the CCG population and the average unit price for the selected CCG for the relevant financial year. A range is offered: the lower figure is based on the average for all of the closest 10 CCGs; the upper figure is based on the average for the five of the closest 10 CCGs with the lowest rates.
+
+Distance of closest 10 CCGs (excluding specialised commissioning) is defined as the sum of squared differences between 12 standardised demographic variables. The standardisation method is interdecile standardisation, which is calculated by taking the CCG value, subtracting the medium, and then dividing by the difference between the 90th and 10th percentiles.
+
+Closest 10 CCGs: https://www.england.nhs.uk/publication/similar-10-ccg-explorer-tool/ (last accessed 25 February 2019)."¬Secondary Uses Service (SUS) via the National Commissioning Data Repository (NCDR)¬N/A¬CCG¬Monthly¬N/A¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Lower figure calculated as the difference between the CCG rate for total elective admissions and the average for the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £ per 1,000. Upper figure calculated as the difference between the CCG rate for total elective admissions and the average of the five lowest rates amongst the 'closest 10' CCGs, multiplied by the average unit price for the selected CCG, expressed as £ per 1,000.¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Day Cases¬CCG and Activity Benchmarking Tool¬LTPsub4¬Structure¬Clinical Commissioning Groups
+95¬Total elective spells YTD actual by CCG¬Number of total elective spells to general and acute specialties YTD by CCG¬All elective admitted patient care attendances to specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG). Activity is reported using discharge date, i.e. when the activity ended.¬All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.¬Number of total elective spells to general and acute specialties¬N/A¬"Total elective spells are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable DC_YTD + ORD_YTD from  SP_CCG_benchmarking stored procedure"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total elective spells YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Emergency; Inpatients¬CCG and Activity Benchmarking Tool¬LTPsub2¬Process¬Clinical Commissioning Groups
+96¬Number of planned elective admitted spells into general and acute specialties by CCG¬Number of planned total elective spells to general and acute specialties YTD by CCG¬Planned all elective admitted patient care attendances to specific acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG). Activity is reported using discharge date, i.e. when the activity ended¬All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.¬Number of planned total elective spells YTD¬N/A¬"Elective spells are based on 253 working days, irrespective of leap or non-leap year periods.  This ensures that the comparison between the periods is fair and on the same basis, regardless of the number of working or calendar days in two 12 month periods.
+
+Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+Select Non Empty
+( [Measures].[Plan APC Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+ [Plan APC Activity Grouping].[Plan APC Activity Grouping].[Plan APC Activity Grouping].&[Plan Total Elective Admissions]  *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+)
+)"¬Strategic Data Collection Service (SDCS) via Cube¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Number of total elective spells YTD plan¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬Note that plan load date is the most recently available plan data¬¬Approved for publication¬Change Metrics; Outpatients¬CCG and Activity Benchmarking Tool¬LTPsub4¬Structure¬Clinical Commissioning Groups
+97¬Number of total elective YTD variance to plan by CCG¬Number variance to plan of total elective admissions to general and acute specialties YTD by CCG¬Variance to plan of the number of all elective admitted patient care attendances to consultant-led general and acute specialties in year to date (YTD) by Clinical Commissioning Group (CCG). Activity is reported using discharge date, i.e. when the activity ended.¬All elective admitted patient activity is reported to give a view of the total elective admitted patient activity level in the CCG.¬Difference between the number of total elective spells YTD plan and the number of total elective spells YTD actual¬N/A¬"Total elective spells are consultant-led only. Admitted data are adjusted at CCG level to account for apparent data quality errors.
+
+SQL code is available for users of the National Commissioning Data Repository (NCDR):
+NCDR NHSE_Sandbox_Operations - variable DC_YTD + ORD_YTD from  SP_CCG_benchmarking stored procedure
+Minus
+Select Non Empty
+( [Measures].[Plan APC Activity Count], [Date].[Fiscal Year Month].[Fiscal Year Month]) on Columns,
+Non Empty
+{ (
+ [Plan APC Activity Grouping].[Plan APC Activity Grouping].[Plan APC Activity Grouping].&[Plan Total Elective Admissions]  *
+ [Commissioning Type].[Commissioning Type Description].[Commissioning Type Description].ALLMEMBERS *
+ [Commissioners].[Org code].[Org code].ALLMEMBERS
+) } on Rows
+From (
+Select ( [Date].[Fiscal Year Month].&[201201] : [Date].[Fiscal Year Month].&[201812] ) ON COLUMNS
+FROM ( SELECT ( [Load Date].[Date Name].&[2017/09/12] ) ON COLUMNS
+from [Draft_plans]
+))"¬Strategic Data Collection Service (SDCS) via the NCDR¬N/A¬CCG¬Monthly¬Month in lieu¬Net¬N/A¬N/A¬N/A¬N/A¬N/A¬N/A¬Not in publication¬Difference between the number of total elective spells YTD plan and the number of total elective spells YTD actual¬0¬CCG and Activity Benchmarking Tool¬NHSE/I¬OIC activity¬¬¬¬Approved for publication¬Attendances; Elective¬CCG and Activity Benchmarking Tool¬LTPsub4¬Process¬Clinical Commissioning Groups
