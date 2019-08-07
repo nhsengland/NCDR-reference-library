@@ -52,6 +52,12 @@ class DataElementList(ListView):
     NUMERIC = "0-9"
     paginate_by = 50
 
+    def get_symbol(self):
+        return self.request.GET.get("letter", self.get_symbol_options()[0])
+
+    def get_symbol_options(self):
+        return [i for i in string.ascii_uppercase] + [self.NUMERIC]
+
     def get_queryset_for_symbol(self, qs, symbol):
         if symbol != self.NUMERIC:
             return qs.filter(name__istartswith=symbol[0])
@@ -60,7 +66,7 @@ class DataElementList(ListView):
         return qs.filter(functools.reduce(operator.or_, startswith_args))
 
     def get_context_data(self, *args, **kwargs):
-        symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
+        symbols = self.get_symbol_options()
         qs = self.model.objects.all()
         other_pages = [
             (
@@ -73,6 +79,7 @@ class DataElementList(ListView):
 
         context = super().get_context_data(*args, **kwargs)
         context["other_pages"] = other_pages
+        context["symbol"] = self.get_symbol()
         return context
 
     def get_queryset(self):
@@ -85,10 +92,5 @@ class DataElementList(ListView):
             .filter(column__in=columns)
             .prefetch_related(Prefetch("column_set", queryset=columns))
         ).distinct()
-
-        symbol = self.request.GET.get("letter")
-
-        if not symbol:
-            return qs
-
+        symbol = self.get_symbol()
         return self.get_queryset_for_symbol(qs, symbol)

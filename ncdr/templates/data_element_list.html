@@ -10,7 +10,7 @@
         <div class="row">
           <div class="col-md-12">
             {% for letter, other_page, exists in other_pages %}
-              <a class="letter-link {% if request.GET.letter == letter %}active {% elif not exists %} unpopulated{% endif %}" href="{{ other_page }}">
+              <a class="letter-link {% if symbol == letter %}active {% elif not exists %} unpopulated{% endif %}" href="{{ other_page }}">
                 {{ letter }}
               </a>
             {% endfor %}
@@ -33,7 +33,7 @@
       </div>
 
       {% if not object_list %}
-        <h1 class="faded text-center">No Data Elements start with {{ request.GET.letter }}</h1>
+        <h1 class="faded text-center">No Data Elements start with {{ symbol }}</h1>
       {% endif %}
       <div class="row">
         <div class="col-md-10">
@@ -48,7 +48,7 @@
       {% if is_paginated %}
         <ul class="pagination">
           {% if page_obj.has_previous %}
-            <li><a href="?page={{ page_obj.previous_page_number }}&letter={{ request.GET.letter }}">&laquo;</a></li>
+            <li><a href="?page={{ page_obj.previous_page_number }}&letter={{ symbol }}">&laquo;</a></li>
           {% else %}
             <li class="disabled"><span>&laquo;</span></li>
           {% endif %}
@@ -56,11 +56,11 @@
             {% if page_obj.number == i %}
               <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
             {% else %}
-              <li><a href="?page={{ i }}&letter={{ request.GET.letter }}">{{ i }}</a></li>
+              <li><a href="?page={{ i }}&letter={{ symbol }}">{{ i }}</a></li>
             {% endif %}
           {% endfor %}
           {% if page_obj.has_next %}
-          <li><a href="?page={{ page_obj.next_page_number }}&letter={{ request.GET.letter }}">&raquo;</a></li>
+          <li><a href="?page={{ page_obj.next_page_number }}&letter={{ symbol }}">&raquo;</a></li>
           {% else %}
             <li class="disabled"><span>&raquo;</span></li>
           {% endif %}
