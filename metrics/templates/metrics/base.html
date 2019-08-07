@@ -5,7 +5,7 @@
   Metrics
 {% endblock header_title %}
 {% block header_search %}
-<form method="get" action="{% url 'search_redirect' %}">
+<form method="get" action="{% url 'metrics-search' %}">
   <input type="text" value="{{ request.GET.q }}" name="q" autocomplete="off">
   <button type="submit" class="btn">
     Search Metrics

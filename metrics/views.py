@@ -71,3 +71,18 @@ class List(ListView):
             return qs
 
         return self.get_queryset_for_symbol(qs, symbol)
+
+
+class Search(ListView):
+    model = Metric
+    template_name = "metrics/search.html"
+    paginate_by = 30
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get("q", "")
+        if not q:
+            return Metric.objects.none()
+        return qs.filter(
+            Q(indicator__icontains=q) | Q(definition__icontains=q)
+        ).distinct()
