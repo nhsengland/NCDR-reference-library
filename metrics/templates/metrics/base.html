@@ -16,14 +16,8 @@
 
 {% block navigation %}
   {% url 'metrics-list' as metrics_list %}
-  {% url 'metrics-home' as metrics_home %}
   {% url 'metrics-about' as metrics_about %}
   <ul>
-    <li>
-      <a {% if request|url_name == 'metrics-home' %}class="active" {% endif %} href="{{ metrics_home }}">
-        Home
-      </a>
-    </li>
     <li>
       <a {% if request|url_name == 'metrics-list' %}class="active" {% endif %} href="{{ metrics_list }}">
         Metrics

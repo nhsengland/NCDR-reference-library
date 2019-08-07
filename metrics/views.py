@@ -9,10 +9,6 @@ from django.views.generic import DetailView, ListView, TemplateView
 from .models import Metric
 
 
-class Home(TemplateView):
-    template_name = "metrics/home.html"
-
-
 class About(TemplateView):
     template_name = "metrics/about.html"
 
