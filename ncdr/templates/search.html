@@ -7,7 +7,6 @@
     <ul>
       <li class="list-title"><a>Search</a></li>
 
-      {% with result_model=object_list|first %}
       {% for result in results %}
       <li>
         <a
@@ -18,7 +17,6 @@
         </a>
       </li>
       {% endfor %}
-      {% endwith %}
     </ul>
   </aside>
 
