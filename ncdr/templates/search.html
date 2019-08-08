@@ -11,7 +11,7 @@
       <li>
         <a
           class="table-link{% if result.name == model_name %} active{% endif %}"
-          href="{% url 'search' model_name=result.name %}?q={{ request.GET.q }}">
+          href="{% url 'search' model_name=result.name %}?{{ query }}">
           {{ result.display_name }}
           <span class="pull-right">{{ result.count }}</span>
         </a>
@@ -42,7 +42,7 @@
     {% if is_paginated %}
       <ul class="pagination">
         {% if page_obj.has_previous %}
-          <li><a href="?page={{ page_obj.previous_page_number }}&q={{ request.GET.q }}">&laquo;</a></li>
+          <li><a href="?page={{ page_obj.previous_page_number }}&{{ query }}">&laquo;</a></li>
         {% else %}
           <li class="disabled"><span>&laquo;</span></li>
         {% endif %}
@@ -51,12 +51,12 @@
             {% if page_obj.number == i %}
               <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
             {% else %}
-              <li><a href="?page={{ i }}&q={{ request.GET.q }}">{{ i }}</a></li>
+              <li><a href="?page={{ i }}&{{ query }}">{{ i }}</a></li>
             {% endif %}
           {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-          <li><a href="?page={{ page_obj.next_page_number }}&q={{ request.GET.q }}">&raquo;</a></li>
+          <li><a href="?page={{ page_obj.next_page_number }}&{{ query }}">&raquo;</a></li>
         {% else %}
           <li class="disabled"><span>&raquo;</span></li>
         {% endif %}

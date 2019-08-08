@@ -4,6 +4,7 @@ import operator
 from django.db.models import Q
 from django.http import Http404
 from django.urls import reverse
+from django.utils.http import urlencode
 from django.views.generic import ListView, RedirectView
 
 from ..models import Column, Database, DataElement, Grouping, Table
@@ -86,7 +87,7 @@ class Search(ListView):
         context["model_name"] = model_name
         context["model_display_name"] = info["model"]._meta.verbose_name
         context["model_template"] = f"search/{model_name}.html"
-
+        context["query"] = urlencode({"q": q})
         return self.render_to_response(context)
 
 
