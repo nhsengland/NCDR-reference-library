@@ -8,13 +8,13 @@
       <div class="row">
         <div class="col-md-12">
           <a class="ncdr-breadcrumbs" href="{% url 'metrics-list' %}">Metrics</a>
-          {{ metric.indicator }}
+          {{ metric.display_name }}
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
-          <h1>{{ metric.indicator }}</h1>
+          <h1>{{ metric.display_name }}</h1>
         </div>
       </div>
 
@@ -117,14 +117,16 @@
           <h4>Team Lead</h4>
           <p>{{ metric.team_lead.name }}</p>
 
+          {% if metric.metric_lead.name %}
           <h4>Metric Lead</h4>
           <p>{{ metric.metric_lead.name }}</p>
+          {% endif %}
 
           <h4>Comments</h4>
           <p>{{ metric.comments }}</p>
 
-          <h4>Theme</h4>
-          <p>{{ metric.theme.name }}</p>
+          <h4>Topics</h4>
+          <p>{{ metric.topics.all|join:", " }}</p>
         </div>
       </div>
 

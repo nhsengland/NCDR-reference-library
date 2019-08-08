@@ -4,27 +4,34 @@ from django.urls import reverse
 from ncdr.models import BaseModel
 
 
-class Lead(models.Model):
-    name = models.TextField()
+class AssociatedModel(models.Model):
+    name = models.TextField(unique=True)
+
+    class Meta:
+        abstract = True
+        ordering = ["name"]
 
     def __str__(self):
         return self.name
 
 
 class Metric(BaseModel):
-    SEARCH_FIELDS = ["indicator"]
-
     denominator = models.ForeignKey(
         "Operand", on_delete=models.CASCADE, related_name="denominator_metrics"
     )
-    metric_lead = models.ForeignKey("Lead", on_delete=models.CASCADE)
     numerator = models.ForeignKey(
         "Operand", on_delete=models.CASCADE, related_name="numerator_metrics"
     )
+    topics = models.ManyToManyField("Topic")
+
     organisation_owner = models.ForeignKey("Organisation", on_delete=models.CASCADE)
     report = models.ForeignKey("Report", on_delete=models.CASCADE)
-    team_lead = models.ForeignKey("Team", on_delete=models.CASCADE)
-    theme = models.ForeignKey("Theme", on_delete=models.CASCADE, null=True)
+    team_lead = models.ForeignKey(
+        "TeamLead", null=True, blank=True, on_delete=models.CASCADE
+    )
+    metric_lead = models.ForeignKey(
+        "MetricLead", null=True, blank=True, on_delete=models.CASCADE
+    )
 
     indicator = models.TextField()
     definition = models.TextField()
@@ -34,16 +41,50 @@ class Metric(BaseModel):
     publication_status = models.TextField()
     calculation = models.TextField()
 
+    upstream_id = models.TextField(verbose_name="Metric ID")
+    display_name = models.TextField()
+
+    PROCESS = "Process"
+    STRUCTURE = "Structure"
+    OUTCOME = "Outcome"
+    INDICATOR_TYPE_CHOICES = (
+        (PROCESS, PROCESS),
+        (STRUCTURE, STRUCTURE),
+        (OUTCOME, OUTCOME),
+    )
+
+    indicator_type = models.TextField(choices=INDICATOR_TYPE_CHOICES)
+
     comments = models.TextField()
 
     class Meta:
         verbose_name = "Metric"
 
     def __str__(self):
-        return self.indicator
+        return self.display_name
 
     def get_absolute_url(self):
         return reverse("metrics-detail", kwargs={"pk": self.pk})
+
+
+class Topic(AssociatedModel):
+    pass
+
+
+class Organisation(AssociatedModel):
+    pass
+
+
+class Report(AssociatedModel):
+    pass
+
+
+class TeamLead(AssociatedModel):
+    pass
+
+
+class MetricLead(AssociatedModel):
+    pass
 
 
 class Operand(models.Model):
@@ -72,32 +113,3 @@ class Operand(models.Model):
 
     def __str__(self):
         return f"{self.type}: {self.source}"
-
-
-class Organisation(models.Model):
-    name = models.TextField()
-
-    def __str__(self):
-        return self.name
-
-
-class Report(models.Model):
-    name = models.TextField()
-
-    def __str__(self):
-        return self.name
-
-
-class Team(models.Model):
-    name = models.TextField()
-
-    def __str__(self):
-        return self.name
-
-
-class Theme(models.Model):
-    number = models.IntegerField()
-    name = models.TextField()
-
-    def __str__(self):
-        return self.name

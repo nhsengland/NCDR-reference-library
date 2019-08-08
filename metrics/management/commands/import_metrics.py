@@ -2,90 +2,111 @@ import csv
 
 from django.core.management.base import BaseCommand
 
-from ...models import Lead, Metric, Operand, Organisation, Report, Team, Theme
+from ...models import Metric, MetricLead, Operand, Organisation, Report, TeamLead, Topic
+
+
+class Row:
+    def __init__(self, row):
+        self.row = row
+
+    def operand(self, operand_type):
+        mapping = {
+            "": "value",
+            "source": "source",
+            "source address": "source_address",
+            "lowest level of granularity of data": "lowest_level_granularity",
+            "frequency of data": "frequency",
+            "timeliness of data": "timeliness",
+            "refresh mechanism": "refresh_mechanism",
+        }
+        lookup = {"type": operand_type}
+        for k, v in mapping.items():
+            lookup_key = f"{operand_type} {k}".strip()
+            lookup[v] = self.row[lookup_key]
+        operand, _ = Operand.objects.get_or_create(**lookup)
+        return operand
+
+    def get_associated(self, model, name):
+        if self.row[name] and self.row[name].strip():
+            result, _ = model.objects.get_or_create(name=self.row[name])
+            return result
+
+    def numerator(self):
+        return self.operand("Numerator")
+
+    def denominator(self):
+        return self.operand("Denominator")
+
+    def topics(self):
+        topic_names = [i.strip() for i in self.row["Topic"].split(";")]
+        result = []
+        for topic_name in topic_names:
+            if topic_name:
+                topic, _ = Topic.objects.get_or_create(name=topic_name)
+                result.append(topic)
+        return result
+
+    def organisation_owner(self):
+        return self.get_associated(Organisation, "Organisation owner")
+
+    def report(self):
+        return self.get_associated(Report, "Report")
+
+    def team_lead(self):
+        return self.get_associated(TeamLead, "Team lead")
+
+    def metric_lead(self):
+        return self.get_associated(MetricLead, "Metric lead")
+
+    def create_metric(self):
+        mapping = {
+            "Metric ID": "upstream_id",
+            "Display name": "display_name",
+            "Indicator / Metric": "indicator",
+            "Business definition": "definition",
+            "Rationale": "rationale",
+            "Technical specification": "specification",
+            "Publication Status": "publication_status",
+            "Calculation of metric": "calculation",
+            "Comments": "comments",
+            "Strategic Origin": "strategic_origin",
+            "Inidcator Type": "indicator_type",
+            "Organisation Type": "organisation_type",
+        }
+
+        metric = Metric()
+
+        for k, v in mapping.items():
+            setattr(metric, v, self.row[k])
+
+        fks = [
+            "numerator",
+            "denominator",
+            "organisation_owner",
+            "report",
+            "team_lead",
+            "metric_lead",
+        ]
+
+        for fk in fks:
+            fk_instance = getattr(self, fk)()
+            if fk_instance:
+                setattr(metric, fk, fk_instance)
+        metric.save()
+        metric.topics.add(*self.topics())
+        return metric
 
 
 class Command(BaseCommand):
     def add_arguments(self, parser):
         parser.add_argument("path")
 
-    def build_operand(self, row, type):
-        label = type.capitalize()
-
-        def get(name):
-            return row[f"{label} {name}"]
-
-        operand, _ = Operand.objects.get_or_create(
-            type=type,
-            value=row[label],
-            source=get("source"),
-            source_address=get("source address"),
-            lowest_level_granularity=get("lowest level of granularity of data"),
-            frequency=get("frequency of data"),
-            timeliness=get("timeliness of data"),
-            refresh_mechanism=get("refresh mechanism"),
-        )
-
-        return operand
-
-    def create_metric(
-        self, denominator, lead, numerator, organisation, report, team, theme, row
-    ):
-        return Metric.objects.create(
-            denominator=denominator,
-            metric_lead=lead,
-            numerator=numerator,
-            organisation_owner=organisation,
-            report=report,
-            team_lead=team,
-            theme=theme,
-            indicator=row["Indicator / Metric"],
-            definition=row["Business definition"],
-            rationale=row["Rationale"],
-            specification=row["Technical specification"],
-            publication_status=row["Publication Status"],
-            calculation=row["Calculation of metric"],
-            comments=row["Comments"],
-        )
-
-    def get_theme(self, number):
-        try:
-            number = int(number)
-        except ValueError:
-            return None
-
-        theme, _ = Theme.objects.get_or_create(number=number)
-
-        return theme
-
     def handle(self, *args, **options):
-        path = options["path"]
-
-        with open(options["path"], "r") as f:
-            delimiter = "\t" if path.endswith(".tsv") else ","
-            rows = list(csv.DictReader(f, delimiter=delimiter, quotechar='"'))
-
-        for row in rows:
-            lead, _ = Lead.objects.get_or_create(name=row["Metric lead"])
-            organisation, _ = Organisation.objects.get_or_create(
-                name=row["Organisation owner"]
-            )
-            report, _ = Report.objects.get_or_create(name=row["Report"])
-            team, _ = Team.objects.get_or_create(name=row["Team lead"])
-            theme = self.get_theme(row["Theme"])
-
-            denominator = self.build_operand(row, type="denominator")
-            numerator = self.build_operand(row, type="numerator")
-
-            self.create_metric(
-                lead=lead,
-                organisation=organisation,
-                report=report,
-                team=team,
-                theme=theme,
-                denominator=denominator,
-                numerator=numerator,
-                row=row,
-            )
+        Metric.objects.all().delete()
+        with open(options["path"], "r", encoding="ISO-8859-1") as f:
+            rows = list(csv.DictReader(f, delimiter="¬"))
+            for csv_row in rows:
+                row = Row(csv_row)
+                row.create_metric()
 
         self.stdout.write(self.style.SUCCESS("Added Metrics"))
