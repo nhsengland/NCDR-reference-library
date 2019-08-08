@@ -60,7 +60,7 @@ class DataElementList(ListView):
         return qs.filter(functools.reduce(operator.or_, startswith_args))
 
     def get_context_data(self, *args, **kwargs):
-        symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
+        symbols = [self.NUMERIC] + [i for i in string.ascii_uppercase]
         qs = self.model.objects.all()
         other_pages = [
             (
