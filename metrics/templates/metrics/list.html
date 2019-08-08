@@ -1,4 +1,5 @@
 {% extends "metrics/base.html" %}
+{% load utils %}
 
 {% block contents %}
 <div class="card-list container main-content">
@@ -49,28 +50,7 @@
       </div>
     </div>
 
-    {% if is_paginated %}
-    <ul class="pagination">
-      {% if page_obj.has_previous %}
-      <li><a href="?page={{ page_obj.previous_page_number }}&letter={{ request.GET.letter }}">&laquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-      {% endif %}
-      {% for i in paginator.page_range %}
-      {% if page_obj.number == i %}
-      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-      <li><a href="?page={{ i }}&letter={{ request.GET.letter }}">{{ i }}</a></li>
-      {% endif %}
-      {% endfor %}
-      {% if page_obj.has_next %}
-      <li><a href="?page={{ page_obj.next_page_number }}&letter={{ request.GET.letter }}">&raquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-      {% endif %}
-    </ul>
-    {% endif %}
-
+    {% pagination %}
     {% endif %}
   </article>
 </div>
