@@ -1,11 +1,9 @@
-{% extends "base.html" %}
+{% extends "metrics/base.html" %}
+{% load utils %}
 
 {% block contents %}
 <div class="card-list container main-content">
   <article>
-    <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a>
-    Metrics
-
     <nav class="content-offset">
       <div class="row">
         <div class="col-md-12">
@@ -21,13 +19,6 @@
     <div class="row">
       <div class="col-md-12">
         <h1 class="title">Metrics</h1>
-      </div>
-    </div>
-    <div class="row nhs-england-well">
-      <div class="col-md-12">
-        <p>
-          TODO METRICS
-        </p>
       </div>
     </div>
 
@@ -59,28 +50,7 @@
       </div>
     </div>
 
-    {% if is_paginated %}
-    <ul class="pagination">
-      {% if page_obj.has_previous %}
-      <li><a href="?page={{ page_obj.previous_page_number }}&letter={{ request.GET.letter }}">&laquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&laquo;</span></li>
-      {% endif %}
-      {% for i in paginator.page_range %}
-      {% if page_obj.number == i %}
-      <li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
-      {% else %}
-      <li><a href="?page={{ i }}&letter={{ request.GET.letter }}">{{ i }}</a></li>
-      {% endif %}
-      {% endfor %}
-      {% if page_obj.has_next %}
-      <li><a href="?page={{ page_obj.next_page_number }}&letter={{ request.GET.letter }}">&raquo;</a></li>
-      {% else %}
-      <li class="disabled"><span>&raquo;</span></li>
-      {% endif %}
-    </ul>
-    {% endif %}
-
+    {% pagination %}
     {% endif %}
   </article>
 </div>

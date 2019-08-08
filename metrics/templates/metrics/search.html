@@ -1,0 +1,57 @@
+{% extends "metrics/base.html" %}
+{% load utils %}
+
+{% block contents %}
+<div class="card-list container main-content">
+  <article>
+
+    <nav class="content-offset">
+      <div class="row">
+        <div class="col-md-12">
+          {% for letter, other_page, exists in other_pages %}
+          <a class="letter-link {% if request.GET.letter == letter %}active {% elif not exists %} unpopulated{% endif %}" href="{{ other_page }}">
+            {{ letter }}
+          </a>
+          {% endfor %}
+        </div>
+      </div>
+    </nav>
+    <div class="row">
+      <div class="col-md-12">
+        <h2>
+          {{ paginator.count }} Metric{{ paginator.count|pluralize }} found containing '{{ request.GET.q }}'
+        </h2>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-10">
+
+        {% for metric in object_list %}
+        <div class="search-result row{% if not forloop.first %} content-offset-30{% endif %}">
+          <div class="col-md-12">
+            <h3 class="sub-row-title">
+              <a href="{{ metric.get_absolute_url }}">{{ metric.indicator }}</a>
+            </h3>
+          </div>
+        </div>
+
+        <p>{{ metric.definition }}</p>
+
+        {% if not forloop.last %}
+        <hr />
+        {% endif %}
+
+        {% endfor %}
+      </div>
+    </div>
+
+    {% pagination %}
+
+    {# Highlight search query in search results text #}
+    <script>
+      $(".search-result").mark("{{ request.GET.q }}", {});
+    </script>
+  </article>
+</div>
+{% endblock contents %}

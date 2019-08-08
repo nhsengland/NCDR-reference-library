@@ -4,14 +4,18 @@ import string
 
 from django.db.models import Q
 from django.urls import reverse
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, TemplateView
 
 from .models import Metric
 
 
-class MetricDetail(DetailView):
+class About(TemplateView):
+    template_name = "metrics/about.html"
+
+
+class Detail(DetailView):
     model = Metric
-    template_name = "metric-detail.html"
+    template_name = "metrics/detail.html"
 
     def get_queryset(self):
         return self.model.objects.select_related(
@@ -25,12 +29,12 @@ class MetricDetail(DetailView):
         )
 
 
-class MetricsList(ListView):
+class List(ListView):
     model = Metric
     NUMERIC = "0-9"
     ordering = "indicator"
     paginate_by = 30
-    template_name = "metrics-list.html"
+    template_name = "metrics/list.html"
 
     def get_queryset_for_symbol(self, qs, symbol):
         if symbol != self.NUMERIC:
@@ -40,7 +44,7 @@ class MetricsList(ListView):
         return qs.filter(functools.reduce(operator.or_, startswith_args))
 
     def get_context_data(self, *args, **kwargs):
-        symbols = [i for i in string.ascii_uppercase] + [self.NUMERIC]
+        symbols = [self.NUMERIC] + [i for i in string.ascii_uppercase]
         qs = self.model.objects.all()
         other_pages = [
             (
@@ -63,3 +67,18 @@ class MetricsList(ListView):
             return qs
 
         return self.get_queryset_for_symbol(qs, symbol)
+
+
+class Search(ListView):
+    model = Metric
+    template_name = "metrics/search.html"
+    paginate_by = 30
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        q = self.request.GET.get("q", "")
+        if not q:
+            return Metric.objects.none()
+        return qs.filter(
+            Q(indicator__icontains=q) | Q(definition__icontains=q)
+        ).distinct()

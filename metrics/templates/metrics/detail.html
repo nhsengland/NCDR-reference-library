@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "metrics/base.html" %}
 
 {% block contents %}
 <div class="container main-content">
@@ -7,7 +7,6 @@
 
       <div class="row">
         <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a>
           <a class="ncdr-breadcrumbs" href="{% url 'metrics-list' %}">Metrics</a>
           {{ metric.indicator }}
         </div>

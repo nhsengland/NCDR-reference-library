@@ -1,8 +1,10 @@
 from django.urls import path
 
-from .views import MetricDetail, MetricsList
+from .views import About, Detail, List, Search
 
 urlpatterns = [
-    path("metrics/", MetricsList.as_view(), name="metrics-list"),
-    path("metrics/<pk>/", MetricDetail.as_view(), name="metrics-detail"),
+    path("about/", About.as_view(), name="metrics-about"),
+    path("", List.as_view(), name="metrics-list"),
+    path("search/", Search.as_view(), name="metrics-search"),
+    path("<pk>/", Detail.as_view(), name="metrics-detail"),
 ]
