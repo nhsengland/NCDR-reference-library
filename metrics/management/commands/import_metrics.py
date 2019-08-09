@@ -72,6 +72,7 @@ class Row:
             "Strategic Origin": "strategic_origin",
             "Inidcator Type": "indicator_type",
             "Organisation Type": "organisation_type",
+            "Desired direction": "desired_direction",
         }
 
         metric = Metric()
@@ -103,6 +104,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         Metric.objects.all().delete()
+        Topic.objects.all().delete()
         with open(options["path"], "r", encoding="ISO-8859-1") as f:
             rows = list(csv.DictReader(f, delimiter="¬"))
             for csv_row in rows:

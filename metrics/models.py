@@ -32,6 +32,9 @@ class Metric(BaseModel):
     metric_lead = models.ForeignKey(
         "MetricLead", null=True, blank=True, on_delete=models.CASCADE
     )
+    strategic_origin = models.TextField()
+    organisation_type = models.TextField()
+    desired_direction = models.TextField()
 
     indicator = models.TextField()
     definition = models.TextField()

@@ -23,27 +23,41 @@
 
       <div class="row">
         <div class="col-md-8">
+          <h4>Indicator / Metric</h4>
+          <p>{{ metric.indicator|urlize }}</p>
+
           <h4>Business definition</h4>
           <p>{{ metric.definition|urlize }}</p>
 
-          <h4>Rationale</h4>
-          <p>{{ metric.rationale }}</p>
+          <h4>Desired direction</h4>
+          <p>{{ metric.desired_direction|urlize }}</p>
 
           {% if metric.specification %}
           <h4>Technical Specification</h4>
           <p>{{ metric.specification }}</p>
           {% endif %}
 
+          <h4>Rationale</h4>
+          <p>{{ metric.rationale }}</p>
+
+          <h4>Calculation of metric</h4>
+          <p>{{ metric.calculation }}</p>
           <hr />
         </div>
 
-        {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
-        <div class="col-md-4 text-center">
-          <p><strong>{{ metric.numerator.value }}</strong></p>
-          <hr class="divisor" />
-          <p><strong>{{ metric.denominator.value }}</strong></p>
+        <div class="nhs-england-well col-md-4">
+          <h4>Report</h4>
+          <p>{{ metric.report.name }}</p>
+          <h4>Strategic origin</h4>
+          <p>{{ metric.strategic_origin }}</p>
+          <h4>Indicator type</h4>
+          <p>{{ metric.indicator_type }}</p>
+          <h4>Organisation type</h4>
+          <p>{{ metric.organisation_type }}</p>
+          <h4>Organisation Owner</h4>
+          <p>{{ metric.organisation_owner }}</p>
         </div>
-        {% endif %}
+
 
       </div>
 
@@ -51,8 +65,8 @@
       <div class="row">
 
         <div class="col-md-6">
-          <h2>Numerator</h2>
-
+          <h4>Numerator</h4>
+          <h2>{{ metric.numerator.value }}</h2>
           <h4>Source</h4>
           {% if metric.numerator.source_address and not metric.numerator.source_address == 'N/A' %}
           <p><a href="{{ metric.numerator.source_address }}">{{ metric.numerator.source }}</a></p>
@@ -73,7 +87,8 @@
         </div>
 
         <div class="col-md-6">
-          <h2>Denominator</h2>
+          <h4>Denominator</h4>
+          <h2>{{ metric.denominator.value }}</h2>
 
           <h4>Source</h4>
           {% if metric.denominator.source_address and not metric.denominator.source_address == 'N/A' %}
@@ -109,15 +124,6 @@
         <div class="col-md-8">
           <h4>Publication status</h4>
           <p>{{ metric.publication_status }}</p>
-
-          <h4>Calculation of metric</h4>
-          <p>{{ metric.calculation }}</p>
-
-          <h4>Report</h4>
-          <p>{{ metric.report.name }}</p>
-
-          <h4>Organisation owner</h4>
-          <p>{{ metric.organisation_owner.name }}</p>
 
           <h4>Team lead</h4>
           <p>{{ metric.team_lead.name }}</p>
