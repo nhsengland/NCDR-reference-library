@@ -129,13 +129,12 @@ h4.subheader {
 }
 
 .coloured-stripe {
-  background-color: #e8edee;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 .coloured-stripe hr {
-  border-top: 1px solid #adbcc7;
+  border-top: 3px solid #425563;
 }
 
 header.masthead {

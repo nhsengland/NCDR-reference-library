@@ -176,12 +176,11 @@ h4.subheader{
 }
 
 .coloured-stripe{
-  background-color: $tertiary-colour;
-  padding-top: 50px;
-  padding-bottom: 50px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 
   hr{
-    border-top: 1px solid #adbcc7;
+    border-top: 3px solid #425563;
   }
 }
 
