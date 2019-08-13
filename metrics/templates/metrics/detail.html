@@ -23,24 +23,21 @@
 
       <div class="row">
         <div class="col-md-8">
-          <h4>Indicator / Metric</h4>
+          <h3>Indicator / Metric</h3>
           <p>{{ metric.indicator|urlize }}</p>
 
-          <h4>Business definition</h4>
+          <h3>Business definition</h3>
           <p>{{ metric.definition|urlize }}</p>
 
-          <h4>Desired direction</h4>
-          <p>{{ metric.desired_direction|urlize }}</p>
-
           {% if metric.specification %}
-          <h4>Technical specification</h4>
+          <h3>Technical specification</h3>
           <p>{{ metric.specification }}</p>
           {% endif %}
 
-          <h4>Rationale</h4>
+          <h3>Rationale</h3>
           <p>{{ metric.rationale }}</p>
 
-          <h4>Calculation of metric</h4>
+          <h3>Calculation of metric</h3>
           <p>{{ metric.calculation }}</p>
           <hr />
         </div>
@@ -65,48 +62,48 @@
       <div class="row">
 
         <div class="col-md-6">
-          <h4>Numerator</h4>
+          <h3>Numerator</h3>
           <h2>{{ metric.numerator.value }}</h2>
-          <h4>Source</h4>
+          <h3>Source</h3>
           {% if metric.numerator.source_address and not metric.numerator.source_address == 'N/A' %}
           <p><a href="{{ metric.numerator.source_address }}">{{ metric.numerator.source }}</a></p>
           {% else %}
           <p>{{ metric.numerator.source }}</p>
           {% endif %}
-          <h4>Lowest level of granularity of data</h4>
+          <h3>Lowest level of granularity of data</h3>
           <p>{{ metric.numerator.lowest_level_granularity }}</p>
 
-          <h4>Frequency of data</h4>
+          <h3>Frequency of data</h3>
           <p>{{ metric.numerator.frequency }}</p>
 
-          <h4>Timeliness of data</h4>
+          <h3>Timeliness of data</h3>
           <p>{{ metric.numerator.timeliness }}</p>
 
-          <h4>Refresh mechanism</h4>
+          <h3>Refresh mechanism</h3>
           <p>{{ metric.numerator.refresh_mechanism }}</p>
         </div>
 
         <div class="col-md-6">
-          <h4>Denominator</h4>
+          <h3>Denominator</h3>
           <h2>{{ metric.denominator.value }}</h2>
 
-          <h4>Source</h4>
+          <h3>Source</h3>
           {% if metric.denominator.source_address and not metric.denominator.source_address == 'N/A' %}
           <p><a href="{{ metric.denominator.source_address }}">{{ metric.denominator.source }}</a></p>
           {% else %}
           <p>{{ metric.denominator.source }}</p>
           {% endif %}
 
-          <h4>Lowest level of granularity of data</h4>
+          <h3>Lowest level of granularity of data</h3>
           <p>{{ metric.denominator.lowest_level_granularity }}</p>
 
-          <h4>Frequency of data</h4>
+          <h3>Frequency of data</h3>
           <p>{{ metric.denominator.frequency }}</p>
 
-          <h4>Timeliness of data</h4>
+          <h3>Timeliness of data</h3>
           <p>{{ metric.denominator.timeliness }}</p>
 
-          <h4>Refresh mechanism</h4>
+          <h3>Refresh mechanism</h3>
           <p>{{ metric.denominator.refresh_mechanism }}</p>
         </div>
       </div>
@@ -122,23 +119,23 @@
 
       <div class="row">
         <div class="col-md-8">
-          <h4>Publication status</h4>
+          <h3>Publication status</h3>
           <p>{{ metric.publication_status }}</p>
 
-          <h4>Team lead</h4>
+          <h3>Team lead</h3>
           <p>{{ metric.team_lead.name }}</p>
 
           {% if metric.metric_lead.name %}
-          <h4>Metric lead</h4>
+          <h3>Metric lead</h3>
           <p>{{ metric.metric_lead.name }}</p>
           {% endif %}
 
           {% if metrics.comments %}
-          <h4>Comments</h4>
+          <h3>Comments</h3>
           <p>{{ metric.comments }}</p>
           {% endif %}
 
-          <h4>Topics</h4>
+          <h3>Topics</h3>
           <p>{{ metric.topics.all|join:", " }}</p>
         </div>
       </div>
