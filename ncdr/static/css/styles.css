@@ -111,6 +111,10 @@ body {
   margin-bottom: 20px;
 }
 
+.no-margin-top {
+  margin-top: 0;
+}
+
 h3.subheader {
   color: #003087;
   margin-top: 30px;
@@ -126,15 +130,6 @@ h4.subheader {
   padding: 60px;
   background-color: #e8edee;
   margin: 0 0 30px;
-}
-
-.coloured-stripe {
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.coloured-stripe hr {
-  border-top: 3px solid #425563;
 }
 
 header.masthead {
