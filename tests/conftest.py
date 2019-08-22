@@ -90,7 +90,10 @@ def published_table(published_schema):
 
 @pytest.fixture
 def published_version():
-    return Version.objects.create(is_published=True)
+    """
+    The initial version is created by a database migration
+    """
+    return Version.objects.get(is_published=True)
 
 
 @pytest.fixture
