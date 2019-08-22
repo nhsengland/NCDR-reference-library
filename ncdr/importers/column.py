@@ -8,26 +8,15 @@ from ..models import Column, DataElement, Table
 
 def get_data_elementLUT(rows):
     """
-    Build a lookup table of DataElement instances keyed by their name
+    Create all new data elements based on the spread sheet.
 
-    This replaces a get_or_create in the outer loop body below.  Each iteration
-    would get call the get_or_create for the Column instantiation to use.
-    During the move to import CSVs via webform it was noted importing took ~90s
-    on a local machine.  However when that same import function, import_data at
-    the time of writing, was called by an RQ worker it ran in ~10s.  After much
-    digging it was discovered that the aggregate time cost for the
-    get_or_creates calls was the cause, again only when called directly from
-    the view.  Rather than waste more time building an extension on the rabbit
-    hole the sensible decision to use a precomputed lookup table was taken.
-
-    This function builds that table, creating any missing DataElements in the
-    process.
+    Data elements are versioned, but they will be implicitly versioned
+    by being attatched to versioned columns
     """
-    existing_de_names = set(DataElement.objects.values_list("name", flat=True))
+
     csv_de_names = set(row["Data_Element"] for row in rows)
-    missing_de_names = csv_de_names - existing_de_names
     DataElement.objects.bulk_create(
-        DataElement(name=name, slug=slugify(name)) for name in missing_de_names
+        DataElement(name=name, slug=slugify(name)) for name in csv_de_names
     )
 
     return {de.name: de for de in DataElement.objects.all()}
