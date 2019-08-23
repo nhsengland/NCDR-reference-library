@@ -15,11 +15,10 @@ def get_data_elementLUT(rows):
     """
 
     csv_de_names = set(row["Data_Element"] for row in rows)
-    DataElement.objects.bulk_create(
+    data_elements = DataElement.objects.bulk_create(
         DataElement(name=name, slug=slugify(name)) for name in csv_de_names
     )
-
-    return {de.name: de for de in DataElement.objects.all()}
+    return {de.name: de for de in data_elements}
 
 
 def get_tables(tableLUT, addresses):

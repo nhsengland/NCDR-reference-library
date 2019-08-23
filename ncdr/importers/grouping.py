@@ -19,7 +19,7 @@ def load_file(fd, version):
         de.name: de
         for de in DataElement.objects.filter(
             column__table__schema__database__version=version
-        )
+        ).distinct()
     }
 
     for row in rows:
