@@ -150,9 +150,9 @@ class DataElement(BaseModel, models.Model):
 
     grouping = models.ManyToManyField("Grouping")
 
-    name = models.TextField(unique=True)
+    name = models.TextField()
     description = models.TextField(default="")
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    slug = models.SlugField(max_length=255, blank=True)
 
     class Meta:
         ordering = ["name"]
@@ -174,8 +174,8 @@ class DataElement(BaseModel, models.Model):
 class Grouping(BaseModel, models.Model):
     SEARCH_FIELDS = ["name", "description"]
 
-    name = models.TextField(unique=True)
-    slug = models.SlugField(max_length=255, unique=True, blank=True)
+    name = models.TextField()
+    slug = models.SlugField(max_length=255, blank=True)
     description = models.TextField(null=True, blank=True)
 
     class Meta:
