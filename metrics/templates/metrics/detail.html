@@ -30,8 +30,6 @@
           <h4>Technical Specification</h4>
           <p>{{ metric.specification }}</p>
           {% endif %}
-
-          <hr />
         </div>
 
         {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
@@ -45,7 +43,51 @@
       </div>
 
       {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
+      <table class="table content-offset content-offset-below">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Numerator</th>
+            <th>Denominator</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th>Source</th>
+            <td>{{ metric.numerator.source }}</td>
+            <td>{{ metric.denominator.source }}</td>
+          </tr>
+          <tr>
+            <th>Source Address</th>
+            <td>{{ metric.numerator.source_address|urlizetrunc:50 }}</td>
+            <td>{{ metric.denominator.source_address|urlizetrunc:50 }}</td>
+          </tr>
+          <tr>
+            <th>Lowest Level of Granularity of Data</th>
+            <td>{{ metric.numerator.lowest_level_granularity }}</td>
+            <td>{{ metric.denominator.lowest_level_granularity }}</td>
+          </tr>
+          <tr>
+            <th>Frequency of Data</th>
+            <td>{{ metric.numerator.frequency }}</td>
+            <td>{{ metric.denominator.frequency }}</td>
+          </tr>
+          <tr>
+            <th>Timeliness of Data</th>
+            <td>{{ metric.numerator.timeliness }}</td>
+            <td>{{ metric.denominator.timeliness }}</td>
+          </tr>
+          <tr>
+            <th>Refresh Mechanism</th>
+            <td>{{ metric.numerator.refresh_mechanism }}</td>
+            <td>{{ metric.denominator.refresh_mechanism }}</td>
+          </tr>
+        </tbody>
+      </table>
+
+      {% comment %}
       <div class="row">
+
 
         <div class="col-md-6">
           <h2>Numerator</h2>
@@ -98,6 +140,7 @@
         </div>
 
       </div>
+      {% endcomment %}
       {% endif %}
 
       <div class="row">
