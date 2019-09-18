@@ -324,9 +324,10 @@ class Version(models.Model):
     db_structure = models.FileField(upload_to=versioned_path, null=True)
     definitions = models.FileField(upload_to=versioned_path, null=True)
     grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
-    last_process_at = models.DateTimeField(null=True)
-    files_hash = models.TextField(null=True, unique=True)
 
+    # this is used to mark when a version has finished being processed
+    last_process_at = models.DateTimeField(null=True)
+    files_hash = models.TextField(null=True)
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
 
@@ -378,7 +379,8 @@ class Version(models.Model):
         grouping_mapping.seek(0)
 
         try:
-            existing_version = Version.objects.get(files_hash=contents_hash)
+            processed_versions = Version.objects.exclude(last_process_at=None)
+            existing_version = processed_versions.get(files_hash=contents_hash)
             raise VersionAlreadyExists(existing_pk=existing_version.pk)
         except Version.DoesNotExist:
             pass
