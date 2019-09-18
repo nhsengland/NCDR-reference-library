@@ -13,7 +13,7 @@ help:
 
 .PHONY: deploy
 deploy:
-	(cd deployment; ansible-playbook setup-server.yml -i hosts.dev --vault-password-file .vault.txt)
+	(cd deployment; ansible-playbook setup-server.yml -i hosts.dev --vault-password-file ~/.vault.txt)
 
 .PHONY: fix
 fix:
