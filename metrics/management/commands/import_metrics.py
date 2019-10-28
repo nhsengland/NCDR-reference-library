@@ -1,8 +1,9 @@
 import csv
+import io
 
 from django.core.management.base import BaseCommand
 
-from ...models import Lead, Metric, Operand, Organisation, Report, Team, Theme
+from ...models import Lead, Metric, Operand, Organisation, Report, Team
 
 
 class Command(BaseCommand):
@@ -29,7 +30,7 @@ class Command(BaseCommand):
         return operand
 
     def create_metric(
-        self, denominator, lead, numerator, organisation, report, team, theme, row
+        self, denominator, lead, numerator, organisation, report, team, row
     ):
         return Metric.objects.create(
             denominator=denominator,
@@ -38,7 +39,7 @@ class Command(BaseCommand):
             organisation_owner=organisation,
             report=report,
             team_lead=team,
-            theme=theme,
+            # theme=theme,
             indicator=row["Indicator / Metric"],
             definition=row["Business definition"],
             rationale=row["Rationale"],
@@ -48,22 +49,15 @@ class Command(BaseCommand):
             comments=row["Comments"],
         )
 
-    def get_theme(self, number):
-        try:
-            number = int(number)
-        except ValueError:
-            return None
-
-        theme, _ = Theme.objects.get_or_create(number=number)
-
-        return theme
-
     def handle(self, *args, **options):
-        path = options["path"]
+        Metric.objects.all().delete()
+        Report.objects.all().delete()
+        Lead.objects.all().delete()
+        Team.objects.all().delete()
 
-        with open(options["path"], "r") as f:
-            delimiter = "\t" if path.endswith(".tsv") else ","
-            rows = list(csv.DictReader(f, delimiter=delimiter, quotechar='"'))
+        with open(options["path"], "rb") as f:
+            fd = io.StringIO(f.read().decode("Windows - 1252"))
+            rows = list(csv.DictReader(fd, delimiter="¬"))
 
         for row in rows:
             lead, _ = Lead.objects.get_or_create(name=row["Metric lead"])
@@ -72,7 +66,6 @@ class Command(BaseCommand):
             )
             report, _ = Report.objects.get_or_create(name=row["Report"])
             team, _ = Team.objects.get_or_create(name=row["Team lead"])
-            theme = self.get_theme(row["Theme"])
 
             denominator = self.build_operand(row, type="denominator")
             numerator = self.build_operand(row, type="numerator")
@@ -82,7 +75,7 @@ class Command(BaseCommand):
                 organisation=organisation,
                 report=report,
                 team=team,
-                theme=theme,
+                # theme=theme,
                 denominator=denominator,
                 numerator=numerator,
                 row=row,
