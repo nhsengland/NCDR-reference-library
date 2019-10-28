@@ -25,7 +25,7 @@ class MetricDetail(DetailView):
             "organisation_owner",
             "report",
             "team_lead",
-        )
+        ).prefetch_related("topic_set")
 
 
 class AtoZList(ListView):

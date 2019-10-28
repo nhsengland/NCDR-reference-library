@@ -20,6 +20,9 @@
 
       <div class="row">
         <div class="col-md-8">
+          <h4>Topics</h4>
+          <p>{% for topic in metric.topic_set.all %}<a href="{% url 'topics-detail' slug=topic.slug %}">{{ topic.name }}</a>{% endfor %}</p>
+
           <h4>Business Definition</h4>
           <p>{{ metric.definition|urlize }}</p>
 

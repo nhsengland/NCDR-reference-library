@@ -1,8 +1,17 @@
-{% extends "metrics/base.html" %}
-{% load utils %}
-
-{% block contents %}
-<div class="card-list container main-content">
+{% extends "metrics/base.html" %} {% load utils %} {% block contents %}
+<div class="container main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <a class="ncdr-breadcrumbs" href="{% url 'topics-list' %}"
+            >Topic</a
+          >
+          {{ topic.name }}
+        </div>
+      </div>
+    </div>
+  </div>
   <article>
     <h1 class="title">
       {{ object.name }}
@@ -10,7 +19,6 @@
 
     <div class="row">
       <div class="col-md-10">
-
         {% for metric in object.metric_set.all %}
         <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
           <div class="col-md-12">
@@ -24,9 +32,7 @@
 
         {% if not forloop.last %}
         <hr />
-        {% endif %}
-
-        {% endfor %}
+        {% endif %} {% endfor %}
       </div>
     </div>
   </article>
