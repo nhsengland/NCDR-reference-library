@@ -1,10 +1,14 @@
 from django.urls import path
+from django.views.generic.base import RedirectView
 
-from .views import About, Detail, List, Search
+from .views import About, AtoZList, MetricDetail, Search, TopicDetail, TopicList
 
 urlpatterns = [
+    path("", RedirectView.as_view(pattern_name="metrics-list")),
     path("about/", About.as_view(), name="metrics-about"),
-    path("", List.as_view(), name="metrics-list"),
+    path("a-z", AtoZList.as_view(), name="metrics-list"),
+    path("topic", TopicList.as_view(), name="topics-list"),
+    path("topic/<slug:slug>/", TopicDetail.as_view(), name="topics-detail"),
     path("search/", Search.as_view(), name="metrics-search"),
-    path("<pk>/", Detail.as_view(), name="metrics-detail"),
+    path("<pk>/", MetricDetail.as_view(), name="metrics-detail"),
 ]

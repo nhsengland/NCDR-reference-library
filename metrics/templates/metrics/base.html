@@ -17,10 +17,16 @@
 {% block navigation %}
   {% url 'metrics-list' as metrics_list %}
   {% url 'metrics-about' as metrics_about %}
+  {% url 'topics-list' as topics_list %}
   <ul>
     <li>
       <a {% if request|url_name == 'metrics-list' %}class="active" {% endif %} href="{{ metrics_list }}">
-        Metrics
+        A-Z
+      </a>
+    </li>
+    <li>
+      <a {% if request|url_name == 'topics-list' or request|url_name == 'topics-detail' %}class="active" {% endif %} href="{{ topics_list }}">
+        Topics
       </a>
     </li>
     <li>

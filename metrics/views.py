@@ -6,14 +6,14 @@ from django.db.models import Q
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 
-from .models import Metric
+from .models import Metric, Topic
 
 
 class About(TemplateView):
     template_name = "metrics/about.html"
 
 
-class Detail(DetailView):
+class MetricDetail(DetailView):
     model = Metric
     template_name = "metrics/detail.html"
 
@@ -25,11 +25,10 @@ class Detail(DetailView):
             "organisation_owner",
             "report",
             "team_lead",
-            "theme",
         )
 
 
-class List(ListView):
+class AtoZList(ListView):
     model = Metric
     NUMERIC = "0-9"
     ordering = "indicator"
@@ -67,6 +66,14 @@ class List(ListView):
             return qs
 
         return self.get_queryset_for_symbol(qs, symbol)
+
+
+class TopicList(ListView):
+    model = Topic
+
+
+class TopicDetail(DetailView):
+    model = Topic
 
 
 class Search(ListView):
