@@ -6,7 +6,7 @@ Docs: https://docs.pytest.org/en/latest/fixture.html#conftest-py-sharing-fixture
 
 import pytest
 
-from metrics.models import Lead, Metric, Operand, Organisation, Report, Team
+from metrics.models import Metric, MetricLead, Operand, Organisation, Report, TeamLead
 from ncdr.models import (
     Column,
     Database,
@@ -37,11 +37,11 @@ def initial_version(published_version):
 @pytest.fixture
 def metric():
     denominator = Operand.objects.create(type="denominator")
-    lead = Lead.objects.create(name="test lead")
+    lead = MetricLead.objects.create(name="test lead")
     numerator = Operand.objects.create(type="numerator")
     organisation = Organisation.objects.create(name="test org")
     report = Report.objects.create(name="test report")
-    team = Team.objects.create(name="test team")
+    team = TeamLead.objects.create(name="test team")
 
     return Metric.objects.create(
         denominator=denominator,

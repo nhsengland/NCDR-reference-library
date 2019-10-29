@@ -4,6 +4,8 @@
 {% block contents %}
 <div class="card-list container main-content">
   <article>
+    {# if we don't have many results lets not use the clever navigation #}
+    {% if paginator.count > 150 %}
     <nav class="content-offset">
       <div class="row">
         <div class="col-md-12">
@@ -15,6 +17,7 @@
         </div>
       </div>
     </nav>
+    {% endif %}
 
     <div class="row">
       <div class="col-md-12">
@@ -43,7 +46,7 @@
         <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
           <div class="col-md-12">
             <h3 class="sub-row-title">
-              <a href="{{ metric.get_absolute_url }}">{{ metric.indicator }}</a>
+              <a href="{{ metric.get_absolute_url }}">{{ metric.display_name }}</a>
             </h3>
           </div>
         </div>

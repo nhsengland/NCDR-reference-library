@@ -25,7 +25,6 @@ class Detail(DetailView):
             "organisation_owner",
             "report",
             "team_lead",
-            "theme",
         )
 
 
@@ -80,5 +79,7 @@ class Search(ListView):
         if not q:
             return Metric.objects.none()
         return qs.filter(
-            Q(indicator__icontains=q) | Q(definition__icontains=q)
+            Q(display_name__icontains=q)
+            | Q(indicator__icontains=q)
+            | Q(definition__icontains=q)
         ).distinct()
