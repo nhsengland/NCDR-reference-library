@@ -343,10 +343,6 @@ h1 {
   color: inherit;
 }
 
-.card-list .card h3 .sub {
-  font-size: 15px;
-}
-
 .card-list .card a {
   -webkit-transition: background-color 0.2s ease-in-out;
   transition: background-color 0.2s ease-in-out;
