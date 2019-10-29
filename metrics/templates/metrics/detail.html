@@ -1,54 +1,66 @@
-{% extends "metrics/base.html" %}
-
-{% block contents %}
+{% extends "metrics/base.html" %} {% block title %} {{ block.super }}:
+{{ metric.display_name }}
+{% endblock %} {% block contents %}
 <div class="container main-content">
   <div class="row">
     <div class="col-md-12">
-
       <div class="row">
         <div class="col-md-12">
-          <a class="ncdr-breadcrumbs" href="{% url 'metrics-list' %}">Metrics</a>
-          {{ metric.indicator }}
+          <a class="ncdr-breadcrumbs" href="{% url 'metrics-list' %}"
+            >Metrics</a
+          >
+          {{ metric.display_name | truncatechars:50 }}
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-12">
-          <h1>{{ metric.indicator }}</h1>
+          <h1>{{ metric.display_name }}</h1>
         </div>
       </div>
 
       <div class="row">
         <div class="col-md-8">
-          <h4>Business definition</h4>
-          <p>{{ metric.definition|urlize }}</p>
+          <h3 class="no-margin-top">Indicator / Metric</h3>
+          <p>{{ metric.indicator | urlize }}</p>
 
-          <h4>Rationale</h4>
-          <p>{{ metric.rationale }}</p>
+          <h3>Business definition</h3>
+          <p>{{ metric.definition | urlize }}</p>
 
           {% if metric.specification %}
-          <h4>Technical specification</h4>
-          <p>{{ metric.specification }}</p>
+          <h3>Technical specification</h3>
+          <p>{{ metric.specification | urlize }}</p>
           {% endif %}
+
+          <h3>Rationale</h3>
+          <p>{{ metric.rationale | urlize }}</p>
+
+          <h3>Calculation of metric</h3>
+          <p>{{ metric.calculation | urlize }}</p>
         </div>
 
-        {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
-        <div class="col-md-4 text-center">
-          <p><strong>{{ metric.numerator.value }}</strong></p>
-          <hr class="divisor" />
-          <p><strong>{{ metric.denominator.value }}</strong></p>
+        <div class="nhs-england-well col-md-4">
+          <h4>Report</h4>
+          <p>{{ metric.report.name }}</p>
+          {% if metric.strategic_origin %}
+            <h4>Strategic origin</h4>
+            <p>{{ metric.strategic_origin }}</p>
+          {% endif %}
+          <h4>Indicator type</h4>
+          <p>{{ metric.indicator_type }}</p>
+          <h4>Organisation type</h4>
+          <p>{{ metric.organisation_type }}</p>
+          <h4>Organisation owner</h4>
+          <p>{{ metric.organisation_owner }}</p>
         </div>
-        {% endif %}
-
       </div>
-
       {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
-      <table class="table content-offset content-offset-below">
+      <table class="table">
         <thead>
           <tr>
             <th></th>
-            <th>Numerator</th>
-            <th>Denominator</th>
+            <th>Numerator: <br /> {{ metric.numerator.value }}</th>
+            <th>Denominator: <br /> {{ metric.denominator.value }}</th>
           </tr>
         </thead>
         <tbody>
@@ -58,113 +70,61 @@
             <td>{{ metric.denominator.source }}</td>
           </tr>
           <tr>
-            <th>Source address</th>
-            <td>{{ metric.numerator.source_address|urlizetrunc:50 }}</td>
-            <td>{{ metric.denominator.source_address|urlizetrunc:50 }}</td>
+            <th>Source address</th>
+            <td>{{ metric.numerator.source_address | urlizetrunc:50 }}</td>
+            <td>{{ metric.denominator.source_address | urlizetrunc:50 }}</td>
           </tr>
           <tr>
-            <th>Lowest level of granularity of data</th>
+            <th>Lowest level of granularity of data</th>
             <td>{{ metric.numerator.lowest_level_granularity }}</td>
             <td>{{ metric.denominator.lowest_level_granularity }}</td>
           </tr>
           <tr>
-            <th>Frequency of data</th>
+            <th>Frequency of data</th>
             <td>{{ metric.numerator.frequency }}</td>
             <td>{{ metric.denominator.frequency }}</td>
           </tr>
           <tr>
-            <th>Timeliness of data</th>
+            <th>Timeliness of data</th>
             <td>{{ metric.numerator.timeliness }}</td>
             <td>{{ metric.denominator.timeliness }}</td>
           </tr>
           <tr>
-            <th>Refresh mechanism</th>
+            <th>Refresh mechanism</th>
             <td>{{ metric.numerator.refresh_mechanism }}</td>
             <td>{{ metric.denominator.refresh_mechanism }}</td>
           </tr>
         </tbody>
       </table>
-
-      {% comment %}
-      <div class="row">
-
-
-        <div class="col-md-6">
-          <h2>Numerator</h2>
-
-          <h4>Source</h4>
-          <p>{{ metric.numerator.source }}</p>
-
-          {% if metric.numerator.source_address %}
-          <h4>Source address</h4>
-          <p class="overflowing-url">{{ metric.numerator.source_address|urlize }}</p>
-          {% endif %}
-
-          <h4>Lowest level of granularity of data</h4>
-          <p>{{ metric.numerator.lowest_level_granularity }}</p>
-
-          <h4>Frequency of data</h4>
-          <p>{{ metric.numerator.frequency }}</p>
-
-          <h4>Timeliness of data</h4>
-          <p>{{ metric.numerator.timeliness }}</p>
-
-          <h4>Refresh mechanism</h4>
-          <p>{{ metric.numerator.refresh_mechanism }}</p>
-
-          <hr />
-        </div>
-
-        <div class="col-md-6">
-          <h2>Denominator</h2>
-
-          <h4>Source</h4>
-          <p>{{ metric.denominator.source }}</p>
-
-          <h4>Source address</h4>
-          <p class="overflowing-url">{{ metric.denominator.source_address|urlize }}</p>
-
-          <h4>Lowest level of granularity of data</h4>
-          <p>{{ metric.denominator.lowest_level_granularity }}</p>
-
-          <h4>Frequency of data</h4>
-          <p>{{ metric.denominator.frequency }}</p>
-
-          <h4>Timeliness of data</h4>
-          <p>{{ metric.denominator.timeliness }}</p>
-
-          <h4>Refresh mechanism</h4>
-          <p>{{ metric.denominator.refresh_mechanism }}</p>
-
-          <hr />
-        </div>
-
-      </div>
-      {% endcomment %}
       {% endif %}
-
       <div class="row">
         <div class="col-md-8">
-          <h4>Calculation of metric</h4>
-          <p>{{ metric.calculation }}</p>
+          <h3>Publication status</h3>
+          <p>{{ metric.publication_status }}</p>
+
+          <h3>Team lead</h3>
+          <p>{{ metric.team_lead.name }}</p>
 
           <h4>Report</h4>
           <p>{{ metric.report.name }}</p>
 
-          <h4>Organisation owner</h4>
-          <p>{{ metric.organisation_owner.name }}</p>
-
-          <h4>Metric lead</h4>
+          {% if metric.metric_lead.name %}
+          <h3>Metric lead</h3>
           <p>{{ metric.metric_lead.name }}</p>
-
-          <h4>Comments</h4>
+          {% endif %} {% if metrics.comments %}
+          <h3>Comments</h3>
           <p>{{ metric.comments }}</p>
-
-          <h4>Theme</h4>
-          <p>{{ metric.theme.name }}</p>
+          {% endif %}
+          {% if topics %}
+            <h3>Topics</h3>
+            <p>
+              {% for topics in topics %}
+                <a href="{{ topics.get_absolute_url }}">{{ topics }}</a>{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+          {% endif %}
         </div>
       </div>
-
     </div>
   </div>
 </div>

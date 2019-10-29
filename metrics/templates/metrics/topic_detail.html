@@ -1,0 +1,40 @@
+{% extends "metrics/base.html" %} {% load utils %} {% block contents %}
+<div class="container main-content">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="row">
+        <div class="col-md-12">
+          <a class="ncdr-breadcrumbs" href="{% url 'topics-list' %}"
+            >Topic</a
+          >
+          {{ topic.name }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <article>
+    <h1 class="title">
+      {{ object.name }}
+    </h1>
+
+    <div class="row">
+      <div class="col-md-10">
+        {% for metric in object.metric_set.all %}
+        <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
+          <div class="col-md-12">
+            <h3 class="sub-row-title">
+              <a href="{{ metric.get_absolute_url }}">{{ metric.display_name }}</a>
+            </h3>
+          </div>
+        </div>
+
+        <p>{{ metric.definition }}</p>
+
+        {% if not forloop.last %}
+        <hr />
+        {% endif %} {% endfor %}
+      </div>
+    </div>
+  </article>
+</div>
+{% endblock contents %}

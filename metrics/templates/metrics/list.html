@@ -25,14 +25,17 @@
         <div class="col-md-12">
           <p>
               Metrics are a way of quantitatively assessing, comparing and tracking performance, outcomes, process
-              and more. They can be used to examine trends over time, or between different organisations or locations.
+              and more.
+          </p>
+          <p>
+              They can be used to examine trends over time, or between different organisations or locations.
           </p>
         </div>
       </div>
 
     {% if not object_list %}
     <h1 class="faded text-center">
-      No metrics{% if request.GET.letter %} start with {{ request.GET.letter }}{% endif %}
+      No Metrics{% if request.GET.letter %} start with {{ request.GET.letter }}{% endif %}
     </h1>
     {% else %}
 
@@ -43,7 +46,7 @@
         <div class="row{% if not forloop.first %} content-offset-30{% endif %}">
           <div class="col-md-12">
             <h3 class="sub-row-title">
-              <a href="{{ metric.get_absolute_url }}">{{ metric.indicator }}</a>
+              <a href="{{ metric.get_absolute_url }}">{{ metric.display_name }}</a>
             </h3>
           </div>
         </div>
