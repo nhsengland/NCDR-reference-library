@@ -50,7 +50,8 @@ def metric():
         organisation_owner=organisation,
         report=report,
         team_lead=team,
-        indicator="test",
+        indicator="indicator",
+        display_name="test",
     )
 
 
