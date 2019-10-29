@@ -42,7 +42,7 @@ class Row:
         topic_names = [i.strip() for i in self.row["Topic"].split(";")]
         result = []
         for topic_name in topic_names:
-            if topic_name:
+            if topic_name and not topic_name == "0":
                 topic, _ = Topic.objects.get_or_create(name=topic_name)
                 result.append(topic)
         return result
@@ -70,7 +70,6 @@ class Row:
             "Publication Status": "publication_status",
             "Calculation of metric": "calculation",
             "Comments": "comments",
-            "Strategic Origin": "strategic_origin",
             "Inidcator Type": "indicator_type",
             "Organisation Type": "organisation_type",
             "Desired direction": "desired_direction",
@@ -80,6 +79,9 @@ class Row:
 
         for k, v in mapping.items():
             setattr(metric, v, self.row[k])
+
+        if not self.row["Strategic Origin"] == "0":
+            metric.strategic_origin = self.row["Strategic Origin"]
 
         fks = [
             "numerator",

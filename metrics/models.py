@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.utils.text import slugify
 
 from ncdr.models import BaseModel
 
@@ -62,6 +63,7 @@ class Metric(BaseModel):
 
     class Meta:
         verbose_name = "Metric"
+        ordering = ["display_name"]
 
     def __str__(self):
         return self.display_name
@@ -115,4 +117,12 @@ class TeamLead(AssociatedModel):
 
 
 class Topic(AssociatedModel):
-    pass
+    slug = models.SlugField(max_length=255, blank=True, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.id:
+            self.slug = slugify(self.name)
+        return super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse("topics-detail", kwargs={"slug": self.slug})

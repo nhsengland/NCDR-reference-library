@@ -339,8 +339,12 @@ h1 {
   margin-bottom: 15px;
 }
 
+.card-list .card h3 small {
+  color: inherit;
+}
+
 .card-list .card h3 .sub {
-  font-size: 20px;
+  font-size: 15px;
 }
 
 .card-list .card a {
@@ -749,5 +753,10 @@ hr.divisor {
 
 mark {
   padding: 0;
+}
+
+.table {
+  width: 100%;
+  display: table;
 }
 /*# sourceMappingURL=styles.css.map */

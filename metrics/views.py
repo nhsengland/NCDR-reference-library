@@ -2,18 +2,18 @@ import functools
 import operator
 import string
 
-from django.db.models import Q
+from django.db.models import Count, Q
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, TemplateView
 
-from .models import Metric
+from .models import Metric, Topic
 
 
 class About(TemplateView):
     template_name = "metrics/about.html"
 
 
-class Detail(DetailView):
+class MetricDetail(DetailView):
     model = Metric
     template_name = "metrics/detail.html"
 
@@ -25,10 +25,22 @@ class Detail(DetailView):
             "organisation_owner",
             "report",
             "team_lead",
-        )
+        ).prefetch_related("topics")
+
+    def get_context_data(self, *args, **kwargs):
+        ctx = super().get_context_data(*args, **kwargs)
+        ctx["topics"] = []
+
+        topics = self.object.topics.all()
+
+        for topic in topics:
+            if topic.metric_set.count() > 1:
+                ctx["topics"].append(topic)
+
+        return ctx
 
 
-class List(ListView):
+class AtoZList(ListView):
     model = Metric
     NUMERIC = "0-9"
     ordering = "indicator"
@@ -37,9 +49,9 @@ class List(ListView):
 
     def get_queryset_for_symbol(self, qs, symbol):
         if symbol != self.NUMERIC:
-            return qs.filter(indicator__istartswith=symbol[0])
+            return qs.filter(display_name__istartswith=symbol[0])
 
-        startswith_args = [Q(indicator__startswith=str(i)) for i in range(10)]
+        startswith_args = [Q(display_name__startswith=str(i)) for i in range(10)]
         return qs.filter(functools.reduce(operator.or_, startswith_args))
 
     def get_context_data(self, *args, **kwargs):
@@ -68,6 +80,20 @@ class List(ListView):
         return self.get_queryset_for_symbol(qs, symbol)
 
 
+class TopicList(ListView):
+    model = Topic
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = qs.annotate(metric_count=Count("metric"))
+        qs = qs.filter(metric_count__gt=1)
+        return qs
+
+
+class TopicDetail(DetailView):
+    model = Topic
+
+
 class Search(ListView):
     model = Metric
     template_name = "metrics/search.html"
@@ -79,7 +105,5 @@ class Search(ListView):
         if not q:
             return Metric.objects.none()
         return qs.filter(
-            Q(display_name__icontains=q)
-            | Q(indicator__icontains=q)
-            | Q(definition__icontains=q)
+            Q(display_name__icontains=q) | Q(definition__icontains=q)
         ).distinct()

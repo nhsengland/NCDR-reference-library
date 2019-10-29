@@ -4,8 +4,6 @@
 {% block contents %}
 <div class="card-list container main-content">
   <article>
-    {# if we don't have many results lets not use the clever navigation #}
-    {% if paginator.count > 150 %}
     <nav class="content-offset">
       <div class="row">
         <div class="col-md-12">
@@ -17,7 +15,6 @@
         </div>
       </div>
     </nav>
-    {% endif %}
 
     <div class="row">
       <div class="col-md-12">
@@ -28,7 +25,10 @@
         <div class="col-md-12">
           <p>
               Metrics are a way of quantitatively assessing, comparing and tracking performance, outcomes, process
-              and more. They can be used to examine trends over time, or between different organisations or locations.
+              and more.
+          </p>
+          <p>
+              They can be used to examine trends over time, or between different organisations or locations.
           </p>
         </div>
       </div>
