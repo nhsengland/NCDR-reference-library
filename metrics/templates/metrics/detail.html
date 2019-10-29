@@ -158,9 +158,13 @@
 
           <h3>Team lead</h3>
           <p>{{ metric.team_lead.name }}</p>
+        
+          <h4>Report</h4>
+          <p>{{ metric.report.name }}</p>
 
           {% if metric.metric_lead.name %}
           <h3>Metric lead</h3>
+
           <p>{{ metric.metric_lead.name }}</p>
           {% endif %}
 
