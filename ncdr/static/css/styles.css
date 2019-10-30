@@ -111,10 +111,6 @@ body {
   margin-bottom: 20px;
 }
 
-.content-offset-below-30 {
-    margin-top: 30px;
-}
-
 h3.subheader {
   color: #003087;
   margin-top: 30px;
@@ -760,11 +756,21 @@ mark {
   display: table;
 }
 
-.metric-table .no-border-bottom {
+table.metric-table {
+  margin-top: 60px;
+  margin-bottom: 60px;
+}
+
+table.metric-table thead th, table.metric-table thead td, table.metric-table tbody th, table.metric-table tbody td {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+table.metric-table .no-border-bottom {
   border-bottom: none !important;
 }
 
-.metric-table .no-border-top {
+table.metric-table .no-border-top {
   border-top: none;
   vertical-align: top;
 }

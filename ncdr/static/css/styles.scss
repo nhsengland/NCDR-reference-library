@@ -733,7 +733,16 @@ mark{
     display: table;
 }
 
-.metric-table{
+table.metric-table{
+    margin-top: 60px;
+    margin-bottom: 60px;
+    thead, tbody{
+        th, td{
+            margin-left: 0;
+            padding-left: 0;
+        }
+    }
+
     .no-border-bottom{
         border-bottom: none !important;
     }
