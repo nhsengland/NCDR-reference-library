@@ -40,27 +40,43 @@
         </div>
 
         <div class="nhs-england-well col-md-4">
+          {% if metric.report.name %}
           <h4>Report</h4>
           <p>{{ metric.report.name }}</p>
+          {% endif %}
           {% if metric.strategic_origin %}
             <h4>Strategic origin</h4>
             <p>{{ metric.strategic_origin }}</p>
           {% endif %}
+          {% if metric.indicator_type %}
           <h4>Indicator type</h4>
           <p>{{ metric.indicator_type }}</p>
+          {% endif %}
+          {% if metric.organisation_type %}
           <h4>Organisation type</h4>
           <p>{{ metric.organisation_type }}</p>
+          {% endif %}
+          {% if metric.organisation_owner %}
           <h4>Organisation owner</h4>
           <p>{{ metric.organisation_owner }}</p>
+          {% endif %}
+          {% if topics %}
+            <h4>Topics</h4>
+            <p>
+              {% for topics in topics %}
+                <a href="{{ topics.get_absolute_url }}">{{ topics }}</a>{% if not forloop.last %}, {% endif %}
+              {% endfor %}
+            </p>
+          {% endif %}
         </div>
       </div>
       {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
-      <table class="table metric-table">
+      <table class="table metric-table content-offset-30 content-offset-below-30">
         <thead>
           <tr class="no-border-th">
             <th class="col-md-2 no-border-bottom coloured-header"></th>
-            <th class="col-md-5 no-border-bottom coloured-header">Numerator:</th>
-            <th class="col-md-5 no-border-bottom coloured-header">Denominator:</th>
+            <th class="col-md-5 no-border-bottom coloured-header">Numerator</th>
+            <th class="col-md-5 no-border-bottom coloured-header">Denominator</th>
           </tr>
           <tr>
             <th class="col-md-2 no-border-top"></th>
@@ -104,29 +120,23 @@
       {% endif %}
       <div class="row">
         <div class="col-md-8">
+          {% if metric.publication_status %}
           <h3>Publication status</h3>
           <p>{{ metric.publication_status }}</p>
+          {% endif %}
 
+          {% if metric.team_lead.name %}
           <h3>Team lead</h3>
           <p>{{ metric.team_lead.name }}</p>
-
-          <h4>Report</h4>
-          <p>{{ metric.report.name }}</p>
+          {% endif %}
 
           {% if metric.metric_lead.name %}
           <h3>Metric lead</h3>
           <p>{{ metric.metric_lead.name }}</p>
-          {% endif %} {% if metrics.comments %}
+          {% endif %}
+          {% if metrics.comments %}
           <h3>Comments</h3>
           <p>{{ metric.comments }}</p>
-          {% endif %}
-          {% if topics %}
-            <h3>Topics</h3>
-            <p>
-              {% for topics in topics %}
-                <a href="{{ topics.get_absolute_url }}">{{ topics }}</a>{% if not forloop.last %}, {% endif %}
-              {% endfor %}
-            </p>
           {% endif %}
         </div>
       </div>

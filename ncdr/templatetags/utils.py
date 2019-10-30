@@ -33,4 +33,7 @@ def pagination(context):
     else:
         query = ""
     context["paginator_query_string"] = query
+    page_num = context["page_obj"].number
+    context["show_elipsis"] = page_num + 5 < context["paginator"].num_pages
+    context["additional_pages"] = page_num + 5 <= context["paginator"].num_pages
     return context

@@ -16,6 +16,12 @@
           {% endif %}
         {% endif %}
       {% endfor %}
+      {% if show_elipsis %}
+        <li class="disabled"><span>&#8230;</span></li>
+      {% endif %}
+      {% if additional_pages %}
+        <li><a href="?page={{ paginator.num_pages }}{{ paginator_query_string }}">{{ paginator.num_pages }}</a></li>
+      {% endif %}
       {% if page_obj.has_next %}
         <li><a href="?page={{ page_obj.next_page_number }}{{ paginator_query_string }}">&raquo;</a></li>
       {% else %}

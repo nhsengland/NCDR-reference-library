@@ -43,7 +43,6 @@ class MetricDetail(DetailView):
 class AtoZList(ListView):
     model = Metric
     NUMERIC = "0-9"
-    ordering = "indicator"
     paginate_by = 30
     template_name = "metrics/list.html"
 

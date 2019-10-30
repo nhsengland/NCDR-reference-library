@@ -111,6 +111,10 @@ body {
   margin-bottom: 20px;
 }
 
+.content-offset-below-30 {
+    margin-top: 30px;
+}
+
 h3.subheader {
   color: #003087;
   margin-top: 30px;
@@ -762,5 +766,6 @@ mark {
 
 .metric-table .no-border-top {
   border-top: none;
+  vertical-align: top;
 }
 /*# sourceMappingURL=styles.css.map */
