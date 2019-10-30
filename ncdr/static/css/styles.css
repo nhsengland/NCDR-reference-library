@@ -755,4 +755,12 @@ mark {
   width: 100%;
   display: table;
 }
+
+.metric-table .no-border-bottom {
+  border-bottom: none !important;
+}
+
+.metric-table .no-border-top {
+  border-top: none;
+}
 /*# sourceMappingURL=styles.css.map */

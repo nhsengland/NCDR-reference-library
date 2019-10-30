@@ -55,12 +55,17 @@
         </div>
       </div>
       {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
-      <table class="table">
+      <table class="table metric-table">
         <thead>
+          <tr class="no-border-th">
+            <th class="col-md-2 no-border-bottom coloured-header"></th>
+            <th class="col-md-5 no-border-bottom coloured-header">Numerator:</th>
+            <th class="col-md-5 no-border-bottom coloured-header">Denominator:</th>
+          </tr>
           <tr>
-            <th></th>
-            <th>Numerator: <br /> {{ metric.numerator.value }}</th>
-            <th>Denominator: <br /> {{ metric.denominator.value }}</th>
+            <th class="col-md-2 no-border-top"></th>
+            <th class="col-md-5 no-border-top">{{ metric.numerator.value }}</th>
+            <th class="col-md-5 no-border-top">{{ metric.denominator.value }}</th>
           </tr>
         </thead>
         <tbody>

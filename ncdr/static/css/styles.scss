@@ -732,3 +732,13 @@ mark{
     width: 100%;
     display: table;
 }
+
+.metric-table{
+    .no-border-bottom{
+        border-bottom: none !important;
+    }
+
+    .no-border-top{
+        border-top: none;
+    }
+}
