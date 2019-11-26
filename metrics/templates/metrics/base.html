@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 {% load utils %}
+{% load static %}
 {% block title %}Metrics{% endblock %}
+{% block logo %}
+<a class="logo" href="http://www.england.nhs.uk">
+  <img src="{% static "/img/logos/nhs-logo-rev.svg" %}" class="nhs-logo" alt="NHS England Logo" title="NHS England Logo" data-intro="Clicking on this logo will always take you back to the homepage (just in case you get lost).">
+</a>
+{% endblock %}
 {% block header_title %}
   Metrics
 {% endblock header_title %}

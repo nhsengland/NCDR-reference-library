@@ -158,6 +158,10 @@ header.masthead .logo img {
   width: auto;
 }
 
+header.masthead .logo img.nhs-logo {
+  height: 65px;
+}
+
 header.masthead .subtitle {
   display: inline-block;
   padding-left: 30px;

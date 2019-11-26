@@ -198,6 +198,10 @@ header.masthead{
     display: inline-block;
     height: 90px;
     width: auto;
+
+    &.nhs-logo{
+        height: 65px;
+    }
   }
 
   .subtitle{
