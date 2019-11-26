@@ -125,16 +125,6 @@
           <h3>Publication status</h3>
           <p>{{ metric.publication_status }}</p>
           {% endif %}
-
-          {% if metric.team_lead.name %}
-          <h3>Team lead</h3>
-          <p>{{ metric.team_lead.name }}</p>
-          {% endif %}
-
-          {% if metric.metric_lead.name %}
-          <h3>Metric lead</h3>
-          <p>{{ metric.metric_lead.name }}</p>
-          {% endif %}
           {% if metrics.comments %}
           <h3>Comments</h3>
           <p>{{ metric.comments }}</p>
