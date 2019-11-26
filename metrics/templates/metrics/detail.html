@@ -71,69 +71,73 @@
         </div>
       </div>
       <h3>Numerator and Denominator</h3>
-      {% if metric.numerator.source != "N/A" and metric.denominator.source != "N/A" %}
       <table class="table metric-table content-offset content-offset-below">
         <thead>
           <tr class="no-border-th">
             <th class="col-md-2 no-border-bottom coloured-header"></th>
             <th class="col-md-5 no-border-bottom coloured-header">Numerator</th>
+            {% if not metric.denominator.not_applicable %}
             <th class="col-md-5 no-border-bottom coloured-header">Denominator</th>
+            {% endif %}
           </tr>
           <tr>
             <th class="col-md-2 no-border-top"></th>
             <th class="col-md-5 no-border-top">{{ metric.numerator.value }}</th>
+            {% if not metric.denominator.not_applicable %}
             <th class="col-md-5 no-border-top">{{ metric.denominator.value }}</th>
+            {% endif %}
           </tr>
         </thead>
         <tbody>
           <tr>
             <th>Source</th>
             <td>{{ metric.numerator.source }}</td>
+            {% if not metric.denominator.not_applicable %}
             <td>{{ metric.denominator.source }}</td>
+            {% endif %}
           </tr>
           <tr>
             <th>Source address</th>
             <td>{{ metric.numerator.source_address | urlizetrunc:50 }}</td>
+            {% if not metric.denominator.not_applicable %}
             <td>{{ metric.denominator.source_address | urlizetrunc:50 }}</td>
+            {% endif %}
           </tr>
           <tr>
             <th>Lowest level of granularity of data</th>
             <td>{{ metric.numerator.lowest_level_granularity }}</td>
+            {% if not metric.denominator.not_applicable %}
             <td>{{ metric.denominator.lowest_level_granularity }}</td>
+            {% endif %}
           </tr>
           <tr>
             <th>Frequency of data</th>
             <td>{{ metric.numerator.frequency }}</td>
+            {% if not metric.denominator.not_applicable %}
             <td>{{ metric.denominator.frequency }}</td>
+            {% endif %}
           </tr>
           <tr>
             <th>Timeliness of data</th>
             <td>{{ metric.numerator.timeliness }}</td>
+            {% if not metric.denominator.not_applicable %}
             <td>{{ metric.denominator.timeliness }}</td>
+            {% endif %}
           </tr>
           <tr>
             <th>Refresh mechanism</th>
             <td>{{ metric.numerator.refresh_mechanism }}</td>
+            {% if not metric.denominator.not_applicable %}
             <td>{{ metric.denominator.refresh_mechanism }}</td>
+            {% endif %}
           </tr>
         </tbody>
       </table>
-      {% endif %}
       <div class="row">
         <div class="col-md-8">
           {% if metric.publication_status %}
           <h3>Publication status</h3>
           <p>{{ metric.publication_status }}</p>
-          {% endif %}
-
-          {% if metric.team_lead.name %}
-          <h3>Team lead</h3>
-          <p>{{ metric.team_lead.name }}</p>
-          {% endif %}
-
-          {% if metric.metric_lead.name %}
-          <h3>Metric lead</h3>
-          <p>{{ metric.metric_lead.name }}</p>
           {% endif %}
           {% if metrics.comments %}
           <h3>Comments</h3>

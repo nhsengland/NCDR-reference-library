@@ -68,12 +68,14 @@
     <header class="masthead">
       <div style="overflow-y: hidden" class="container">
         <div class="row banner">
-          <div class="col-md-6">
+          <div class="col-md-7">
             <div class="top-logo">
               <hgroup class="header-strapline">
+                {% block logo %}
                 <a class="logo" href="http://www.england.nhs.uk">
                   <img src="{% static "/img/logos/nhs-england-logo-rev.svg" %}" alt="NHS England Data Catalogue Logo" title="NHS England Data Catalogue Logo" data-intro="Clicking on this logo will always take you back to the homepage (just in case you get lost).">
                 </a>
+                {% endblock %}
                 <h2 class="subtitle">
                   {% block header_title %}
                     NCDR Reference Library
@@ -82,7 +84,7 @@
         	    </hgroup>
             </div>
           </div>
-          <div class="col-md-5 col-md-push-1 text-right">
+          <div class="col-md-5 text-right hidden-xs">
             <div class="ncdr-search">
               {% block header_search %}
               <form method="get" action="{% url 'search_redirect' %}">
