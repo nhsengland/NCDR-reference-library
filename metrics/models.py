@@ -103,6 +103,10 @@ class Operand(models.Model):
     def __str__(self):
         return f"{self.type}: {self.source}"
 
+    @property
+    def not_applicable(self):
+        return self.value.strip() == "N/A"
+
 
 class Organisation(AssociatedModel):
     pass
