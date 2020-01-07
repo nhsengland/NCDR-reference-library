@@ -1,4 +1,5 @@
 {% extends "metrics/base.html" %}
+{% load markdown_deux_tags %}
 {% load utils %}
 
 {% block contents %}
@@ -51,7 +52,7 @@
           </div>
         </div>
 
-        <p>{{ metric.definition }}</p>
+        <p>{{ metric.definition | markdown }}</p>
 
         {% if not forloop.last %}
         <hr />

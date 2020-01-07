@@ -26,7 +26,9 @@ class Metric(BaseModel):
     topics = models.ManyToManyField("Topic")
 
     organisation_owner = models.ForeignKey("Organisation", on_delete=models.CASCADE)
-    report = models.ForeignKey("Report", on_delete=models.CASCADE)
+    report = models.ForeignKey(
+        "Report", null=True, blank=True, on_delete=models.CASCADE
+    )
     team_lead = models.ForeignKey(
         "TeamLead", null=True, blank=True, on_delete=models.CASCADE
     )

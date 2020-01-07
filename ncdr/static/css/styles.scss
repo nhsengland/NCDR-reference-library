@@ -765,4 +765,8 @@ table.metric-table{
         border-top: none;
         vertical-align: top;
     }
+
+    td p:last-child{
+        margin-bottom: 0;
+    }
 }
