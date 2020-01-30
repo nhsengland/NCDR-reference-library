@@ -118,6 +118,8 @@ TEMPLATES = [
 
 WSGI_APPLICATION = "ncdr.wsgi.application"
 
+SHORT_DATETIME_FORMAT = "d/m/Y P"
+
 
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases

@@ -630,9 +630,15 @@ hr {
     width: 50px;
   }
 
+  span.version-type {
+    display: inline-block;
+    text-align: center;
+    width: 190px;
+  }
+
   span.created {
     display: inline-block;
-    width: 250px;
+    width: 190px;
   }
 
   span.author {
@@ -640,7 +646,7 @@ hr {
   }
 
   span.processed {
-    width: 215px;
+    width: 190px;
   }
 
   span.published {
