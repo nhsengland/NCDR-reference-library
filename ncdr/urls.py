@@ -30,6 +30,7 @@ from .views.version import (  # Timeline,
     SwitchToLatestVersion,
     SwitchToVersion,
     UnPublishVersion,
+    UploadMetrics,
     UploadNcdr,
     VersionList,
 )
@@ -94,6 +95,7 @@ urlpatterns = [
     # path("timeline", Timeline.as_view(), name="timeline"),
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
     path("upload-ncdr", UploadNcdr.as_view(), name="upload-ncdr"),
+    path("upload-metrics", UploadMetrics.as_view(), name="upload-metrics"),
     path("versions/", VersionList.as_view(), name="version_list"),
     path("metrics/", include("metrics.urls")),
 ]

@@ -121,7 +121,36 @@ class UploadNcdr(LoginRequiredMixin, CreateView):
         queue.enqueue(import_data, version.pk)
 
         messages.info(
-            self.request, f"Version {version.pk} has been queued for processing."
+            self.request, f"NCDR Version {version.pk} has been queued for processing."
+        )
+
+        return redirect("version_list")
+
+
+class UploadMetrics(LoginRequiredMixin, CreateView):
+    form_class = forms.UploadMetricsForm
+    template_name = "metrics_version_upload.html"
+
+    @transaction.atomic()
+    def form_valid(self, form):
+        # create a Version with the files
+        try:
+            version = Version.create_metrics(
+                metrics_file=self.request.FILES["metrics"],
+                is_published=False,
+                created_by=self.request.user,
+            )
+        except VersionAlreadyExists as e:
+            msg = f"These files already exist in Version {e.existing_pk}"
+            messages.error(self.request, msg)
+            return redirect("version_list")
+
+        # enqueue with RQ
+        queue.enqueue(import_data, version.pk)
+
+        messages.info(
+            self.request,
+            f"Metrics Version {version.pk} has been queued for processing.",
         )
 
         return redirect("version_list")

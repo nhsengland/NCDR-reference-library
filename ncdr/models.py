@@ -373,10 +373,7 @@ class Version(models.Model):
             pass
 
         return Version.objects.create(
-            created_by=created_by,
-            is_published=is_published,
-            files_hash=files_hash,
-            version_type=self.NCDR,
+            created_by=created_by, is_published=is_published, files_hash=files_hash
         )
 
     @classmethod
@@ -384,7 +381,7 @@ class Version(models.Model):
         self, *, db_structure, definitions, grouping_mapping, is_published, created_by
     ):
         """
-        Wrap creating a Version with attached files
+        Wrap creating an Ncdr Version with attached files
 
         The versioned_path function uses the passed Version instance's PK to
         generate the path for uploading files to.  However when creating an
@@ -405,6 +402,29 @@ class Version(models.Model):
         version.db_structure = db_structure
         version.definitions = definitions
         version.grouping_mapping = grouping_mapping
+        version.version_type = self.NCDR
+        version.save()
+        return version
+
+    @classmethod
+    def create_metrics(self, *, metrics_file, is_published, created_by):
+        """
+        Wrap creating an Metrics Version with attached files
+
+        The versioned_path function uses the passed Version instance's PK to
+        generate the path for uploading files to.  However when creating an
+        instance with Version.objects.create we can't guarantee version.pk will
+        have been set as the model is not typically saved before the function
+        is run.
+        """
+        contents_hash = md5(metrics_file.read()).digest()
+
+        # reset file streams after reading them to generate hash
+        metrics_file.seek(0)
+
+        version = self._create(is_published, created_by, contents_hash)
+        version.metrics_file = metrics_file
+        version.version_type = self.METRICS
         version.save()
         return version
 

@@ -35,6 +35,9 @@ def import_data(version_pk):
     log = logger.bind(version=version.pk)
 
     try:
+        if version.metrics:
+            log.exception("We are not process metrics at this time")
+            return
         table.load_file(to_text(version.db_structure), version)
         column.load_file(to_text(version.definitions), version)
         grouping.load_file(to_text(version.grouping_mapping), version)
