@@ -1,5 +1,5 @@
 from .models import Version
 
 
-def latest_version(request):
-    return {"latest_version": Version.objects.latest()}
+def ncdr_latest_version(request):
+    return {"ncdr_latest_version": Version.objects.latest()}

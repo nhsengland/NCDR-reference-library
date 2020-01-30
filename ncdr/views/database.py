@@ -11,7 +11,7 @@ class DatabaseDetail(DetailView):
 
     def get_queryset(self):
         """Only show the user their currently selected verison."""
-        return super().get_queryset().filter(version=self.request.version)
+        return super().get_queryset().filter(version=self.request.ncdr_version)
 
 
 class DatabaseList(ListView):
@@ -20,4 +20,4 @@ class DatabaseList(ListView):
 
     def get_queryset(self):
         """Only show the user their currently selected verison."""
-        return super().get_queryset().filter(version=self.request.version)
+        return super().get_queryset().filter(version=self.request.ncdr_version)

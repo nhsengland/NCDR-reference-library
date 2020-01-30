@@ -69,7 +69,7 @@ class Search(ListView):
         q = self.request.GET.get("q", "")
 
         # Required for ListView to function
-        self.object_list = search(info["model"], request.version, q)
+        self.object_list = search(info["model"], request.ncdr_version, q)
 
         # Get model and result counts
         models = [x["model"] for x in searchableLUT.values()]
@@ -77,7 +77,7 @@ class Search(ListView):
             {
                 "name": model.__name__.lower(),
                 "display_name": model._meta.verbose_name_plural,
-                "count": search(model, request.version, q).count(),
+                "count": search(model, request.ncdr_version, q).count(),
             }
             for model in models
         ]
@@ -102,7 +102,7 @@ class SearchRedirect(RedirectView):
             return full_url
 
         for model in [x["model"] for x in searchableLUT.values()]:
-            if search(model, self.request.version, q).exists():
+            if search(model, self.request.ncdr_version, q).exists():
                 url = reverse("search", kwargs={"model_name": model.__name__.lower()})
                 break
         return full_url

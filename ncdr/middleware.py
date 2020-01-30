@@ -13,12 +13,12 @@ def latest_version(get_response):
         )
 
         if request.user.is_authenticated and request.user.current_version:
-            version = request.user.current_version
+            ncdr_version = request.user.current_version
         else:
             # Unauthenticated users should get a published version too
-            version = Version.objects.filter(is_published=True).latest()
+            ncdr_version = Version.objects.filter(is_published=True).latest()
 
-        request.version = version
+        request.ncdr_version = ncdr_version
 
         return get_response(request)
 
