@@ -326,9 +326,10 @@ class Version(models.Model):
         "User", null=True, on_delete=models.SET_NULL, related_name="versions"
     )
 
-    db_structure = models.FileField(upload_to=versioned_path, null=True)
-    definitions = models.FileField(upload_to=versioned_path, null=True)
-    grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
+    db_structure = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    definitions = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    grouping_mapping = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    metrics = models.FileField(upload_to=versioned_path, blank=True, null=True)
     version_type = models.TextField(choices=VERSION_TYPES)
 
     # this is used to mark when a version has finished being processed
@@ -363,6 +364,22 @@ class Version(models.Model):
         )
 
     @classmethod
+    def _create(self, is_published, created_by, files_hash):
+        try:
+            processed_versions = Version.objects.exclude(last_process_at=None)
+            existing_version = processed_versions.get(files_hash=files_hash)
+            raise VersionAlreadyExists(existing_pk=existing_version.pk)
+        except Version.DoesNotExist:
+            pass
+
+        return Version.objects.create(
+            created_by=created_by,
+            is_published=is_published,
+            files_hash=files_hash,
+            version_type=self.NCDR,
+        )
+
+    @classmethod
     def create_ncdr(
         self, *, db_structure, definitions, grouping_mapping, is_published, created_by
     ):
@@ -384,20 +401,7 @@ class Version(models.Model):
         definitions.seek(0)
         grouping_mapping.seek(0)
 
-        try:
-            processed_versions = Version.objects.exclude(last_process_at=None)
-            existing_version = processed_versions.get(files_hash=contents_hash)
-            raise VersionAlreadyExists(existing_pk=existing_version.pk)
-        except Version.DoesNotExist:
-            pass
-
-        version = Version.objects.create(
-            created_by=created_by,
-            is_published=is_published,
-            files_hash=contents_hash,
-            version_type=self.NCDR,
-        )
-
+        version = self._create(is_published, created_by, contents_hash)
         version.db_structure = db_structure
         version.definitions = definitions
         version.grouping_mapping = grouping_mapping
