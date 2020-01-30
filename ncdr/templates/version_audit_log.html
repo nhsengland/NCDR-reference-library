@@ -13,7 +13,7 @@
       <div class="line {% cycle '' 'striped' %}">
         <span class="date">{{ log.created_at }}</span>
         <span>
-          Version {{ log.version_id }} was published by {{ log.created_by.email }}
+          {{ log.version.version_type }} version {{ log.version_id }} was published by {{ log.created_by.email }}
         </span>
       </div>
       {% endfor %}
