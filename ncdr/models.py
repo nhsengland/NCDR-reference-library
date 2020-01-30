@@ -317,6 +317,11 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Version(models.Model):
     """Track a related models version number."""
 
+    METRICS = "Metrics"
+    NCDR = "NCDR"
+
+    VERSION_TYPES = ((METRICS, METRICS), (NCDR, NCDR))
+
     created_by = models.ForeignKey(
         "User", null=True, on_delete=models.SET_NULL, related_name="versions"
     )
@@ -324,6 +329,7 @@ class Version(models.Model):
     db_structure = models.FileField(upload_to=versioned_path, null=True)
     definitions = models.FileField(upload_to=versioned_path, null=True)
     grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
+    version_type = models.TextField(choices=VERSION_TYPES)
 
     # this is used to mark when a version has finished being processed
     last_process_at = models.DateTimeField(null=True)
@@ -357,7 +363,7 @@ class Version(models.Model):
         )
 
     @classmethod
-    def create(
+    def create_ncdr(
         self, *, db_structure, definitions, grouping_mapping, is_published, created_by
     ):
         """
@@ -386,14 +392,16 @@ class Version(models.Model):
             pass
 
         version = Version.objects.create(
-            created_by=created_by, is_published=is_published, files_hash=contents_hash
+            created_by=created_by,
+            is_published=is_published,
+            files_hash=contents_hash,
+            version_type=self.NCDR,
         )
 
         version.db_structure = db_structure
         version.definitions = definitions
         version.grouping_mapping = grouping_mapping
         version.save()
-
         return version
 
     def publish(self, user):

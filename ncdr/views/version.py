@@ -105,7 +105,7 @@ class Upload(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         # create a Version with the files
         try:
-            version = Version.create(
+            version = Version.create_ncdr(
                 db_structure=self.request.FILES["db_structure"],
                 definitions=self.request.FILES["definitions"],
                 grouping_mapping=self.request.FILES["grouping_mapping"],
