@@ -36,7 +36,7 @@ def import_data(version_pk):
     log = logger.bind(version=version.pk)
 
     try:
-        if version.metrics_file:
+        if version.version_type == Version.METRICS:
             metrics.load_file(to_text(version.metrics_file), version)
         else:
             table.load_file(to_text(version.db_structure), version)
