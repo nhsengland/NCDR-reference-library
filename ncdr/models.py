@@ -304,8 +304,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         return _user_has_module_perms(self, module)
 
     def switch_to_latest_version(self):
-        """Update this user to the latest published Version"""
-        self.current_version = Version.objects.filter(is_published=True).latest()
+        """
+        Update this user to the latest published Version, this is done by setting their
+        current version to None
+        """
+        self.current_version = None
         self.save()
 
     def switch_to_version(self, version):

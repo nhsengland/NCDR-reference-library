@@ -49,7 +49,10 @@ class SwitchToLatestVersion(LoginRequiredMixin, RedirectView):
         return super().get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.request.GET.get("next", reverse("index_view"))
+        if self.request.user.current_version.version_type == Version.METRICS:
+            return self.request.GET.get("next", reverse("topics-list"))
+        else:
+            return self.request.GET.get("next", reverse("index_view"))
 
 
 class SwitchToVersion(LoginRequiredMixin, RedirectView):
@@ -66,7 +69,10 @@ class SwitchToVersion(LoginRequiredMixin, RedirectView):
         return super().get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.request.GET.get("next", reverse("index_view"))
+        if self.request.user.current_version.version_type == Version.METRICS:
+            return self.request.GET.get("next", reverse("topics-list"))
+        else:
+            return self.request.GET.get("next", reverse("index_view"))
 
 
 class Timeline(LoginRequiredMixin, ListView):
