@@ -9,8 +9,8 @@ from django.views.generic import CreateView, ListView, RedirectView, View
 
 from services.rq import queue
 
+from .. import forms
 from ..exceptions import VersionAlreadyExists
-from ..forms import UploadForm
 from ..importers import import_data
 from ..models import Version, VersionAuditLog
 
@@ -97,9 +97,9 @@ class UnPublishVersion(LoginRequiredMixin, View):
         return redirect(request.GET.get("next", reverse("index_view")))
 
 
-class Upload(LoginRequiredMixin, CreateView):
-    form_class = UploadForm
-    template_name = "version_upload.html"
+class UploadNcdr(LoginRequiredMixin, CreateView):
+    form_class = forms.UploadNcdrForm
+    template_name = "ncdr_version_upload.html"
 
     @transaction.atomic()
     def form_valid(self, form):
