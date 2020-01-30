@@ -136,7 +136,7 @@ class UploadMetrics(LoginRequiredMixin, CreateView):
         # create a Version with the files
         try:
             version = Version.create_metrics(
-                metrics_file=self.request.FILES["metrics"],
+                metrics_file=self.request.FILES["metrics_file"],
                 is_published=False,
                 created_by=self.request.user,
             )

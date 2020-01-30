@@ -329,7 +329,7 @@ class Version(models.Model):
     db_structure = models.FileField(upload_to=versioned_path, blank=True, null=True)
     definitions = models.FileField(upload_to=versioned_path, blank=True, null=True)
     grouping_mapping = models.FileField(upload_to=versioned_path, blank=True, null=True)
-    metrics = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    metrics_file = models.FileField(upload_to=versioned_path, blank=True, null=True)
     version_type = models.TextField(choices=VERSION_TYPES)
 
     # this is used to mark when a version has finished being processed

@@ -17,6 +17,9 @@ class AssociatedModel(models.Model):
 
 
 class Metric(BaseModel):
+    version = models.ForeignKey(
+        "ncdr.Version", on_delete=models.CASCADE, related_name="metrics"
+    )
     denominator = models.ForeignKey(
         "Operand", on_delete=models.CASCADE, related_name="denominator_metrics"
     )
