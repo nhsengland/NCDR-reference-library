@@ -350,7 +350,9 @@ class Version(models.Model):
 
         # Unpublish all existing Versions first so we only ever have one
         # version published at a time
-        Version.objects.update(is_published=False)
+        Version.objects.filter(version_type=self.version_type).update(
+            is_published=False
+        )
 
         self.is_published = publish
         self.save()

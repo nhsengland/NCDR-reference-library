@@ -165,6 +165,15 @@ class VersionList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        current_version = Version.objects.get(is_published=True)
-        ctx["sub_title"] = f"Current version: {current_version.pk}"
+        current_ncdr_version = Version.objects.get(
+            is_published=True, version_type=Version.NCDR
+        )
+        current_metrics_version = Version.objects.get(
+            is_published=True, version_type=Version.METRICS
+        )
+
+        ctx[
+            "sub_title"
+        ] = f"Current NCDR version: {current_ncdr_version.pk}, \
+Current Metrics version: {current_metrics_version.pk}"
         return ctx

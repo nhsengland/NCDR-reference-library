@@ -14,7 +14,7 @@ class GroupingDetail(ListView):
         try:
             self.object = (
                 Grouping.objects.filter(
-                    dataelement__column__table__schema__database__version=request.ncdr_version
+                    dataelement__column__table__schema__database__version=request.version
                 )
                 .distinct()
                 .get(slug=self.kwargs["slug"])
@@ -34,14 +34,14 @@ class GroupingDetail(ListView):
             super()
             .get_queryset()
             .filter(
-                column__table__schema__database__version=self.request.ncdr_version,
+                column__table__schema__database__version=self.request.version,
                 grouping=self.object,
             )
             .prefetch_related(
                 Prefetch(
                     "column_set",
                     queryset=Column.objects.filter(
-                        table__schema__database__version=self.request.ncdr_version
+                        table__schema__database__version=self.request.version
                     ),
                 )
             )
@@ -58,7 +58,7 @@ class GroupingList(ListView):
             super()
             .get_queryset()
             .filter(
-                dataelement__column__table__schema__database__version=self.request.ncdr_version
+                dataelement__column__table__schema__database__version=self.request.version
             )
             .distinct()
         )

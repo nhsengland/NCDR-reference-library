@@ -16,9 +16,7 @@ class TableDetail(DetailView):
 
     def get_queryset(self):
         try:
-            database = self.request.ncdr_version.databases.get(
-                name=self.kwargs["db_name"]
-            )
+            database = self.request.version.databases.get(name=self.kwargs["db_name"])
         except Database.DoesNotExist:
             raise Http404
 

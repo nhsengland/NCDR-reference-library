@@ -19,7 +19,7 @@ class DataElementDetail(ListView):
         try:
             self.object = (
                 DataElement.objects.filter(
-                    column__table__schema__database__version=request.ncdr_version
+                    column__table__schema__database__version=request.version
                 )
                 .distinct()
                 .get(slug=self.kwargs["slug"])
@@ -39,7 +39,7 @@ class DataElementDetail(ListView):
             super()
             .get_queryset()
             .filter(
-                table__schema__database__version=self.request.ncdr_version,
+                table__schema__database__version=self.request.version,
                 data_element=self.object,
             )
             .select_related("table__schema__database")
@@ -77,7 +77,7 @@ class DataElementList(ListView):
 
     def get_queryset(self):
         columns = Column.objects.filter(
-            table__schema__database__version=self.request.ncdr_version
+            table__schema__database__version=self.request.version
         )
         qs = (
             super()
