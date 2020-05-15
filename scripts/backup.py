@@ -26,9 +26,9 @@ def upload(bucket_name, local_path, key):
     s3.Bucket(bucket_name).upload_file(local_path, f"backups/{key}")
 
 
-def main(db_name, db_user, backups_dir, bucket_name):
+def main(branch, db_name, db_user, backups_dir, bucket_name):
     today = datetime.now().strftime("%Y-%m-%d")
-    backup_name = f"{today}-{db_name}.dump"
+    backup_name = f"{today}-{db_name}-{branch}.dump"
 
     full_backup_name = os.path.join(backups_dir, backup_name)
     dump_database(db_name, db_user, full_backup_name)
@@ -37,7 +37,7 @@ def main(db_name, db_user, backups_dir, bucket_name):
 
 if __name__ == "__main__":
     try:
-        _, db_name, db_user, backups_dir, bucket_name = sys.argv
-        main(db_name, db_user, backups_dir, bucket_name)
+        _, branch, db_name, db_user, backups_dir, bucket_name = sys.argv
+        main(branch, db_name, db_user, backups_dir, bucket_name)
     except Exception as e:
         print(f"errored with {e}")
