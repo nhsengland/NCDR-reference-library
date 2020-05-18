@@ -116,3 +116,10 @@
   become: yes
   command: "circusctl restart"
   ignore_errors: True
+
+- name: setup the disk space cron
+  cron:
+    name: "disk space"
+    minute: "0"
+    user: "ubuntu"
+    job: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py check_disk_space"
