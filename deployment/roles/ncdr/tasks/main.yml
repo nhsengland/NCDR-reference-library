@@ -122,4 +122,4 @@
     name: "disk space"
     minute: "0"
     user: "ubuntu"
-    job: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py check_disk_space"
+    job: "cd {{ PROJECT_PATH }} && envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py check_disk_space"
