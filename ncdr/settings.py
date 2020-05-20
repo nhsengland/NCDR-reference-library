@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_ses",
     "markdown_deux",
     "bootstrapform",
     "ncdr",
@@ -89,8 +90,15 @@ WHITENOISE_STATIC_PREFIX = "/static/"
 # Finally, MEDIA_ROOT is used to provide a path to store uploaded files under.
 AWS_ACCESS_KEY_ID = env.str("AWS_ACCESS_KEY_ID", default="")
 AWS_SECRET_ACCESS_KEY = env.str("AWS_SECRET_ACCESS_KEY", default="")
+AWS_SES_REGION_ENDPOINT = "email.eu-west-1.amazonaws.com"
 AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
+
+if AWS_SECRET_ACCESS_KEY:
+    EMAIL_BACKEND = "django_ses.SESBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+
 DEFAULT_FILE_STORAGE = env.str(
     "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
 )
@@ -152,6 +160,8 @@ AUTH_USER_MODEL = "ncdr.User"
 # Configure error notification email address for RQ logger
 # https://docs.djangoproject.com/en/2.1/ref/settings/#std:setting-ADMINS
 ADMINS = [("Support", "support@openhealthcare.org.uk")]
+
+DEFAULT_FROM_EMAIL = "support@openhealthcare.org.uk"
 
 
 # Logging
