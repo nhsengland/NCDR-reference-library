@@ -7,7 +7,7 @@ import boto3
 
 
 def dump_database(db_name, db_user, backup_name):
-    print(f"Dumping db_name: {db_name}")
+    print(f"Dumping db name: {db_name}")
     command = f"pg_dump {db_name} -U {db_user}"
     print(f"Running: {command}")
     with open(backup_name, "wb") as out:
