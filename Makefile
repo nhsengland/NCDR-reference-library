@@ -11,9 +11,13 @@ help:
 	@echo "    make sort             run the linter."
 	@echo "    make test             run the tests."
 
-.PHONY: deploy
-deploy:
-	(cd deployment; ansible-playbook setup-server.yml -i hosts.dev --vault-password-file ~/.vault.txt)
+.PHONY: deploy-prod
+deploy-prod:
+	(cd deployment; ansible-playbook setup-prod.yml -i hosts.dev --vault-password-file ~/.vault.txt)
+
+.PHONY: deploy-dev
+deploy-dev:
+	(cd deployment; ansible-playbook setup-dev.yml -i hosts.dev --vault-password-file ~/.vault.txt)
 
 .PHONY: fix
 fix:
