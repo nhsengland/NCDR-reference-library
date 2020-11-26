@@ -30,6 +30,6 @@
   cron:
     name: "backup"
     minute: "0"
-    hour: "1"
+    hour: "19"
     user: "ubuntu"
     job: "{{ PROJECT_PATH }}/scripts/backup.sh"
