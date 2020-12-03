@@ -1,1 +1,5 @@
+{% if DEV %}
+{{ DEV_AWS_BUCKET_NAME }}
+{% else %}
 {{ AWS_BUCKET_NAME }}
+{% endif %}
