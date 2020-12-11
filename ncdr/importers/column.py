@@ -71,5 +71,10 @@ def load_file(fd, version):
                     link=link,
                 )
             )
+            # batch create the columns in 100s
+            if len(columns) > 100:
+                Column.objects.bulk_create(columns)
+                columns = []
 
+    # create everything that's left
     Column.objects.bulk_create(columns)
