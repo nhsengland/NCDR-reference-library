@@ -2,7 +2,8 @@
 help:
 	@echo "Usage:"
 	@echo "    make help             prints this help."
-	@echo "    make deploy           deploy to the server configured in hosts.dev."
+	@echo "    make deploy-prod      deploy to production with the server configured in hosts.dev."
+	@echo "    make deploy-dev       deploy a development build to the server configured in hosts.dev."
 	@echo "    make fix              fix formatting and import sort order."
 	@echo "    make format           run the auto-format check."
 	@echo "    make lint             run the import sorter check."
