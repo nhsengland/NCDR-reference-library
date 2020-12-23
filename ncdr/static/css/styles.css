@@ -571,10 +571,6 @@ hr {
   display: none;
 }
 
-.derivation {
-  word-break: break-all;
-}
-
 .nhsuk-icon {
   display: inline-block;
   height: 30px;
