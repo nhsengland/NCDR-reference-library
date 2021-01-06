@@ -19,7 +19,12 @@ from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
 
 from .views import ColumnDetail, Login
-from .views.column_image import ColumnImageCreate, ColumnImageEdit, ColumnImageList
+from .views.column_image import (
+    ColumnImageCreate,
+    ColumnImageEdit,
+    ColumnImageList,
+    ColumnPathOptionsList,
+)
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
@@ -103,6 +108,11 @@ urlpatterns = [
     path(
         "column_images/<int:pk>/", ColumnImageEdit.as_view(), name="column_image_edit"
     ),
+    path(
+        "column_images/column_path_options_list",
+        ColumnPathOptionsList.as_view(),
+        name="column_path_options_list",
+    )
     # path("metrics/", include("metrics.urls")),
 ]
 

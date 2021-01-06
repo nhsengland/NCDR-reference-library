@@ -767,4 +767,40 @@ hr.divisor {
 mark {
   padding: 0;
 }
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+  width: 100%;
+  border-radius: 0;
+  border: none;
+  background-color: #0072ce;
+  color: #FFF;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice a.btn {
+  color: #FFF;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice a:hover.btn {
+  color: #cccccc;
+}
+
+.preview-mode .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #AC6C82;
+}
+
+.preview-mode .select2-container--default .select2-selection--multiple .select2-selection__choice a.btn {
+  color: #FFBC67;
+}
+
+.preview-mode .select2-container--default .select2-selection--multiple .select2-selection__choice a:hover.btn {
+  color: #ffe9cd;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+  color: #FFF;
+}
+
+.select2-selection__choice__remove {
+  float: right;
+}
 /*# sourceMappingURL=styles.css.map */

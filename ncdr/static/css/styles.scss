@@ -733,3 +733,18 @@ hr.divisor {
 mark{
     padding: 0;
 }
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    width: 100%;
+    border-radius: 0;
+    border: none;
+    @include primary-background-colour-light;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: $text-colour-on-dark;
+}
+
+.select2-selection__choice__remove{
+    float: right;
+}

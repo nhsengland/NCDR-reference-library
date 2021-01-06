@@ -7,7 +7,9 @@
     <div class="row">
       <div class="col-md-8">
         {% csrf_token %}
-        {{ form }}
+        {{ form.image }}
+        <select name="relation" required="" id="id_relation" multiple="" style="width:100%;">
+        </select>
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-6">
             <button class="btn btn-success" type="submit">Create</button>
@@ -17,4 +19,52 @@
     </div>
   </div>
 </form>
+{{ form.get_selected_json|json_script:"selected-json" }}
+<script>
+  $(document).ready(function() {
+    var formatSelected = function(state){
+      var group;
+      var s = $(
+        '<span><span class="select-choice"></span> <span class="small select-group"></span></span>'
+      )
+
+      if(!state.loading){
+        var group = state.group || state.element.dataset.group;
+        s.find(".select-group").text("(" + group + ")");
+      }
+
+      s.find(".select-choice").text(state.text);
+      return s;
+    }
+
+    var relationElement = $('#id_relation');
+
+    relationElement.select2({
+      cache: true,
+      closeOnSelect: false,
+      placeholder: " Select columns",
+      templateSelection: formatSelected,
+      templateResult: formatSelected,
+      ajax: {
+        url: '{% url "column_path_options_list" %}',
+        dataType: 'json',
+        delay: 250,
+      }
+    });
+
+    var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
+    selectedData.forEach(function(selectedDataRow){
+      var option = new Option(selectedDataRow.text, selectedDataRow.id, true, true);
+      option.dataset.group = selectedDataRow.group;
+      relationElement.append(option);
+      relationElement.trigger('change');
+      relationElement.trigger({
+        type: 'select2:select',
+        params: {
+            data: selectedDataRow
+        }
+      });
+    });
+  });
+</script>
 {% endblock contents %}
