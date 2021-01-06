@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<form method="POST" enctype="multipart/form-data">
+  <div class="container main-content">
+    {% include 'partials/column_image_menu.html' with TITLE=view.title %}
+    <div class="row">
+      <div class="col-md-8">
+        {% csrf_token %}
+        {{ form }}
+        <div class="form-group">
+          <div class="col-sm-offset-3 col-sm-6">
+            <button class="btn btn-success" type="submit">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{% endblock contents %}

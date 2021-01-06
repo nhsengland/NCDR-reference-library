@@ -314,6 +314,45 @@ class User(AbstractBaseUser, PermissionsMixin):
         self.save()
 
 
+class ColumnImage(models.Model):
+    """
+    A model contains an image which is then mapped
+    to a column of
+    {{ database_name }}.{{ schema_name }}.{{ table_name }}.{{ column_name }}
+
+    This is a string mapping based on name because an image
+    will show for all columns which map rather than
+    being version dependent.
+    """
+
+    image = models.ImageField(upload_to="imgs")
+    created = models.DateTimeField(default=timezone.now)
+
+    def column_paths(self):
+        return [i.path() for i in self.columnimagerelation_set.all()]
+
+
+class ColumnImageRelation(models.Model):
+    created = models.DateTimeField(default=timezone.now)
+    column_image = models.ForeignKey("ColumnImage", on_delete=models.CASCADE)
+    database_name = models.TextField(default="")
+    schema_name = models.TextField(default="")
+    table_name = models.TextField(default="")
+    column_name = models.TextField(default="")
+
+    class Meta:
+        unique_together = [
+            "column_image",
+            "database_name",
+            "schema_name",
+            "table_name",
+            "column_name",
+        ]
+
+    def path(self):
+        return f"{self.database_name}.{self.schema_name}{self.table_name}.{self.column_name}"
+
+
 class Version(models.Model):
     """Track a related models version number."""
 

@@ -586,7 +586,7 @@ hr {
   stroke: #007f3b;
 }
 
-.versions .line {
+.versions .line, .column-images .line {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -596,51 +596,72 @@ hr {
   padding: 10px 20px;
 }
 
-.versions .striped {
+.versions a.line, .column-images a.line {
+  text-decoration: none;
+  cursor: pointer;
+  color: inherit;
+  -webkit-transition: background-color 0.2s ease-in-out;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.versions a.line:hover, .column-images a.line:hover {
+  background: #0072ce;
+  color: #fff;
+}
+
+.preview-mode .versions a.line:hover, .preview-mode .column-images a.line:hover {
+  background-color: #202b3a;
+}
+
+.versions .striped, .column-images .striped {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.versions span {
+.versions span, .column-images span {
   display: inline-block;
 }
 
-.versions span.number {
+.versions span.number, .column-images span.number {
   display: inline-block;
   text-align: center;
   width: 50px;
 }
 
-.versions span.created {
+.versions span.created, .column-images span.created {
   display: inline-block;
   width: 250px;
 }
 
-.versions span.author {
+.versions span.author, .column-images span.author {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
 
-.versions span.processed {
+.versions span.processed, .column-images span.processed {
   width: 215px;
 }
 
-.versions span.published {
+.versions span.file_name, .column-images span.file_name {
+  width: 250px;
+}
+
+.versions span.published, .column-images span.published {
   height: 30px;
   text-align: center;
   width: 95px;
 }
 
-.versions span.tools {
+.versions span.tools, .column-images span.tools {
   text-align: left;
   width: 165px;
 }
 
-.versions span.tools a {
+.versions span.tools a, .column-images span.tools a {
   display: inline-block;
 }
 
-.versions span.tools form {
+.versions span.tools form, .column-images span.tools form {
   display: inline-block;
   margin-left: 10px;
 }

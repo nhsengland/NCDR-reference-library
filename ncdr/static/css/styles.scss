@@ -591,11 +591,18 @@ hr {
 }
 
 // Version List
-.versions {
+.versions, .column-images{
   .line {
     align-items: center;
     display: flex;
     padding: 10px 20px;
+  }
+
+  a.line{
+      text-decoration: none;
+      cursor: pointer;
+      color:  inherit;
+      @include primary-background-colour-hover
   }
 
   .striped {
@@ -623,6 +630,10 @@ hr {
 
   span.processed {
     width: 215px;
+  }
+
+  span.file_name{
+    width: 250px;
   }
 
   span.published {

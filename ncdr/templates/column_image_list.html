@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load utils %}
+
+{% block contents %}
+<div class="container main-content column-images">
+  {% include 'partials/column_image_menu.html' with TITLE="Column Images" %}
+  <div class="line">
+    <span class="file_name"><strong>File name</strong></span>
+    <span class="paths"><strong>Columns</strong></span>
+  </div>
+
+  {% for column_image in object_list %}
+  <a href="{% url 'column_image_edit' pk=column_image.id %}" class="line {% cycle '' 'striped' %}">
+    <span class="file_name">
+      {{ column_image.image.name }}
+    </span>
+    <span class="paths">
+      {% for path in column_image.column_paths %}
+        {{ path }}<br />
+      {% endfor %}
+    </span>
+  </a>
+  {% endfor %}
+</div>
+{% endblock contents %}

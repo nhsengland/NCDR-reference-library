@@ -19,6 +19,7 @@ from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
 
 from .views import ColumnDetail, Login
+from .views.column_image import ColumnImageCreate, ColumnImageEdit, ColumnImageList
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
@@ -95,6 +96,13 @@ urlpatterns = [
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
     path("upload", Upload.as_view(), name="upload"),
     path("versions/", VersionList.as_view(), name="version_list"),
+    path("column_images/", ColumnImageList.as_view(), name="column_image_list"),
+    path(
+        "column_images/create/", ColumnImageCreate.as_view(), name="column_image_create"
+    ),
+    path(
+        "column_images/<int:pk>/", ColumnImageEdit.as_view(), name="column_image_edit"
+    ),
     # path("metrics/", include("metrics.urls")),
 ]
 
