@@ -14,6 +14,13 @@ class UploadForm(forms.ModelForm):
 
 class ColumnImageForm(forms.ModelForm):
     def get_selected_json(self):
+        """
+        The instances existing selected elements for use by the
+        select 2 input.
+
+        The "id" field is the html options 'val' attribute and
+        is what is saved back to the form.
+        """
         result = []
         if self.instance:
             for relation in self.instance.columnimagerelation_set.all():
@@ -38,6 +45,13 @@ class ColumnImageForm(forms.ModelForm):
 
     @transaction.atomic
     def save(self, *args, **kwargs):
+        """
+        Saves the instance and its relationships.
+
+        The relations come in as
+        a list of json serialized of [db.name, schema.name, table.name, column.name]
+        """
+
         save_result = super().save(*args, **kwargs)
         relations = []
         for column_path_json in self.data.getlist("relation"):

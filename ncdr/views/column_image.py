@@ -40,6 +40,19 @@ class ColumnImageDelete(LoginRequiredMixin, DeleteView):
 
 
 class ColumnPathOptionsList(LoginRequiredMixin, ListView):
+    """
+    An api end point that sends a paginated list to the frontend of
+    the published column names for use by the add/edit
+    ColumnImage forms relation select2 input.
+
+    The "id" is actually the html option the value used by the select2
+    widget. For this we use a list of json serialized of
+    [db.name, schema.name, table.name, column.name]
+
+    If there is a q GET parameter we query the columns with an icontains on the
+    name.
+    """
+
     paginate_by = 10
     ordering = (
         "table__schema__database__name",
@@ -67,7 +80,7 @@ class ColumnPathOptionsList(LoginRequiredMixin, ListView):
             results.append(
                 {"id": json.dumps(column_path), "text": column.name, "group": path}
             )
-        results = sorted(results, key=lambda x: x["text"])
+    results = sorted(results, key=lambda x: x["text"])
         return {"results": results, "pagination": {"more": ctx["page_obj"].has_next()}}
 
     def render_to_response(self, context, **response_kwargs):
