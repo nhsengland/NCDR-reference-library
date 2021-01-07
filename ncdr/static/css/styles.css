@@ -656,6 +656,17 @@ hr {
   width: 95px;
 }
 
+.versions span.image, .column-images span.image {
+  width: 250px;
+  overflow: hidden;
+  text-align: center;
+}
+
+.versions span.image img, .column-images span.image img {
+  height: 80px;
+  max-width: 240px;
+}
+
 .versions span.tools, .column-images span.tools {
   text-align: left;
   width: 165px;
