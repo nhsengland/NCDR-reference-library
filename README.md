@@ -34,10 +34,15 @@ To import new CSVs via the web form, run the Queue worker:
 
 ## Deployment
 
-    1. update hosts.dev (and use keys natch)
-    1. set your branch in deployment/group_vars/all
-    1. create .vault.txt and put the vault password in there
-    1. `make deploy`
+    1. Update hosts.dev.
+    2. Set your branch in deployment/group_vars/all
+    3. `make deploy-prod` deploys prod, this means setting up back ups and restoring with the latest snapshot.
+
+    It must be run after 19:00 every day when the snap shot is taken. Otherwise the deployment will fail.
+
+    4. `make deploy-dev` deploys , this means no back ups and restoring from the first snap shot it can find from the last 4 days.
+    5. The ckan instance has a hard coded link to the NCDR box in the nginx config. Change this to point to your newly deployed instance.
+    6. Make sure that the NCDR instance is accessible, that the database is populated and that one can log in.
 
 To view the encrypted variables:
 

@@ -2,7 +2,8 @@
 help:
 	@echo "Usage:"
 	@echo "    make help             prints this help."
-	@echo "    make deploy           deploy to the server configured in hosts.dev."
+	@echo "    make deploy-prod      deploy to production with the server configured in hosts.dev."
+	@echo "    make deploy-dev       deploy a development build to the server configured in hosts.dev."
 	@echo "    make fix              fix formatting and import sort order."
 	@echo "    make format           run the auto-format check."
 	@echo "    make lint             run the import sorter check."
@@ -11,9 +12,13 @@ help:
 	@echo "    make sort             run the linter."
 	@echo "    make test             run the tests."
 
-.PHONY: deploy
-deploy:
-	(cd deployment; ansible-playbook setup-server.yml -i hosts.dev --vault-password-file ~/.vault.txt)
+.PHONY: deploy-prod
+deploy-prod:
+	(cd deployment; ansible-playbook setup-prod.yml -i hosts.dev --vault-password-file ~/.vault.txt)
+
+.PHONY: deploy-dev
+deploy-dev:
+	(cd deployment; ansible-playbook setup-dev.yml -i hosts.dev --vault-password-file ~/.vault.txt)
 
 .PHONY: fix
 fix:
