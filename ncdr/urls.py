@@ -21,6 +21,7 @@ from django.views.generic import RedirectView, TemplateView
 from .views import ColumnDetail, Login
 from .views.column_image import (
     ColumnImageCreate,
+    ColumnImageDelete,
     ColumnImageEdit,
     ColumnImageList,
     ColumnPathOptionsList,
@@ -104,6 +105,11 @@ urlpatterns = [
     path("column_images/", ColumnImageList.as_view(), name="column_image_list"),
     path(
         "column_images/create/", ColumnImageCreate.as_view(), name="column_image_create"
+    ),
+    path(
+        "column_images/delete/<int:pk>/",
+        ColumnImageDelete.as_view(),
+        name="column_image_create",
     ),
     path(
         "column_images/<int:pk>/", ColumnImageEdit.as_view(), name="column_image_edit"

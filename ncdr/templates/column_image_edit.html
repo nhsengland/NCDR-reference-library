@@ -11,9 +11,16 @@
         <select name="relation" required="" id="id_relation" multiple="" style="width:100%;">
         </select>
         <div class="form-group">
-          <div class="col-sm-offset-3 col-sm-6">
-            <button class="btn btn-success" type="submit">Create</button>
-          </div>
+          {% if object %}
+            <div class="pull-left">
+              <a href="{% url 'column_image_create' pk=object.pk %}" class="btn btn-danger">
+                Delete
+              </a>
+            </div>
+            <button class="btn btn-success pull-right" type="submit">Update</button>
+          {% else %}
+            <button class="btn btn-success pull-right" type="submit">Create</button>
+          {% endif %}
         </div>
       </div>
     </div>

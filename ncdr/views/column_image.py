@@ -3,7 +3,7 @@ import json
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.urls import reverse_lazy
-from django.views.generic import CreateView, ListView, UpdateView
+from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
 from ..forms import ColumnImageForm
 from ..models import Column, ColumnImage
@@ -31,6 +31,12 @@ class ColumnImageEdit(LoginRequiredMixin, UpdateView):
 
     def title(self):
         return f"Edit column image: {self.object.image.name}"
+
+
+class ColumnImageDelete(LoginRequiredMixin, DeleteView):
+    template_name = "column_image_delete.html"
+    model = ColumnImage
+    success_url = reverse_lazy("column_image_list")
 
 
 class ColumnPathOptionsList(LoginRequiredMixin, ListView):
