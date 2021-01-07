@@ -4,19 +4,16 @@
 <form method="POST">
   <div class="container main-content">
     {% include 'partials/column_image_menu.html' with TITLE=view.title %}
-    <div class="row">
-      <div class="col-md-8">
+    <div class="row content-offset-30">
+      <div class="col-md-8 col-md-offset-2 text-center">
         {% csrf_token %}
-        <h1>
+        <h3 class="content-offset-below-40">
             Delete you want to delete {{ object.image.name}}
-            <br>
-            <button class="btn btn-lg btn-danger" type="submit">Delete</button>
-        </h1>
-        <div class="form-group">
-          <a href="{% url 'column_image_edit' pk=object.pk %}" class="btn btn-danger">
-            Cancel
-          </a>
-        </div>
+        </h3>
+        <a href="{% url 'column_image_edit' pk=object.pk %}" class="btn btn-lg btn-default">
+          Cancel
+        </a>
+        <button class="btn btn-lg btn-danger content-ooffset-" type="submit">Delete</button>
       </div>
     </div>
   </div>

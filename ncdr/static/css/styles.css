@@ -111,6 +111,10 @@ body {
   margin-bottom: 20px;
 }
 
+.content-offset-below-40 {
+  margin-bottom: 40px;
+}
+
 h3.subheader {
   color: #003087;
   margin-top: 30px;

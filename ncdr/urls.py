@@ -109,7 +109,7 @@ urlpatterns = [
     path(
         "column_images/delete/<int:pk>/",
         ColumnImageDelete.as_view(),
-        name="column_image_create",
+        name="column_image_delete",
     ),
     path(
         "column_images/<int:pk>/", ColumnImageEdit.as_view(), name="column_image_edit"
