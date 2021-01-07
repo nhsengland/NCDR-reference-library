@@ -1,5 +1,6 @@
 import json
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, ListView, UpdateView
@@ -8,13 +9,13 @@ from ..forms import ColumnImageForm
 from ..models import Column, ColumnImage
 
 
-class ColumnImageList(ListView):
+class ColumnImageList(LoginRequiredMixin, ListView):
     template_name = "column_image_list.html"
     model = ColumnImage
     order_by = "-created"
 
 
-class ColumnImageCreate(CreateView):
+class ColumnImageCreate(LoginRequiredMixin, CreateView):
     template_name = "column_image_edit.html"
     form_class = ColumnImageForm
     model = ColumnImage
@@ -22,7 +23,7 @@ class ColumnImageCreate(CreateView):
     title = "Create column image"
 
 
-class ColumnImageEdit(UpdateView):
+class ColumnImageEdit(LoginRequiredMixin, UpdateView):
     template_name = "column_image_edit.html"
     form_class = ColumnImageForm
     model = ColumnImage
@@ -32,7 +33,7 @@ class ColumnImageEdit(UpdateView):
         return f"Edit column image: {self.object.image.name}"
 
 
-class ColumnPathOptionsList(ListView):
+class ColumnPathOptionsList(LoginRequiredMixin, ListView):
     paginate_by = 10
     ordering = (
         "table__schema__database__name",
