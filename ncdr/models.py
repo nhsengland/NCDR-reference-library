@@ -1,5 +1,6 @@
 from hashlib import md5
 
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -11,6 +12,7 @@ from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.module_loading import import_string
 
 from .exceptions import VersionAlreadyExists
 
@@ -325,7 +327,9 @@ class ColumnImage(models.Model):
     being version dependent.
     """
 
-    image = models.ImageField(upload_to="imgs")
+    image = models.ImageField(
+        upload_to="imgs", storage=import_string(settings.MEDIA_FILE_STORAGE)()
+    )
     created = models.DateTimeField(default=timezone.now)
 
     def column_paths(self):

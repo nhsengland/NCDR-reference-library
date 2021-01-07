@@ -80,7 +80,7 @@ class ColumnPathOptionsList(LoginRequiredMixin, ListView):
             results.append(
                 {"id": json.dumps(column_path), "text": column.name, "group": path}
             )
-    results = sorted(results, key=lambda x: x["text"])
+        results = sorted(results, key=lambda x: x["text"])
         return {"results": results, "pagination": {"more": ctx["page_obj"].has_next()}}
 
     def render_to_response(self, context, **response_kwargs):
