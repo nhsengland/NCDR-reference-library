@@ -4,11 +4,14 @@
 {% block contents %}
 <div class="container main-content column-images">
   {% include 'partials/column_image_menu.html' with TITLE="Column Images" %}
+
+  {% if not object_list.exists %}
+  <h1 class="faded text-center">No column images have been added</h1>
+  {% else %}
   <div class="line">
     <span class="file_name"><strong>File name</strong></span>
     <span class="paths"><strong>Columns</strong></span>
   </div>
-
   {% for column_image in object_list %}
   <a href="{% url 'column_image_edit' pk=column_image.id %}" class="line {% cycle '' 'striped' %}">
     <span class="file_name">
@@ -21,5 +24,6 @@
     </span>
   </a>
   {% endfor %}
+  {% endif %}
 </div>
 {% endblock contents %}
