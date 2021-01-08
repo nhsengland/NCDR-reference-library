@@ -2,7 +2,7 @@
 
 {% block contents %}
 <form method="POST" enctype="multipart/form-data">
-  <div class="container main-content">
+  <div class="container main-content column-image-edit">
     {% include 'partials/column_image_menu.html' with TITLE=view.title %}
     <div class="row content-offset-30">
       <div class="col-md-8 col-md-offset-2">
@@ -10,9 +10,13 @@
         <div class="row content-offset-below-40">
           <div class="form-group">
             <label for="id_db_structure" class="col-sm-3 control-label">Image</label>
-            <div class="col-sm-9">{{ form.image }}</div>
+            <div class="col-sm-9">
+              {{ form.image }}
+              <span class="text-danger">{{ form.image.errors }}</span>
+            </div>
           </div>
         </div>
+
         <div class="row content-offset-below-40">
           <div class="form-group">
             <label for="id_db_structure" class="col-sm-3 control-label">Relations</label>

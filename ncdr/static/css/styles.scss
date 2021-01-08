@@ -672,6 +672,14 @@ hr {
   }
 }
 
+.column-image-edit{
+    ul.errorlist{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
+}
+
 // Version audit log
 .audit-log {
   .line {

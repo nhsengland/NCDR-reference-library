@@ -681,6 +681,12 @@ hr {
   margin-left: 10px;
 }
 
+.column-image-edit ul.errorlist {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
 .audit-log .line {
   -webkit-box-align: center;
       -ms-flex-align: center;
