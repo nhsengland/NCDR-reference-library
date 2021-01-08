@@ -7,6 +7,7 @@ Docs: https://docs.pytest.org/en/latest/fixture.html#conftest-py-sharing-fixture
 from tempfile import NamedTemporaryFile
 
 import pytest
+from django.core.files.storage import FileSystemStorage
 
 from metrics.models import Lead, Metric, Operand, Organisation, Report, Team
 from ncdr.models import (
@@ -20,6 +21,12 @@ from ncdr.models import (
     User,
     Version,
 )
+
+
+@pytest.fixture(autouse=True)
+def use_local_media_storage(settings):
+    settings.MEDIA_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    ColumnImage._meta.get_field("image").storage = FileSystemStorage()
 
 
 @pytest.fixture
