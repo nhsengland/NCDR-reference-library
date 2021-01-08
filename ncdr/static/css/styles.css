@@ -684,6 +684,14 @@ hr {
   margin-left: 10px;
 }
 
+.column-detail-image {
+  text-align: center;
+}
+
+.column-detail-image img {
+  max-width: 100%;
+}
+
 .column-image-edit ul.errorlist {
   list-style-type: none;
   padding: 0;

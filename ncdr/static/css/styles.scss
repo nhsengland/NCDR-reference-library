@@ -675,6 +675,14 @@ hr {
   }
 }
 
+.column-detail-image{
+    text-align: center;
+    img{
+        max-width: 100%;
+    }
+
+}
+
 .column-image-edit{
     ul.errorlist{
         list-style-type: none;
