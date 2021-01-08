@@ -4,6 +4,8 @@ Shared fixtures
 Docs: https://docs.pytest.org/en/latest/fixture.html#conftest-py-sharing-fixture-functions
 """
 
+from tempfile import NamedTemporaryFile
+
 import pytest
 
 from metrics.models import Lead, Metric, Operand, Organisation, Report, Team
@@ -138,7 +140,8 @@ def unpublished_version():
 
 @pytest.fixture
 def column_image():
-    column_image = ColumnImage.objects.create()
+    tmp_file = NamedTemporaryFile(suffix=".jpg")
+    column_image = ColumnImage.objects.create(image=tmp_file.name)
     column_image.columnimagerelation_set.create(
         database_name="test_db_name_1",
         schema_name="test_schema_name_1",

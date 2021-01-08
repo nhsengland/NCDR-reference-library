@@ -1,9 +1,8 @@
 import json
+from tempfile import NamedTemporaryFile
 
 import pytest
-from django.core.files.temp import NamedTemporaryFile
 from django.urls import reverse
-from PIL import Image
 
 from ncdr.models import Column, ColumnImage
 
@@ -69,21 +68,28 @@ def test_get_column_image_edit(column_image, client, user):
 
 def test_post_column_image(column_image, client, user):
     client.force_login(user)
-    image = Image.new("RGB", (100, 100))
-    image_file = NamedTemporaryFile(suffix=".jpg")
-    image.save(image_file)
-    image_file.seek(0)
-    post_dict = {
-        "id": column_image.id,
-        "image": image_file,
-        "relation": [
-            json.dumps(
-                ["new_db_name", "new_schema_name", "new_table_name", "new_column_name"]
-            )
-        ],
-    }
+    tmp_file = NamedTemporaryFile(suffix=".jpg")
+    with open(tmp_file.name, "w") as tf:
+        tf.write("something")
+
     url = reverse("column_image_edit", kwargs={"pk": column_image.id})
-    resp = client.post(url, post_dict)
+    with open(tmp_file.name) as tf:
+        post_dict = {
+            "id": column_image.id,
+            "image": tf,
+            "relation": [
+                json.dumps(
+                    [
+                        "new_db_name",
+                        "new_schema_name",
+                        "new_table_name",
+                        "new_column_name",
+                    ]
+                )
+            ],
+        }
+        resp = client.post(url, post_dict)
+    assert resp.status_code == 302
     column_image = ColumnImage.objects.get(id=column_image.id)
     relation = column_image.columnimagerelation_set.get()
     assert resp.status_code == 302
