@@ -94,6 +94,20 @@ class Column(BaseModel, models.Model):
             kwargs={"db_name": self.table.schema.database.name, "pk": self.pk},
         )
 
+    @cached_property
+    def images(self):
+        table = self.table
+        schema = table.schema
+        database = schema.database
+
+        relations = ColumnImageRelation.objects.filter(
+            database_name=database.name,
+            schema_name=schema.name,
+            table_name=table.name,
+            column_name=self.name,
+        ).select_related("column_image")
+        return list(set([i.column_image for i in relations]))
+
     @property
     def link_display_name(self):
         if self.link:
