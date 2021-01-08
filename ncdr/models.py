@@ -8,6 +8,7 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
+from django.core.validators import FileExtensionValidator
 from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
@@ -327,8 +328,11 @@ class ColumnImage(models.Model):
     being version dependent.
     """
 
-    image = models.ImageField(
-        upload_to="imgs", storage=import_string(settings.MEDIA_FILE_STORAGE)()
+    # We use a file field to allow the user to upload svgs
+    image = models.FileField(
+        upload_to="imgs",
+        validators=[FileExtensionValidator(["gif", "jpg", "jpeg", "png", "svg"])],
+        storage=import_string(settings.MEDIA_FILE_STORAGE)(),
     )
     created = models.DateTimeField(default=timezone.now)
 
