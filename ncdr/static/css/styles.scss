@@ -594,8 +594,25 @@ hr {
   stroke: #007f3b;
 }
 
+
+.column-images{
+    img{
+      height: 80px;
+      max-width: 240px;
+    }
+
+    .striped{
+        background-color: rgba(0, 0, 0, .05);
+    }
+    .padding{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+  }
+
 // Version List
-.versions, .column-images{
+.versions{
   .line {
     align-items: center;
     display: flex;
@@ -636,25 +653,11 @@ hr {
     width: 215px;
   }
 
-  span.file_name{
-    width: 250px;
-  }
-
   span.published {
     height: 30px;
+    flex-grow: 1;
     text-align: center;
     width: 95px;
-  }
-
-  span.image{
-    width: 250px;
-    overflow: hidden;
-    text-align: center;
-
-    img{
-      height: 80px;
-      max-width: 240px;
-    }
   }
 
   span.tools {

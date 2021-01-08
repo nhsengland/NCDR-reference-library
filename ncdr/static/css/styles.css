@@ -590,7 +590,22 @@ hr {
   stroke: #007f3b;
 }
 
-.versions .line, .column-images .line {
+.column-images img {
+  height: 80px;
+  max-width: 240px;
+}
+
+.column-images .striped {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.column-images .padding {
+  padding-top: 20px;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+}
+
+.versions .line {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -600,7 +615,7 @@ hr {
   padding: 10px 20px;
 }
 
-.versions a.line, .column-images a.line {
+.versions a.line {
   text-decoration: none;
   cursor: pointer;
   color: inherit;
@@ -608,75 +623,63 @@ hr {
   transition: background-color 0.2s ease-in-out;
 }
 
-.versions a.line:hover, .column-images a.line:hover {
+.versions a.line:hover {
   background: #0072ce;
   color: #fff;
 }
 
-.preview-mode .versions a.line:hover, .preview-mode .column-images a.line:hover {
+.preview-mode .versions a.line:hover {
   background-color: #202b3a;
 }
 
-.versions .striped, .column-images .striped {
+.versions .striped {
   background-color: rgba(0, 0, 0, 0.05);
 }
 
-.versions span, .column-images span {
+.versions span {
   display: inline-block;
 }
 
-.versions span.number, .column-images span.number {
+.versions span.number {
   display: inline-block;
   text-align: center;
   width: 50px;
 }
 
-.versions span.created, .column-images span.created {
+.versions span.created {
   display: inline-block;
   width: 250px;
 }
 
-.versions span.author, .column-images span.author {
+.versions span.author {
   -webkit-box-flex: 1;
       -ms-flex-positive: 1;
           flex-grow: 1;
 }
 
-.versions span.processed, .column-images span.processed {
+.versions span.processed {
   width: 215px;
 }
 
-.versions span.file_name, .column-images span.file_name {
-  width: 250px;
-}
-
-.versions span.published, .column-images span.published {
+.versions span.published {
   height: 30px;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
   text-align: center;
   width: 95px;
 }
 
-.versions span.image, .column-images span.image {
-  width: 250px;
-  overflow: hidden;
-  text-align: center;
-}
-
-.versions span.image img, .column-images span.image img {
-  height: 80px;
-  max-width: 240px;
-}
-
-.versions span.tools, .column-images span.tools {
+.versions span.tools {
   text-align: left;
   width: 165px;
 }
 
-.versions span.tools a, .column-images span.tools a {
+.versions span.tools a {
   display: inline-block;
 }
 
-.versions span.tools form, .column-images span.tools form {
+.versions span.tools form {
   display: inline-block;
   margin-left: 10px;
 }

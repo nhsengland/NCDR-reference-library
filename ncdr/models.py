@@ -350,8 +350,11 @@ class ColumnImage(models.Model):
     )
     created = models.DateTimeField(default=timezone.now)
 
-    def column_paths(self):
-        return [i.path() for i in self.columnimagerelation_set.all()]
+    def columns(self):
+        result = []
+        for relation in self.columnimagerelation_set.all():
+            result.append((relation.path(), relation.column_url()))
+        return result
 
 
 class ColumnImageRelation(models.Model):
@@ -373,6 +376,17 @@ class ColumnImageRelation(models.Model):
 
     def path(self):
         return f"{self.database_name}.{self.schema_name}{self.table_name}.{self.column_name}"
+
+    def column_url(self):
+        column = Column.objects.filter(
+            table__schema__database__version__is_published=True,
+            table__schema__database__name=self.database_name,
+            table__schema__name=self.schema_name,
+            table__name=self.table_name,
+            name=self.column_name,
+        ).first()
+        if column:
+            return column.get_absolute_url()
 
 
 class Version(models.Model):
