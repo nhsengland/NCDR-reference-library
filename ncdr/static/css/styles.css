@@ -835,4 +835,18 @@ mark {
 .select2-selection__choice__remove {
   float: right;
 }
+
+.select2-results__option[aria-selected=true] {
+  display: none;
+}
+
+.select2-results__option--selected {
+  display: none;
+}
+
+.colum-image-selection {
+  width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /*# sourceMappingURL=styles.css.map */
