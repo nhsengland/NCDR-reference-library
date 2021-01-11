@@ -843,4 +843,10 @@ mark {
 .select2-results__option--selected {
   display: none;
 }
+
+.colum-image-selection {
+  width: 95%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 /*# sourceMappingURL=styles.css.map */

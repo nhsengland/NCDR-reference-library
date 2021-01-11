@@ -46,7 +46,7 @@
     var formatSelected = function(state){
       var group;
       var s = $(
-        '<span><span class="select-choice"></span> <span class="small select-group"></span></span>'
+        '<div class="colum-image-selection"><span class="select-choice"></span> <span class="small select-group"></span></div>'
       )
 
       if(!state.loading){
@@ -71,6 +71,31 @@
         dataType: 'json',
         delay: 250,
       }
+    });
+
+    // the default functionality of select2 changes the previoulys selected thing
+    // to text after you press backspace.
+    // this stops that behavour
+    $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
+        var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+
+        Search.prototype.searchRemoveChoice = function () {
+            oldRemoveChoice.apply(this, arguments);
+            this.$search.val('');
+        };
+
+        relationElement.select2({
+          cache: true,
+          closeOnSelect: false,
+          placeholder: " Select columns",
+          templateSelection: formatSelected,
+          templateResult: formatSelected,
+          ajax: {
+            url: '{% url "column_path_options_list" %}',
+            dataType: 'json',
+            delay: 250,
+          }
+        });
     });
 
     var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
