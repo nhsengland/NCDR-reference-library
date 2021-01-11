@@ -835,4 +835,12 @@ mark {
 .select2-selection__choice__remove {
   float: right;
 }
+
+.select2-results__option[aria-selected=true] {
+  display: none;
+}
+
+.select2-results__option--selected {
+  display: none;
+}
 /*# sourceMappingURL=styles.css.map */
