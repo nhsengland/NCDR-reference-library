@@ -42,6 +42,9 @@
 </form>
 {{ form.get_selected_json|json_script:"selected-json" }}
 <script>
+  // the already selected/saved data
+  var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
+
   $(document).ready(function() {
     var formatSelected = function(state){
       var group;
@@ -86,7 +89,6 @@
       });
 
       // prepulate the data with the data already selected
-      var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
       selectedData.forEach(function(selectedDataRow){
           var option = new Option(selectedDataRow.text, selectedDataRow.id, true, true);
           option.dataset.group = selectedDataRow.group;
@@ -98,6 +100,10 @@
               data: selectedDataRow
             }
           });
+      });
+
+      $(document).on('keyup keydown', 'input.select2-search__field', function(e) {
+        relationElement.resize();
       });
 
       // a work around to move the drop down when the selection
