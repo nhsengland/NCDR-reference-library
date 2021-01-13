@@ -60,55 +60,51 @@
 
     var relationElement = $('#id_relation');
 
-    relationElement.select2({
-      cache: true,
-      closeOnSelect: false,
-      placeholder: " Select columns",
-      templateSelection: formatSelected,
-      templateResult: formatSelected,
-      ajax: {
-        url: '{% url "column_path_options_list" %}',
-        dataType: 'json',
-        delay: 250,
-      }
-    });
-
     // the default functionality of select2 changes the previoulys selected thing
     // to text after you press backspace.
     // this stops that behavour
     $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
-        var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+      var oldRemoveChoice = Search.prototype.searchRemoveChoice;
 
-        Search.prototype.searchRemoveChoice = function () {
-            oldRemoveChoice.apply(this, arguments);
-            this.$search.val('');
-        };
+      // on backspace delete the whole element rather than just a part
+      Search.prototype.searchRemoveChoice = function () {
+          oldRemoveChoice.apply(this, arguments);
+          this.$search.val('');
+      };
 
-        relationElement.select2({
-          cache: true,
-          closeOnSelect: false,
-          placeholder: " Select columns",
-          templateSelection: formatSelected,
-          templateResult: formatSelected,
-          ajax: {
-            url: '{% url "column_path_options_list" %}',
-            dataType: 'json',
-            delay: 250,
-          }
-        });
-    });
-
-    var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
-    selectedData.forEach(function(selectedDataRow){
-      var option = new Option(selectedDataRow.text, selectedDataRow.id, true, true);
-      option.dataset.group = selectedDataRow.group;
-      relationElement.append(option);
-      relationElement.trigger('change');
-      relationElement.trigger({
-        type: 'select2:select',
-        params: {
-            data: selectedDataRow
+      relationElement.select2({
+        cache: true,
+        closeOnSelect: false,
+        placeholder: " Select columns",
+        templateSelection: formatSelected,
+        templateResult: formatSelected,
+        ajax: {
+          url: '{% url "column_path_options_list" %}',
+          dataType: 'json',
+          delay: 250,
         }
+      });
+
+      // prepulate the data with the data already selected
+      var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
+      selectedData.forEach(function(selectedDataRow){
+          var option = new Option(selectedDataRow.text, selectedDataRow.id, true, true);
+          option.dataset.group = selectedDataRow.group;
+          relationElement.append(option);
+          relationElement.trigger('change');
+          relationElement.trigger({
+            type: 'select2:select',
+            params: {
+              data: selectedDataRow
+            }
+          });
+      });
+
+      // a work around to move the drop down when the selection
+      // has been changed
+      // https://github.com/select2/select2/issues/4377
+      relationElement.on("change", function(evt) {
+        relationElement.resize();
       });
     });
   });
