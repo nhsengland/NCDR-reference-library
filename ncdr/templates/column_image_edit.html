@@ -42,6 +42,10 @@
 </form>
 {{ form.get_selected_json|json_script:"selected-json" }}
 <script>
+  // the already selected/saved data
+  var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
+  var existingIds = selectedData.map(function(x){return x.id});
+
   $(document).ready(function() {
     var formatSelected = function(state){
       var group;
@@ -82,11 +86,17 @@
           url: '{% url "column_path_options_list" %}',
           dataType: 'json',
           delay: 250,
+          processResults: function (data) {
+            // initially selected results are moving the input box in awkward ways on initial load
+            // so lets filter them out.
+            var results = data.results.filter(function(x){ return existingIds.indexOf(x.id) === -1 });
+            data.results = results;
+            return data;
+          }
         }
       });
 
       // prepulate the data with the data already selected
-      var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
       selectedData.forEach(function(selectedDataRow){
           var option = new Option(selectedDataRow.text, selectedDataRow.id, true, true);
           option.dataset.group = selectedDataRow.group;
