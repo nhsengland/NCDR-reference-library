@@ -16,7 +16,7 @@
   </div>
   {% for column_image in object_list %}
   <div class="row {% cycle '' 'striped' %} padding">
-    <div class="col-md-2">
+    <div class="col-md-2 overflow-hidden">
       {{ column_image.image.name }}
     </div>
     <div class="col-md-2">
