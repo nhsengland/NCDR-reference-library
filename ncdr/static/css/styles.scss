@@ -125,6 +125,10 @@ body {
   background-size: 9px 12px;
 }
 
+.content-offset-100{
+    margin-top: 100px;
+}
+
 .content-offset{
   margin-top: 50px;
 }
@@ -795,4 +799,12 @@ mark{
     width: 95%;
     overflow: hidden;
     text-overflow: ellipsis;
+}
+
+.overflow-hidden{
+    overflow: hidden
+}
+
+.display-none{
+    display: none;
 }

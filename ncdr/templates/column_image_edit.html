@@ -15,6 +15,12 @@
               <span class="text-danger">{{ form.image.errors }}</span>
             </div>
           </div>
+          <div id="preview" class="form-group {% if object.image.url %}content-offset-100{% else %}content-offset display-none{% endif %}">
+            <label for="id_db_structure" class="col-sm-3 control-label">Preview</label>
+            <div class="col-sm-5">
+              <img id="preview-image" style="width: 100%" src="{{ object.image.url }}" />
+            </div>
+          </div>
         </div>
 
         <div class="row content-offset-below-40">
@@ -45,7 +51,27 @@
   // the already selected/saved data
   var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
 
+  /* handles the previewing of the file field */
   $(document).ready(function() {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('#preview-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+      }
+    }
+
+    $("#id_image").change(function() {
+      $("#preview").show();
+      readURL(this);
+    });
+
+
+    /* handles the select2 field */
     var formatSelected = function(state){
       var group;
       var s = $(
