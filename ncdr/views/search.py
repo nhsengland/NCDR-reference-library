@@ -40,6 +40,8 @@ def search(model, version, search_param):
 
     assuming SEARCH_FIELDS contained "name" and "description".
     """
+    search_param = search_param.strip()
+
     if not search_param:
         return model.objects.none()
 

@@ -36,3 +36,12 @@ def test_search_populated(initial_version, client, published_column):
         resp = client.get(url)
 
         assert resp.status_code == 200
+
+
+def test_strips_white_space(initial_version, client, published_column):
+    base = reverse("search", kwargs={"model_name": "column"})
+    url = f"{base}?q=test+"  # fixtured column has the name test
+    resp = client.get(url)
+    context = resp.context
+    assert len(context["object_list"]) == 1
+    assert context["object_list"][0].name == "test"
