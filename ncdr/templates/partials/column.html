@@ -20,7 +20,7 @@
 {# this is set on the with tag #}
 {% if not HIDE_DB_TABLE %}
   <h4 class="faded small">
-    {{ column.table.schema.database.name }} / {{ column.table.name }}
+    <a href="{{ column.table.schema.database.get_absolute_url }}">{{ column.table.schema.database.name }}</a> / <a href="{{ column.table.get_absolute_url }}">{{ column.table.name }}</a>
   </h4>
 {% endif %}
 {% if not HIDE_DESCRIPTION %}
