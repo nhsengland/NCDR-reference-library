@@ -1,12 +1,17 @@
-import csv
-
 from django.utils.text import slugify
+
+from ncdr.importers import db_api as api
 
 from ..models import DataElement, Grouping
 
 
-def load_file(fd, version):
-    rows = list(csv.DictReader(fd, delimiter="¬"))
+def get_rows():
+    query = "select * from vw_Export_Standard_GroupingMapping"
+    return api.query(query)
+
+
+def import_from_db(version):
+    rows = get_rows()
 
     csv_desc_by_name = {row["Grouping"]: row["Grouping Description"] for row in rows}
     groupings = Grouping.objects.bulk_create(

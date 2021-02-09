@@ -1,7 +1,8 @@
 import collections
-import csv
 
 from django.utils.text import slugify
+
+from ncdr.importers import db_api as api
 
 from ..models import Column, DataElement, Table
 
@@ -36,8 +37,9 @@ def get_tables(tableLUT, addresses):
         yield tableLUT[database_name][schema_name][table_name]
 
 
-def load_file(fd, version):
-    rows = list(csv.DictReader(fd, delimiter="¬"))
+def import_from_db(version):
+    query = "SELECT * from vw_Export_Standard_Definitions"
+    rows = api.query(query)
 
     tables = Table.objects.select_related("schema", "schema__database").filter(
         schema__database__version=version

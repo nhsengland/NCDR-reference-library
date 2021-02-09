@@ -317,19 +317,24 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Version(models.Model):
     """Track a related models version number."""
 
-    created_by = models.ForeignKey(
-        "User", null=True, on_delete=models.SET_NULL, related_name="versions"
-    )
-
-    db_structure = models.FileField(upload_to=versioned_path, null=True)
-    definitions = models.FileField(upload_to=versioned_path, null=True)
-    grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
-
     # this is used to mark when a version has finished being processed
     last_process_at = models.DateTimeField(null=True)
-    files_hash = models.TextField(null=True)
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+
+    # The below fields are deprecated as part of moving away from a csv load into
+    created_by = models.ForeignKey(
+        "User",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="versions",
+    )
+    db_structure = models.FileField(upload_to=versioned_path, null=True, blank=True)
+    definitions = models.FileField(upload_to=versioned_path, null=True, blank=True)
+    grouping_mapping = models.FileField(upload_to=versioned_path, null=True, blank=True)
+    files_hash = models.TextField(null=True, blank=True)
+    # end deprecated fields
 
     class Meta:
         get_latest_by = "pk"
@@ -356,6 +361,7 @@ class Version(models.Model):
             changed_to_published=publish,
         )
 
+    # Deprecated this method is only used by the file upload
     @classmethod
     def create(
         self, *, db_structure, definitions, grouping_mapping, is_published, created_by

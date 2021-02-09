@@ -11,7 +11,7 @@ from services.rq import queue
 
 from ..exceptions import VersionAlreadyExists
 from ..forms import UploadForm
-from ..importers import import_data
+from ..importers import check_and_import
 from ..models import Version, VersionAuditLog
 
 
@@ -118,7 +118,7 @@ class Upload(LoginRequiredMixin, CreateView):
             return redirect("version_list")
 
         # enqueue with RQ
-        queue.enqueue(import_data, version.pk)
+        queue.enqueue(check_and_import, version.pk)
 
         messages.info(
             self.request, f"Version {version.pk} has been queued for processing."
