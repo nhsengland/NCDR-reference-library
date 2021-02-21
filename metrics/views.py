@@ -18,14 +18,18 @@ class MetricDetail(DetailView):
     template_name = "metrics/detail.html"
 
     def get_queryset(self):
-        return self.model.objects.select_related(
-            "denominator",
-            "metric_lead",
-            "numerator",
-            "organisation_owner",
-            "report",
-            "team_lead",
-        ).prefetch_related("topics")
+        return (
+            self.model.objects.filter(version=self.request.version)
+            .select_related(
+                "denominator",
+                "metric_lead",
+                "numerator",
+                "organisation_owner",
+                "report",
+                "team_lead",
+            )
+            .prefetch_related("topics")
+        )
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
@@ -70,7 +74,7 @@ class AtoZList(ListView):
         return context
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().filter(version=self.request.version)
         symbol = self.request.GET.get("letter")
 
         if not symbol:
@@ -83,7 +87,7 @@ class TopicList(ListView):
     model = Topic
 
     def get_queryset(self):
-        qs = super().get_queryset()
+        qs = super().get_queryset().filter(metric__version=self.request.version)
         qs = qs.annotate(metric_count=Count("metric"))
         qs = qs.filter(metric_count__gt=1)
         return qs
@@ -103,6 +107,8 @@ class Search(ListView):
         q = self.request.GET.get("q", "")
         if not q:
             return Metric.objects.none()
-        return qs.filter(
-            Q(display_name__icontains=q) | Q(definition__icontains=q)
-        ).distinct()
+        return (
+            qs.filter(version=self.request.version)
+            .filter(Q(display_name__icontains=q) | Q(definition__icontains=q))
+            .distinct()
+        )

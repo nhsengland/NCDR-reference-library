@@ -1,14 +1,20 @@
 import csv
-import io
 
-from django.core.management.base import BaseCommand
-
-from ...models import Metric, MetricLead, Operand, Organisation, Report, TeamLead, Topic
+from metrics.models import (
+    Metric,
+    MetricLead,
+    Operand,
+    Organisation,
+    Report,
+    TeamLead,
+    Topic,
+)
 
 
 class Row:
-    def __init__(self, row):
+    def __init__(self, row, version):
         self.row = row
+        self.version = version
 
     def operand(self, operand_type):
         mapping = {
@@ -76,6 +82,7 @@ class Row:
         }
 
         metric = Metric()
+        metric.version = self.version
 
         for k, v in mapping.items():
             setattr(metric, v, self.row[k])
@@ -101,18 +108,8 @@ class Row:
         return metric
 
 
-class Command(BaseCommand):
-    def add_arguments(self, parser):
-        parser.add_argument("path")
-
-    def handle(self, *args, **options):
-        Metric.objects.all().delete()
-        Topic.objects.all().delete()
-        with open(options["path"], "rb") as f:
-            fd = io.StringIO(f.read().decode("Windows - 1252"))
-            rows = list(csv.DictReader(fd, delimiter="¬"))
-            for csv_row in rows:
-                row = Row(csv_row)
-                row.create_metric()
-
-        self.stdout.write(self.style.SUCCESS("Added Metrics"))
+def load_file(fd, version):
+    rows = list(csv.DictReader(fd, delimiter="¬"))
+    for csv_row in rows:
+        row = Row(csv_row, version)
+        row.create_metric()

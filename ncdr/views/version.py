@@ -9,8 +9,8 @@ from django.views.generic import CreateView, ListView, RedirectView, View
 
 from services.rq import queue
 
+from .. import forms
 from ..exceptions import VersionAlreadyExists
-from ..forms import UploadForm
 from ..importers import import_data
 from ..models import Version, VersionAuditLog
 
@@ -49,7 +49,11 @@ class SwitchToLatestVersion(LoginRequiredMixin, RedirectView):
         return super().get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.request.GET.get("next", reverse("index_view"))
+        current_version = self.request.user.current_version
+        if current_version and current_version.version_type == Version.METRICS:
+            return self.request.GET.get("next", reverse("topics-list"))
+        else:
+            return self.request.GET.get("next", reverse("index_view"))
 
 
 class SwitchToVersion(LoginRequiredMixin, RedirectView):
@@ -66,7 +70,11 @@ class SwitchToVersion(LoginRequiredMixin, RedirectView):
         return super().get(request, *args, **kwargs)
 
     def get_redirect_url(self, *args, **kwargs):
-        return self.request.GET.get("next", reverse("index_view"))
+        current_version = self.request.user.current_version
+        if current_version and current_version.version_type == Version.METRICS:
+            return self.request.GET.get("next", reverse("topics-list"))
+        else:
+            return self.request.GET.get("next", reverse("index_view"))
 
 
 class Timeline(LoginRequiredMixin, ListView):
@@ -97,15 +105,15 @@ class UnPublishVersion(LoginRequiredMixin, View):
         return redirect(request.GET.get("next", reverse("index_view")))
 
 
-class Upload(LoginRequiredMixin, CreateView):
-    form_class = UploadForm
-    template_name = "version_upload.html"
+class UploadNcdr(LoginRequiredMixin, CreateView):
+    form_class = forms.UploadNcdrForm
+    template_name = "ncdr_version_upload.html"
 
     @transaction.atomic()
     def form_valid(self, form):
         # create a Version with the files
         try:
-            version = Version.create(
+            version = Version.create_ncdr(
                 db_structure=self.request.FILES["db_structure"],
                 definitions=self.request.FILES["definitions"],
                 grouping_mapping=self.request.FILES["grouping_mapping"],
@@ -121,7 +129,36 @@ class Upload(LoginRequiredMixin, CreateView):
         queue.enqueue(import_data, version.pk)
 
         messages.info(
-            self.request, f"Version {version.pk} has been queued for processing."
+            self.request, f"NCDR Version {version.pk} has been queued for processing."
+        )
+
+        return redirect("version_list")
+
+
+class UploadMetrics(LoginRequiredMixin, CreateView):
+    form_class = forms.UploadMetricsForm
+    template_name = "metrics_version_upload.html"
+
+    @transaction.atomic()
+    def form_valid(self, form):
+        # create a Version with the files
+        try:
+            version = Version.create_metrics(
+                metrics_file=self.request.FILES["metrics_file"],
+                is_published=False,
+                created_by=self.request.user,
+            )
+        except VersionAlreadyExists as e:
+            msg = f"These files already exist in Version {e.existing_pk}"
+            messages.error(self.request, msg)
+            return redirect("version_list")
+
+        # enqueue with RQ
+        queue.enqueue(import_data, version.pk)
+
+        messages.info(
+            self.request,
+            f"Metrics Version {version.pk} has been queued for processing.",
         )
 
         return redirect("version_list")
@@ -136,6 +173,15 @@ class VersionList(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs):
         ctx = super().get_context_data(*args, **kwargs)
-        current_version = Version.objects.get(is_published=True)
-        ctx["sub_title"] = f"Current version: {current_version.pk}"
+        current_ncdr_version = Version.objects.get(
+            is_published=True, version_type=Version.NCDR
+        )
+        current_metrics_version = Version.objects.get(
+            is_published=True, version_type=Version.METRICS
+        )
+
+        ctx[
+            "sub_title"
+        ] = f"Current NCDR version: {current_ncdr_version.pk}, \
+Current Metrics version: {current_metrics_version.pk}"
         return ctx

@@ -5,6 +5,7 @@ from django.db import transaction
 from django.utils import timezone
 
 from . import column, grouping, table
+from metrics.importers import metrics
 from ..models import Version
 
 logger = structlog.get_logger("ncdr")
@@ -35,9 +36,12 @@ def import_data(version_pk):
     log = logger.bind(version=version.pk)
 
     try:
-        table.load_file(to_text(version.db_structure), version)
-        column.load_file(to_text(version.definitions), version)
-        grouping.load_file(to_text(version.grouping_mapping), version)
+        if version.version_type == Version.METRICS:
+            metrics.load_file(to_text(version.metrics_file), version)
+        else:
+            table.load_file(to_text(version.db_structure), version)
+            column.load_file(to_text(version.definitions), version)
+            grouping.load_file(to_text(version.grouping_mapping), version)
     except Exception:
         # log the exception, whatever it is so we can track down errors later.
         log.exception("CSV processing failed")

@@ -118,13 +118,14 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                "ncdr.context_processors.latest_version",
             ]
         },
     }
 ]
 
 WSGI_APPLICATION = "ncdr.wsgi.application"
+
+SHORT_DATETIME_FORMAT = "d/m/Y P"
 
 
 # Database

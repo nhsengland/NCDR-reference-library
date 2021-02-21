@@ -304,8 +304,11 @@ class User(AbstractBaseUser, PermissionsMixin):
         return _user_has_module_perms(self, module)
 
     def switch_to_latest_version(self):
-        """Update this user to the latest published Version"""
-        self.current_version = Version.objects.filter(is_published=True).latest()
+        """
+        Update this user to the latest published Version, this is done by setting their
+        current version to None
+        """
+        self.current_version = None
         self.save()
 
     def switch_to_version(self, version):
@@ -317,13 +320,20 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Version(models.Model):
     """Track a related models version number."""
 
+    METRICS = "Metrics"
+    NCDR = "NCDR"
+
+    VERSION_TYPES = ((METRICS, METRICS), (NCDR, NCDR))
+
     created_by = models.ForeignKey(
         "User", null=True, on_delete=models.SET_NULL, related_name="versions"
     )
 
-    db_structure = models.FileField(upload_to=versioned_path, null=True)
-    definitions = models.FileField(upload_to=versioned_path, null=True)
-    grouping_mapping = models.FileField(upload_to=versioned_path, null=True)
+    db_structure = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    definitions = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    grouping_mapping = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    metrics_file = models.FileField(upload_to=versioned_path, blank=True, null=True)
+    version_type = models.TextField(choices=VERSION_TYPES)
 
     # this is used to mark when a version has finished being processed
     last_process_at = models.DateTimeField(null=True)
@@ -343,7 +353,9 @@ class Version(models.Model):
 
         # Unpublish all existing Versions first so we only ever have one
         # version published at a time
-        Version.objects.update(is_published=False)
+        Version.objects.filter(version_type=self.version_type).update(
+            is_published=False
+        )
 
         self.is_published = publish
         self.save()
@@ -357,11 +369,24 @@ class Version(models.Model):
         )
 
     @classmethod
-    def create(
+    def _create(self, is_published, created_by, files_hash):
+        try:
+            processed_versions = Version.objects.exclude(last_process_at=None)
+            existing_version = processed_versions.get(files_hash=files_hash)
+            raise VersionAlreadyExists(existing_pk=existing_version.pk)
+        except Version.DoesNotExist:
+            pass
+
+        return Version.objects.create(
+            created_by=created_by, is_published=is_published, files_hash=files_hash
+        )
+
+    @classmethod
+    def create_ncdr(
         self, *, db_structure, definitions, grouping_mapping, is_published, created_by
     ):
         """
-        Wrap creating a Version with attached files
+        Wrap creating an Ncdr Version with attached files
 
         The versioned_path function uses the passed Version instance's PK to
         generate the path for uploading files to.  However when creating an
@@ -378,22 +403,34 @@ class Version(models.Model):
         definitions.seek(0)
         grouping_mapping.seek(0)
 
-        try:
-            processed_versions = Version.objects.exclude(last_process_at=None)
-            existing_version = processed_versions.get(files_hash=contents_hash)
-            raise VersionAlreadyExists(existing_pk=existing_version.pk)
-        except Version.DoesNotExist:
-            pass
-
-        version = Version.objects.create(
-            created_by=created_by, is_published=is_published, files_hash=contents_hash
-        )
-
+        version = self._create(is_published, created_by, contents_hash)
         version.db_structure = db_structure
         version.definitions = definitions
         version.grouping_mapping = grouping_mapping
+        version.version_type = self.NCDR
         version.save()
+        return version
 
+    @classmethod
+    def create_metrics(self, *, metrics_file, is_published, created_by):
+        """
+        Wrap creating an Metrics Version with attached files
+
+        The versioned_path function uses the passed Version instance's PK to
+        generate the path for uploading files to.  However when creating an
+        instance with Version.objects.create we can't guarantee version.pk will
+        have been set as the model is not typically saved before the function
+        is run.
+        """
+        contents_hash = md5(metrics_file.read()).digest()
+
+        # reset file streams after reading them to generate hash
+        metrics_file.seek(0)
+
+        version = self._create(is_published, created_by, contents_hash)
+        version.metrics_file = metrics_file
+        version.version_type = self.METRICS
+        version.save()
         return version
 
     def publish(self, user):
