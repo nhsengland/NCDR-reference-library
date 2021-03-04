@@ -38,7 +38,7 @@ def get_tables(tableLUT, addresses):
 
 
 def import_from_db(version):
-    query = "SELECT * from vw_Export_Standard_Definitions"
+    query = "SELECT * from tbl_Export_Standard_Definitions"
     rows = api.query(query)
 
     tables = Table.objects.select_related("schema", "schema__database").filter(

@@ -3,7 +3,7 @@ from ncdr.models import Database, Schema, Table
 
 
 def create_databases(version):
-    query = "select * from vw_Export_Standard_DB_Structure where [Schema] = ''"
+    query = "select * from tbl_Export_Standard_DB_Structure where [Schema] = ''"
     results = api.query(query)
     for row in results:
         Database.objects.create(
@@ -16,7 +16,7 @@ def create_databases(version):
 
 
 def create_schemas(version):
-    query = "select * from vw_Export_Standard_DB_Structure where [Schema] \
+    query = "select * from tbl_Export_Standard_DB_Structure where [Schema] \
 <> '' and [Table or View] = 'N/A'"
     results = api.query(query)
     for row in results:
@@ -25,7 +25,7 @@ def create_schemas(version):
 
 
 def create_tables_or_views(version):
-    query = "select * from vw_Export_Standard_DB_Structure where [Schema] \
+    query = "select * from tbl_Export_Standard_DB_Structure where [Schema] \
 <> '' and [Table or View] <> 'N/A'"
     results = api.query(query)
     for row in results:

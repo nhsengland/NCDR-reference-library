@@ -6,7 +6,7 @@ from ..models import DataElement, Grouping
 
 
 def get_rows():
-    query = "select * from vw_Export_Standard_GroupingMapping"
+    query = "select * from tbl_Export_Standard_GroupingMapping"
     return api.query(query)
 
 
