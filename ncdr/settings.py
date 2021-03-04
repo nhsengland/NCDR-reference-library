@@ -101,9 +101,9 @@ else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
 UPSTREAM_DB_HOST = env.str("UPSTREAM_DB_HOST", default="localhost")
-UPSTREAM_DB_DATABASE = env.str("UPSTREAM_DB_DATABASE", default="NHSE_Reference_Library")
-UPSTREAM_DB_USERNAME = env.str("UPSTREAM_DB_USERNAME", default="sa")
-UPSTREAM_DB_PASSWORD = env.str("UPSTREAM_DB_PASSWORD", default="reallyStrongPwd123")
+UPSTREAM_DB_DATABASE = env.str("UPSTREAM_DB_DATABASE", default="")
+UPSTREAM_DB_USERNAME = env.str("UPSTREAM_DB_USERNAME", default="")
+UPSTREAM_DB_PASSWORD = env.str("UPSTREAM_DB_PASSWORD", default="")
 
 
 TEMPLATES = [
