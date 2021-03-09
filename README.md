@@ -27,11 +27,6 @@ To update CSS locally:
     sass --watch ncdr/static/css/styles.scss:ncdr/static/css/styles.css
 
 
-To import new CSVs via the web form, run the Queue worker:
-
-    python rq_worker
-
-
 ## Deployment
 
     1. update hosts.dev (and use keys natch)

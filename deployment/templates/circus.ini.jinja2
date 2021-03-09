@@ -12,17 +12,3 @@ stderr_stream.filename = {{ LOG_DIR }}/ncdr.stderr.log
 copy_env = true
 virtualenv = {{ VIRTUALENV_PATH }}
 virtualenv_py_ver = 3.6
-
-[watcher:rq]
-cmd = envdir env_vars python {{ PROJECT_PATH }}/rq_worker.py
-working_dir = {{ PROJECT_PATH }}
-uid = ubuntu
-numprocesses = 1
-autostart = true
-stdout_stream.class = FileStream
-stdout_stream.filename = {{ LOG_DIR }}/ncdr.stdout.log
-stderr_stream.class = FileStream
-stderr_stream.filename = {{ LOG_DIR }}/ncdr.stderr.log
-copy_env = true
-virtualenv = {{ VIRTUALENV_PATH }}
-virtualenv_py_ver = 3.6

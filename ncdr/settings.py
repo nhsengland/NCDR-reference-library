@@ -199,11 +199,6 @@ LOGGING = {
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
         "ncdr": {"handlers": ["console"], "level": "INFO", "propagate": False},
-        "rq": {
-            "handlers": ["console", "mail_admins"],
-            "level": "INFO",
-            "propagate": False,
-        },
     },
 }
 
