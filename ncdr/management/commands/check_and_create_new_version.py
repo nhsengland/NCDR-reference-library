@@ -6,5 +6,5 @@ from ncdr.models import Version
 
 class Command(BaseCommand):
     def handle(self, *args, **options):
-        Version.create(is_published=False)
-        check_and_import()
+        version = Version.objects.create(is_published=False)
+        check_and_import(version)
