@@ -19,7 +19,7 @@ SECRET_KEY: !vault |
           3635333664386637303239636237663435363162333464336437
 
 GIT_REPO: "https://github.com/nhsengland/{{ application_name }}.git"
-GIT_BRANCH: v0.4
+GIT_BRANCH: load-data-in-from-azure
 
 PROJECT_PATH: "/home/ubuntu/{{ application_name }}"
 VIRTUALENV_PATH: "/home/ubuntu/.virtualenvs/{{ application_name }}"
