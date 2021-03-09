@@ -1,5 +1,3 @@
-from hashlib import md5
-
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -11,8 +9,6 @@ from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
-
-from .exceptions import VersionAlreadyExists
 
 
 def versioned_path(version, filename):
@@ -317,24 +313,8 @@ class User(AbstractBaseUser, PermissionsMixin):
 class Version(models.Model):
     """Track a related models version number."""
 
-    # this is used to mark when a version has finished being processed
-    last_process_at = models.DateTimeField(null=True)
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
-
-    # The below fields are deprecated as part of moving away from a csv load into
-    created_by = models.ForeignKey(
-        "User",
-        null=True,
-        blank=True,
-        on_delete=models.SET_NULL,
-        related_name="versions",
-    )
-    db_structure = models.FileField(upload_to=versioned_path, null=True, blank=True)
-    definitions = models.FileField(upload_to=versioned_path, null=True, blank=True)
-    grouping_mapping = models.FileField(upload_to=versioned_path, null=True, blank=True)
-    files_hash = models.TextField(null=True, blank=True)
-    # end deprecated fields
 
     class Meta:
         get_latest_by = "pk"
@@ -360,47 +340,6 @@ class Version(models.Model):
             created_by=user,
             changed_to_published=publish,
         )
-
-    # Deprecated this method is only used by the file upload
-    @classmethod
-    def create(
-        self, *, db_structure, definitions, grouping_mapping, is_published, created_by
-    ):
-        """
-        Wrap creating a Version with attached files
-
-        The versioned_path function uses the passed Version instance's PK to
-        generate the path for uploading files to.  However when creating an
-        instance with Version.objects.create we can't guarantee version.pk will
-        have been set as the model is not typically saved before the function
-        is run.
-        """
-        contents_hash = md5(
-            db_structure.read() + definitions.read() + grouping_mapping.read()
-        ).digest()
-
-        # reset file streams after reading them to generate hash
-        db_structure.seek(0)
-        definitions.seek(0)
-        grouping_mapping.seek(0)
-
-        try:
-            processed_versions = Version.objects.exclude(last_process_at=None)
-            existing_version = processed_versions.get(files_hash=contents_hash)
-            raise VersionAlreadyExists(existing_pk=existing_version.pk)
-        except Version.DoesNotExist:
-            pass
-
-        version = Version.objects.create(
-            created_by=created_by, is_published=is_published, files_hash=contents_hash
-        )
-
-        version.db_structure = db_structure
-        version.definitions = definitions
-        version.grouping_mapping = grouping_mapping
-        version.save()
-
-        return version
 
     def publish(self, user):
         self._set_publish_state(True, user)

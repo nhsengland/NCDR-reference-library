@@ -6,13 +6,11 @@
 <div class="container main-content">
   {% include "partials/admin_menu.html" with VERSION_TITLE="Versions" VERSION_SUBTITLE=sub_title %}
   <div class="row versions">
-    <div class="col-md-12">
+    <div class="col-md-8">
 
       <div class="line">
         <span class="number"></span>
-        <span class="created"><strong>Uploaded On</strong></span>
-        <span class="author"><strong>Uploaded By</strong></span>
-        <span class="processed"><strong>Processed At</strong></span>
+        <span class="created"><strong>Created On</strong></span>
         <span class="published"><strong>Published?</strong></span>
         <span class="tools"></span>
       </div>
@@ -21,8 +19,6 @@
       <div class="line {% cycle '' 'striped' %}">
         <span class="number" ><strong>{{ version.pk }}</strong></span>
         <span class="created">{{ version.created_at }}</span>
-        <span class="author">{{ version.created_by.email|default:"-" }}</span>
-        <span class="processed">{{ version.last_process_at|default:"-" }}</span>
         <span class="published">
           {% if version.is_published %}
           {% include "svgs/tick.html" %}
@@ -31,17 +27,17 @@
           {% endif %}
         </span>
         <span class="tools">
-          <a class="btn btn-success" {% if not version.last_process_at %}disabled {% endif %}href="{% url 'switch-to-version' pk=version.pk %}">View</a>
+          <a class="btn btn-success" href="{% url 'switch-to-version' pk=version.pk %}">View</a>
 
           {% if version.is_published %}
           <form action="{% url 'unpublish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
             {% csrf_token %}
-            <button type="submit" {% if not version.last_process_at %}disabled {% endif %}class="btn btn-danger">Unpublish</button>
+            <button type="submit" class="btn btn-danger">Unpublish</button>
           </form>
           {% else %}
           <form action="{% url 'publish_version' pk=version.pk %}?next={{ request.path }}" method="POST">
             {% csrf_token %}
-            <button type="submit" {% if not version.last_process_at %}disabled {% endif %}class="btn btn-danger">Publish</button>
+            <button type="submit" class="btn btn-danger">Publish</button>
           </form>
           {% endif %}
         </span>

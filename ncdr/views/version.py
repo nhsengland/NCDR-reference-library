@@ -5,13 +5,8 @@ from django.db.models import F
 from django.http import Http404
 from django.shortcuts import redirect
 from django.urls import reverse
-from django.views.generic import CreateView, ListView, RedirectView, View
+from django.views.generic import ListView, RedirectView, View
 
-from services.rq import queue
-
-from ..exceptions import VersionAlreadyExists
-from ..forms import UploadForm
-from ..importers import check_and_import
 from ..models import Version, VersionAuditLog
 
 
@@ -97,41 +92,10 @@ class UnPublishVersion(LoginRequiredMixin, View):
         return redirect(request.GET.get("next", reverse("index_view")))
 
 
-class Upload(LoginRequiredMixin, CreateView):
-    form_class = UploadForm
-    template_name = "version_upload.html"
-
-    @transaction.atomic()
-    def form_valid(self, form):
-        # create a Version with the files
-        try:
-            version = Version.create(
-                db_structure=self.request.FILES["db_structure"],
-                definitions=self.request.FILES["definitions"],
-                grouping_mapping=self.request.FILES["grouping_mapping"],
-                is_published=False,
-                created_by=self.request.user,
-            )
-        except VersionAlreadyExists as e:
-            msg = f"These files already exist in Version {e.existing_pk}"
-            messages.error(self.request, msg)
-            return redirect("version_list")
-
-        # enqueue with RQ
-        queue.enqueue(check_and_import, version.pk)
-
-        messages.info(
-            self.request, f"Version {version.pk} has been queued for processing."
-        )
-
-        return redirect("version_list")
-
-
 class VersionList(LoginRequiredMixin, ListView):
     paginate_by = 50
-    queryset = Version.objects.order_by("-pk", "-created_at").select_related(
-        "created_by"
-    )
+    queryset = Version.objects.order_by("-pk", "-created_at")
+
     template_name = "version_list.html"
 
     def get_context_data(self, *args, **kwargs):
