@@ -1,5 +1,6 @@
 from django.db import transaction
 import structlog
+import traceback
 from ncdr.importers import column, grouping, table
 
 logger = structlog.get_logger("ncdr")
@@ -21,4 +22,4 @@ def check_and_import(version):
             column.import_from_db(version)
             grouping.import_from_db(version)
     except Exception:
-        logger.error("Unable to load in NCDR")
+        logger.error(f"Unable to load in NCDR \n{traceback.format_exc()}")
