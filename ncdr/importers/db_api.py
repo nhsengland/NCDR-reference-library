@@ -2,7 +2,7 @@ import pyodbc
 from django.conf import settings
 
 
-def query(someQuery, **params):
+def query(someQuery):
     connection_str = ";".join(
         [
             "DRIVER={ODBC Driver 17 for SQL Server}",
@@ -13,9 +13,10 @@ def query(someQuery, **params):
         ]
     )
     results = []
-    with pyodbc.connect(connection_str, as_dict=True) as conn:
+    with pyodbc.connect(connection_str) as conn:
         with conn.cursor() as cur:
+            rows = cur.execute(someQuery).fetchall()
             columns = [column[0] for column in cur.description]
-            for row in cur.execute(someQuery, params).fetchall():
+            for row in rows:
                 results.append(dict(zip(columns, row)))
     return results
