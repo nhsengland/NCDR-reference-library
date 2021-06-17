@@ -94,12 +94,24 @@ AWS_SES_REGION_ENDPOINT = "email.eu-west-1.amazonaws.com"
 AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
 
+# This is used for files that are public read only.
+AWS_STORAGE_PUBLIC_BUCKET_NAME = env.str(
+    "AWS_STORAGE_PUBLIC_BUCKET_NAME", default="dev"
+)
 
 if AWS_SECRET_ACCESS_KEY:
     EMAIL_BACKEND = "django_ses.SESBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
+if DEBUG:
+    DEFAULT_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    MEDIA_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+else:
+    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    MEDIA_FILE_STORAGE = "ncdr.custom_storage.PublicMediaStorage"
+
+MEDIA_URL = "/media/"
 UPSTREAM_DB_HOST = env.str("UPSTREAM_DB_HOST", default="localhost")
 UPSTREAM_DB_DATABASE = env.str("UPSTREAM_DB_DATABASE", default="")
 UPSTREAM_DB_USERNAME = env.str("UPSTREAM_DB_USERNAME", default="")

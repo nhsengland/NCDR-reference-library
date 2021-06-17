@@ -4,11 +4,15 @@ Shared fixtures
 Docs: https://docs.pytest.org/en/latest/fixture.html#conftest-py-sharing-fixture-functions
 """
 
+from tempfile import NamedTemporaryFile
+
 import pytest
+from django.core.files.storage import FileSystemStorage
 
 from metrics.models import Lead, Metric, Operand, Organisation, Report, Team
 from ncdr.models import (
     Column,
+    ColumnImage,
     Database,
     DataElement,
     Grouping,
@@ -17,6 +21,12 @@ from ncdr.models import (
     User,
     Version,
 )
+
+
+@pytest.fixture(autouse=True)
+def use_local_media_storage(settings):
+    settings.MEDIA_FILE_STORAGE = "django.core.files.storage.FileSystemStorage"
+    ColumnImage._meta.get_field("image").storage = FileSystemStorage()
 
 
 @pytest.fixture
@@ -133,6 +143,25 @@ def unpublished_table(unpublished_schema):
 @pytest.fixture
 def unpublished_version():
     return Version.objects.create(is_published=False)
+
+
+@pytest.fixture
+def column_image():
+    tmp_file = NamedTemporaryFile(suffix=".jpg")
+    column_image = ColumnImage.objects.create(image=tmp_file.name)
+    column_image.columnimagerelation_set.create(
+        database_name="test_db_name_1",
+        schema_name="test_schema_name_1",
+        table_name="test_table_name_1",
+        column_name="test_column_name_1",
+    )
+    column_image.columnimagerelation_set.create(
+        database_name="test_db_name_2",
+        schema_name="test_schema_name_2",
+        table_name="test_table_name_2",
+        column_name="test_column_name_2",
+    )
+    return column_image
 
 
 @pytest.fixture

@@ -1,0 +1,10 @@
+<div class="row content-offset-below-20">
+  <div class="col-md-8">
+    <h3>{{ TITLE }}</h3>
+  </div>
+
+  <div class="col-md-4 pull-right text-right">
+    <a class="version-menu pull-right{% if request.resolver_match.url_name == 'column_image_create' %} active{% endif %}" href="{% url 'column_image_create' %}">Add</a>
+    <a class="version-menu pull-right{% if request.resolver_match.url_name == 'column_image_list' %} active{% endif %}" href="{% url 'column_image_list' %}">List</a>
+  </div>
+</div>

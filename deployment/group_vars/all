@@ -19,7 +19,7 @@ SECRET_KEY: !vault |
           3635333664386637303239636237663435363162333464336437
 
 GIT_REPO: "https://github.com/nhsengland/{{ application_name }}.git"
-GIT_BRANCH: load-data-in-from-azure
+GIT_BRANCH: v0.7.6-release
 
 PROJECT_PATH: "/home/ubuntu/{{ application_name }}"
 VIRTUALENV_PATH: "/home/ubuntu/.virtualenvs/{{ application_name }}"
@@ -45,6 +45,7 @@ AWS_SECRET_ACCESS_KEY: !vault |
           64653033316238373431396437616639346161393334326138383864613563303461646264623335
           3631663963393762306432623061336436623038376234666266
 AWS_BUCKET_NAME: "ncdr-v0.5"
+AWS_PUBLIC_BUCKET_NAME: "ncdr-public"
 DEV_AWS_BUCKET_NAME: "ncdr-dev"
 
 BACKUPS_DIR: "/home/ubuntu/backups"
