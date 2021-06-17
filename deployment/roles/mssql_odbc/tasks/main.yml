@@ -23,3 +23,8 @@
     ]
   environment:
     ACCEPT_EULA: 'y'
+
+- name: Creates a job that checks to see if we need to create a new version
+    name: "Check if we need an update"
+    minute: "5"
+    job: "cd {{ PROJECT_PATH }} && envdir env_vars python manage.py check_and_create_new_version"
