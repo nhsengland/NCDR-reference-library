@@ -1,4 +1,5 @@
 from django.db import transaction
+from django.utils import timezone
 import structlog
 import traceback
 from ncdr.importers import column, grouping, table, db_api
@@ -13,7 +14,7 @@ def check():
     when a new version is available. This is not yet done.
     """
     query = "Select * from tbl_Export_Standard_RefreshDateTime"
-    result = db_api.query(query)[0]["Refresh_DateTime"]
+    result = timezone.make_aware(db_api.query(query)[0]["Refresh_DateTime"])
     if result > Version.objects.order_by("-created_at")[0].created_at:
         return True
 
