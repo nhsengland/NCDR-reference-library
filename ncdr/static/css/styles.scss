@@ -125,6 +125,10 @@ body {
   background-size: 9px 12px;
 }
 
+.content-offset-100{
+    margin-top: 100px;
+}
+
 .content-offset{
   margin-top: 50px;
 }
@@ -157,6 +161,10 @@ body {
 .content-offset-below-20{
   margin-bottom: 20px;
 }
+
+.content-offset-below-40{
+    margin-bottom: 40px;
+  }
 
 h3.subheader{
   color: $subheader-text-colour;
@@ -590,12 +598,36 @@ hr {
   stroke: #007f3b;
 }
 
+
+.column-images{
+    img{
+      height: 80px;
+      max-width: 240px;
+    }
+
+    .striped{
+        background-color: rgba(0, 0, 0, .05);
+    }
+    .padding{
+        padding-top: 20px;
+        padding-bottom: 20px;
+        margin-bottom: 20px;
+    }
+  }
+
 // Version List
-.versions {
+.versions{
   .line {
     align-items: center;
     display: flex;
     padding: 10px 20px;
+  }
+
+  a.line{
+      text-decoration: none;
+      cursor: pointer;
+      color:  inherit;
+      @include primary-background-colour-hover
   }
 
   .striped {
@@ -627,6 +659,7 @@ hr {
 
   span.published {
     height: 30px;
+    flex-grow: 1;
     text-align: center;
     width: 95px;
   }
@@ -644,6 +677,22 @@ hr {
       margin-left: 10px;
     }
   }
+}
+
+.column-detail-image{
+    text-align: center;
+    img{
+        max-width: 100%;
+    }
+
+}
+
+.column-image-edit{
+    ul.errorlist{
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+    }
 }
 
 // Version audit log
@@ -721,4 +770,41 @@ hr.divisor {
 
 mark{
     padding: 0;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice{
+    width: 100%;
+    border-radius: 0;
+    border: none;
+    @include primary-background-colour-light;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    color: $text-colour-on-dark;
+}
+
+.select2-selection__choice__remove{
+    float: right;
+}
+
+.select2-results__option[aria-selected=true] {
+    display: none;
+}
+
+.select2-results__option--selected {
+    display: none;
+}
+
+.colum-image-selection{
+    width: 95%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.overflow-hidden{
+    overflow: hidden
+}
+
+.display-none{
+    display: none;
 }

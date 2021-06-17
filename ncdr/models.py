@@ -1,5 +1,6 @@
 from hashlib import md5
 
+from django.conf import settings
 from django.contrib.auth.models import (
     AbstractBaseUser,
     BaseUserManager,
@@ -7,10 +8,12 @@ from django.contrib.auth.models import (
     _user_has_module_perms,
     _user_has_perm,
 )
+from django.core.validators import FileExtensionValidator
 from django.db import models, transaction
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
+from django.utils.module_loading import import_string
 
 from .exceptions import VersionAlreadyExists
 
@@ -90,6 +93,20 @@ class Column(BaseModel, models.Model):
             "column_detail",
             kwargs={"db_name": self.table.schema.database.name, "pk": self.pk},
         )
+
+    @cached_property
+    def images(self):
+        table = self.table
+        schema = table.schema
+        database = schema.database
+
+        relations = ColumnImageRelation.objects.filter(
+            database_name=database.name,
+            schema_name=schema.name,
+            table_name=table.name,
+            column_name=self.name,
+        ).select_related("column_image")
+        return list(set([i.column_image for i in relations]))
 
     @property
     def link_display_name(self):
@@ -312,6 +329,64 @@ class User(AbstractBaseUser, PermissionsMixin):
         """Update this user to the given Version"""
         self.current_version = version
         self.save()
+
+
+class ColumnImage(models.Model):
+    """
+    A model contains an image which is then mapped
+    to a column of
+    {{ database_name }}.{{ schema_name }}.{{ table_name }}.{{ column_name }}
+
+    This is a string mapping based on name because an image
+    will show for all columns which map rather than
+    being version dependent.
+    """
+
+    # We use a file field to allow the user to upload svgs
+    image = models.FileField(
+        upload_to="imgs",
+        validators=[FileExtensionValidator(["gif", "jpg", "jpeg", "png", "svg"])],
+        storage=import_string(settings.MEDIA_FILE_STORAGE)(),
+    )
+    created = models.DateTimeField(default=timezone.now)
+
+    def columns(self):
+        result = []
+        for relation in self.columnimagerelation_set.all():
+            result.append((relation.path(), relation.column_url()))
+        return result
+
+
+class ColumnImageRelation(models.Model):
+    created = models.DateTimeField(default=timezone.now)
+    column_image = models.ForeignKey("ColumnImage", on_delete=models.CASCADE)
+    database_name = models.TextField(default="")
+    schema_name = models.TextField(default="")
+    table_name = models.TextField(default="")
+    column_name = models.TextField(default="")
+
+    class Meta:
+        unique_together = [
+            "column_image",
+            "database_name",
+            "schema_name",
+            "table_name",
+            "column_name",
+        ]
+
+    def path(self):
+        return f"{self.database_name}.{self.schema_name}{self.table_name}.{self.column_name}"
+
+    def column_url(self):
+        column = Column.objects.filter(
+            table__schema__database__version__is_published=True,
+            table__schema__database__name=self.database_name,
+            table__schema__name=self.schema_name,
+            table__name=self.table_name,
+            name=self.column_name,
+        ).first()
+        if column:
+            return column.get_absolute_url()
 
 
 class Version(models.Model):

@@ -1,0 +1,144 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<form method="POST" enctype="multipart/form-data">
+  <div class="container main-content column-image-edit">
+    {% include 'partials/column_image_menu.html' with TITLE=view.title %}
+    <div class="row content-offset-30">
+      <div class="col-md-8 col-md-offset-2">
+        {% csrf_token %}
+        <div class="row content-offset-below-40">
+          <div class="form-group">
+            <label for="id_db_structure" class="col-sm-3 control-label">Image</label>
+            <div class="col-sm-9">
+              {{ form.image }}
+              <span class="text-danger">{{ form.image.errors }}</span>
+            </div>
+          </div>
+          <div id="preview" class="form-group {% if object.image.url %}content-offset-100{% else %}content-offset display-none{% endif %}">
+            <label for="id_db_structure" class="col-sm-3 control-label">Preview</label>
+            <div class="col-sm-5">
+              <img id="preview-image" style="width: 100%" src="{{ object.image.url }}" />
+            </div>
+          </div>
+        </div>
+
+        <div class="row content-offset-below-40">
+          <div class="form-group">
+            <label for="id_db_structure" class="col-sm-3 control-label">Relations</label>
+            <div class="col-sm-9">
+              <select name="relation" required="" id="id_relation" multiple="" style="width:100%;">
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group">
+          {% if object %}
+            <a href="{% url 'column_image_delete' pk=object.pk %}" class="btn btn-danger">
+              Delete
+            </a>
+            <button class="btn btn-success pull-right" type="submit">Update</button>
+          {% else %}
+            <button class="btn btn-success pull-right" type="submit">Create</button>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
+{{ form.get_selected_json|json_script:"selected-json" }}
+<script>
+  // the already selected/saved data
+  var selectedData = JSON.parse(document.getElementById('selected-json').textContent);
+
+  /* handles the previewing of the file field */
+  $(document).ready(function() {
+    function readURL(input) {
+      if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function(e) {
+          $('#preview-image').attr('src', e.target.result);
+        }
+
+        reader.readAsDataURL(input.files[0]); // convert to base64 string
+      }
+    }
+
+    $("#id_image").change(function() {
+      $("#preview").show();
+      readURL(this);
+    });
+
+
+    /* handles the select2 field */
+    var formatSelected = function(state){
+      var group;
+      var s = $(
+        '<div class="colum-image-selection"><span class="select-choice"></span> <span class="small select-group"></span></div>'
+      )
+
+      if(!state.loading){
+        var group = state.group || state.element.dataset.group;
+        s.find(".select-group").text("(" + group + ")");
+      }
+
+      s.find(".select-choice").text(state.text);
+      return s;
+    }
+
+    var relationElement = $('#id_relation');
+
+    // the default functionality of select2 changes the previoulys selected thing
+    // to text after you press backspace.
+    // this stops that behavour
+    $.fn.select2.amd.require(['select2/selection/search'], function (Search) {
+      var oldRemoveChoice = Search.prototype.searchRemoveChoice;
+
+      // on backspace delete the whole element rather than just a part
+      Search.prototype.searchRemoveChoice = function () {
+          oldRemoveChoice.apply(this, arguments);
+          this.$search.val('');
+      };
+
+      relationElement.select2({
+        cache: true,
+        closeOnSelect: false,
+        placeholder: " Select columns",
+        templateSelection: formatSelected,
+        templateResult: formatSelected,
+        ajax: {
+          url: '{% url "column_path_options_list" %}',
+          dataType: 'json',
+          delay: 250,
+        }
+      });
+
+      // prepulate the data with the data already selected
+      selectedData.forEach(function(selectedDataRow){
+          var option = new Option(selectedDataRow.text, selectedDataRow.id, true, true);
+          option.dataset.group = selectedDataRow.group;
+          relationElement.append(option);
+          relationElement.trigger('change');
+          relationElement.trigger({
+            type: 'select2:select',
+            params: {
+              data: selectedDataRow
+            }
+          });
+      });
+
+      $(document).on('keyup keydown', 'input.select2-search__field', function(e) {
+        relationElement.resize();
+      });
+
+      // a work around to move the drop down when the selection
+      // has been changed
+      // https://github.com/select2/select2/issues/4377
+      relationElement.on("change", function(evt) {
+        setTimeout(function(){ relationElement.resize() }, 1);
+      });
+    });
+  });
+</script>
+{% endblock contents %}

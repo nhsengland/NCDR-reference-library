@@ -94,6 +94,11 @@ AWS_SES_REGION_ENDPOINT = "email.eu-west-1.amazonaws.com"
 AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
 
+# This is used for files that are public read only.
+AWS_STORAGE_PUBLIC_BUCKET_NAME = env.str(
+    "AWS_STORAGE_PUBLIC_BUCKET_NAME", default="dev"
+)
+
 if AWS_SECRET_ACCESS_KEY:
     EMAIL_BACKEND = "django_ses.SESBackend"
 else:
@@ -102,7 +107,11 @@ else:
 DEFAULT_FILE_STORAGE = env.str(
     "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
 )
+MEDIA_FILE_STORAGE = env.str(
+    "MEDIA_FILE_STORAGE", default="ncdr.custom_storage.PublicMediaStorage"
+)
 MEDIA_ROOT = "csvs"
+MEDIA_URL = "/media/"
 if DEBUG:
     MEDIA_ROOT = f"data/{MEDIA_ROOT}"
 

@@ -14,11 +14,19 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf import settings
+from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
 from django.views.generic import RedirectView, TemplateView
 
 from .views import ColumnDetail, Login
+from .views.column_image import (
+    ColumnImageCreate,
+    ColumnImageDelete,
+    ColumnImageEdit,
+    ColumnImageList,
+    ColumnPathOptionsList,
+)
 from .views.data_element import DataElementDetail, DataElementList
 from .views.database import DatabaseDetail, DatabaseList
 from .views.grouping import GroupingDetail, GroupingList
@@ -95,8 +103,25 @@ urlpatterns = [
     path("unpublish/<int:pk>/", UnPublishVersion.as_view(), name="unpublish_version"),
     path("upload", Upload.as_view(), name="upload"),
     path("versions/", VersionList.as_view(), name="version_list"),
+    path("column_images/", ColumnImageList.as_view(), name="column_image_list"),
+    path(
+        "column_images/create/", ColumnImageCreate.as_view(), name="column_image_create"
+    ),
+    path(
+        "column_images/delete/<int:pk>/",
+        ColumnImageDelete.as_view(),
+        name="column_image_delete",
+    ),
+    path(
+        "column_images/<int:pk>/", ColumnImageEdit.as_view(), name="column_image_edit"
+    ),
+    path(
+        "column_images/column_path_options_list",
+        ColumnPathOptionsList.as_view(),
+        name="column_path_options_list",
+    )
     # path("metrics/", include("metrics.urls")),
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 
 if settings.DEBUG:

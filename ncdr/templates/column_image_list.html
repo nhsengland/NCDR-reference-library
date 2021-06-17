@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load utils %}
+
+{% block contents %}
+<div class="container main-content column-images">
+  {% include 'partials/column_image_menu.html' with TITLE="Column Images" %}
+
+  {% if not object_list.exists %}
+  <h1 class="faded text-center">No column images have been added</h1>
+  {% else %}
+  <div class="row padding">
+    <div class="col-md-2"><strong>Name</strong></div>
+    <div class="col-md-2"><strong>Image</strong></div>
+    <div class="col-md-7"><strong>Columns</strong></div>
+    <div class="col-md-1"></div>
+  </div>
+  {% for column_image in object_list %}
+  <div class="row {% cycle '' 'striped' %} padding">
+    <div class="col-md-2 overflow-hidden">
+      {{ column_image.image.name }}
+    </div>
+    <div class="col-md-2">
+      <img src="{{ column_image.image.url }}" />
+    </div>
+    <div class="col-md-7 overflow-hidden">
+      {% for path, url in column_image.columns %}
+        {% if url %}
+          <a href="{{ url }}">{{ path }}</a><br />
+        {% else %}
+          {{ path }}<br />
+        {% endif %}
+      {% endfor %}
+    </div>
+    <div class="col-md-1 text-right">
+      <a class="btn btn-success" href="{% url 'column_image_edit' pk=column_image.id %}">Edit</a>
+    </div>
+  </div>
+  {% endfor %}
+  {% endif %}
+</div>
+{% endblock contents %}

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block contents %}
+<form method="POST">
+  <div class="container main-content">
+    {% include 'partials/column_image_menu.html' with TITLE=view.title %}
+    <div class="row content-offset-30">
+      <div class="col-md-8 col-md-offset-2 text-center">
+        {% csrf_token %}
+        <h3 class="content-offset-below-40">
+            Delete you want to delete {{ object.image.name}}
+        </h3>
+        <a href="{% url 'column_image_edit' pk=object.pk %}" class="btn btn-lg btn-default">
+          Cancel
+        </a>
+        <button class="btn btn-lg btn-danger content-ooffset-" type="submit">Delete</button>
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock contents %}

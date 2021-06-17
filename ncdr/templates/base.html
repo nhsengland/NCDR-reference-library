@@ -1,8 +1,5 @@
 {% load static %}
 {% load utils %}
-
-
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -54,6 +51,7 @@
             <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
 
             <a class="btn pull-right relative" href="{% url 'version_list' %}">Versions</a>
+            <a class="btn pull-right relative" href="{% url 'column_image_list' %}">Column images</a>
 
             {% if not request.version.is_published %}
             <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">View Normal Site</a>
