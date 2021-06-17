@@ -19,7 +19,6 @@
       'nginx',
       'python-virtualenv',
       'python3-dev',
-      'redis',
       'screen',
       'tree',
       'vim',

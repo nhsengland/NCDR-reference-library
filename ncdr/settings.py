@@ -94,17 +94,16 @@ AWS_SES_REGION_ENDPOINT = "email.eu-west-1.amazonaws.com"
 AWS_DEFAULT_ACL = None
 AWS_STORAGE_BUCKET_NAME = env.str("AWS_STORAGE_BUCKET_NAME", default="")
 
+
 if AWS_SECRET_ACCESS_KEY:
     EMAIL_BACKEND = "django_ses.SESBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 
-DEFAULT_FILE_STORAGE = env.str(
-    "DEFAULT_FILE_STORAGE", default="storages.backends.s3boto3.S3Boto3Storage"
-)
-MEDIA_ROOT = "csvs"
-if DEBUG:
-    MEDIA_ROOT = f"data/{MEDIA_ROOT}"
+UPSTREAM_DB_HOST = env.str("UPSTREAM_DB_HOST", default="localhost")
+UPSTREAM_DB_DATABASE = env.str("UPSTREAM_DB_DATABASE", default="")
+UPSTREAM_DB_USERNAME = env.str("UPSTREAM_DB_USERNAME", default="")
+UPSTREAM_DB_PASSWORD = env.str("UPSTREAM_DB_PASSWORD", default="")
 
 
 TEMPLATES = [
@@ -200,11 +199,6 @@ LOGGING = {
     "loggers": {
         "django": {"handlers": ["console"], "level": "INFO", "propagate": False},
         "ncdr": {"handlers": ["console"], "level": "INFO", "propagate": False},
-        "rq": {
-            "handlers": ["console", "mail_admins"],
-            "level": "INFO",
-            "propagate": False,
-        },
     },
 }
 

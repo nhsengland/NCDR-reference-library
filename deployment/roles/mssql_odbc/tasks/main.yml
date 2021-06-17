@@ -1,0 +1,25 @@
+---
+# Adds all the system requirements needed for us to use pyodbc to
+# hit the azure database
+
+# an ansibalised version of
+# https://docs.microsoft.com/en-us/sql/connect/odbc/linux-mac/installing-the-microsoft-odbc-driver-for-sql-server?view=sql-server-ver15
+- name: add an MS Apt signing key
+  apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    state: present
+
+- name: download the source list
+  get_url:
+    url: https://packages.microsoft.com/config/ubuntu/18.04/prod.list
+    dest: /etc/apt/sources.list.d/mssql-release.list
+
+- name: update apt-cache
+  apt:
+    update_cache: yes
+    pkg: [
+      'msodbcsql17',
+      'unixodbc-dev'
+    ]
+  environment:
+    ACCEPT_EULA: 'y'

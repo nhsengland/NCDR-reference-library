@@ -7,6 +7,14 @@
   roles:
     - server
 
+- name: Add the MSSQL drivers
+  become: yes
+  user: ubuntu
+  hosts: webserver
+  gather_facts: no
+  roles:
+    - mssql_odbc
+
 - name: Make the server capable of running a standard Django deployment
   user: ubuntu
   hosts: webserver
