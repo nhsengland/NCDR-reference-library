@@ -1,0 +1,34 @@
+- name: drop ncdr database
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ DB_NAME }}"
+    encoding: 'UTF-8'
+    owner: "{{ DB_USER }}"
+    template: template0
+    state: absent
+
+- name: create ncdr database
+  become: true
+  become_user: postgres
+  postgresql_db:
+    name: "{{ DB_NAME }}"
+    encoding: 'UTF-8'
+    owner: "{{ DB_USER }}"
+    template: template0
+
+
+- name: Restore the server from a bucket
+  command: "{{ VIRTUALENV_PATH }}/bin/python scripts/restore.py {{ DB_NAME }} {{ DB_USER }} {{ AWS_BUCKET_NAME }} {% if DEV %}{{ DEV }}{% endif %}"
+  args:
+      chdir: "{{ PROJECT_PATH }}"
+
+- name: Run Django database migrations
+  args:
+    chdir: "{{ PROJECT_PATH}}"
+  command: "envdir env_vars {{ VIRTUALENV_PATH }}/bin/python manage.py migrate"
+
+- name: Restart circus
+  become: yes
+  command: "circusctl restart"
+  ignore_errors: True

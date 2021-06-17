@@ -1,0 +1,4 @@
+---
+- import_playbook: setup-server.yml
+  vars:
+    DEV: 0

@@ -13,6 +13,12 @@
   roles:
     - django
 
+- name: Setup aws
+  user: ubuntu
+  hosts: webserver
+  roles:
+    - aws
+
 - name: Make the server capable of running a standard Django deployment
   become: yes
   user: ubuntu
@@ -30,4 +36,11 @@
   user: ubuntu
   hosts: webserver
   roles:
-    - backup
+    - restore
+
+- name: Set the project back ups
+  user: ubuntu
+  hosts: webserver
+  roles:
+    - role: backup
+      when: not DEV

@@ -37,7 +37,6 @@
     path: "{{ LOG_DIR }}"
     state: directory
 
-
 - name: Creates config dir
   file:
     path: "{{ CONFIG_DIR }}"
