@@ -15,6 +15,7 @@ def check():
     when a new version is available. This is not yet done.
     """
     query = "Select * from tbl_Export_Standard_RefreshDateTime"
+    # Note access to the upstream db is IP address dependent.
     result = timezone.make_aware(db_api.query(query)[0]["Refresh_DateTime"])
     if result > Version.objects.order_by("-created_at")[0].created_at:
         return True
