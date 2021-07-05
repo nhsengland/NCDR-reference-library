@@ -390,6 +390,7 @@ class Version(models.Model):
 
     is_published = models.BooleanField(default=False)
     created_at = models.DateTimeField(default=timezone.now)
+    upstream_updated_ts = models.DateTimeField()
 
     class Meta:
         get_latest_by = "pk"
