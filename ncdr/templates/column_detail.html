@@ -8,7 +8,7 @@
         <div class="col-md-12">
           <a class="ncdr-breadcrumbs" href="{% url 'index_view' %}">Home</a>
           <a class="ncdr-breadcrumbs" href="{{ object.table.database.get_absolute_url }}">
-            {{ object.table.database.display_name }}
+            {{ object.table.schema.database.display_name }}
           </a>
           <a class="ncdr-breadcrumbs" href="{{ object.table.get_absolute_url }}">
             {{ object.table.name }}
