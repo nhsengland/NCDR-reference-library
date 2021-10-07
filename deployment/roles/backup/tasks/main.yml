@@ -18,4 +18,4 @@
     minute: "0"
     hour: "19"
     user: "ubuntu"
-    job: "{{ PROJECT_PATH }}/scripts/backup.sh"
+    job: "$HOME/.profile; {{ PROJECT_PATH }}/scripts/backup.sh"
