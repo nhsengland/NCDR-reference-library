@@ -31,7 +31,6 @@ DEBUG = env.bool("DEBUG", default=False)
 
 ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=["*"])
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -130,6 +129,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "ncdr.context_processors.latest_version",
+                "ncdr.context_processors.settings",
             ]
         },
     }
@@ -213,6 +213,8 @@ LOGGING = {
         "ncdr": {"handlers": ["console"], "level": "INFO", "propagate": False},
     },
 }
+
+NCDR_ARCHIVED = env.bool('NCDR_ARCHIVED', False)
 
 structlog.configure(
     processors=[

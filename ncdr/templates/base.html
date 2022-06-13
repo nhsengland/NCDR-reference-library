@@ -37,31 +37,39 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
   </head>
   <body {% if not request.version.is_published %}class="preview-mode"{% endif %}>
-    {% if request.user.is_authenticated %}
     <div class="banner-head">
+    {% if request.user.is_authenticated or settings.NCDR_ARCHIVED %}
       <div class="container content-offset-10 content-offset-below-10">
         <div class="row">
           <div class="col-md-12 text-center">
             {% if user.current_version and user.current_version != latest_version %}
             <span class="small pull-left">Data version: {{ user.current_version.pk }}</span>
             {% endif %}
+            {% if not request.version.is_published and settings.NCDR_ARCHIVED %}
+            You are currently viewing a preview version of the site archived NCDR site
+            {% endif %}
+            {% if not request.version.is_published and not settings.NCDR_ARCHIVED%}
+            You are currently viewing a preview version of the site
+            {% endif %}
+            {% if request.version.is_published and settings.NCDR_ARCHIVED %}
+            The NCDR service has been replaced by the UDAL service - this page is an archive only
+            {% endif %}
 
-            {% if not request.version.is_published %}You are currently viewing a preview version of the site{% endif %}
-
+            {% if request.user.is_authenticated %}
             <a class="btn pull-right relative" href="{% url 'logout' %}?next={{ request.get_full_path }}">Log Out</a>
 
             <a class="btn pull-right relative" href="{% url 'version_list' %}">Versions</a>
             <a class="btn pull-right relative" href="{% url 'column_image_list' %}">Column images</a>
+            {% endif %}
 
             {% if not request.version.is_published %}
             <a class="btn pull-right relative" href="{% url 'switch-to-latest-version' %}?next={{ request.get_full_path }}">View Normal Site</a>
             {% endif %}
-
           </div>
         </div>
       </div>
-    </div>
     {% endif %}
+    </div>
     {% block header %}
     <header class="masthead">
       <div style="overflow-y: hidden" class="container">
