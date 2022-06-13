@@ -13,7 +13,15 @@
     <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
     <meta http-equiv="pragma" content="no-cache" />
 
-    <title>{% block title %}NCDR Reference Library{% endblock %}</title>
+    <title>
+      {% block title %}
+        {% if settings.UDAL %}
+        UDAL Reference Library
+        {% else %}
+        NCDR Reference Library
+        {% endif %}
+      {% endblock %}
+    </title>
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css" />
@@ -74,7 +82,11 @@
                 </a>
                 <h2 class="subtitle">
                   {% block header_title %}
+                    {% if settings.UDAL %}
+                    UDAL Reference Library
+                    {% else %}
                     NCDR Reference Library
+                    {% endif %}
                   {% endblock header_title %}
                 </h2>
         	    </hgroup>

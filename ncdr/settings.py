@@ -112,10 +112,17 @@ else:
     MEDIA_FILE_STORAGE = "ncdr.custom_storage.PublicMediaStorage"
 
 MEDIA_URL = "/media/"
-UPSTREAM_DB_HOST = env.str("UPSTREAM_DB_HOST", default="localhost")
-UPSTREAM_DB_DATABASE = env.str("UPSTREAM_DB_DATABASE", default="")
-UPSTREAM_DB_USERNAME = env.str("UPSTREAM_DB_USERNAME", default="")
-UPSTREAM_DB_PASSWORD = env.str("UPSTREAM_DB_PASSWORD", default="")
+
+NCDR_UPSTREAM_DB_HOST = env.str("NCDR_UPSTREAM_DB_HOST", default="localhost")
+NCDR_UPSTREAM_DB_DATABASE = env.str("NCDR_UPSTREAM_DB_DATABASE", default="")
+NCDR_UPSTREAM_DB_USERNAME = env.str("NCDR_UPSTREAM_DB_USERNAME", default="")
+NCDR_UPSTREAM_DB_PASSWORD = env.str("NCDR_UPSTREAM_DB_PASSWORD", default="")
+
+UDAL_UPSTREAM_DB_HOST = env.str("UDAL_UPSTREAM_DB_HOST", default="localhost")
+UDAL_UPSTREAM_DB_DATABASE = env.str("UDAL_UPSTREAM_DB_DATABASE", default="")
+UDAL_UPSTREAM_DB_USERNAME = env.str("UDAL_UPSTREAM_DB_USERNAME", default="")
+UDAL_UPSTREAM_DB_PASSWORD = env.str("UDAL_UPSTREAM_DB_PASSWORD", default="")
+
 
 
 TEMPLATES = [
@@ -130,6 +137,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "ncdr.context_processors.latest_version",
+                "ncdr.context_processors.settings",
             ]
         },
     }
@@ -228,6 +236,10 @@ structlog.configure(
     wrapper_class=structlog.stdlib.BoundLogger,
     cache_logger_on_first_use=True,
 )
+
+# the NCDR is becoming UDAL, this title may change.
+UDAL = env.bool("UDAL", False)
+
 
 # Auth URLS
 # Redefine these so the URLs are reversed and take into account SCRIPT_NAME

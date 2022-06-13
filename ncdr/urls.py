@@ -41,6 +41,11 @@ from .views.version import (  # Timeline,
     VersionList,
 )
 
+if settings.UDAL:
+    about_template = "about_udal.html"
+else:
+    about_template = "about_ncdr.html"
+
 urlpatterns = [
     path("", RedirectView.as_view(pattern_name="database_list"), name="index_view"),
     path(
@@ -49,7 +54,7 @@ urlpatterns = [
     path("accounts/login/", Login.as_view(), name="login"),
     path("accounts/", include("django.contrib.auth.urls")),
     path("admin/", admin.site.urls),
-    path("about/", TemplateView.as_view(template_name="about.html"), name="about_page"),
+    path("about/", TemplateView.as_view(template_name=about_template), name="about_page"),
     path("audit-log", AuditLog.as_view(), name="audit-log"),
     path(
         "database/",
