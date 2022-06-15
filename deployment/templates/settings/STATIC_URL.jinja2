@@ -1,5 +1,9 @@
 {% if DEV %}
 /static/
 {% else %}
+{% if UDAL %}
+/udal/static/
+{% else %}
 /ncdr/static/
+{% endif %}
 {% endif %}
