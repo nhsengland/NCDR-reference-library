@@ -15,8 +15,10 @@ server {
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
 
-        {% if not DEV %}
-
+        {% if UDAL %}
+        proxy_redirect http://127.0.0.1:4567/udal/ http://$host/udal/;
+        proxy_set_header SCRIPT_NAME /udal;
+        {% else %}
         proxy_redirect http://127.0.0.1:4567/ncdr/ http://$host/ncdr/;
         proxy_set_header SCRIPT_NAME /ncdr;
         {% endif %}
