@@ -44,8 +44,8 @@
     {% endblock staticfiles %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
   </head>
-  <body {% if not request.version.is_published %}class="preview-mode"{% elif settings.NCDR_ARCHIVED %}class="archived"{% endif %}>
-    <div class="banner-head">
+  <body {% if not request.version.is_published %}class="preview-mode"{% endif %}>
+    <div class="banner-head {% if settings.NCDR_ARCHIVED %}archived{% endif %}">
     {% if request.user.is_authenticated or settings.NCDR_ARCHIVED %}
       <div class="container content-offset-10 content-offset-below-10">
         <div class="row">
