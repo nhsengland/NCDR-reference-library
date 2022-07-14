@@ -1,6 +1,7 @@
 $primary-colour: #005eb8;
 $primary-colour-light: #0072ce;
 $secondary-colour: #003893;
+$highlight: #a00054;
 
 // the grey that is used for <small>
 $faded: #777;
@@ -63,6 +64,22 @@ $preview-link-colour: #FFBC67;
     }
     a:hover.btn {
       color: lighten($preview-link-colour, 20%);
+    }
+  }
+
+  .archived &{
+    background-color: $highlight;
+    a.btn {
+      color: $preview-link-colour;
+    }
+    a:hover.btn {
+      color: lighten($preview-link-colour, 20%);
+    }
+    a.udal-link{
+      color: $preview-link-colour;
+    }
+    a:hover.udal-link{
+      text-decoration: underline;
     }
   }
 }

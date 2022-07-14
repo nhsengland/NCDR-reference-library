@@ -60,6 +60,26 @@ body {
   color: #ffe9cd;
 }
 
+.archived .banner-head {
+  background-color: #a00054;
+}
+
+.archived .banner-head a.btn {
+  color: #FFBC67;
+}
+
+.archived .banner-head a:hover.btn {
+  color: #ffe9cd;
+}
+
+.archived .banner-head a.udal-link {
+  color: #FFBC67;
+}
+
+.archived .banner-head a:hover.udal-link {
+  text-decoration: underline;
+}
+
 .form-nav {
   display: inline-block;
   width: 110px;
@@ -217,6 +237,26 @@ header.masthead li a:hover a:hover.btn, header.masthead li a.active a:hover.btn 
 
 .preview-mode header.masthead li a:hover a:hover.btn, .preview-mode header.masthead li a.active a:hover.btn {
   color: #ffe9cd;
+}
+
+.archived header.masthead li a:hover, .archived header.masthead li a.active {
+  background-color: #a00054;
+}
+
+.archived header.masthead li a:hover a.btn, .archived header.masthead li a.active a.btn {
+  color: #FFBC67;
+}
+
+.archived header.masthead li a:hover a:hover.btn, .archived header.masthead li a.active a:hover.btn {
+  color: #ffe9cd;
+}
+
+.archived header.masthead li a:hover a.udal-link, .archived header.masthead li a.active a.udal-link {
+  color: #FFBC67;
+}
+
+.archived header.masthead li a:hover a:hover.udal-link, .archived header.masthead li a.active a:hover.udal-link {
+  text-decoration: underline;
 }
 
 footer {
@@ -786,6 +826,26 @@ a.version-menu:hover a:hover.btn, a.version-menu.active a:hover.btn {
   color: #ffe9cd;
 }
 
+.archived a.version-menu:hover, .archived a.version-menu.active {
+  background-color: #a00054;
+}
+
+.archived a.version-menu:hover a.btn, .archived a.version-menu.active a.btn {
+  color: #FFBC67;
+}
+
+.archived a.version-menu:hover a:hover.btn, .archived a.version-menu.active a:hover.btn {
+  color: #ffe9cd;
+}
+
+.archived a.version-menu:hover a.udal-link, .archived a.version-menu.active a.udal-link {
+  color: #FFBC67;
+}
+
+.archived a.version-menu:hover a:hover.udal-link, .archived a.version-menu.active a:hover.udal-link {
+  text-decoration: underline;
+}
+
 hr.divisor {
   background-color: #265eb2;
   border: 0;
@@ -830,6 +890,26 @@ mark {
 
 .preview-mode .select2-container--default .select2-selection--multiple .select2-selection__choice a:hover.btn {
   color: #ffe9cd;
+}
+
+.archived .select2-container--default .select2-selection--multiple .select2-selection__choice {
+  background-color: #a00054;
+}
+
+.archived .select2-container--default .select2-selection--multiple .select2-selection__choice a.btn {
+  color: #FFBC67;
+}
+
+.archived .select2-container--default .select2-selection--multiple .select2-selection__choice a:hover.btn {
+  color: #ffe9cd;
+}
+
+.archived .select2-container--default .select2-selection--multiple .select2-selection__choice a.udal-link {
+  color: #FFBC67;
+}
+
+.archived .select2-container--default .select2-selection--multiple .select2-selection__choice a:hover.udal-link {
+  text-decoration: underline;
 }
 
 .select2-container--default .select2-selection--multiple .select2-selection__choice__remove {

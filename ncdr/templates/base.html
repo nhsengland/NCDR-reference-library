@@ -44,7 +44,7 @@
     {% endblock staticfiles %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/js/select2.js"></script>
   </head>
-  <body {% if not request.version.is_published %}class="preview-mode"{% endif %}>
+  <body {% if not request.version.is_published %}class="preview-mode"{% elif settings.NCDR_ARCHIVED %}class="archived"{% endif %}>
     <div class="banner-head">
     {% if request.user.is_authenticated or settings.NCDR_ARCHIVED %}
       <div class="container content-offset-10 content-offset-below-10">
@@ -60,7 +60,7 @@
             You are currently viewing a preview version of the site
             {% endif %}
             {% if request.version.is_published and settings.NCDR_ARCHIVED %}
-            The NCDR service has been replaced by the UDAL service - this page is an archive only
+            The NCDR service has been replaced by the <a href="/udal/" class="udal-link">UDAL service</a> - this page is an archive only
             {% endif %}
 
             {% if request.user.is_authenticated %}
